@@ -9,7 +9,7 @@ qualcosa qui
 + [Bootstrap](https://getbootstrap.com/)
 + JavaScript
 + [Apache Tomcat](http://tomcat.apache.org/)
-+ eclipse
++ IntelliJ IDEA
 
 ## Project Managers 
 [Antonio Martucci](https://github.com/AntonioMartucci)\
