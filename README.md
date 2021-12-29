@@ -13,7 +13,7 @@ qualcosa qui
 
 ## Project Managers 
 [Antonio Martucci](https://github.com/AntonioMartucci)\
-[Luigi Bozzoli](https://github.com/luigi-bozzoli)\
+[Luigi Bozzoli](https://github.com/luigi-bozzoli)
 
 ## Team Members
 [Alfonso Cannavale](https://github.com/alfcan)\
@@ -23,7 +23,7 @@ qualcosa qui
 [Mario Peluso](https://github.com/MarioPeluso)\
 [Michael De Santis](https://github.com/shoyll)\
 [Nicolò Delogu](https://github.com/XJustUnluckyX)\
-[Stefano Zarro](https://github.com/stepzar)\
+[Stefano Zarro](https://github.com/stepzar)
 
 
 ## License (forse anche qui)
