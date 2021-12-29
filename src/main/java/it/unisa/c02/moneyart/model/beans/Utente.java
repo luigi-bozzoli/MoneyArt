@@ -1,19 +1,16 @@
 package it.unisa.c02.moneyart.model.beans;
 
 import java.sql.Blob;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Questa classe rappresenta un Utente.
- * Un utente ha id, nome, cognome, foto profilo, email, username e password.
- * Inoltre ha l'attributo seguito per identificare l'artista che segue e
- * l'attributo wallet per identificare il portafoglio virtuale.
+ * Un utente è caratterizzato da: id, nome, cognome, foto profilo, email, username,
+ * password, seguito (identificativo dell'utente seguito) e saldo.
  */
 public class Utente {
 
     /**
-     * Costruttore della classe utente.
+     * Costruttore della classe Utente.
      *
      * @param id codice identificativo dell'utente
      * @param nome nome dell'utente
@@ -23,10 +20,10 @@ public class Utente {
      * @param username username dell'utente
      * @param password password dell'utente
      * @param seguito id dell'artista seguito
-     * @param wallet wallet dell'utente
+     * @param saldo saldo dell'utente
      */
     public Utente(int id, String nome, String cognome, Blob fotoProfilo,
-                  String email, String username, String password, int seguito, Wallet wallet) {
+                  String email, String username, String password, int seguito, float saldo) {
         this.id = id;
         this.nome = nome;
         this.cognome = cognome;
@@ -35,7 +32,7 @@ public class Utente {
         this.username = username;
         this.password = password;
         this.seguito = seguito;
-        this.wallet = wallet;
+        this.saldo = saldo;
     }
 
     /**
@@ -183,31 +180,21 @@ public class Utente {
     }
 
     /**
-     * Restituisce wallet dell'utente.
+     * Restituisce saldo dell'utente.
      *
-     * @return wallet dell'utente
+     * @return saldo dell'utente
      */
-    public Wallet getWallet() {
-        return wallet;
+    public float getSaldo() {
+        return saldo;
     }
 
     /**
-     * Imposta wallet dell'utente.
+     * Imposta saldo dell'utente.
      *
-     * @param wallet wallet dell'utente
+     * @param saldo wallet dell'utente
      */
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
-    }
-
-    /**
-     * Restituisce le opere in possesso dell'utente.
-     *
-     * @return lista di opere possedute
-     */
-    public List<Opera> operePossedute() {
-        //TODO
-        return null;
+    public void setSaldo(float saldo) {
+        this.saldo = saldo;
     }
 
     private int id;
@@ -218,6 +205,6 @@ public class Utente {
     private String username;
     private String password;
     private int seguito;
-    private Wallet wallet;
+    private float saldo;
 
 }
