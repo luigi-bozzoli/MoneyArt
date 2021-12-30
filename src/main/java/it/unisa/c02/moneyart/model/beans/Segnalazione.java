@@ -14,7 +14,7 @@ public class Segnalazione {
    * @param idAsta identificativo dell'asta segnalata
    * @param commento eventuale commento della segnalazione
    */
-  public Segnalazione(int idAsta, String commento) {
+  public Segnalazione(Integer idAsta, String commento) {
     this.id = Segnalazione.NO_ID;
     this.idAsta = idAsta;
     this.commento = commento;
@@ -25,7 +25,7 @@ public class Segnalazione {
    *
    * @return identificativo della segnalazione
    */
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -34,7 +34,7 @@ public class Segnalazione {
    *
    * @param id identificativo della segnalazione
    */
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -43,7 +43,7 @@ public class Segnalazione {
    *
    * @return identificativo dell'asta segnalata.
    */
-  public int getIdAsta() {
+  public Integer getIdAsta() {
     return idAsta;
   }
 
@@ -52,7 +52,7 @@ public class Segnalazione {
    *
    * @param idAsta identificativo dell'asta segnalata
    */
-  public void setIdAsta(int idAsta) {
+  public void setIdAsta(Integer idAsta) {
     this.idAsta = idAsta;
   }
 
@@ -77,8 +77,8 @@ public class Segnalazione {
 
   public static final int NO_ID = -1;
 
-  private int id;
-  private int idAsta;
+  private Integer id;
+  private Integer idAsta;
   private String commento;
 
 

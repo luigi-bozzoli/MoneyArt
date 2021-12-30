@@ -20,7 +20,7 @@ public class Opera {
    * @param artista id dell'artista (utente creatore dell'opera)
    */
   public Opera(String nome, String descrizione, Stato stato,
-               Blob immagine, int possessore, int artista) {
+               Blob immagine, Integer possessore, Integer artista) {
 
     this.id = Opera.NO_ID;
     this.nome = nome;
@@ -111,7 +111,7 @@ public class Opera {
    *
    * @return identificativo dell'utente possessore dell'opera
    */
-  public int getPossessore() {
+  public Integer getPossessore() {
     return possessore;
   }
 
@@ -120,7 +120,7 @@ public class Opera {
    *
    * @param possessore identificativo dell'utente possessore dell'opera
    */
-  public void setPossessore(int possessore) {
+  public void setPossessore(Integer possessore) {
     this.possessore = possessore;
   }
 
@@ -129,7 +129,7 @@ public class Opera {
    *
    * @return identificativo dell'utente creatore dell'opera
    */
-  public int getArtista() {
+  public Integer getArtista() {
     return artista;
   }
 
@@ -138,19 +138,19 @@ public class Opera {
    *
    * @param artista identificativo dell'utente creatore dell'opera.
    */
-  public void setArtista(int artista) {
+  public void setArtista(Integer artista) {
     this.artista = artista;
   }
 
   public static final int NO_ID = -1;
 
-  private int id;
+  private Integer id;
   private String nome;
   private String descrizione;
   private Stato stato;
   private Blob immagine;
-  private int possessore;
-  private int artista;
+  private Integer possessore;
+  private Integer artista;
 
   /**
    * ENUM che rappresenta i possibili stati dell'opera.

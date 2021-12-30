@@ -22,7 +22,7 @@ public class Utente {
    * @param saldo saldo dell'utente
    */
   public Utente(String nome, String cognome, Blob fotoProfilo,
-                String email, String username, String password, int seguito, float saldo) {
+                String email, String username, String password, Integer seguito, Float saldo) {
     this.id = Utente.NO_ID;
     this.nome = nome;
     this.cognome = cognome;
@@ -39,7 +39,7 @@ public class Utente {
    *
    * @return identificativo dell'utente
    */
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -48,7 +48,7 @@ public class Utente {
    *
    * @param id identificativo dell'utente
    */
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -165,7 +165,7 @@ public class Utente {
    *
    * @return identificativo dell'utente seguito
    */
-  public int getSeguito() {
+  public Integer getSeguito() {
     return seguito;
   }
 
@@ -174,7 +174,7 @@ public class Utente {
    *
    * @param seguito identificativo dell'utente seguito
    */
-  public void setSeguito(int seguito) {
+  public void setSeguito(Integer seguito) {
     this.seguito = seguito;
   }
 
@@ -183,7 +183,7 @@ public class Utente {
    *
    * @return saldo dell'utente
    */
-  public float getSaldo() {
+  public Float getSaldo() {
     return saldo;
   }
 
@@ -192,20 +192,20 @@ public class Utente {
    *
    * @param saldo wallet dell'utente
    */
-  public void setSaldo(float saldo) {
+  public void setSaldo(Float saldo) {
     this.saldo = saldo;
   }
 
   public static final int NO_ID = -1;
 
-  private int id;
+  private Integer id;
   private String nome;
   private String cognome;
   private Blob fotoProfilo;
   private String email;
   private String username;
   private String password;
-  private int seguito;
-  private float saldo;
+  private Integer seguito;
+  private Float saldo;
 
 }
