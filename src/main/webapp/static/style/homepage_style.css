@@ -1,20 +1,52 @@
-body {}
+body,
+html{font-size: 16px; box-sizing: border-box; margin: 0; padding: 0;}
+*,*::before, *::after{box-sizing: border-box;}
+h1,h2,h3,h4,h5,h6,p,ol,ul{margin: 0; padding: 0;}
+ol, ul{list-style-type: none;}
+img{height: auto;}
 
-h1 {
-    font-size: 70px !important;
+/* Base */
+body{
+    font-family: 'Inter', sans-serif !important;
+    overflow-x: hidden;
 }
 
-p {
-    font-size: 20px !important;
-    color: gray;
+h1,h2,h3,h4,h5,h6,p,ol,ul{
+    color: #454545 !important;
+    margin-bottom: 20px;
 }
 
+h1{font-size: 60px; line-height: 1; font-weight: 800;}
+h2{font-size: 40px; line-height: 1.3; font-weight: 800;}
+h3{font-size: 30px; line-height: 1.3; font-weight: 800;}
+h4{font-size: 25px; line-height: 1.3; font-weight: 800;}
+h5{font-size: 20px; line-height: 1.3; font-weight: 800;}
+h6{font-size: 15px; line-height: 1.3; font-weight: 800;}
+
+img{width: 100%; height: auto;}
+
+a{text-decoration: none;}
+
+@media screen and (max-width: 1200px) {
+    h1{font-size: 50px;}
+    h2{font-size: 35px;}
+    h3{font-size: 28px;}
+    p,ul,ol{font-size: 14px;}
+}
+
+@media screen and (max-width: 768px) {
+    h1{font-size: 40px;}
+    h2{font-size: 30px;}
+    h3{font-size: 25px;}
+    p,ul,ol{font-size: 12px;}
+}
+
+
+/* Header and Hero Section*/
 .button {
     padding: 10px 20px;
-    border: solid;
     border-radius: 20px;
-    border-width: 1px;
-    border-color: transparent;
+    border: 1px solid transparent;
     background-color: #EBA83A;
     color: white;
     margin: 10px;
@@ -25,20 +57,30 @@ p {
     background-color: #BB371A;
     color: white;
     text-decoration: none;
+    transition: .4s;
 }
 
+.navbar-brand img{
+    margin-right: 30px;
+    width: 150px;
+}
 .navbar li a {
-    font-size: 20px;
+    font-size: 20px;;
+    margin-left: 8px;
+    margin-right: 8px;
 }
 
 .navbar li a:focus,
 .navbar li a:hover {
     color: #EBA83A !important;
+    transition: .4s;
 }
 
 .navbar li.active a {
     color: #BB371A !important;
 }
+
+
 
 .searchbar {
     margin: auto;
@@ -77,6 +119,7 @@ p {
 .searchbar button:hover {
     background-color: #BB371A;
     border-color: #BB371A;
+    transition: .4s;
 }
 
 .log-buttons {
@@ -87,21 +130,36 @@ p {
 .signup-button {
     margin: 10px;
     color: white;
-    padding: 5px 10px;
+    padding: 5px 15px;
     border: solid transparent;
     border-radius: 20px;
+
+}
+
+.login-button{
     background-color: #EBA83A;
 }
 
-.login-button:hover,
-.signup-button:hover {
-    color: white;
-    text-decoration: none;
+.signup-button{
     background-color: #BB371A;
 }
 
+.login-button:hover{
+    color: white;
+    text-decoration: none;
+    background-color: #BB371A;
+    transition: .4s;
+}
+.signup-button:hover{
+    color: white;
+    text-decoration: none;
+    background-color: #EBA83A;
+    transition: .4s;
+}
+
 .hero {
-    margin-top: 70px;
+    padding-top: 70px;
+    background-color: #FFF8D9;
 }
 
 .left-hero,
@@ -110,16 +168,38 @@ p {
     text-align: center;
 }
 
+.left-hero h1{
+    font-size: 70px;
+}
+
+.inverted-capital{
+    color: #BB371A;
+    font-weight: bold;
+}
+
 .hero-buttons {
     margin-top: 50px !important;
     margin: auto;
+    padding: 10px 20px;
+}
+.hero-buttons .button{
+    padding: 10px 50px;
+}
+
+.hero-buttons .button.inverted{
+   background-color: #BB371A;
+}
+
+.hero-buttons .button.inverted:hover{
+    background-color: #EBA83A;
+    transition: .4s;
 }
 
 .hero-image {
     max-width: 100%;
 }
 
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 1130px) {
     .hero {
         display: block !important;
     }

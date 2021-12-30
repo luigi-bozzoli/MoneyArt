@@ -6,6 +6,6 @@
 
         <display-name>MoneyArt</display-name>
         <welcome-file-list>
-            <welcome-file>/pages/index.html</welcome-file>
+            <welcome-file>/pages/home.jsp</welcome-file>
         </welcome-file-list>
 </web-app>
