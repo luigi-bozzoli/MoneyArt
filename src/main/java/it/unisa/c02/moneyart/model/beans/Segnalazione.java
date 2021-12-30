@@ -30,30 +30,21 @@ public class Segnalazione {
   }
 
   /**
-   * Restituisce l'identificativo dell'asta segnalata.
-   *
-   * @return identificativo dell'asta segnalata.
-   */
-  public int getIdAsta() {
-    return idAsta;
-  }
-
-  /**
-   * Restituisce il commento della segnalazione.
-   *
-   * @return il commento della segnalazione
-   */
-  public String getCommento() {
-    return commento;
-  }
-
-  /**
    * Imposta l'identificativo della segnalazione.
    *
    * @param id identificativo della segnalazione
    */
   public void setId(int id) {
     this.id = id;
+  }
+
+  /**
+   * Restituisce l'identificativo dell'asta segnalata.
+   *
+   * @return identificativo dell'asta segnalata.
+   */
+  public int getIdAsta() {
+    return idAsta;
   }
 
   /**
@@ -65,6 +56,15 @@ public class Segnalazione {
     this.idAsta = idAsta;
   }
 
+  /**
+   * Restituisce il commento della segnalazione.
+   *
+   * @return il commento della segnalazione
+   */
+  public String getCommento() {
+    return commento;
+  }
+  
   /**
    * Imposta il commento della segnalazione.
    *
