@@ -1,9 +1,8 @@
 package it.unisa.c02.moneyart.model.beans;
 
 
-
 /**
- * Questa classe rappresenta una notifica legata ad una vendita
+ * Questa classe rappresenta una notifica legata ad una vendita.
  * è caratterizzata da:
  * un id,
  * l'id dell'utente che riceve la notifica,
@@ -11,17 +10,21 @@ package it.unisa.c02.moneyart.model.beans;
  * l'id della vendita diretta a cui si riferisce,
  * un tipo che descrive il motivo della notifica,
  * e il contenuto della notifica
+ *
+ * @invariant (idAsta = = null and idRivendita ! = null) or (idAsta != null and idRivendita == null)
  */
 public class Notifica {
 
   /**
    * Costruttore della classe Notifica.
    *
-   * @param idUtente id del destinatario
-   * @param idAsta id dell'asta a cui l'opera si riferisce
+   * @param idUtente    id del destinatario
+   * @param idAsta      id dell'asta a cui l'opera si riferisce
    * @param idRivendita id della rivendita a cui l'opera si riferisce
-   * @param tipo desctive il tipo della notifica, ovvero la motivazione della sua creazione
-   * @param contenuto il contenuto della notifica(questo dobbiamo toglierlo credo raga)
+   * @param tipo        desctive il tipo della notifica,
+   *                    ovvero la motivazione della sua creazione
+   * @param contenuto   il contenuto della notifica
+   *                    (questo dobbiamo toglierlo credo raga)
    */
   public Notifica(int idUtente, int idAsta, int idRivendita, Tipo tipo, String contenuto) {
     this.id = Notifica.NO_ID;
@@ -39,6 +42,7 @@ public class Notifica {
   }
 
   /**
+   * Restituisce l'id della notifica.
    *
    * @return l'id della notifica
    */
@@ -47,6 +51,7 @@ public class Notifica {
   }
 
   /**
+   * Modifica l'id della notifica.
    *
    * @param id il nuovo id della notifica
    */
@@ -55,6 +60,7 @@ public class Notifica {
   }
 
   /**
+   * Restituisce l'id del destinatario.
    *
    * @return l'id del destinatario della notifica
    */
@@ -63,6 +69,7 @@ public class Notifica {
   }
 
   /**
+   * Modifica il destinatario.
    *
    * @param idUtente l'id del destinatario a cui si deve riferire l'opera
    */
@@ -71,6 +78,7 @@ public class Notifica {
   }
 
   /**
+   * Restituisce l'id dell'asta associata alla notifica.
    *
    * @return l'id dell'opera a cui si riferisce
    */
@@ -79,6 +87,7 @@ public class Notifica {
   }
 
   /**
+   * Modifica l'asta associata alla notifica.
    *
    * @param idAsta l'id dell'asta a cui si deve riferire la notifica
    */
@@ -87,6 +96,7 @@ public class Notifica {
   }
 
   /**
+   * Restituisce l'id della rivendita associata alla notifica.
    *
    * @return l'id della rivendita a cui si riferisce l'opera
    */
@@ -95,6 +105,7 @@ public class Notifica {
   }
 
   /**
+   * Modifica la rivendita associata alla notifica.
    *
    * @param idRivendita l'id della rivendita a cui si riferisce la notifica
    */
@@ -103,6 +114,7 @@ public class Notifica {
   }
 
   /**
+   * Restituisce il tipo della notifica.
    *
    * @return il tipo della notifica
    */
@@ -111,6 +123,7 @@ public class Notifica {
   }
 
   /**
+   * Modifica il tipo di notifica.
    *
    * @param tipo il tipo della notifica
    */
@@ -119,14 +132,16 @@ public class Notifica {
   }
 
   /**
+   * Restituice il contenuto della notifica.
    *
-   * @return il contenuto dell'opera
+   * @return il contenuto della notifica
    */
   public String getContenuto() {
     return contenuto;
   }
 
   /**
+   * Modifica il contenuto della notifica.
    *
    * @param contenuto il contenuto della notifica
    */
@@ -142,20 +157,20 @@ public class Notifica {
   private String contenuto;
 
   /**
-   * ENUM che rappresenta i possibili tipi di una notifica:
+   * ENUM che rappresenta i possibili tipi di una notifica.
    * VITTORIA: la notifica avvisa il destinatario che ha vinto l'asta associata alla notifica
    * ANNULLAMENTO: la notifica avvisa che l'asta o la rivendita associata è stata annullata
    * SUPERATO: la notifica avvisa il destinatario che è stato superato nell'asta associata
    * TERMINATA: la notifica avvisa al destinatario che la vendita da lui creata è terminata
    */
-  public enum Tipo{
-    VITTORIA,ANNULLAMENTO,SUPERATO,TERMINATA
+  public enum Tipo {
+    VITTORIA, ANNULLAMENTO, SUPERATO, TERMINATA
   }
 
 
   /**
-   * costante per segnalare la mancanza di identificatore
+   * costante per segnalare la mancanza di identificatore.
    */
-  public final static int NO_ID = -1;
+  public static final int NO_ID = -1;
 
 }
