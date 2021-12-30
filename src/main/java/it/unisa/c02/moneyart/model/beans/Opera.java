@@ -19,7 +19,7 @@ public class Opera {
    * @param possessore id dell'utente che possiede l'opera
    * @param artista id dell'artista (utente creatore dell'opera)
    */
-  public Opera(String nome, String descrizione, String stato,
+  public Opera(String nome, String descrizione, Stato stato,
                Blob immagine, int possessore, int artista) {
 
     this.id = Opera.NO_ID;
@@ -72,7 +72,7 @@ public class Opera {
    *
    * @return stato dell'opera
    */
-  public String getStato() {
+  public Stato getStato() {
     return stato;
   }
 
@@ -81,7 +81,7 @@ public class Opera {
    *
    * @param stato stato dell'opera
    */
-  public void setStato(String stato) {
+  public void setStato(Stato stato) {
     this.stato = stato;
   }
 
@@ -147,9 +147,19 @@ public class Opera {
   private int id;
   private String nome;
   private String descrizione;
-  private String stato;
+  private Stato stato;
   private Blob immagine;
   private int possessore;
   private int artista;
+
+  /**
+   * ENUM che rappresenta i possibili stati dell'opera.
+   * ALL_ASTA: l'opera è all'asta
+   * IN_VENDITA: l'opera, precedentemente vinta all'asta, è messa in vendita
+   * IN_POSSESSO: l'opera è in possesso di un utente (non si trova né all'asta né in vendita)
+   */
+  public enum Stato {
+    ALL_ASTA, IN_VENDITA, IN_POSSESSO
+  }
 
 }
