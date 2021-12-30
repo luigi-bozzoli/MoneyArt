@@ -22,7 +22,7 @@ public class Opera {
   public Opera(String nome, String descrizione, String stato,
                Blob immagine, int possessore, int artista) {
 
-    this.id = NO_ID;
+    this.id = Opera.NO_ID;
     this.nome = nome;
     this.descrizione = descrizione;
     this.stato = stato;
@@ -142,7 +142,7 @@ public class Opera {
     this.artista = artista;
   }
 
-  private static final int NO_ID = -1;
+  public static final int NO_ID = -1;
 
   private int id;
   private String nome;

@@ -23,7 +23,7 @@ public class Utente {
    */
   public Utente(String nome, String cognome, Blob fotoProfilo,
                 String email, String username, String password, int seguito, float saldo) {
-    this.id = NO_ID;
+    this.id = Utente.NO_ID;
     this.nome = nome;
     this.cognome = cognome;
     this.fotoProfilo = fotoProfilo;
@@ -196,7 +196,7 @@ public class Utente {
     this.saldo = saldo;
   }
 
-  private static final int NO_ID = -1;
+  public static final int NO_ID = -1;
 
   private int id;
   private String nome;

@@ -15,7 +15,7 @@ public class Segnalazione {
    * @param commento eventuale commento della segnalazione
    */
   public Segnalazione(int idAsta, String commento) {
-    id = NO_ID;
+    this.id = Segnalazione.NO_ID;
     this.idAsta = idAsta;
     this.commento = commento;
   }
@@ -64,7 +64,7 @@ public class Segnalazione {
   public String getCommento() {
     return commento;
   }
-  
+
   /**
    * Imposta il commento della segnalazione.
    *
@@ -75,7 +75,7 @@ public class Segnalazione {
   }
 
 
-  private static final int NO_ID = -1;
+  public static final int NO_ID = -1;
 
   private int id;
   private int idAsta;
