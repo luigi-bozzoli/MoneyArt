@@ -9,202 +9,203 @@ import java.sql.Blob;
  */
 public class Utente {
 
-    /**
-     * Costruttore della classe Utente.
-     *
-     * @param id codice identificativo dell'utente
-     * @param nome nome dell'utente
-     * @param cognome cognome dell'utente
-     * @param fotoProfilo foto profilo dell'utente
-     * @param email email dell'utente
-     * @param username username dell'utente
-     * @param password password dell'utente
-     * @param seguito id dell'artista seguito
-     * @param saldo saldo dell'utente
-     */
-    public Utente(int id, String nome, String cognome, Blob fotoProfilo,
-                  String email, String username, String password, int seguito, float saldo) {
-        this.id = id;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.fotoProfilo = fotoProfilo;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.seguito = seguito;
-        this.saldo = saldo;
-    }
+  /**
+   * Costruttore della classe Utente.
+   *
+   * @param nome nome dell'utente
+   * @param cognome cognome dell'utente
+   * @param fotoProfilo foto profilo dell'utente
+   * @param email email dell'utente
+   * @param username username dell'utente
+   * @param password password dell'utente
+   * @param seguito id dell'artista seguito
+   * @param saldo saldo dell'utente
+   */
+  public Utente(String nome, String cognome, Blob fotoProfilo,
+                String email, String username, String password, int seguito, float saldo) {
+    this.id = NO_ID;
+    this.nome = nome;
+    this.cognome = cognome;
+    this.fotoProfilo = fotoProfilo;
+    this.email = email;
+    this.username = username;
+    this.password = password;
+    this.seguito = seguito;
+    this.saldo = saldo;
+  }
 
-    /**
-     * Restituisce id dell'utente.
-     *
-     * @return id dell'utente
-     */
-    public int getId() {
-        return id;
-    }
+  /**
+   * Restituisce l'identificativo dell'utente.
+   *
+   * @return identificativo dell'utente
+   */
+  public int getId() {
+    return id;
+  }
 
-    /**
-     * Imposta id dell'utente.
-     *
-     * @param id identificativo dell'utente
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
+  /**
+   * Imposta l'identificativo dell'utente.
+   *
+   * @param id identificativo dell'utente
+   */
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    /**
-     * Restituisce nome dell'utente.
-     *
-     * @return nome dell'utente
-     */
-    public String getNome() {
-        return nome;
-    }
+  /**
+   * Restituisce nome dell'utente.
+   *
+   * @return nome dell'utente
+   */
+  public String getNome() {
+    return nome;
+  }
 
-    /**
-     * Imposta il nome dell'utente.
-     *
-     * @param nome nome dell'utente
-     */
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+  /**
+   * Imposta il nome dell'utente.
+   *
+   * @param nome nome dell'utente
+   */
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
 
-    /**
-     * Restituisce il cognome dell'utente.
-     *
-     * @return cognome dell'utente
-     */
-    public String getCognome() {
-        return cognome;
-    }
+  /**
+   * Restituisce il cognome dell'utente.
+   *
+   * @return cognome dell'utente
+   */
+  public String getCognome() {
+    return cognome;
+  }
 
-    /**
-     * Imposta il cognome dell'utente.
-     *
-     * @param cognome cognome dell'utente
-     */
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
+  /**
+   * Imposta il cognome dell'utente.
+   *
+   * @param cognome cognome dell'utente
+   */
+  public void setCognome(String cognome) {
+    this.cognome = cognome;
+  }
 
-    /**
-     * Restituisce la foto profilo dell'utente.
-     *
-     * @return foto profilo dell'utente
-     */
-    public Blob getFotoProfilo() {
-        return fotoProfilo;
-    }
+  /**
+   * Restituisce la foto profilo dell'utente.
+   *
+   * @return foto profilo dell'utente
+   */
+  public Blob getFotoProfilo() {
+    return fotoProfilo;
+  }
 
-    /**
-     * Imposta la foto profilo dell'utente.
-     *
-     * @param fotoProfilo foto profilo dell'utente
-     */
-    public void setFotoProfilo(Blob fotoProfilo) {
-        this.fotoProfilo = fotoProfilo;
-    }
+  /**
+   * Imposta la foto profilo dell'utente.
+   *
+   * @param fotoProfilo foto profilo dell'utente
+   */
+  public void setFotoProfilo(Blob fotoProfilo) {
+    this.fotoProfilo = fotoProfilo;
+  }
 
-    /**
-     * Restituisce l'email dell'utente.
-     *
-     * @return email dell'utente
-     */
-    public String getEmail() {
-        return email;
-    }
+  /**
+   * Restituisce l'email dell'utente.
+   *
+   * @return email dell'utente
+   */
+  public String getEmail() {
+    return email;
+  }
 
-    /**
-     * Imposta l'email dell'utente.
-     *
-     * @param email email dell'utente
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  /**
+   * Imposta l'email dell'utente.
+   *
+   * @param email email dell'utente
+   */
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-    /**
-     * Restituisce l'username dell'utente.
-     *
-     * @return username dell'utente
-     */
-    public String getUsername() {
-        return username;
-    }
+  /**
+   * Restituisce l'username dell'utente.
+   *
+   * @return username dell'utente
+   */
+  public String getUsername() {
+    return username;
+  }
 
-    /**
-     * Imposta l'username dell'utente.
-     *
-     * @param username username dell'utente
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  /**
+   * Imposta l'username dell'utente.
+   *
+   * @param username username dell'utente
+   */
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    /**
-     * Restituisce la password dell'utente cifrata in SHA256.
-     *
-     * @return password cifrata dell'utente
-     */
-    public String getPassword() {
-        return password;
-    }
+  /**
+   * Restituisce la password dell'utente cifrata in SHA256.
+   *
+   * @return password cifrata dell'utente
+   */
+  public String getPassword() {
+    return password;
+  }
 
-    /**
-     * Imposta la password dell'utente.
-     *
-     * @param password password cifrata in SHA256
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  /**
+   * Imposta la password dell'utente.
+   *
+   * @param password password cifrata in SHA256
+   */
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    /**
-     * Restituisce l'identificativo dell'utente seguito.
-     *
-     * @return id dell'utente seguito
-     */
-    public int getSeguito() {
-        return seguito;
-    }
+  /**
+   * Restituisce l'identificativo dell'utente seguito.
+   *
+   * @return identificativo dell'utente seguito
+   */
+  public int getSeguito() {
+    return seguito;
+  }
 
-    /**
-     * Imposta l'identificativo dell'utente seguito.
-     *
-     * @param seguito identificativo dell'utente seguito
-     */
-    public void setSeguito(int seguito) {
-        this.seguito = seguito;
-    }
+  /**
+   * Imposta l'identificativo dell'utente seguito.
+   *
+   * @param seguito identificativo dell'utente seguito
+   */
+  public void setSeguito(int seguito) {
+    this.seguito = seguito;
+  }
 
-    /**
-     * Restituisce saldo dell'utente.
-     *
-     * @return saldo dell'utente
-     */
-    public float getSaldo() {
-        return saldo;
-    }
+  /**
+   * Restituisce saldo dell'utente.
+   *
+   * @return saldo dell'utente
+   */
+  public float getSaldo() {
+    return saldo;
+  }
 
-    /**
-     * Imposta saldo dell'utente.
-     *
-     * @param saldo wallet dell'utente
-     */
-    public void setSaldo(float saldo) {
-        this.saldo = saldo;
-    }
+  /**
+   * Imposta saldo dell'utente.
+   *
+   * @param saldo wallet dell'utente
+   */
+  public void setSaldo(float saldo) {
+    this.saldo = saldo;
+  }
 
-    private int id;
-    private String nome;
-    private String cognome;
-    private Blob fotoProfilo;
-    private String email;
-    private String username;
-    private String password;
-    private int seguito;
-    private float saldo;
+  private static final int NO_ID = -1;
+
+  private int id;
+  private String nome;
+  private String cognome;
+  private Blob fotoProfilo;
+  private String email;
+  private String username;
+  private String password;
+  private int seguito;
+  private float saldo;
 
 }
