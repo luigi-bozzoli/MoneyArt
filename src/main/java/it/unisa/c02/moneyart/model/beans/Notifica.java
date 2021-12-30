@@ -26,13 +26,15 @@ public class Notifica {
    * @param contenuto   il contenuto della notifica
    *                    (questo dobbiamo toglierlo credo raga)
    */
-  public Notifica(int idUtente, int idAsta, int idRivendita, Tipo tipo, String contenuto) {
+  public Notifica(int idUtente, int idAsta, int idRivendita, Tipo tipo, String contenuto,
+                  boolean letta) {
     this.id = Notifica.NO_ID;
     this.idUtente = idUtente;
     this.idAsta = idAsta;
     this.idRivendita = idRivendita;
     this.tipo = tipo;
     this.contenuto = contenuto;
+    this.letta = letta;
   }
 
   /**
@@ -149,12 +151,31 @@ public class Notifica {
     this.contenuto = contenuto;
   }
 
+  /**
+   * verifica se la notifica è stata letta.
+   *
+   * @return il contenuto della notifica
+   */
+  public boolean isLetta() {
+    return letta;
+  }
+
+  /**
+   * Modifica lo stato di lettura della notifica.
+   *
+   * @param letta il nuovo stato della lettura
+   */
+  public void setLetta(boolean letta) {
+    this.letta = letta;
+  }
+
   private int id;
   private int idUtente;
   private int idAsta;
   private int idRivendita;
   private Tipo tipo;
   private String contenuto;
+  private boolean letta;
 
   /**
    * ENUM che rappresenta i possibili tipi di una notifica.
