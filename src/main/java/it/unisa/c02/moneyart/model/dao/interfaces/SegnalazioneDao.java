@@ -1,4 +1,4 @@
-package it.unisa.c02.moneyart.model.dao;
+package it.unisa.c02.moneyart.model.dao.interfaces;
 
 import it.unisa.c02.moneyart.model.beans.Segnalazione;
 
