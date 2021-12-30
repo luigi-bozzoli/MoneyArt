@@ -12,6 +12,6 @@
             <res-auth>Container</res-auth>
         </resource-ref>
         <welcome-file-list>
-            <welcome-file>/pages/index.html</welcome-file>
+            <welcome-file>/pages/home.jsp</welcome-file>
         </welcome-file-list>
 </web-app>
