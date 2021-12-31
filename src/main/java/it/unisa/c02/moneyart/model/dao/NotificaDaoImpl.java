@@ -1,6 +1,9 @@
 package it.unisa.c02.moneyart.model.dao;
 
+import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +23,11 @@ import javax.sql.DataSource;
  */
 public class NotificaDaoImpl implements NotificaDao {
 
+
+  public NotificaDaoImpl(DataSource ds) {
+    this.ds = ds;
+  }
+
   /**
    * Inserisce un item nel database.
    *
@@ -35,8 +43,8 @@ public class NotificaDaoImpl implements NotificaDao {
 
 
     try (Connection connection = ds.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(insertSql,
-            PreparedStatement.RETURN_GENERATED_KEYS)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(insertSql,
+             PreparedStatement.RETURN_GENERATED_KEYS)) {
       preparedStatement.setObject(1, item.getIdUtente(), Types.INTEGER);
       preparedStatement.setObject(2, item.getIdRivendita(), Types.INTEGER);
       preparedStatement.setObject(3, item.getIdAsta(), Types.INTEGER);
@@ -66,7 +74,7 @@ public class NotificaDaoImpl implements NotificaDao {
   public Notifica doRetrieveById(int id) {
     String insertSql =
         "select * from " + TABLE_NAME
-        + " where id = ? ";
+            + " where id = ? ";
     Notifica notifica = null;
 
 
@@ -190,24 +198,128 @@ public class NotificaDaoImpl implements NotificaDao {
 
   }
 
-  private static DataSource ds;
-
-  //il DataSource viene creato allo startup del server e messo nel context delle servlet,
-  // in teoria si dovrebbe passare dalla servlet come parametro di un costruttore della classe DAO
-  // todo costruttore NotificaDaoImpl(ds) e cancellare lo snippet sottostante
+  private DataSource ds;
 
 
-  static {
-    try {
-      Context initCtx = new InitialContext();
-      Context envCtx = (Context) initCtx.lookup("java:comp/env");
+  private static final String TABLE_NAME = "notifica";
 
-      ds = (DataSource) envCtx.lookup("jdbc/storage");
+  /**
+   * Restituisce tutte le notifiche destinate ad uno specifico utente.
+   *
+   * @param utente il destinatario delle notifiche
+   * @return tutte le notifiche destinate a utente
+   */
+  @Override
+  public List<Notifica> doRetriveAllByUtente(Utente utente) {
+    String insertSql = "select * from " + TABLE_NAME + " where id_utente = ? ";
+    List<Notifica> notifiche = null;
 
-    } catch (NamingException e) {
-      System.out.println("Error:" + e.getMessage());
+
+    try (Connection connection = ds.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+      preparedStatement.setInt(1, utente.getId());
+      notifiche = new ArrayList<>();
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+        Notifica notifica = new Notifica();
+        notifica.setId(rs.getObject("id", Integer.class));
+        notifica.setIdUtente(rs.getObject("id_utente", Integer.class));
+        notifica.setIdRivendita(rs.getObject("id_rivendita", Integer.class));
+        notifica.setIdAsta(rs.getObject("id_asta", Integer.class));
+        notifica.setLetta(rs.getObject("letta", Boolean.class));
+        notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
+        notifica.setContenuto(rs.getObject("contenuto", String.class));
+        notifiche.add(notifica);
+
+
+      }
+      return notifiche;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw new IllegalArgumentException(e.getMessage());
     }
   }
 
-  private static final String TABLE_NAME = "notifica";
+  /**
+   * Restituisce tutte le notifiche che fanno riferimento ad una specifica asta.
+   *
+   * @param asta l'asta a cui devono far riferimento le notifiche
+   * @return tutte le notifiche che fanno riferimento ad asta
+   */
+  @Override
+  public List<Notifica> doRetriveAllByAsta(Asta asta) {
+    String insertSql = "select * from " + TABLE_NAME + " where id_asta = ? ";
+    List<Notifica> notifiche = null;
+
+
+    try (Connection connection = ds.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+      preparedStatement.setInt(1, asta.getId());
+      notifiche = new ArrayList<>();
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+        Notifica notifica = new Notifica();
+        notifica.setId(rs.getObject("id", Integer.class));
+        notifica.setIdUtente(rs.getObject("id_utente", Integer.class));
+        notifica.setIdRivendita(rs.getObject("id_rivendita", Integer.class));
+        notifica.setIdAsta(rs.getObject("id_asta", Integer.class));
+        notifica.setLetta(rs.getObject("letta", Boolean.class));
+        notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
+        notifica.setContenuto(rs.getObject("contenuto", String.class));
+        notifiche.add(notifica);
+
+
+      }
+      return notifiche;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw new IllegalArgumentException(e.getMessage());
+    }
+  }
+
+  /**
+   * Restituisce tutte le notifiche che fanno riferimento ad una specifica rivendita.
+   *
+   * @param rivendita la rivendita a cui devono far riferimento le notifiche
+   * @return tutte le notifiche che fanno riferimento a rivendita
+   */
+  @Override
+  public List<Notifica> doRetiveAllByRivendita(Rivendita rivendita) {
+    String insertSql = "select * from " + TABLE_NAME + " where id_rivendita = ? ";
+    List<Notifica> notifiche;
+
+
+    try (Connection connection = ds.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+      preparedStatement.setInt(1, rivendita.getId());
+      notifiche = new ArrayList<>();
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+        Notifica notifica = new Notifica();
+        notifica.setId(rs.getObject("id", Integer.class));
+        notifica.setIdUtente(rs.getObject("id_utente", Integer.class));
+        notifica.setIdRivendita(rs.getObject("id_rivendita", Integer.class));
+        notifica.setIdAsta(rs.getObject("id_asta", Integer.class));
+        notifica.setLetta(rs.getObject("letta", Boolean.class));
+        notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
+        notifica.setContenuto(rs.getObject("contenuto", String.class));
+        notifiche.add(notifica);
+
+
+      }
+      return notifiche;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw new IllegalArgumentException(e.getMessage());
+    }
+  }
 }

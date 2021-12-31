@@ -1,6 +1,9 @@
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
+import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
+import it.unisa.c02.moneyart.utils.instantiation.GenericInstantiator;
+import it.unisa.c02.moneyart.utils.instantiation.ObjectSource;
+import java.util.HashMap;
+import java.util.Map;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -26,21 +29,11 @@ public class MainContext implements ServletContextListener {
 
       ds = (DataSource) envCtx.lookup("jdbc/storage");
 
-      try {
-        Connection con = ds.getConnection();
-
-        DatabaseMetaData metaData = con.getMetaData();
-        System.out.println("JDBC version: " + metaData.getJDBCMajorVersion() + "." + metaData.getJDBCMinorVersion());
-        System.out.println("Product name: " + metaData.getDatabaseProductName());
-        System.out.println("Product version: " + metaData.getDatabaseProductVersion());
-
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-
     } catch (NamingException e) {
       e.printStackTrace();
     }
+    Map<String, GenericInstantiator<?>> istantiators = inizializeIstantiators(ds);
+    ObjectSource.setIstantiator(istantiators);
 
     context.setAttribute("DataSource", ds);
     System.out.println("DataSource creation: " + ds.toString());
@@ -54,5 +47,18 @@ public class MainContext implements ServletContextListener {
     context.removeAttribute("DataSource");
 
     System.out.println("DataSource deletion: " + ds.toString());
+  }
+
+  private HashMap<String, GenericInstantiator<?>> inizializeIstantiators(DataSource ds) {
+    HashMap<String, GenericInstantiator<?>> istantiators = new HashMap<>();
+
+    GenericInstantiator<NotificaDao> notificaIstantiator = () -> {
+      return new NotificaDaoImpl(ds);
+    };
+    istantiators.put(NotificaDao.class.getName(), notificaIstantiator);
+
+
+
+    return istantiators;
   }
 }
