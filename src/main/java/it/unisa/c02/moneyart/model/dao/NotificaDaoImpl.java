@@ -18,7 +18,6 @@ public class NotificaDaoImpl implements NotificaDao {
   @Override
   public void doCreate(Notifica item) {
 
-
     String insertSQL =
         "INSERT INTO " + TABLE_NAME +
             "(id_utente,id_rivendita,id_asta ,letta, tipo,contenuto) "
