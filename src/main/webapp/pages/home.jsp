@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - MoneyArt</title>
 
-    <link rel="stylesheet" href="static/style/homepage_style.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/style/homepage_style.css">
 
     <!-- BOOTSTRAP CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -22,8 +22,10 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: white !important;">
-        <a class="navbar-brand" href="#"><img src="static/image/logo-moneyart.png" alt="MoneyArt" srcset="" width="100px"></a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="background-color: white !important;">
+        <a class="navbar-brand" href="#">
+            <img src="<%=request.getContextPath()%>/static/image/logo-moneyart.png" alt="MoneyArt" srcset="">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -57,21 +59,22 @@
     <!-- HERO SECTION -->
     <div class="row hero">
         <div class="col left-hero">
-            <h1>L'arte che diventa<br>Non Fungible Token</h1>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed laudantium consequuntur<br>veritatis quas eum quaerat sint omnis perspiciatis necessitatibus, odit beatae voluptas asperiores<br>nobis officia quasi nemo ex quae nihil!</p>
+            <h1>L'arte che diventa<br>
+                <span class="inverted-capital">N</span>on
+                <span class="inverted-capital">F</span>ungible
+                <span class="inverted-capital">T</span>oken</h1>
             <div class="hero-buttons">
                 <a href="#" class="button">Esplora</a>
-                <a href="#" class="button">Crea</a>
+                <a href="#" class="button inverted">Crea</a>
             </div>
         </div>
 
-        <div class="col right-hero">
-            <img class="hero-image" src="static/image/nft.jpg" width="800px" alt="NFT" style="border-radius: 50px;">
+        <div class="col right-hero" style="padding-right: 30px">
+            <img class="hero-image" src="<%=request.getContextPath()%>/static/image/nft.jpg" width="800px" alt="NFT" style="border-radius: 50px;">
         </div>
     </div>
 
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#EBA83A" fill-opacity="1" d="M0,160L60,170.7C120,181,240,203,360,192C480,181,600,139,720,138.7C840,139,960,181,1080,202.7C1200,224,1320,224,1380,224L1440,224L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
-
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#fff8d9" fill-opacity="1" d="M0,64L60,74.7C120,85,240,107,360,122.7C480,139,600,149,720,133.3C840,117,960,75,1080,74.7C1200,75,1320,117,1380,138.7L1440,160L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z" data-darkreader-inline-fill="" style="--darkreader-inline-fill:#007acc;"></path></svg>
 </body>
 
 </html>

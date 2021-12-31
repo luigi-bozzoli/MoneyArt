@@ -26,13 +26,16 @@ public class Notifica {
    * @param contenuto   il contenuto della notifica
    *                    (questo dobbiamo toglierlo credo raga)
    */
-  public Notifica(int idUtente, int idAsta, int idRivendita, Tipo tipo, String contenuto) {
+  public Notifica(Integer idUtente, Integer idAsta, Integer idRivendita, Tipo tipo,
+                  String contenuto,
+                  boolean letta) {
     this.id = Notifica.NO_ID;
     this.idUtente = idUtente;
     this.idAsta = idAsta;
     this.idRivendita = idRivendita;
     this.tipo = tipo;
     this.contenuto = contenuto;
+    this.letta = letta;
   }
 
   /**
@@ -46,7 +49,7 @@ public class Notifica {
    *
    * @return l'id della notifica
    */
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -55,7 +58,7 @@ public class Notifica {
    *
    * @param id il nuovo id della notifica
    */
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -64,7 +67,7 @@ public class Notifica {
    *
    * @return l'id del destinatario della notifica
    */
-  public int getIdUtente() {
+  public Integer getIdUtente() {
     return idUtente;
   }
 
@@ -73,7 +76,7 @@ public class Notifica {
    *
    * @param idUtente l'id del destinatario a cui si deve riferire l'opera
    */
-  public void setIdUtente(int idUtente) {
+  public void setIdUtente(Integer idUtente) {
     this.idUtente = idUtente;
   }
 
@@ -82,7 +85,7 @@ public class Notifica {
    *
    * @return l'id dell'opera a cui si riferisce
    */
-  public int getIdAsta() {
+  public Integer getIdAsta() {
     return idAsta;
   }
 
@@ -91,7 +94,7 @@ public class Notifica {
    *
    * @param idAsta l'id dell'asta a cui si deve riferire la notifica
    */
-  public void setIdAsta(int idAsta) {
+  public void setIdAsta(Integer idAsta) {
     this.idAsta = idAsta;
   }
 
@@ -100,7 +103,7 @@ public class Notifica {
    *
    * @return l'id della rivendita a cui si riferisce l'opera
    */
-  public int getIdRivendita() {
+  public Integer getIdRivendita() {
     return idRivendita;
   }
 
@@ -109,7 +112,7 @@ public class Notifica {
    *
    * @param idRivendita l'id della rivendita a cui si riferisce la notifica
    */
-  public void setIdRivendita(int idRivendita) {
+  public void setIdRivendita(Integer idRivendita) {
     this.idRivendita = idRivendita;
   }
 
@@ -149,12 +152,57 @@ public class Notifica {
     this.contenuto = contenuto;
   }
 
-  private int id;
-  private int idUtente;
-  private int idAsta;
-  private int idRivendita;
+  /**
+   * verifica se la notifica è stata letta.
+   *
+   * @return il contenuto della notifica
+   */
+  public Boolean isLetta() {
+    return letta;
+  }
+
+  /**
+   * Modifica lo stato di lettura della notifica.
+   *
+   * @param letta il nuovo stato della lettura
+   */
+  public void setLetta(Boolean letta) {
+    this.letta = letta;
+  }
+
+  /**
+   * Restituisce la rappresentazione sottoforma di stringa di una notifica.
+   *
+   * @return la stringa che rappresenta notifica
+   */
+  @Override
+  public String toString() {
+    return "Notifica{"
+        +
+        "id=" + id
+        +
+        ", idUtente=" + idUtente
+        +
+        ", idAsta=" + idAsta
+        +
+        ", idRivendita=" + idRivendita
+        +
+        ", tipo=" + tipo
+        +
+        ", contenuto='" + contenuto + '\''
+        +
+        ", letta=" + letta
+        +
+        '}';
+  }
+
+  private Integer id;
+  private Integer idUtente;
+  private Integer idAsta;
+  private Integer idRivendita;
   private Tipo tipo;
   private String contenuto;
+  private Boolean letta;
 
   /**
    * ENUM che rappresenta i possibili tipi di una notifica.
