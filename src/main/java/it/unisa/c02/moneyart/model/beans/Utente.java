@@ -35,6 +35,12 @@ public class Utente {
   }
 
   /**
+   * Costruttore vuoto della classe Utente.
+   **/
+  public Utente(){
+  }
+
+  /**
    * Restituisce l'identificativo dell'utente.
    *
    * @return identificativo dell'utente

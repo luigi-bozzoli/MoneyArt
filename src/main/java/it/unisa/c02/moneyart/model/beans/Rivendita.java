@@ -16,11 +16,17 @@ public class Rivendita {
      * @param stato identificativo dell'asta a cui l'utente ha partecipato
      * @param prezzo identificativo dell'utente che ha partecipato all'asta
      */
-    public Rivendita(int idOpera, String stato, double prezzo) {
+    public Rivendita(int idOpera, Stato stato, double prezzo) {
         this.id = Rivendita.NO_ID;
         this.idOpera = idOpera;
         this.stato = stato;
         this.prezzo = prezzo;
+    }
+
+    /**
+     * Costruttore vuoto della classe Rivendita.
+     */
+    public Rivendita() {
     }
 
     /**
@@ -62,7 +68,7 @@ public class Rivendita {
      *
      * @return stato della rivendita
      */
-    public String getStato() {
+    public Stato getStato() {
         return stato;
     }
 
@@ -71,7 +77,7 @@ public class Rivendita {
      *
      * @param stato stato della rivendita
      */
-    public void setStato(String stato) {
+    public void setStato(Stato stato) {
         this.stato = stato;
     }
 
@@ -97,6 +103,15 @@ public class Rivendita {
 
     private int id;
     private int idOpera;
-    private String stato;
+    private Stato stato;
     private double prezzo;
+
+    /**
+     * ENUM che rappresenta i possibili stati della rivendita.
+     * IN_CORSO: la rivendita è in corso
+     * TERMINATA: la rivendita è terminata
+     */
+    public enum Stato {
+        IN_CORSO, TERMINATA
+    }
 }
