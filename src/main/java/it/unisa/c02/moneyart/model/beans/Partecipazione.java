@@ -16,7 +16,7 @@ public class Partecipazione {
      * @param idUtente identificativo dell'utente che ha partecipato all'asta
      * @param offerta offerta dell'utente
      */
-    public Partecipazione(int idAsta, int idUtente, double offerta) {
+    public Partecipazione(Integer idAsta, Integer idUtente, double offerta) {
         this.id = Partecipazione.NO_ID;
         this.idAsta = idAsta;
         this.idUtente = idUtente;
@@ -34,7 +34,7 @@ public class Partecipazione {
      *
      * @return identificativo della partecipazione
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -43,7 +43,7 @@ public class Partecipazione {
      *
      * @param id identificativo della partecipazione
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -52,7 +52,7 @@ public class Partecipazione {
      *
      * @return identificativo dell'asta a cui l'utente ha partecipato
      */
-    public int getIdAsta() {
+    public Integer getIdAsta() {
         return idAsta;
     }
 
@@ -61,7 +61,7 @@ public class Partecipazione {
      *
      * @param idAsta identificativo dell'asta a cui l'utente ha partecipato
      */
-    public void setIdAsta(int idAsta) {
+    public void setIdAsta(Integer idAsta) {
         this.idAsta = idAsta;
     }
 
@@ -70,7 +70,7 @@ public class Partecipazione {
      *
      * @return identificativo dell'utente che ha partecipato all'asta
      */
-    public int getIdUtente() {
+    public Integer getIdUtente() {
         return idUtente;
     }
 
@@ -79,7 +79,7 @@ public class Partecipazione {
      *
      * @param idUtente identificativo dell'utente che ha partecipato all'asta
      */
-    public void setIdUtente(int idUtente) {
+    public void setIdUtente(Integer idUtente) {
         this.idUtente = idUtente;
     }
 
@@ -103,9 +103,9 @@ public class Partecipazione {
 
     public static final int NO_ID = -1;
 
-    private int id;
-    private int idAsta;
-    private int idUtente;
+    private Integer id;
+    private Integer idAsta;
+    private Integer idUtente;
     private double offerta;
 
 }

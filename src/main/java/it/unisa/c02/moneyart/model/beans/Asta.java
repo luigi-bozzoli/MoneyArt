@@ -16,12 +16,12 @@ public class Asta {
    * @param stato stato corrente dell'asta ('in corso' , 'terminata' , 'annullata')
    * @param idOpera riferimento all'identificativo di opera
    */
-  public Asta(int id, Date dataInizio, Date dataFine, Stato stato, int opera) {
+  public Asta(int id, Date dataInizio, Date dataFine, Stato stato, int idOpera) {
     this.id = NO_ID;
     this.dataInizio = dataInizio;
     this.dataFine = dataFine;
     this.stato = stato;
-    this.idOpera = opera;
+    this.idOpera = idOpera;
   }
 
   /**
@@ -34,7 +34,7 @@ public class Asta {
    *
    * @return id
    */
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -43,7 +43,7 @@ public class Asta {
    *
    * @param id nuovo identificativo di asta
    */
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -106,7 +106,7 @@ public class Asta {
    *
    * @return idOpera
    */
-  public int getIdOpera() {
+  public Integer getIdOpera() {
     return idOpera;
   }
 
@@ -115,7 +115,7 @@ public class Asta {
    *
    * @param idOpera nuovo identificativo al riferimento di opera
    */
-  public void setIdOpera(int idOpera) {
+  public void setIdOpera(Integer idOpera) {
     this.idOpera = idOpera;
   }
 
@@ -133,8 +133,8 @@ public class Asta {
    * Variabili d'istanza.
    */
   public final static int NO_ID = -1;
-  private int id;
-  private int idOpera;
+  private Integer id;
+  private Integer idOpera;
   private Date dataInizio;
   private Date dataFine;
   private Stato stato;
