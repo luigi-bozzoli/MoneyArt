@@ -24,6 +24,12 @@ public class Rivendita {
     }
 
     /**
+     * Costruttore vuoto della classe Rivendita.
+     */
+    public Rivendita() {
+    }
+
+    /**
      * Restituisce l'identificativo della rivendita.
      *
      * @return identificativo della rivendita
