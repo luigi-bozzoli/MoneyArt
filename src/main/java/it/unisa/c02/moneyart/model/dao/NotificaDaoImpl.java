@@ -14,20 +14,29 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+/**
+ * Implementa la classe che esplicita i metodi
+ * definiti nell'interfaccia NotificaDao.
+ */
 public class NotificaDaoImpl implements NotificaDao {
+
+  /**
+   * Inserisce un item nel database.
+   *
+   * @param item l'oggetto da inserire nel database
+   */
   @Override
   public void doCreate(Notifica item) {
 
 
-    String insertSQL =
-        "INSERT INTO " + TABLE_NAME +
-            "(id_utente,id_rivendita,id_asta ,letta, tipo,contenuto) "
-            + " VALUES(?, ? , ?, ?, ?, ?) ";
+    String insertSql = "INSERT INTO " + TABLE_NAME
+        + "(id_utente,id_rivendita,id_asta ,letta, tipo,contenuto) "
+        + " VALUES(?, ? , ?, ?, ?, ?) ";
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSQL,
-             PreparedStatement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(insertSql,
+            PreparedStatement.RETURN_GENERATED_KEYS)) {
       preparedStatement.setObject(1, item.getIdUtente(), Types.INTEGER);
       preparedStatement.setObject(2, item.getIdRivendita(), Types.INTEGER);
       preparedStatement.setObject(3, item.getIdAsta(), Types.INTEGER);
@@ -47,16 +56,22 @@ public class NotificaDaoImpl implements NotificaDao {
 
   }
 
+  /**
+   * Ricerca nel database un item tramite un identificativo unico.
+   *
+   * @param id l'identificativo dell'item
+   * @return l'item trovato nel database
+   */
   @Override
   public Notifica doRetrieveById(int id) {
-    String insertSQL =
-        "select * from " + TABLE_NAME +
-            " where id = ? ";
+    String insertSql =
+        "select * from " + TABLE_NAME
+        + " where id = ? ";
     Notifica notifica = null;
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
@@ -81,15 +96,21 @@ public class NotificaDaoImpl implements NotificaDao {
     }
   }
 
+  /**
+   * Ricerca nel database tutti gli item, eventualmente ordinati
+   * tramite un filtro.
+   *
+   * @param filter filtro di ordinamento delle tuple
+   * @return la collezione di item trovata nel database
+   */
   @Override
   public List<Notifica> doRetrieveAll(String filter) {
-    String insertSQL =
-        "select * from " + TABLE_NAME;
+    String insertSql = "select * from " + TABLE_NAME;
     List<Notifica> notifiche = null;
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
       notifiche = new ArrayList<>();
 
       ResultSet rs = preparedStatement.executeQuery();
@@ -115,16 +136,20 @@ public class NotificaDaoImpl implements NotificaDao {
     }
   }
 
+  /**
+   * Aggiorna l'item nel database.
+   *
+   * @param item l'item da aggiornare
+   */
   @Override
   public void doUpdate(Notifica item) {
-    String insertSQL =
-        "UPDATE " + TABLE_NAME +
-            " set id_utente = ?, id_rivendita = ? ,id_asta = ? , letta = ?, tipo = ?,contenuto = ? "
-            + " where id = ?";
+    String insertSql = "UPDATE " + TABLE_NAME
+        + " set id_utente = ?, id_rivendita = ? ,id_asta = ? , letta = ?, tipo = ?,contenuto = ? "
+        + " where id = ?";
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
       preparedStatement.setObject(1, item.getIdUtente(), Types.INTEGER);
       preparedStatement.setObject(2, item.getIdRivendita(), Types.INTEGER);
       preparedStatement.setObject(3, item.getIdAsta(), Types.INTEGER);
@@ -140,15 +165,19 @@ public class NotificaDaoImpl implements NotificaDao {
     }
   }
 
+  /**
+   * Elimina l'item dal database.
+   *
+   * @param item l'item da eliminare
+   */
   @Override
   public void doDelete(Notifica item) {
-    String insertSQL =
-        "delete from " + TABLE_NAME +
-            " where id = ? ";
+    String insertSql = "delete from " + TABLE_NAME
+        + " where id = ? ";
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
       preparedStatement.setObject(1, item.getId(), Types.INTEGER);
 
       preparedStatement.executeUpdate();
@@ -162,6 +191,11 @@ public class NotificaDaoImpl implements NotificaDao {
   }
 
   private static DataSource ds;
+
+  //il DataSource viene creato allo startup del server e messo nel context delle servlet,
+  // in teoria si dovrebbe passare dalla servlet come parametro di un costruttore della classe DAO
+  // todo costruttore NotificaDaoImpl(ds) e cancellare lo snippet sottostante
+
 
   static {
     try {
