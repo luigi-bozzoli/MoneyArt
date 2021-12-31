@@ -10,7 +10,7 @@ package it.unisa.c02.moneyart.model.beans;
 public class Partecipazione {
 
     /**
-     * Costruttore dell classe Partecipazione.
+     * Costruttore della classe Partecipazione.
      *
      * @param idAsta identificativo dell'asta a cui l'utente ha partecipato
      * @param idUtente identificativo dell'utente che ha partecipato all'asta
@@ -21,6 +21,12 @@ public class Partecipazione {
         this.idAsta = idAsta;
         this.idUtente = idUtente;
         this.offerta = offerta;
+    }
+
+    /**
+     * Costruttore vuoto della classe Partecipazione.
+     **/
+    public Partecipazione() {
     }
 
     /**
