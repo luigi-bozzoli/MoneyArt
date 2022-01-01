@@ -48,6 +48,7 @@ create table rivendita (
     id_opera bigint not null, /*FK*/
     prezzo double precision not null,
     stato enum ("IN_CORSO", "TERMINATA") default "IN_CORSO" not null,
+    
     foreign key (id_opera) references opera(id) on update no action on delete cascade
 );
 
@@ -69,7 +70,7 @@ create table notifica (
     id_asta bigint, /*FK*/
     letta boolean default false not null,
     tipo enum("VITTORIA", "ANNULLAMENTO", "SUPERATO", "TERMINATA") not null,
-    contenuto varchar(255) not null,
+    contenuto varchar(255) not null, 
 
     foreign key (id_utente) references utente(id) on update no action on delete no action, 
     foreign key (id_rivendita) references rivendita(id) on update no action on delete cascade,
