@@ -18,17 +18,17 @@ public class Notifica {
   /**
    * Costruttore della classe Notifica.
    *
-   * @param idUtente    id del destinatario
-   * @param idAsta      id dell'asta a cui l'opera si riferisce
-   * @param idRivendita id della rivendita a cui l'opera si riferisce
-   * @param tipo        desctive il tipo della notifica,
-   *                    ovvero la motivazione della sua creazione
-   * @param contenuto   il contenuto della notifica
-   *                    (questo dobbiamo toglierlo credo raga)
+   * @param idUtente identificativo del destinatario
+   * @param idAsta identificativo dell'asta a cui l'opera si riferisce
+   * @param idRivendita identificativo della rivendita a cui l'opera si riferisce
+   * @param tipo descrive il tipo della notifica,
+   *             ovvero la motivazione della sua creazione
+   * @param contenuto il contenuto della notifica
+   *                  (questo dobbiamo toglierlo credo raga)
+   * @param letta inidica se la notifica è stata letta
    */
   public Notifica(Integer idUtente, Integer idAsta, Integer idRivendita, Tipo tipo,
-                  String contenuto,
-                  boolean letta) {
+                  String contenuto, boolean letta) {
     this.id = Notifica.NO_ID;
     this.idUtente = idUtente;
     this.idAsta = idAsta;
@@ -153,9 +153,9 @@ public class Notifica {
   }
 
   /**
-   * verifica se la notifica è stata letta.
+   * Verifica se la notifica è stata letta.
    *
-   * @return il contenuto della notifica
+   * @return un valore che identifica se la notifica sia stata letta o meno
    */
   public Boolean isLetta() {
     return letta;

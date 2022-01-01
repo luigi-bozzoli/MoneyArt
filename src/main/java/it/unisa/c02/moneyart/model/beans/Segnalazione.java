@@ -13,11 +13,13 @@ public class Segnalazione {
    *
    * @param idAsta identificativo dell'asta segnalata
    * @param commento eventuale commento della segnalazione
+   * @param letta indica se la segnalazione è stata letta
    */
-  public Segnalazione(Integer idAsta, String commento) {
+  public Segnalazione(Integer idAsta, String commento, boolean letta) {
     this.id = Segnalazione.NO_ID;
     this.idAsta = idAsta;
     this.commento = commento;
+    this.letta = letta;
   }
 
   /**
@@ -74,12 +76,30 @@ public class Segnalazione {
     this.commento = commento;
   }
 
+  /**
+   * Verifica se la segnalazione è stata letta.
+   *
+   * @return un valore che identifica se la segnalazione sia stata letta o meno
+   */
+  public boolean isLetta() {
+    return letta;
+  }
+
+  /**
+   * Modifica lo stato di lettura della segnalazione.
+   *
+   * @param letta il nuovo stato della lettura
+   */
+  public void setLetta(boolean letta) {
+    this.letta = letta;
+  }
 
   public static final int NO_ID = -1;
 
   private Integer id;
   private Integer idAsta;
   private String commento;
+  private boolean letta;
 
 
 }
