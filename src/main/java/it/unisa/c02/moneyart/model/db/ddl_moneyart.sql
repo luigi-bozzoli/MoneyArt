@@ -24,12 +24,8 @@ create table opera (
     prezzo double precision not null default 0, 
     descrizione text, 
     immagine blob not null,
-    certificato text, 
-<<<<<<< HEAD
-    stato enum("All'asta", "In vendita", "In possesso") default "In possesso" not null, 
-=======
+    certificato text,
     stato enum("ALL_ASTA", "IN_VENDITA", "IN_POSSESSO") default "IN_POSSESSO" not null,
->>>>>>> 84079e634f827f637c541bd3d9ed2e29dbabba21
     
 	unique (id_artista, nome), /*Uno stesso artista non può avere 2 opere con lo stesso nome*/
     foreign key (id_utente) references utente(id) on update no action on delete no action, 
@@ -40,12 +36,8 @@ create table asta (
 	id bigint auto_increment primary key,
     id_opera bigint not null, /*FK*/
     data_inizio date not null, 
-    data_fine date not null, 
-<<<<<<< HEAD
-    stato enum("In corso", "Terminata", "Eliminata") default "In corso" not null, 
-=======
+    data_fine date not null,
     stato enum("IN_CORSO", "TERMINATA", "ELIMANATA") default "IN_CORSO" not null,
->>>>>>> 84079e634f827f637c541bd3d9ed2e29dbabba21
      
     foreign key (id_opera) references opera(id) on update no action on delete cascade 
 );
@@ -54,13 +46,8 @@ create table asta (
 create table rivendita (
 	id bigint auto_increment primary key,
     id_opera bigint not null, /*FK*/
-    prezzo double precision not null, 
-<<<<<<< HEAD
-    stato enum ("In corso", "Terminata") default "In corso" not null,
-=======
+    prezzo double precision not null,
     stato enum ("IN_CORSO", "TERMINATA") default "IN_CORSO" not null,
->>>>>>> 84079e634f827f637c541bd3d9ed2e29dbabba21
-    
     foreign key (id_opera) references opera(id) on update no action on delete cascade
 );
 
@@ -80,13 +67,9 @@ create table notifica (
     id_utente bigint not null, /*FK*/
     id_rivendita bigint, /*FK*/
     id_asta bigint, /*FK*/
-    letta boolean default false not null, 
-<<<<<<< HEAD
-    tipo enum("Vittoria", "Annullamento", "Superato", "Terminata") not null,                       
-=======
+    letta boolean default false not null,
     tipo enum("VITTORIA", "ANNULLAMENTO", "SUPERATO", "TERMINATA") not null,
->>>>>>> 84079e634f827f637c541bd3d9ed2e29dbabba21
-    contenuto varchar(255) not null, 
+    contenuto varchar(255) not null,
 
     foreign key (id_utente) references utente(id) on update no action on delete no action, 
     foreign key (id_rivendita) references rivendita(id) on update no action on delete cascade,

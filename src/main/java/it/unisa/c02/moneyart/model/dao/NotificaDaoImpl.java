@@ -12,9 +12,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 /**
@@ -49,7 +46,7 @@ public class NotificaDaoImpl implements NotificaDao {
       preparedStatement.setObject(2, item.getIdRivendita(), Types.INTEGER);
       preparedStatement.setObject(3, item.getIdAsta(), Types.INTEGER);
       preparedStatement.setObject(4, item.isLetta(), Types.BOOLEAN);
-      preparedStatement.setString(5, item.getTipo().toString().toLowerCase());
+      preparedStatement.setString(5, item.getTipo().toString());
       preparedStatement.setString(6, item.getContenuto());
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -162,7 +159,7 @@ public class NotificaDaoImpl implements NotificaDao {
       preparedStatement.setObject(2, item.getIdRivendita(), Types.INTEGER);
       preparedStatement.setObject(3, item.getIdAsta(), Types.INTEGER);
       preparedStatement.setObject(4, item.isLetta(), Types.BOOLEAN);
-      preparedStatement.setString(5, item.getTipo().toString().toLowerCase());
+      preparedStatement.setString(5, item.getTipo().toString());
       preparedStatement.setString(6, item.getContenuto());
       preparedStatement.setObject(7, item.getId(), Types.INTEGER);
       preparedStatement.executeUpdate();
