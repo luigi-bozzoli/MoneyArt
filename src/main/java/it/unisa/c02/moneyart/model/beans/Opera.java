@@ -18,9 +18,12 @@ public class Opera {
    * @param immagine immagine dell'opera
    * @param possessore id dell'utente che possiede l'opera
    * @param artista id dell'artista (utente creatore dell'opera)
+   * @param certificato identificativo del certificato dell'opera
+   * @param prezzo prezzo dell'opera
    */
   public Opera(String nome, String descrizione, Stato stato,
-               Blob immagine, Integer possessore, Integer artista) {
+               Blob immagine, Integer possessore, Integer artista,
+               String certificato, double prezzo) {
 
     this.id = Opera.NO_ID;
     this.nome = nome;
@@ -29,6 +32,32 @@ public class Opera {
     this.immagine = immagine;
     this.possessore = possessore;
     this.artista = artista;
+    this.certificato = certificato;
+    this.prezzo = prezzo;
+  }
+
+  /**
+   * Costruttore vuoto della classe Notifica.
+   */
+  public Opera() {
+  }
+
+  /**
+   * Restituisce l'id dell'opera.
+   *
+   * @return identificativo dell'opera
+   */
+  public Integer getId() {
+    return id;
+  }
+
+  /**
+   * Imposta l'id dell'opera.
+   *
+   * @param id identificativo dell'opera
+   */
+  public void setId(Integer id) {
+    this.id = id;
   }
 
   /**
@@ -142,6 +171,42 @@ public class Opera {
     this.artista = artista;
   }
 
+  /**
+   * Restituisce l'identificativo del certificato dell'opera.
+   *
+   * @return identificativo del certificato dell'opera
+   */
+  public String getCertificato() {
+    return certificato;
+  }
+
+  /**
+   * Imposta l'identificativo del certificato dell'opera.
+   *
+   * @param certificato identificativo del certificato dell'opera
+   */
+  public void setCertificato(String certificato) {
+    this.certificato = certificato;
+  }
+
+  /**
+   * Restituisce il prezzo dell'opera.
+   *
+   * @return prezzo dell'opera
+   */
+  public double getPrezzo() {
+    return prezzo;
+  }
+
+  /**
+   * Imposta il prezzo dell'opera.
+   *
+   * @param prezzo prezzo dell'opera
+   */
+  public void setPrezzo(double prezzo) {
+    this.prezzo = prezzo;
+  }
+
   public static final int NO_ID = -1;
 
   private Integer id;
@@ -151,6 +216,8 @@ public class Opera {
   private Blob immagine;
   private Integer possessore;
   private Integer artista;
+  private String certificato;
+  private double prezzo;
 
   /**
    * ENUM che rappresenta i possibili stati dell'opera.
