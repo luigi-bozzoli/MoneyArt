@@ -1,4 +1,6 @@
+import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.utils.instantiation.GenericInstantiator;
 import it.unisa.c02.moneyart.utils.instantiation.ObjectSource;
@@ -57,6 +59,10 @@ public class MainContext implements ServletContextListener {
     };
     istantiators.put(NotificaDao.class.getName(), notificaIstantiator);
 
+    GenericInstantiator<AstaDao> astaInstantiator = () -> {
+      return new AstaDaoImpl(ds);
+    };
+    istantiators.put(AstaDao.class.getName(), astaInstantiator);
 
 
     return istantiators;
