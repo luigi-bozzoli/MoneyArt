@@ -17,6 +17,13 @@ import java.util.List;
  */
 public class RivenditaDaoImpl implements RivenditaDao {
 
+    /** Costruttore di RivenditaDaoIml
+     * Il DataSource viene creato allo startup del server e posto nel context delle servlet
+     */
+    public RivenditaDaoImpl(DataSource ds) {
+        this.ds = ds;
+    }
+
     /**
      * Inserisce un item del database.
      *
@@ -177,18 +184,5 @@ public class RivenditaDaoImpl implements RivenditaDao {
     }
 
     private static DataSource ds;
-
-    static {
-        try {
-            Context initCtx = new InitialContext();
-            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-
-            ds = (DataSource) envCtx.lookup("jdbc/storage");
-
-        } catch (NamingException e) {
-            System.out.println("Error:" + e.getMessage());
-        }
-    }
-
     private static final String TABLE_NAME = "rivendita";
 }
