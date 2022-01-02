@@ -8,6 +8,7 @@ package it.unisa.c02.moneyart.model.beans;
  */
 public class Segnalazione {
 
+
   /**
    * Costruttore dell classe Segnalazione.
    *
@@ -22,6 +23,12 @@ public class Segnalazione {
     this.letta = letta;
   }
 
+  /**
+   * Costruttore vuoto della classa Segnalazione.
+   */
+  public Segnalazione() {
+
+  }
   /**
    * Restituisce l'identificativo della segnalazione.
    *
