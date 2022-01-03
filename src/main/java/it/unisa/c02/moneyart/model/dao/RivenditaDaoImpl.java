@@ -1,11 +1,8 @@
 package it.unisa.c02.moneyart.model.dao;
 
-import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.beans.*;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import it.unisa.c02.moneyart.utils.production.Retriever;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,8 +14,14 @@ import java.util.List;
  */
 public class RivenditaDaoImpl implements RivenditaDao {
 
-    /** Costruttore di RivenditaDaoIml
-     * Il DataSource viene creato allo startup del server e posto nel context delle servlet
+    public RivenditaDaoImpl() {
+        this.ds = (DataSource) Retriever.getIstance(DataSource.class);
+    }
+
+    /**
+     * Costruttore, permette di specificare il datasource utilizzato.
+     *
+     * @param ds il datasource utilizzato
      */
     public RivenditaDaoImpl(DataSource ds) {
         this.ds = ds;
@@ -40,7 +43,7 @@ public class RivenditaDaoImpl implements RivenditaDao {
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL,
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setObject(1, item.getIdOpera(), Types.INTEGER);
+            preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);
             preparedStatement.setObject(2, item.getPrezzo(), Types.DOUBLE);
             preparedStatement.setObject(3, item.getStato().toString().toLowerCase());
             preparedStatement.executeUpdate();
@@ -64,33 +67,27 @@ public class RivenditaDaoImpl implements RivenditaDao {
      */
     @Override
     public Rivendita doRetrieveById(int id) {
-        String insertSQL =
+        String retrieveSQL =
                 "select * from " + TABLE_NAME +
                         " where id = ? ";
         Rivendita rivendita = null;
 
 
         try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(retrieveSQL)) {
             preparedStatement.setInt(1, id);
 
             ResultSet rs = preparedStatement.executeQuery();
             rivendita = new Rivendita();
 
-            while (rs.next()) {
-                rivendita.setId(rs.getObject("id", Integer.class));
-                rivendita.setIdOpera(rs.getObject("id_opera", Integer.class));
-                rivendita.setPrezzo(rs.getObject("prezzo", Double.class));
-                rivendita.setStato(Rivendita.Stato.valueOf(rs.getObject("stato", String.class).toUpperCase()));
-
-
-            }
-            return rivendita;
+            rivendita = getSingleResultFromResultSet(rs);
 
         } catch (SQLException e) {
             e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
+
+        return rivendita;
     }
 
     /**
@@ -102,27 +99,21 @@ public class RivenditaDaoImpl implements RivenditaDao {
      */
     @Override
     public List<Rivendita> doRetrieveAll(String filter) {
-        String insertSQL =
+        String retrieveSQL =
                 "select * from " + TABLE_NAME;
         List<Rivendita> rivendite = null;
 
+        if (filter != null && !filter.equals("")) {
+            retrieveSQL += " ORDER BY " + filter;
+        }
 
         try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(retrieveSQL)) {
             rivendite = new ArrayList<>();
 
             ResultSet rs = preparedStatement.executeQuery();
+            rivendite = getMultipleResultFromResultSet(rs);
 
-            while (rs.next()) {
-                Rivendita rivendita = new Rivendita();
-                rivendita.setId(rs.getObject("id", Integer.class));
-                rivendita.setIdOpera(rs.getObject("id_opera", Integer.class));
-                rivendita.setPrezzo(rs.getObject("prezzo", Double.class));
-                rivendita.setStato(Rivendita.Stato.valueOf(rs.getObject("stato", String.class).toUpperCase()));
-                rivendite.add(rivendita);
-
-
-            }
             return rivendite;
 
         } catch (SQLException e) {
@@ -138,15 +129,15 @@ public class RivenditaDaoImpl implements RivenditaDao {
      */
     @Override
     public void doUpdate(Rivendita item) {
-        String insertSQL =
+        String updateSQL =
                 "UPDATE " + TABLE_NAME +
                         " set id_opera = ?,prezzo = ?, stato = ?"
                         + " where id = ?";
 
 
         try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
-            preparedStatement.setObject(1, item.getIdOpera(), Types.INTEGER);
+             PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
+            preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);
             preparedStatement.setObject(2, item.getStato().toString().toLowerCase());
             preparedStatement.setObject(3, item.getPrezzo(), Types.DOUBLE);
             preparedStatement.setObject(4, item.getId(), Types.INTEGER);
@@ -165,13 +156,13 @@ public class RivenditaDaoImpl implements RivenditaDao {
      */
     @Override
     public void doDelete(Rivendita item) {
-        String insertSQL =
+        String deleteSQL =
                 "delete from " + TABLE_NAME +
                         " where id = ? ";
 
 
         try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
             preparedStatement.setObject(1, item.getId(), Types.INTEGER);
 
             preparedStatement.executeUpdate();
@@ -181,6 +172,44 @@ public class RivenditaDaoImpl implements RivenditaDao {
             e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
+    }
+
+    private Rivendita getSingleResultFromResultSet(ResultSet rs) throws SQLException {
+        Rivendita rivendita = null;
+        if (rs.next()) {
+            rivendita = new Rivendita();
+            rivendita.setId(rs.getObject("id", Integer.class));
+
+            Opera opera = new Opera();
+            opera.setId(rs.getObject("id_utente", Integer.class));
+            rivendita.setOpera(opera);
+
+            rivendita.setOpera(rs.getObject("id_opera", Opera.class));
+            rivendita.setPrezzo(rs.getObject("prezzo", Double.class));
+            rivendita.setStato(Rivendita.Stato.valueOf(rs.getObject("stato", String.class).toUpperCase()));
+
+
+        }
+        return rivendita;
+    }
+
+    private List<Rivendita> getMultipleResultFromResultSet(ResultSet rs) throws SQLException {
+        List<Rivendita> rivendite = new ArrayList<>();
+        while (rs.next()) {
+            Rivendita rivendita = new Rivendita();
+            rivendita.setId(rs.getObject("id", Integer.class));
+
+            Opera opera = new Opera();
+            opera.setId(rs.getObject("id_opera", Integer.class));
+            rivendita.setOpera(opera);
+
+            rivendita.setPrezzo(rs.getObject("prezzo", Double.class));
+            rivendita.setStato(Rivendita.Stato.valueOf(rs.getObject("stato", String.class).toUpperCase()));
+            rivendite.add(rivendita);
+
+
+        }
+        return rivendite;
     }
 
     private static DataSource ds;

@@ -2,9 +2,9 @@ package it.unisa.c02.moneyart.model.beans;
 
 
 /**
- * Questa classe rappresenta una Rivendita.
+ * Questa classe rappresenta una Rivendita legata ad un'opera.
  * Una segnalazione è caratterizzata da: id (autogenerato dal DB),
- * idOpera (identificativo dell'opera che è stata rivenduta),
+ * idOpera (identificativo dell'opera a cui si riferisce),
  * stato e prezzo.
  */
 public class Rivendita {
@@ -12,13 +12,13 @@ public class Rivendita {
     /**
      * Costruttore dell classe Rivendita.
      *
-     * @param idOpera identificativo dell'asta a cui l'utente ha partecipato
-     * @param stato identificativo dell'asta a cui l'utente ha partecipato
-     * @param prezzo identificativo dell'utente che ha partecipato all'asta
+     * @param opera opera a cui la rivendita fa riferimento
+     * @param stato stato della rivendita
+     * @param prezzo prezzo dell'opera rivenduta
      */
-    public Rivendita(int idOpera, Stato stato, double prezzo) {
+    public Rivendita(Opera opera, Stato stato, double prezzo) {
         this.id = Rivendita.NO_ID;
-        this.idOpera = idOpera;
+        this.Opera = opera;
         this.stato = stato;
         this.prezzo = prezzo;
     }
@@ -48,20 +48,20 @@ public class Rivendita {
     }
 
     /**
-     * Restituisce l'identificativo dell'asta a cui l'utente ha partecipato.
+     * Restituisce l'opera rivenduta
      *
-     * @return identificativo dell'asta a cui l'utente ha partecipato
+     * @return opera rivenduta
      */
-    public int getIdOpera() {
-        return idOpera;
+    public Opera getOpera() {
+        return Opera;
     }
 
     /**
-     * Imposta l'identificativo dell'opera rivenduta.
+     * Imposta l'opera rivenduta.
      *
-     * @param idOpera identificativo dell'opera rivenduta
+     * @param opera opera rivenduta
      */
-    public void setIdOpera(int idOpera) { this.idOpera = idOpera;}
+    public void setOpera(Opera opera) { this.Opera = opera;}
 
     /**
      * Restituisce lo stato della rivendita.
@@ -93,16 +93,14 @@ public class Rivendita {
     /**
      * Imposta il prezzo della rivendita.
      *
-     * @param prezzo prezzo a cui l'opera è stata rivenduta
+     * @param prezzo prezzo a cui l'opera viene rivenduta
      */
     public void setPrezzo(double prezzo) {
         this.prezzo = prezzo;
     }
 
-    public static final int NO_ID = -1;
-
     private int id;
-    private int idOpera;
+    private Opera Opera;
     private Stato stato;
     private double prezzo;
 
@@ -114,4 +112,10 @@ public class Rivendita {
     public enum Stato {
         IN_CORSO, TERMINATA
     }
+
+
+    /**
+     * costante per segnalare la mancanza di identificatore.
+     */
+    public static final int NO_ID = -1;
 }
