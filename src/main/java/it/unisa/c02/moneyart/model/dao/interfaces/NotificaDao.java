@@ -1,9 +1,6 @@
 package it.unisa.c02.moneyart.model.dao.interfaces;
 
-import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Notifica;
-import it.unisa.c02.moneyart.model.beans.Rivendita;
-import it.unisa.c02.moneyart.model.beans.Utente;
 import java.util.List;
 
 /**
@@ -14,24 +11,24 @@ public interface NotificaDao extends GenericDao<Notifica> {
   /**
    * Restituisce tutte le notifiche destinate ad uno specifico utente.
    *
-   * @param utente il destinatario delle notifiche
+   * @param id l'id del destinatario delle notifiche
    * @return tutte le notifiche destinate a utente
    */
-  List<Notifica> doRetrieveAllByUtente(Utente utente);
+  List<Notifica> doRetrieveAllByUtenteId(int id);
 
   /**
    * Restituisce tutte le notifiche che fanno riferimento ad una specifica asta.
    *
-   * @param asta l'asta a cui devono far riferimento le notifiche
+   * @param id l'id dell'asta a cui devono far riferimento le notifiche
    * @return tutte le notifiche che fanno riferimento ad asta
    */
-  List<Notifica> doRetrieveAllByAsta(Asta asta);
+  List<Notifica> doRetrieveAllByAstaId(int id);
 
   /**
    * Restituisce tutte le notifiche che fanno riferimento ad una specifica rivendita.
    *
-   * @param rivendita la rivendita a cui devono far riferimento le notifiche
+   * @param id l'id della rivendita a cui devono far riferimento le notifiche
    * @return tutte le notifiche che fanno riferimento a rivendita
    */
-  List<Notifica> doRetrieveAllByRivendita(Rivendita rivendita);
+  List<Notifica> doRetrieveAllByRivenditaId(int id);
 }

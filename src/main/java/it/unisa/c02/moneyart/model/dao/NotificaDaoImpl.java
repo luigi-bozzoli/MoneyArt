@@ -180,18 +180,18 @@ public class NotificaDaoImpl implements NotificaDao {
   /**
    * Restituisce tutte le notifiche destinate ad uno specifico utente.
    *
-   * @param utente il destinatario delle notifiche
+   * @param id l'id del destinatario delle notifiche
    * @return tutte le notifiche destinate a utente
    */
   @Override
-  public List<Notifica> doRetrieveAllByUtente(Utente utente) {
+  public List<Notifica> doRetrieveAllByUtenteId(int id) {
     String sql = "select * from " + TABLE_NAME + " where id_utente = ? ";
     List<Notifica> notifiche = null;
 
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setInt(1, utente.getId());
+      preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
       notifiche = getMultipleResultFromResultSet(rs);
@@ -206,18 +206,18 @@ public class NotificaDaoImpl implements NotificaDao {
   /**
    * Restituisce tutte le notifiche che fanno riferimento ad una specifica asta.
    *
-   * @param asta l'asta a cui devono far riferimento le notifiche
+   * @param id l'id dell'asta a cui devono far riferimento le notifiche
    * @return tutte le notifiche che fanno riferimento ad asta
    */
   @Override
-  public List<Notifica> doRetrieveAllByAsta(Asta asta) {
+  public List<Notifica> doRetrieveAllByAstaId(int id) {
     String sql = "select * from " + TABLE_NAME + " where id_asta = ? ";
     List<Notifica> notifiche = null;
 
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setInt(1, asta.getId());
+      preparedStatement.setInt(1, id);
       ResultSet rs = preparedStatement.executeQuery();
       notifiche = getMultipleResultFromResultSet(rs);
 
@@ -231,18 +231,18 @@ public class NotificaDaoImpl implements NotificaDao {
   /**
    * Restituisce tutte le notifiche che fanno riferimento ad una specifica rivendita.
    *
-   * @param rivendita la rivendita a cui devono far riferimento le notifiche
+   * @param id l'id della rivendita a cui devono far riferimento le notifiche
    * @return tutte le notifiche che fanno riferimento a rivendita
    */
   @Override
-  public List<Notifica> doRetrieveAllByRivendita(Rivendita rivendita) {
+  public List<Notifica> doRetrieveAllByRivenditaId(int id) {
     String sql = "select * from " + TABLE_NAME + " where id_rivendita = ? ";
     List<Notifica> notifiche = null;
 
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setInt(1, rivendita.getId());
+      preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
       notifiche = getMultipleResultFromResultSet(rs);

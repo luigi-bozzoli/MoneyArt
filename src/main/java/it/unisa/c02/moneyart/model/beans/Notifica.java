@@ -170,6 +170,12 @@ public class Notifica {
     this.letta = letta;
   }
 
+
+  /**
+   * Restituisce la rappresentazione sottoforma di stringa di una notifica.
+   *
+   * @return la stringa che rappresenta notifica
+   */
   @Override
   public String toString() {
     return "Notifica{"
@@ -191,11 +197,6 @@ public class Notifica {
         '}';
   }
 
-  /**
-   * Restituisce la rappresentazione sottoforma di stringa di una notifica.
-   *
-   * @return la stringa che rappresenta notifica
-   */
 
 
   private Integer id;
