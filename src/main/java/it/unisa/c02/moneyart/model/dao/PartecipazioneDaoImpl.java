@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
   public PartecipazioneDaoImpl() {
-    this.ds = (DataSource) Retriever.getIstance(DataSource.class);
+    this.ds = Retriever.getIstance(DataSource.class);
   }
 
   /** Costruttore, permette di specificare il datasource utilizzato.
@@ -213,7 +213,6 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
         asta.setDataInizio(rs.getObject("data_inizio", Date.class));
         asta.setDataFine(rs.getObject("data_fine", Date.class));
         aste.add(asta);
-
       }
 
     } catch (SQLException e) {
@@ -307,7 +306,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
   /**
    * Variabili d'istanza.
    */
-  private static DataSource ds;
+  private DataSource ds;
   private static final String TABLE_NAME = "partecipazione";
 
 }

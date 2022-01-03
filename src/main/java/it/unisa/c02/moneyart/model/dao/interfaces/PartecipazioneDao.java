@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface PartecipazioneDao extends GenericDao<Partecipazione>{
   public List<Double> doRetrieveOffers(int id);
-  public List<Utente> doRetrieveByUserId(Utente utente);
-  public List<Asta> doRetrieveByAuctionId(Asta asta);
+  public List<Asta> doRetrieveByUserId(Utente utente);
+  public List<Utente> doRetrieveByAuctionId(Asta asta);
 }
