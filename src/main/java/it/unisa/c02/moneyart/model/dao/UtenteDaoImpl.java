@@ -3,10 +3,6 @@ package it.unisa.c02.moneyart.model.dao;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDAO;
 import it.unisa.c02.moneyart.utils.production.Retriever;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -80,7 +76,7 @@ public class UtenteDaoImpl implements UtenteDAO {
 
             while (rs.next()) {
                 utente.setId(rs.getObject("id", Integer.class));
-                utente.setSeguito(rs.getObject("id_utente", Utente.class));
+                utente.setSeguito(rs.getObject("id_seguito", Utente.class));
                 utente.setEmail(rs.getObject("email", String.class));
                 utente.setPassword(rs.getObject("pwd", String.class));
                 utente.setUsername(rs.getObject("username", String.class));
@@ -121,7 +117,7 @@ public class UtenteDaoImpl implements UtenteDAO {
             while (rs.next()) {
                 Utente utente = new Utente();
                 utente.setId(rs.getObject("id", Integer.class));
-                utente.setSeguito(rs.getObject("id_utente", Utente.class));
+                utente.setSeguito(rs.getObject("id_seguito", Utente.class));
                 utente.setEmail(rs.getObject("email", String.class));
                 utente.setPassword(rs.getObject("pwd", String.class));
                 utente.setUsername(rs.getObject("username", String.class));
@@ -194,6 +190,88 @@ public class UtenteDaoImpl implements UtenteDAO {
         }
     }
 
+    /**
+     * Restituisce l'utente in base all'username
+     *
+     * @param username l'username dell'utente
+     * @return l'utente con quell'username
+     */
+    @Override
+    public Utente doRetrieveByUsername(String username) {
+        String sql =
+                "select * from " + TABLE_NAME +
+                        " where username = ? ";
+        Utente utente = null;
+
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, username);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            utente = new Utente();
+
+            while (rs.next()) {
+                utente.setId(rs.getObject("id", Integer.class));
+                utente.setSeguito(rs.getObject("id_seguito", Utente.class));
+                utente.setEmail(rs.getObject("email", String.class));
+                utente.setPassword(rs.getObject("pwd", String.class));
+                utente.setUsername(rs.getObject("username", String.class));
+                utente.setNome(rs.getObject("nome", String.class));
+                utente.setCognome(rs.getObject("cognome", String.class));
+                utente.setFotoProfilo(rs.getObject("foto", Blob.class));
+                utente.setSaldo(rs.getObject("saldo", Float.class));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return utente;
+    }
+
+    /**
+     * Restituisce tutti gli utenti che seguono utente
+     *
+     * @param utente l'utente di cui vogliamo conoscere i follower
+     * @return i follower di quell'utente
+     */
+    @Override
+    public List<Utente> getFollowers(Utente utente) {
+
+        String sql = "SELECT U2.id, U2.id_seguito, U2.email, U2.pwd, U2.username, "+
+                            "U2.nome, U2.cognome, U2.foto, U2.saldo " +
+                     "FROM "+ TABLE_NAME +" as U1, "+ TABLE_NAME +" as U2 " +
+                     "WHERE U1.id = U2.id_seguito";
+
+        List<Utente> utenti = null;
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            utenti = new ArrayList<>();
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Utente utente1 = new Utente();
+                utente1.setId(rs.getObject("id", Integer.class));
+                utente1.setSeguito(rs.getObject("id_seguito", Utente.class));
+                utente1.setEmail(rs.getObject("email", String.class));
+                utente1.setPassword(rs.getObject("pwd", String.class));
+                utente1.setUsername(rs.getObject("username", String.class));
+                utente1.setNome(rs.getObject("nome", String.class));
+                utente1.setCognome(rs.getObject("cognome", String.class));
+                utente1.setFotoProfilo(rs.getObject("foto", Blob.class));
+                utente1.setSaldo(rs.getObject("saldo", Float.class));
+                utenti.add(utente1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return utenti;
+    }
+     
     private  DataSource ds;
 
     private static final String TABLE_NAME = "utente";
