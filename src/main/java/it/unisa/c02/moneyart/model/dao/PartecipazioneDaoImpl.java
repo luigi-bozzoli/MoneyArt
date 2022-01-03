@@ -1,14 +1,17 @@
 package it.unisa.c02.moneyart.model.dao;
 
-import it.unisa.c02.moneyart.model.beans.Asta;
-import it.unisa.c02.moneyart.model.beans.Opera;
-import it.unisa.c02.moneyart.model.beans.Partecipazione;
-import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.beans.*;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.servlet.http.Part;
 import javax.sql.DataSource;
 
 /**
@@ -18,11 +21,15 @@ import javax.sql.DataSource;
 
 public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
+  /**
+   * Costruttore, utilizza un datasource istanziato esternamente.
+   */
   public PartecipazioneDaoImpl() {
     this.ds = Retriever.getIstance(DataSource.class);
   }
 
-  /** Costruttore, permette di specificare il datasource utilizzato.
+  /**
+   * Costruttore, permette di specificare il datasource utilizzato.
    *
    * @param ds il datasource utilizzato
    */
@@ -37,13 +44,13 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    */
   @Override
   public void doCreate(Partecipazione item) {
-    String insertSql = "INSERT INTO" + TABLE_NAME
+    String sql = "INSERT INTO " + TABLE_NAME
         + "(id, id_utente, id_asta, offerta) "
         + " VALUES (?, ?, ?, ?) ";
 
     try (
         Connection connection = ds.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(insertSql,
+        PreparedStatement preparedStatement = connection.prepareStatement(sql,
             PreparedStatement.RETURN_GENERATED_KEYS)) {
       preparedStatement.setObject(1, item.getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getIdUtente(), Types.INTEGER);
@@ -67,7 +74,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    */
   @Override
   public Partecipazione doRetrieveById(int id) {
-    String retrieveSql =
+    String sql =
         "select * from " + TABLE_NAME
           + " where id = ? ";
 
@@ -75,26 +82,12 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
-      partecipazione = new Partecipazione();
+      partecipazione = getSingleResultFromResultSet(rs);
 
-      while (rs.next()) {
-        partecipazione.setId(rs.getObject("id", Integer.class));
-
-        Utente utente = new Utente();
-        utente.setId(rs.getObject("id_utente", Integer.class));
-        partecipazione.setIdUtente(utente);
-
-        Asta asta = new Asta();
-        asta.setId(rs.getObject("id_asta", Integer.class));
-        partecipazione.setIdAsta(asta);
-
-        partecipazione.setOfferta(rs.getObject("offerta", Double.class));
-
-      }
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -112,36 +105,19 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
   @Override
   public List<Partecipazione> doRetrieveAll(String filter) {
 
-    String retrieveSql = "select * from " + TABLE_NAME;
+    String sql = "select * from " + TABLE_NAME;
     List<Partecipazione> partecipanti = null;
 
     if (filter != null && !filter.equals("")) {
-      retrieveSql += "ORDER BY" + filter;
+      sql += " ORDER BY" + filter;
     }
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-      partecipanti = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
+      partecipanti = getMultipleResultFromResultSet(rs);
 
-      while (rs.next()) {
-        Partecipazione partecipazione = new Partecipazione();
-
-        partecipazione.setId(rs.getObject("id", Integer.class));
-
-        Utente utente = new Utente();
-        utente.setId(rs.getObject("id_utente", Integer.class));
-        partecipazione.setIdUtente(utente);
-
-        Asta asta = new Asta();
-        asta.setId(rs.getObject("id_asta", Integer.class));
-        partecipazione.setIdAsta(asta);
-
-        partecipazione.setOfferta(rs.getObject("offerta", Double.class));
-        partecipanti.add(partecipazione);
-
-      }
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -156,24 +132,24 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    * @return la collezione di utenti trovata nel database
    */
   @Override
-  public List<Utente> doRetrieveByAuctionId(int id) {
-    String retrieveSql = "select id_utente from" + TABLE_NAME
+  public List<Partecipazione> doRetrieveByAuctionId(int id) {
+    String sql = "select distinct id_utente from " + TABLE_NAME
         + " where id_asta = ? ";
 
-    List<Utente> utenti = null;
+    List<Partecipazione> utenti = null;
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+      preparedStatement.setInt(1, id);
 
       utenti = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
 
       while (rs.next()) {
+        Partecipazione partecipazione = new Partecipazione();
         Utente utente = new Utente();
-
-        utente.setUsername(rs.getObject("username", String.class));
-        utente.setNome(rs.getObject("nome", String.class));
-        utente.setCognome(rs.getObject("cognome", String.class));
+        utente.setId(rs.getObject("id_utente", Utente.class));
+        partecipazione.setIdUtente(utente);
         utenti.add(utente);
 
       }
@@ -195,25 +171,22 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    */
   @Override
   public List<Asta> doRetrieveByUserId(int id) {
-    String retrieveSql = "select id_asta from" + TABLE_NAME
+    String sql = "select id_asta from " + TABLE_NAME
         + " where id_utente = ? ";
 
     List<Asta> aste = null;
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+      preparedStatement.setInt(1, id);
 
       aste = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
 
       while (rs.next()) {
         Asta asta = new Asta();
-        Opera opera = new Opera();
 
-        opera.setId(rs.getObject("id_opera", Integer.class));
-        asta.setDataInizio(rs.getObject("data_inizio", Date.class));
-        asta.setDataFine(rs.getObject("data_fine", Date.class));
-        asta.setStato(Asta.Stato.valueOf(rs.getObject("stato", String.class)));
+        asta.setId(rs.getObject("id_asta", Integer.class));
         aste.add(asta);
       }
 
@@ -232,20 +205,18 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    */
   @Override
   public List<Double> doRetrieveOffers(int id) {
-    String retrieveSql = "select offerta from" + TABLE_NAME
-        + " where id_utente = ? ";
+    String sql = "select offerta from " + TABLE_NAME
+        + " where id_utente = ? and id_asta = ? ";
 
     List<Double> offerte = null;
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
       offerte = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
 
       while (rs.next()) {
-
-        Partecipazione partecipazione = new Partecipazione();
 
         offerte.add(rs.getObject("offerta", Double.class));
 
@@ -264,13 +235,13 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
   @Override
   public void doUpdate(Partecipazione item) {
-    String retrieveSql = "UPDATE " + TABLE_NAME
+    String sql = "UPDATE " + TABLE_NAME
         + " set id = ?, id_utente = ?, id_asta = ? , offerta = ? "
         + " where id = ?";
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setObject(7, item.getId(), Types.INTEGER);
       preparedStatement.setObject(1, item.getIdUtente(), Types.INTEGER);
       preparedStatement.setObject(3, item.getIdAsta(), Types.INTEGER);
@@ -290,12 +261,12 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
   @Override
   public void doDelete(Partecipazione item) {
-    String retrieveSql = "delete from " + TABLE_NAME
+    String sql = "delete from " + TABLE_NAME
         + " where id = ? ";
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setObject(1, item.getId(), Types.INTEGER);
 
       preparedStatement.executeUpdate();
@@ -305,6 +276,68 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
     }
   }
 
+
+  /**
+   * Metodo privato per restituire un singolo oggetto Partecipazione dopo aver
+   * effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return l'oggetto Partecipazione
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
+  private Partecipazione getSingleResultFromResultSet(ResultSet rs) throws SQLException {
+    Partecipazione partecipazione = null;
+
+    if (rs.next()) {
+      partecipazione = new Partecipazione();
+      partecipazione.setId(rs.getObject("id", Integer.class));
+
+      Utente utente = new Utente();
+      utente.setId(rs.getObject("id_utente", Integer.class));
+      partecipazione.setIdUtente(utente);
+
+      Asta asta = new Asta();
+      asta.setId(rs.getObject("id_asta", Integer.class));
+      partecipazione.setIdAsta(asta);
+
+      partecipazione.setOfferta(rs.getObject("offerta", Double.class));
+    }
+
+    return partecipazione;
+  }
+
+  /**
+   * Metodo privato per restituire una collezione di oggetti Partecipazione
+   * dopo aver effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return la collezione di oggetti Partecipazione
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
+  private List<Partecipazione> getMultipleResultFromResultSet(ResultSet rs) throws SQLException {
+    List<Partecipazione> partecipanti = new ArrayList<>();
+    while (rs.next()) {
+      Partecipazione partecipazione = new Partecipazione();
+
+      partecipazione.setId(rs.getObject("id", Integer.class));
+
+      Utente utente = new Utente();
+      utente.setId(rs.getObject("id_utente", Integer.class));
+      partecipazione.setIdUtente(utente);
+
+      Asta asta = new Asta();
+      asta.setId(rs.getObject("id_asta", Integer.class));
+      partecipazione.setIdAsta(asta);
+
+      partecipazione.setOfferta(rs.getObject("offerta", Double.class));
+      partecipanti.add(partecipazione);
+
+
+    }
+
+    return partecipanti;
+  }
+  
   /**
    * Variabili d'istanza.
    */

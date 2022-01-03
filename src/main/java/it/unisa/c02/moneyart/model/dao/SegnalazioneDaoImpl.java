@@ -113,7 +113,6 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
 
     try (Connection connection = ds.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      segnalazioni = new ArrayList<>();
 
       ResultSet rs = preparedStatement.executeQuery();
       segnalazioni = getMultipleResultFromResultSet(rs);
@@ -194,7 +193,6 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
     try (Connection connection = ds.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-      segnalazioni = new ArrayList<>();
       preparedStatement.setObject(1, id, Types.INTEGER);
 
       ResultSet rs = preparedStatement.executeQuery();
@@ -219,6 +217,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
     Segnalazione segnalazione = null;
 
     if (rs.next()) {
+      segnalazione = new Segnalazione();
       segnalazione.setId(rs.getObject("id", Integer.class));
 
       Asta asta = new Asta();

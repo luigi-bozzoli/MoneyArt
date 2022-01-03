@@ -1,6 +1,5 @@
 package it.unisa.c02.moneyart.model.dao;
 
-import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
