@@ -1,0 +1,104 @@
+.navbar-brand img{
+    margin-right: 30px;
+    width: 150px;
+}
+.navbar li a {
+    font-size: 20px;;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.navbar li a:focus,
+.navbar li a:hover {
+    color: #EBA83A !important;
+    transition: .4s;
+}
+
+.navbar li.active a {
+    color: #BB371A !important;
+}
+
+.searchbar {
+    margin: auto;
+    border: solid;
+    border-radius: 20px;
+    border-color: gray;
+    border-width: 1px;
+    width: 400px;
+}
+
+.searchbar input,
+.searchbar button {
+    color: gray;
+    border: none;
+    border-radius: 20px;
+}
+
+.searchbar button {
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.searchbar input:focus {
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.searchbar button:focus,
+.searchbar button:active {
+    background-color: #BB371A !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    color: white;
+}
+
+.searchbar button:hover {
+    background-color: #BB371A;
+    border-color: #BB371A;
+    transition: .4s;
+}
+
+.log-buttons {
+    display: flex;
+}
+
+.login-button,
+.signup-button {
+    margin: 10px;
+    color: white;
+    padding: 5px 15px;
+    border: solid transparent;
+    border-radius: 20px;
+
+}
+
+.login-button{
+    background-color: #EBA83A;
+}
+
+.signup-button{
+    background-color: #BB371A;
+}
+
+.login-button:hover{
+    color: white;
+    text-decoration: none;
+    background-color: #BB371A;
+    transition: .4s;
+}
+.signup-button:hover{
+    color: white;
+    text-decoration: none;
+    background-color: #EBA83A;
+    transition: .4s;
+}
+
+@media screen and (max-width: 1200px) {
+    .log-buttons {
+        margin-top: 20px;
+    }
+    .searchbar {
+        width: 300px;
+        margin-left: 0;
+    }
+}

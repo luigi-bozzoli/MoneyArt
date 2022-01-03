@@ -108,7 +108,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
         "select * from " + TABLE_NAME;
 
     if (filter != null && !filter.equals("")) {
-      retrieveSQL.concat(filter);
+      retrieveSql += "ORDER BY " + filter;
     }
 
     List<Segnalazione> segnalazioni = null;
