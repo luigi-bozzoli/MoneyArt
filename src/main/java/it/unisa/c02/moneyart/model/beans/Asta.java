@@ -10,13 +10,12 @@ public class Asta {
   /**
    * Costruttore della classe Asta.
    *
-   * @param id codice identificativo univoco di asta
    * @param dataInizio data di inizio dell'asta
    * @param dataFine data di fine dell'asta
    * @param stato stato corrente dell'asta ('in corso' , 'terminata' , 'annullata')
    * @param idOpera riferimento all'identificativo di opera
    */
-  public Asta(int id, Date dataInizio, Date dataFine, Stato stato, int idOpera) {
+  public Asta(Date dataInizio, Date dataFine, Stato stato, Opera idOpera) {
     this.id = NO_ID;
     this.dataInizio = dataInizio;
     this.dataFine = dataFine;
@@ -107,7 +106,7 @@ public class Asta {
    * @return idOpera
    */
   public Integer getIdOpera() {
-    return idOpera;
+    return idOpera.getId();
   }
 
   /**
@@ -115,7 +114,7 @@ public class Asta {
    *
    * @param idOpera nuovo identificativo al riferimento di opera
    */
-  public void setIdOpera(Integer idOpera) {
+  public void setIdOpera(Opera idOpera) {
     this.idOpera = idOpera;
   }
 
@@ -126,7 +125,7 @@ public class Asta {
    */
   public String toString() {
     return "id: " + this.id + "Data inizio: " + this.dataInizio + "Data fine: " +  this.dataFine
-      + "Stato: " + this.stato + "id opera: " + this.idOpera;
+      + "Stato: " + this.stato + "id opera: " + getIdOpera();
   }
 
   /**
@@ -134,7 +133,7 @@ public class Asta {
    */
   public final static int NO_ID = -1;
   private Integer id;
-  private Integer idOpera;
+  private Opera idOpera;
   private Date dataInizio;
   private Date dataFine;
   private Stato stato;

@@ -16,7 +16,7 @@ public class Partecipazione {
      * @param idUtente identificativo dell'utente che ha partecipato all'asta
      * @param offerta offerta dell'utente
      */
-    public Partecipazione(Integer idAsta, Integer idUtente, double offerta) {
+    public Partecipazione(Asta idAsta, Utente idUtente, double offerta) {
         this.id = Partecipazione.NO_ID;
         this.idAsta = idAsta;
         this.idUtente = idUtente;
@@ -53,7 +53,7 @@ public class Partecipazione {
      * @return identificativo dell'asta a cui l'utente ha partecipato
      */
     public Integer getIdAsta() {
-        return idAsta;
+        return idAsta.getId();
     }
 
     /**
@@ -61,7 +61,7 @@ public class Partecipazione {
      *
      * @param idAsta identificativo dell'asta a cui l'utente ha partecipato
      */
-    public void setIdAsta(Integer idAsta) {
+    public void setIdAsta(Asta idAsta) {
         this.idAsta = idAsta;
     }
 
@@ -71,7 +71,7 @@ public class Partecipazione {
      * @return identificativo dell'utente che ha partecipato all'asta
      */
     public Integer getIdUtente() {
-        return idUtente;
+        return idUtente.getId();
     }
 
     /**
@@ -79,7 +79,7 @@ public class Partecipazione {
      *
      * @param idUtente identificativo dell'utente che ha partecipato all'asta
      */
-    public void setIdUtente(Integer idUtente) {
+    public void setIdUtente(Utente idUtente) {
         this.idUtente = idUtente;
     }
 
@@ -104,8 +104,8 @@ public class Partecipazione {
     public static final int NO_ID = -1;
 
     private Integer id;
-    private Integer idAsta;
-    private Integer idUtente;
+    private Asta idAsta;
+    private Utente idUtente;
     private double offerta;
 
 }

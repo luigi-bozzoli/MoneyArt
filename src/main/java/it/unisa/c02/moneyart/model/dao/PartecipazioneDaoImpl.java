@@ -4,12 +4,10 @@ import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
+import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 /**
@@ -19,6 +17,14 @@ import javax.sql.DataSource;
 
 public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
+  public PartecipazioneDaoImpl() {
+    this.ds = (DataSource) Retriever.getIstance(DataSource.class);
+  }
+
+  /** Costruttore, permette di specificare il datasource utilizzato.
+   *
+   * @param ds il datasource utilizzato
+   */
   public PartecipazioneDaoImpl(DataSource ds) {
     this.ds = ds;
   }
@@ -49,7 +55,6 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
   }
 
@@ -61,7 +66,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    */
   @Override
   public Partecipazione doRetrieveById(int id) {
-    String insertSql =
+    String retrieveSql =
         "select * from " + TABLE_NAME
           + " where id = ? ";
 
@@ -69,7 +74,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
@@ -82,13 +87,11 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
         partecipazione.setOfferta(rs.getObject("offerta", Double.class));
 
       }
-
-      return partecipazione;
-
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+
+    return partecipazione;
   }
 
   /**
@@ -101,11 +104,15 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
   @Override
   public List<Partecipazione> doRetrieveAll(String filter) {
 
-    String insertSql = "select * from " + TABLE_NAME;
+    String retrieveSql = "select * from " + TABLE_NAME;
     List<Partecipazione> partecipanti = null;
 
+    if (filter != null && !filter.equals("")) {
+      retrieveSql += "ORDER BY" + filter;
+    }
+
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
 
       partecipanti = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
@@ -120,12 +127,11 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
         partecipanti.add(partecipazione);
 
       }
-      return partecipanti;
-
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+
+    return partecipanti;
   }
 
   /**
@@ -136,13 +142,13 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    */
   @Override
   public List<Utente> doRetrieveByUserId(int id) {
-    String insertSql = "select id_utente from" + TABLE_NAME
+    String retrieveSql = "select id_utente from" + TABLE_NAME
         + " where id_asta = ? ";
 
     List<Utente> utenti = null;
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
 
       utenti = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
@@ -156,13 +162,12 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
         utenti.add(utente);
 
       }
-      return utenti;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
 
+    return utenti;
   }
 
 
@@ -175,13 +180,13 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    */
   @Override
   public List<Asta> doRetrieveByAuctionId(int id) {
-    String insertSql = "select id_asta from" + TABLE_NAME
+    String retrieveSql = "select id_asta from" + TABLE_NAME
         + " where id_utente = ? ";
 
     List<Asta> aste = null;
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
 
       aste = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
@@ -194,12 +199,12 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
         aste.add(asta);
 
       }
-      return aste;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+
+    return aste;
   }
 
   /**
@@ -210,13 +215,13 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    */
   @Override
   public List<Double> doRetrieveOffers(int id) {
-    String insertSql = "select offerta from" + TABLE_NAME
+    String retrieveSql = "select offerta from" + TABLE_NAME
         + " where id_utente = ? ";
 
     List<Double> offerte = null;
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
 
       offerte = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
@@ -228,12 +233,11 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
         offerte.add(rs.getObject("offerta", Double.class));
 
       }
-      return offerte;
-
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+
+    return offerte;
   }
   /**
    * Aggiorna l'item nel database.
@@ -243,13 +247,13 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
   @Override
   public void doUpdate(Partecipazione item) {
-    String insertSql = "UPDATE " + TABLE_NAME
+    String retrieveSql = "UPDATE " + TABLE_NAME
         + " set id = ?, id_utente = ?, id_asta = ? , offerta = ? "
         + " where id = ?";
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
       preparedStatement.setObject(7, item.getId(), Types.INTEGER);
       preparedStatement.setObject(1, item.getIdUtente(), Types.INTEGER);
       preparedStatement.setObject(3, item.getIdAsta(), Types.INTEGER);
@@ -259,7 +263,6 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
   }
   /**
@@ -270,19 +273,18 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
   @Override
   public void doDelete(Partecipazione item) {
-    String insertSql = "delete from " + TABLE_NAME
+    String retrieveSql = "delete from " + TABLE_NAME
         + " where id = ? ";
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
       preparedStatement.setObject(1, item.getId(), Types.INTEGER);
 
       preparedStatement.executeUpdate();
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
   }
 
