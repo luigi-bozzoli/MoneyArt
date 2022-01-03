@@ -15,7 +15,7 @@ public interface OperaDao extends GenericDao<Opera> {
    * @param utente l'utente possessore delle opere
    * @return tutte le opere in possesso dell'utente
    */
-  List<Opera> doRetriveAllByPossessore(Utente utente);
+  List<Opera> doRetrieveAllByPossessore(Utente utente);
 
   /**
    * Restituisce tutte le opere create dall'utente.
@@ -23,6 +23,6 @@ public interface OperaDao extends GenericDao<Opera> {
    * @param artista l'utente creatore delle opere
    * @return tutte le opere create dall'utente
    */
-  List<Opera> doRetriveAllByArtista(Utente artista);
+  List<Opera> doRetrieveAllByArtista(Utente artista);
 
 }

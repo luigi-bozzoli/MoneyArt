@@ -3,6 +3,7 @@ package it.unisa.c02.moneyart.model.dao;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,12 +40,12 @@ public class OperaDaoImpl implements OperaDao {
                  PreparedStatement.RETURN_GENERATED_KEYS)) {
       preparedStatement.setObject(1, item.getPossessore(), Types.INTEGER);
       preparedStatement.setObject(2, item.getArtista(), Types.INTEGER);
-      preparedStatement.setString(3, item.getNome());
-      preparedStatement.setDouble(4, item.getPrezzo());
-      preparedStatement.setString(5, item.getDescrizione());
-      preparedStatement.setBlob(6, item.getImmagine());
-      preparedStatement.setString(7, item.getCertificato());
-      preparedStatement.setString(8, item.getStato().toString());
+      preparedStatement.setObject(3, item.getNome(), Types.VARCHAR);
+      preparedStatement.setObject(4, item.getPrezzo(), Types.DOUBLE);
+      preparedStatement.setObject(5, item.getDescrizione(), Types.VARCHAR);
+      preparedStatement.setObject(6, item.getImmagine(), Types.BLOB);
+      preparedStatement.setObject(7, item.getCertificato(), Types.VARCHAR);
+      preparedStatement.setObject(8, item.getStato().toString(), Types.VARCHAR);
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
@@ -64,12 +65,12 @@ public class OperaDaoImpl implements OperaDao {
    */
   @Override
   public Opera doRetrieveById(int id) {
-    String retriveSql = "SELECT * FROM " + TABLE_NAME
+    String retrieveSql = "SELECT * FROM " + TABLE_NAME
                     + " WHERE id = ? ";
     Opera opera = null;
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retriveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
@@ -79,12 +80,12 @@ public class OperaDaoImpl implements OperaDao {
         opera.setId(rs.getObject("id", Integer.class));
         opera.setPossessore(rs.getObject("id_utente", Integer.class));
         opera.setArtista(rs.getObject("id_artista", Integer.class));
-        opera.setNome(rs.getString("nome"));
-        opera.setPrezzo(rs.getDouble("prezzo"));
-        opera.setDescrizione(rs.getString("descrizione"));
-        opera.setImmagine(rs.getBlob("immagine"));
-        opera.setCertificato(rs.getString("certificato"));
-        opera.setStato(Opera.Stato.valueOf(rs.getString("stato")));
+        opera.setNome(rs.getObject("nome", String.class));
+        opera.setPrezzo(rs.getObject("prezzo", Double.class));
+        opera.setDescrizione(rs.getObject("descrizione", String.class));
+        opera.setImmagine(rs.getObject("immagine", Blob.class));
+        opera.setCertificato(rs.getObject("certificato", String.class));
+        opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
       }
 
       return opera;
@@ -104,11 +105,15 @@ public class OperaDaoImpl implements OperaDao {
    */
   @Override
   public List<Opera> doRetrieveAll(String filter) {
-    String retriveSql = "SELECT * FROM " + TABLE_NAME;
+    String retrieveSql = "SELECT * FROM " + TABLE_NAME;
     List<Opera> opere = null;
 
+    if (filter != null && !filter.equals("")) {
+      retrieveSql += "ORDER BY " + filter;
+    }
+
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retriveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
 
       ResultSet rs = preparedStatement.executeQuery();
       opere = new ArrayList<>();
@@ -118,12 +123,12 @@ public class OperaDaoImpl implements OperaDao {
         opera.setId(rs.getObject("id", Integer.class));
         opera.setPossessore(rs.getObject("id_utente", Integer.class));
         opera.setArtista(rs.getObject("id_artista", Integer.class));
-        opera.setNome(rs.getString("nome"));
-        opera.setPrezzo(rs.getDouble("prezzo"));
-        opera.setDescrizione(rs.getString("descrizione"));
-        opera.setImmagine(rs.getBlob("immagine"));
-        opera.setCertificato(rs.getString("certificato"));
-        opera.setStato(Opera.Stato.valueOf(rs.getString("stato")));
+        opera.setNome(rs.getObject("nome", String.class));
+        opera.setPrezzo(rs.getObject("prezzo", Double.class));
+        opera.setDescrizione(rs.getObject("descrizione", String.class));
+        opera.setImmagine(rs.getObject("immagine", Blob.class));
+        opera.setCertificato(rs.getObject("certificato", String.class));
+        opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
 
         opere.add(opera);
       }
@@ -152,12 +157,12 @@ public class OperaDaoImpl implements OperaDao {
          PreparedStatement preparedStatement = connection.prepareStatement(updateSql)) {
       preparedStatement.setObject(1, item.getPossessore(), Types.INTEGER);
       preparedStatement.setObject(2, item.getArtista(), Types.INTEGER);
-      preparedStatement.setString(3, item.getNome());
-      preparedStatement.setDouble(4, item.getPrezzo());
-      preparedStatement.setString(5, item.getDescrizione());
-      preparedStatement.setBlob(6, item.getImmagine());
-      preparedStatement.setString(7, item.getCertificato());
-      preparedStatement.setString(8, item.getStato().toString());
+      preparedStatement.setObject(3, item.getNome(), Types.VARCHAR);
+      preparedStatement.setObject(4, item.getPrezzo(), Types.DOUBLE);
+      preparedStatement.setObject(5, item.getDescrizione(), Types.VARCHAR);
+      preparedStatement.setObject(6, item.getImmagine(), Types.BLOB);
+      preparedStatement.setObject(7, item.getCertificato(), Types.VARCHAR);
+      preparedStatement.setObject(8, item.getStato().toString(), Types.VARCHAR);
       preparedStatement.setObject(9, item.getId(), Types.INTEGER);
       preparedStatement.executeUpdate();
 
@@ -196,13 +201,13 @@ public class OperaDaoImpl implements OperaDao {
    * @return lista di opere in possesso dell'utente
    */
   @Override
-  public List<Opera> doRetriveAllByPossessore(Utente utente) {
-    String retriveSql = "SELECT * FROM " + TABLE_NAME
+  public List<Opera> doRetrieveAllByPossessore(Utente utente) {
+    String retrieveSql = "SELECT * FROM " + TABLE_NAME
             + " WHERE id_utente = ?";
     List<Opera> opere = null;
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retriveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
       preparedStatement.setInt(1, utente.getId());
 
       ResultSet rs = preparedStatement.executeQuery();
@@ -213,12 +218,12 @@ public class OperaDaoImpl implements OperaDao {
         opera.setId(rs.getObject("id", Integer.class));
         opera.setPossessore(rs.getObject("id_utente", Integer.class));
         opera.setArtista(rs.getObject("id_artista", Integer.class));
-        opera.setNome(rs.getString("nome"));
-        opera.setPrezzo(rs.getDouble("prezzo"));
-        opera.setDescrizione(rs.getString("descrizione"));
-        opera.setImmagine(rs.getBlob("immagine"));
-        opera.setCertificato(rs.getString("certificato"));
-        opera.setStato(Opera.Stato.valueOf(rs.getString("stato")));
+        opera.setNome(rs.getObject("nome", String.class));
+        opera.setPrezzo(rs.getObject("prezzo", Double.class));
+        opera.setDescrizione(rs.getObject("descrizione", String.class));
+        opera.setImmagine(rs.getObject("immagine", Blob.class));
+        opera.setCertificato(rs.getObject("certificato", String.class));
+        opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
 
         opere.add(opera);
       }
@@ -238,13 +243,13 @@ public class OperaDaoImpl implements OperaDao {
    * @return lista di opere create dall'utente
    */
   @Override
-  public List<Opera> doRetriveAllByArtista(Utente artista) {
-    String retriveSql = "SELECT * FROM " + TABLE_NAME
+  public List<Opera> doRetrieveAllByArtista(Utente artista) {
+    String retrieveSql = "SELECT * FROM " + TABLE_NAME
             + " WHERE id_artista = ?";
     List<Opera> opere = null;
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retriveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
       preparedStatement.setInt(1, artista.getId());
 
       ResultSet rs = preparedStatement.executeQuery();
@@ -255,12 +260,12 @@ public class OperaDaoImpl implements OperaDao {
         opera.setId(rs.getObject("id", Integer.class));
         opera.setPossessore(rs.getObject("id_utente", Integer.class));
         opera.setArtista(rs.getObject("id_artista", Integer.class));
-        opera.setNome(rs.getString("nome"));
-        opera.setPrezzo(rs.getDouble("prezzo"));
-        opera.setDescrizione(rs.getString("descrizione"));
-        opera.setImmagine(rs.getBlob("immagine"));
-        opera.setCertificato(rs.getString("certificato"));
-        opera.setStato(Opera.Stato.valueOf(rs.getString("stato")));
+        opera.setNome(rs.getObject("nome", String.class));
+        opera.setPrezzo(rs.getObject("prezzo", Double.class));
+        opera.setDescrizione(rs.getObject("descrizione", String.class));
+        opera.setImmagine(rs.getObject("immagine", Blob.class));
+        opera.setCertificato(rs.getObject("certificato", String.class));
+        opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
 
         opere.add(opera);
       }
