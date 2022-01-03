@@ -19,9 +19,19 @@ import javax.sql.DataSource;
  */
 public class OperaDaoImpl implements OperaDao {
 
+  /**
+   * Costruttore di OperaDaoImpl, permette di specificare il datasource utilizzato.
+   *
+   * @param ds il datasource utilizzato
+   */
   public OperaDaoImpl(DataSource ds) {
     this.ds = ds;
   }
+
+  /**
+   * Costruttore vuoto.
+   */
+  public OperaDaoImpl() {}
 
   /**
    * Inserisce un item del database.
@@ -53,7 +63,6 @@ public class OperaDaoImpl implements OperaDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
   }
 
@@ -88,12 +97,11 @@ public class OperaDaoImpl implements OperaDao {
         opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
       }
 
-      return opera;
-
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+
+    return opera;
   }
 
   /**
@@ -109,7 +117,7 @@ public class OperaDaoImpl implements OperaDao {
     List<Opera> opere = null;
 
     if (filter != null && !filter.equals("")) {
-      retrieveSql += "ORDER BY " + filter;
+      retrieveSql += " ORDER BY " + filter;
     }
 
     try (Connection connection = ds.getConnection();
@@ -133,12 +141,11 @@ public class OperaDaoImpl implements OperaDao {
         opere.add(opera);
       }
 
-      return opere;
-
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+
+    return opere;
   }
 
   /**
@@ -168,7 +175,6 @@ public class OperaDaoImpl implements OperaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
   }
 
@@ -190,7 +196,6 @@ public class OperaDaoImpl implements OperaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
   }
 
@@ -228,12 +233,11 @@ public class OperaDaoImpl implements OperaDao {
         opere.add(opera);
       }
 
-      return opere;
-
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+
+    return opere;
   }
 
   /**
@@ -270,12 +274,11 @@ public class OperaDaoImpl implements OperaDao {
         opere.add(opera);
       }
 
-      return opere;
-
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+
+    return opere;
   }
 
   private DataSource ds;
