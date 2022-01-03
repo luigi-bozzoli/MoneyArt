@@ -1,8 +1,10 @@
 package it.unisa.c02.moneyart.model.dao;
 
+import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +33,9 @@ public class OperaDaoImpl implements OperaDao {
   /**
    * Costruttore vuoto.
    */
-  public OperaDaoImpl() {}
+  public OperaDaoImpl() {
+    this.ds = Retriever.getIstance(DataSource.class);
+  }
 
   /**
    * Inserisce un item del database.
@@ -41,15 +45,15 @@ public class OperaDaoImpl implements OperaDao {
   @Override
   public void doCreate(Opera item) {
     String insertSql = "INSERT INTO " + TABLE_NAME
-            + "(id_utente, id_artista, nome, prezzo, descrizione, immagine, certificato, stato)"
-            + " VALUES(?, ? , ?, ?, ?, ?, ?, ?) ";
+        + "(id_utente, id_artista, nome, prezzo, descrizione, immagine, certificato, stato)"
+        + " VALUES(?, ? , ?, ?, ?, ?, ?, ?) ";
 
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(insertSql,
-                 PreparedStatement.RETURN_GENERATED_KEYS)) {
-      preparedStatement.setObject(1, item.getPossessore(), Types.INTEGER);
-      preparedStatement.setObject(2, item.getArtista(), Types.INTEGER);
+             PreparedStatement.RETURN_GENERATED_KEYS)) {
+      preparedStatement.setObject(1, item.getPossessore().getId(), Types.INTEGER);
+      preparedStatement.setObject(2, item.getArtista().getId(), Types.INTEGER);
       preparedStatement.setObject(3, item.getNome(), Types.VARCHAR);
       preparedStatement.setObject(4, item.getPrezzo(), Types.DOUBLE);
       preparedStatement.setObject(5, item.getDescrizione(), Types.VARCHAR);
@@ -75,7 +79,7 @@ public class OperaDaoImpl implements OperaDao {
   @Override
   public Opera doRetrieveById(int id) {
     String retrieveSql = "SELECT * FROM " + TABLE_NAME
-                    + " WHERE id = ? ";
+        + " WHERE id = ? ";
     Opera opera = null;
 
     try (Connection connection = ds.getConnection();
@@ -83,19 +87,7 @@ public class OperaDaoImpl implements OperaDao {
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
-      opera = new Opera();
-
-      while (rs.next()) {
-        opera.setId(rs.getObject("id", Integer.class));
-        opera.setPossessore(rs.getObject("id_utente", Integer.class));
-        opera.setArtista(rs.getObject("id_artista", Integer.class));
-        opera.setNome(rs.getObject("nome", String.class));
-        opera.setPrezzo(rs.getObject("prezzo", Double.class));
-        opera.setDescrizione(rs.getObject("descrizione", String.class));
-        opera.setImmagine(rs.getObject("immagine", Blob.class));
-        opera.setCertificato(rs.getObject("certificato", String.class));
-        opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
-      }
+      opera = getSingleResultFromResultSet(rs);
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -124,22 +116,8 @@ public class OperaDaoImpl implements OperaDao {
          PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
 
       ResultSet rs = preparedStatement.executeQuery();
-      opere = new ArrayList<>();
+      opere = getMultipleResultFromResultSet(rs);
 
-      while (rs.next()) {
-        Opera opera = new Opera();
-        opera.setId(rs.getObject("id", Integer.class));
-        opera.setPossessore(rs.getObject("id_utente", Integer.class));
-        opera.setArtista(rs.getObject("id_artista", Integer.class));
-        opera.setNome(rs.getObject("nome", String.class));
-        opera.setPrezzo(rs.getObject("prezzo", Double.class));
-        opera.setDescrizione(rs.getObject("descrizione", String.class));
-        opera.setImmagine(rs.getObject("immagine", Blob.class));
-        opera.setCertificato(rs.getObject("certificato", String.class));
-        opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
-
-        opere.add(opera);
-      }
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -156,14 +134,14 @@ public class OperaDaoImpl implements OperaDao {
   @Override
   public void doUpdate(Opera item) {
     String updateSql = "UPDATE " + TABLE_NAME
-            + " SET id_utente = ?, id_artista = ?, nome = ?, prezzo = ?,"
-            + " descrizione = ?, immagine = ?, certificato = ?, stato = ?"
-            + " WHERE id = ?";
+        + " SET id_utente = ?, id_artista = ?, nome = ?, prezzo = ?,"
+        + " descrizione = ?, immagine = ?, certificato = ?, stato = ?"
+        + " WHERE id = ?";
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(updateSql)) {
-      preparedStatement.setObject(1, item.getPossessore(), Types.INTEGER);
-      preparedStatement.setObject(2, item.getArtista(), Types.INTEGER);
+      preparedStatement.setObject(1, item.getPossessore().getId(), Types.INTEGER);
+      preparedStatement.setObject(2, item.getArtista().getId(), Types.INTEGER);
       preparedStatement.setObject(3, item.getNome(), Types.VARCHAR);
       preparedStatement.setObject(4, item.getPrezzo(), Types.DOUBLE);
       preparedStatement.setObject(5, item.getDescrizione(), Types.VARCHAR);
@@ -186,7 +164,7 @@ public class OperaDaoImpl implements OperaDao {
   @Override
   public void doDelete(Opera item) {
     String deleteSql = "DELETE FROM " + TABLE_NAME
-            + " WHERE id = ?";
+        + " WHERE id = ?";
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {
@@ -199,39 +177,25 @@ public class OperaDaoImpl implements OperaDao {
     }
   }
 
+
   /**
-   * Restituisce tutte le opere in possesso di uno specifico utente.
+   * Restituisce tutte le opere che sono in possesso dell'utente.
    *
-   * @param utente l'utente possessore delle opere
-   * @return lista di opere in possesso dell'utente
+   * @param id l'id dell'utente possessore delle opere
+   * @return tutte le opere in possesso dell'utente
    */
   @Override
-  public List<Opera> doRetrieveAllByPossessore(Utente utente) {
+  public List<Opera> doRetrieveAllByPossessoreId(int id) {
     String retrieveSql = "SELECT * FROM " + TABLE_NAME
-            + " WHERE id_utente = ?";
+        + " WHERE id_utente = ?";
     List<Opera> opere = null;
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
-      preparedStatement.setInt(1, utente.getId());
+      preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
-      opere = new ArrayList<>();
-
-      while (rs.next()) {
-        Opera opera = new Opera();
-        opera.setId(rs.getObject("id", Integer.class));
-        opera.setPossessore(rs.getObject("id_utente", Integer.class));
-        opera.setArtista(rs.getObject("id_artista", Integer.class));
-        opera.setNome(rs.getObject("nome", String.class));
-        opera.setPrezzo(rs.getObject("prezzo", Double.class));
-        opera.setDescrizione(rs.getObject("descrizione", String.class));
-        opera.setImmagine(rs.getObject("immagine", Blob.class));
-        opera.setCertificato(rs.getObject("certificato", String.class));
-        opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
-
-        opere.add(opera);
-      }
+      opere = getMultipleResultFromResultSet(rs);
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -241,45 +205,96 @@ public class OperaDaoImpl implements OperaDao {
   }
 
   /**
-   * Restituisce tutte le opere create e caricate da uno specifico utente.
+   * Restituisce tutte le opere create dall'utente.
    *
-   * @param artista l'utente creatore delle opere
-   * @return lista di opere create dall'utente
+   * @param id l'id dell'utente creatore delle opere
+   * @return tutte le opere create dall'utente
    */
   @Override
-  public List<Opera> doRetrieveAllByArtista(Utente artista) {
+  public List<Opera> doRetrieveAllByArtistaId(int id) {
     String retrieveSql = "SELECT * FROM " + TABLE_NAME
-            + " WHERE id_artista = ?";
+        + " WHERE id_artista = ?";
     List<Opera> opere = null;
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
-      preparedStatement.setInt(1, artista.getId());
+      preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
-      opere = new ArrayList<>();
-
-      while (rs.next()) {
-        Opera opera = new Opera();
-        opera.setId(rs.getObject("id", Integer.class));
-        opera.setPossessore(rs.getObject("id_utente", Integer.class));
-        opera.setArtista(rs.getObject("id_artista", Integer.class));
-        opera.setNome(rs.getObject("nome", String.class));
-        opera.setPrezzo(rs.getObject("prezzo", Double.class));
-        opera.setDescrizione(rs.getObject("descrizione", String.class));
-        opera.setImmagine(rs.getObject("immagine", Blob.class));
-        opera.setCertificato(rs.getObject("certificato", String.class));
-        opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
-
-        opere.add(opera);
-      }
-
+      opere = getMultipleResultFromResultSet(rs);
     } catch (SQLException e) {
+
       e.printStackTrace();
     }
 
     return opere;
   }
+
+  /**
+   * Metodo privato per restituire un singolo oggetto Opera dopo aver
+   * effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return l'oggetto Opera
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
+  private Opera getSingleResultFromResultSet(ResultSet rs) throws SQLException {
+    Opera opera = null;
+    if (rs.next()) {
+      opera = new Opera();
+      opera.setId(rs.getObject("id", Integer.class));
+
+      Utente possessore = new Utente();
+      possessore.setId(rs.getObject("id_utente", Integer.class));
+      opera.setPossessore(possessore);
+
+      Utente artista = new Utente();
+      artista.setId(rs.getObject("id_artista", Integer.class));
+      opera.setArtista(artista);
+
+      opera.setNome(rs.getObject("nome", String.class));
+      opera.setPrezzo(rs.getObject("prezzo", Double.class));
+      opera.setDescrizione(rs.getObject("descrizione", String.class));
+      opera.setImmagine(rs.getObject("immagine", Blob.class));
+      opera.setCertificato(rs.getObject("certificato", String.class));
+      opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
+    }
+    return opera;
+  }
+
+  /**
+   * Metodo privato per restituire una collezione di oggetti Opera
+   * dopo aver effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return la collezione di oggetti Opera
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
+  private List<Opera> getMultipleResultFromResultSet(ResultSet rs) throws SQLException {
+    List<Opera> opere = new ArrayList<>();
+    while (rs.next()) {
+      Opera opera = new Opera();
+      opera.setId(rs.getObject("id", Integer.class));
+
+      Utente possessore = new Utente();
+      possessore.setId(rs.getObject("id_utente", Integer.class));
+      opera.setPossessore(possessore);
+
+      Utente artista = new Utente();
+      artista.setId(rs.getObject("id_artista", Integer.class));
+      opera.setArtista(artista);
+
+      opera.setNome(rs.getObject("nome", String.class));
+      opera.setPrezzo(rs.getObject("prezzo", Double.class));
+      opera.setDescrizione(rs.getObject("descrizione", String.class));
+      opera.setImmagine(rs.getObject("immagine", Blob.class));
+      opera.setCertificato(rs.getObject("certificato", String.class));
+      opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
+      opere.add(opera);
+    }
+    return opere;
+  }
+
 
   private DataSource ds;
   private static final String TABLE_NAME = "opera";

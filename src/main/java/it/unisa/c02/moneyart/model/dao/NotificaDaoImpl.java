@@ -254,9 +254,17 @@ public class NotificaDaoImpl implements NotificaDao {
     return notifiche;
   }
 
+  /**
+   * Metodo privato per restituire un singolo oggetto Notifica dopo aver
+   * effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return l'oggetto Notifica
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
   private Notifica getSingleResultFromResultSet(ResultSet rs) throws SQLException {
     Notifica notifica = null;
-    while (rs.next()) {
+    if (rs.next()) {
       notifica = new Notifica();
       notifica.setId(rs.getObject("id", Integer.class));
 
@@ -281,6 +289,14 @@ public class NotificaDaoImpl implements NotificaDao {
     return notifica;
   }
 
+  /**
+   * Metodo privato per restituire una collezione di oggetti Notifica
+   * dopo aver effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return la collezione di oggetti Notifica
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
   private List<Notifica> getMultipleResultFromResultSet(ResultSet rs) throws SQLException {
     List<Notifica> notifiche = new ArrayList<>();
     while (rs.next()) {

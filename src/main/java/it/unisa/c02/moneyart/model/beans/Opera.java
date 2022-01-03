@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.model.beans;
 
 import java.sql.Blob;
+import java.util.List;
 
 /**
  * Questa classe rappresenta un'Opera.
@@ -12,17 +13,17 @@ public class Opera {
   /**
    * Costruttore della classe Opera.
    *
-   * @param nome nome dell'opera
+   * @param nome        nome dell'opera
    * @param descrizione descrizione dell'opera
-   * @param stato stato dell'opera (all'asta, in vendita, in possesso)
-   * @param immagine immagine dell'opera
-   * @param possessore id dell'utente che possiede l'opera
-   * @param artista id dell'artista (utente creatore dell'opera)
+   * @param stato       stato dell'opera (all'asta, in vendita, in possesso)
+   * @param immagine    immagine dell'opera
+   * @param possessore  id dell'utente che possiede l'opera
+   * @param artista     id dell'artista (utente creatore dell'opera)
    * @param certificato identificativo del certificato dell'opera
-   * @param prezzo prezzo dell'opera
+   * @param prezzo      prezzo dell'opera
    */
   public Opera(String nome, String descrizione, Stato stato,
-               Blob immagine, Integer possessore, Integer artista,
+               Blob immagine, Utente possessore, Utente artista,
                String certificato, double prezzo) {
 
     this.id = Opera.NO_ID;
@@ -133,41 +134,38 @@ public class Opera {
   }
 
   /**
-   * Restituisce l'identificativo dell'utente possessore dell'opera.
-   * Questo identificativo coinciderà con l'id dell'artista qualora
-   * l'opera non è mai stata messa in asta oppure quando l'opera, se
-   * è stata messa all'asta, non riceve nessuna offerta.
+   * Restituisce l'utente possessore dell'opera.
    *
-   * @return identificativo dell'utente possessore dell'opera
+   * @return l'utente possessore dell'opera
    */
-  public Integer getPossessore() {
+  public Utente getPossessore() {
     return possessore;
   }
 
   /**
-   * Imposta l'identificativo dell'utente possessore dell'opera.
+   * Imposta l'utente possessore dell'opera.
    *
-   * @param possessore identificativo dell'utente possessore dell'opera
+   * @param possessore l'utente possessore dell'opera
    */
-  public void setPossessore(Integer possessore) {
+  public void setPossessore(Utente possessore) {
     this.possessore = possessore;
   }
 
   /**
-   * Restituisce l'identificativo dell'utente creatore dell'opera.
+   * Restituisce l'utente creatore dell'opera.
    *
-   * @return identificativo dell'utente creatore dell'opera
+   * @return l'utente creatore dell'opera
    */
-  public Integer getArtista() {
+  public Utente getArtista() {
     return artista;
   }
 
   /**
-   * Imposta l'identificativo dell'utente creatore dell'opera.
+   * Imposta l'utente creatore dell'opera.
    *
-   * @param artista identificativo dell'utente creatore dell'opera.
+   * @param artista l'utente creatore dell'opera.
    */
-  public void setArtista(Integer artista) {
+  public void setArtista(Utente artista) {
     this.artista = artista;
   }
 
@@ -207,6 +205,42 @@ public class Opera {
     this.prezzo = prezzo;
   }
 
+  /**
+   * Restituisce una lista di tutte le aste relative all'opera.
+   *
+   * @return una lista di aste relativa all'opera
+   */
+  public List<Asta> getAste() {
+    return aste;
+  }
+
+  /**
+   * setta la lista di tutte le aste relative all'opera.
+   *
+   * @param aste la lista di tutte le aste relative all'opera
+   */
+  public void setAste(List<Asta> aste) {
+    this.aste = aste;
+  }
+
+  /**
+   * Restituisce una lista di tutte le rivendite relative all'opera.
+   *
+   * @return una lista di rivendite relativa all'opera
+   */
+  public List<Rivendita> getRivendite() {
+    return rivendite;
+  }
+
+  /**
+   * setta la lista di tutte le rivendite relative all'opera.
+   *
+   * @param rivendite la lista di tutte le rivendite relative all'opera
+   */
+  public void setRivendite(List<Rivendita> rivendite) {
+    this.rivendite = rivendite;
+  }
+
   public static final int NO_ID = -1;
 
   private Integer id;
@@ -214,10 +248,13 @@ public class Opera {
   private String descrizione;
   private Stato stato;
   private Blob immagine;
-  private Integer possessore;
-  private Integer artista;
+  private Utente possessore;
+  private Utente artista;
   private String certificato;
   private double prezzo;
+
+  private List<Asta> aste;
+  private List<Rivendita> rivendite;
 
   /**
    * ENUM che rappresenta i possibili stati dell'opera.
