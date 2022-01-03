@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.model.beans;
 
 import java.sql.Blob;
+import java.util.List;
 
 /**
  * Questa classe rappresenta un Utente.
@@ -22,7 +23,7 @@ public class Utente {
    * @param saldo saldo dell'utente
    */
   public Utente(String nome, String cognome, Blob fotoProfilo,
-                String email, String username, String password, Integer seguito, Float saldo) {
+                String email, String username, Utente seguito, String password, Float saldo) {
     this.id = Utente.NO_ID;
     this.nome = nome;
     this.cognome = cognome;
@@ -171,7 +172,7 @@ public class Utente {
    *
    * @return identificativo dell'utente seguito
    */
-  public Integer getSeguito() {
+  public Utente getSeguito() {
     return seguito;
   }
 
@@ -180,7 +181,7 @@ public class Utente {
    *
    * @param seguito identificativo dell'utente seguito
    */
-  public void setSeguito(Integer seguito) {
+  public void setSeguito(Utente seguito) {
     this.seguito = seguito;
   }
 
@@ -211,7 +212,12 @@ public class Utente {
   private String email;
   private String username;
   private String password;
-  private Integer seguito;
+  private Utente seguito;
   private Float saldo;
 
+  /* Liste utili */
+  private List<Opera> opereCreate;
+  private List<Opera> opereInPossesso;
+  private List<Notifica> notifiche;
+  private List<Partecipazione> partecipazioni;
 }

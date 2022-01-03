@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface UtenteDAO extends GenericDao<Utente> {
 //signature metodi aggiuntivi.....
+
+
 }

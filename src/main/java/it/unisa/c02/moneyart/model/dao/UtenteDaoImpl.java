@@ -12,12 +12,21 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementa la classe che esplicita i metodi
+ * definiti nell'interfaccia UtenteDao.
+ */
 public class UtenteDaoImpl implements UtenteDAO {
 
     public UtenteDaoImpl() {
         this.ds = Retriever.getIstance(DataSource.class);
     }
 
+    /**
+     * Inserisce un item nel database.
+     *
+     * @param item l'oggetto da inserire nel database
+     */
     @Override
     public void doCreate(Utente item) {
         String insertSQL =
@@ -29,7 +38,7 @@ public class UtenteDaoImpl implements UtenteDAO {
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL,
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setObject(1, item.getSeguito(), Types.INTEGER);
+            preparedStatement.setObject(1, item.getSeguito().getId(), Types.INTEGER);
             preparedStatement.setObject(2, item.getEmail().toLowerCase(), Types.VARCHAR);
             preparedStatement.setObject(3, item.getPassword(), Types.VARCHAR);
             preparedStatement.setObject(4, item.getUsername(), Types.VARCHAR);
@@ -47,6 +56,12 @@ public class UtenteDaoImpl implements UtenteDAO {
         }
     }
 
+    /**
+     * Ricerca nel database un item tramite un identificativo unico.
+     *
+     * @param id l'identificativo dell'item
+     * @return l'item trovato nel database
+     */
     @Override
     public Utente doRetrieveById(int id) {
         String sql =
@@ -65,7 +80,7 @@ public class UtenteDaoImpl implements UtenteDAO {
 
             while (rs.next()) {
                 utente.setId(rs.getObject("id", Integer.class));
-                utente.setSeguito(rs.getObject("id_utente", Integer.class));
+                utente.setSeguito(rs.getObject("id_utente", Utente.class));
                 utente.setEmail(rs.getObject("email", String.class));
                 utente.setPassword(rs.getObject("pwd", String.class));
                 utente.setUsername(rs.getObject("username", String.class));
@@ -81,6 +96,13 @@ public class UtenteDaoImpl implements UtenteDAO {
         return utente;
     }
 
+    /**
+     * Ricerca nel database tutti gli item, eventualmente ordinati
+     * tramite un filtro.
+     *
+     * @param filter filtro di ordinamento delle tuple
+     * @return la collezione di item trovata nel database
+     */
     @Override
     public List<Utente> doRetrieveAll(String filter) {
         String sql =
@@ -99,7 +121,7 @@ public class UtenteDaoImpl implements UtenteDAO {
             while (rs.next()) {
                 Utente utente = new Utente();
                 utente.setId(rs.getObject("id", Integer.class));
-                utente.setSeguito(rs.getObject("id_utente", Integer.class));
+                utente.setSeguito(rs.getObject("id_utente", Utente.class));
                 utente.setEmail(rs.getObject("email", String.class));
                 utente.setPassword(rs.getObject("pwd", String.class));
                 utente.setUsername(rs.getObject("username", String.class));
@@ -116,6 +138,11 @@ public class UtenteDaoImpl implements UtenteDAO {
         return utenti;
     }
 
+    /**
+     * Aggiorna l'item nel database.
+     *
+     * @param item l'item da aggiornare
+     */
     @Override
     public void doUpdate(Utente item) {
         String sql =
@@ -127,7 +154,7 @@ public class UtenteDaoImpl implements UtenteDAO {
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setObject(1, item.getSeguito(), Types.INTEGER);
+            preparedStatement.setObject(1, item.getSeguito().getId(), Types.INTEGER);
             preparedStatement.setString(2, item.getEmail().toLowerCase());
             preparedStatement.setString(3, item.getPassword());
             preparedStatement.setString(4, item.getUsername());
@@ -143,6 +170,11 @@ public class UtenteDaoImpl implements UtenteDAO {
         }
     }
 
+    /**
+     * Elimina l'item dal database.
+     *
+     * @param item l'item da eliminare
+     */
     @Override
     public void doDelete(Utente item) {
         String sql =
