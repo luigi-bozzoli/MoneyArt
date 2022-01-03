@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 
 <head>
@@ -8,6 +9,11 @@
     <title>Home - MoneyArt</title>
 
     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/style/homepage_style.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/style/fragments_style.css">
+
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="<%=request.getContextPath()%>/static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="<%=request.getContextPath()%>/static/favicon.ico" type="image/x-icon">
 
     <!-- BOOTSTRAP CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -22,39 +28,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="background-color: white !important;">
-        <a class="navbar-brand" href="#">
-            <img src="<%=request.getContextPath()%>/static/image/logo-moneyart.png" alt="MoneyArt" srcset="">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Aste</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Artisti</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Marketplace</a>
-                </li>
-            </ul>
-            <form class="searchbar form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Cerca ..." aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
-            </form>
-            <div class="log-buttons">
-                <a href="#" class="login-button">Login</a>
-                <a href="#" class="signup-button">Signup</a>
-            </div>
-        </div>
-    </nav>
+    <%@include file="../static/fragments/header.jsp"%>
 
     <!-- HERO SECTION -->
     <div class="row hero">
@@ -70,7 +44,7 @@
         </div>
 
         <div class="col right-hero" style="padding-right: 30px">
-            <img class="hero-image" src="<%=request.getContextPath()%>/static/image/nft.jpg" width="800px" alt="NFT" style="border-radius: 50px;">
+            <img class="hero-image" src="<%=request.getContextPath()%>/static/image/the-last-supper.jpg" width="800px" alt="The Last Supper" style="border-radius: 50px;">
         </div>
     </div>
 

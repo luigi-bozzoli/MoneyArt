@@ -35,9 +35,9 @@ create table opera (
 create table asta (
 	id bigint auto_increment primary key,
     id_opera bigint not null, /*FK*/
-    data_inizio date not null, 
+    data_inizio date not null,
     data_fine date not null,
-    stato enum("IN_CORSO", "TERMINATA", "ELIMANATA") default "IN_CORSO" not null,
+    stato enum("IN_CORSO", "TERMINATA", "ELIMINATA") default "IN_CORSO" not null,
      
     foreign key (id_opera) references opera(id) on update no action on delete cascade 
 );

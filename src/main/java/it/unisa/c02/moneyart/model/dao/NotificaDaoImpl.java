@@ -205,11 +205,6 @@ public class NotificaDaoImpl implements NotificaDao {
 
   }
 
-  private DataSource ds;
-
-
-  private static final String TABLE_NAME = "notifica";
-
   /**
    * Restituisce tutte le notifiche destinate ad uno specifico utente.
    *
@@ -329,4 +324,10 @@ public class NotificaDaoImpl implements NotificaDao {
       throw new IllegalArgumentException(e.getMessage());
     }
   }
+
+
+  private DataSource ds;
+
+
+  private static final String TABLE_NAME = "notifica";
 }

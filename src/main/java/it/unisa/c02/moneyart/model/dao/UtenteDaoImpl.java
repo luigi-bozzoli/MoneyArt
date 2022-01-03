@@ -52,6 +52,7 @@ public class UtenteDaoImpl implements UtenteDAO {
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+
             preparedStatement.setInt(1, id);
 
             ResultSet rs = preparedStatement.executeQuery();

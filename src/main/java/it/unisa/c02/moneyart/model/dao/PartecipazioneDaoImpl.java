@@ -19,6 +19,10 @@ import javax.sql.DataSource;
 
 public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
+  public PartecipazioneDaoImpl(DataSource ds) {
+    this.ds = ds;
+  }
+
   /**
    * Inserisce un item nel DataBase.
    *
@@ -60,6 +64,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
     String insertSql =
         "select * from " + TABLE_NAME
           + " where id = ? ";
+
     Partecipazione partecipazione = null;
 
 
@@ -281,25 +286,10 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
     }
   }
 
-  private static DataSource ds;
-
-  //il DataSource viene creato allo startup del server e messo nel context delle servlet,
-  // in teoria si dovrebbe passare dalla servlet come parametro di un costruttore della classe DAO
-  static {
-    try {
-      Context initCtx = new InitialContext();
-      Context envCtx = (Context) initCtx.lookup("java:comp/env");
-
-      ds = (DataSource) envCtx.lookup("jdbc/storage");
-
-    } catch (NamingException e) {
-      System.out.println("Error:" + e.getMessage());
-    }
-  }
-
   /**
    * Variabili d'istanza.
    */
+  private static DataSource ds;
   private static final String TABLE_NAME = "partecipazione";
 
 }

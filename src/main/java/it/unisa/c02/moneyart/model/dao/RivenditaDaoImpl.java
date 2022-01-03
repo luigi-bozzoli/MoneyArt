@@ -11,7 +11,24 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementa la classe che esplicita i metodi
+ * definiti nell'intefaccia RivenditaDao.
+ */
 public class RivenditaDaoImpl implements RivenditaDao {
+
+    /** Costruttore di RivenditaDaoIml
+     * Il DataSource viene creato allo startup del server e posto nel context delle servlet
+     */
+    public RivenditaDaoImpl(DataSource ds) {
+        this.ds = ds;
+    }
+
+    /**
+     * Inserisce un item del database.
+     *
+     * @param item l'oggetto da inserire nel database
+     */
     @Override
     public void doCreate(Rivendita item) {
         String insertSQL =
@@ -39,6 +56,12 @@ public class RivenditaDaoImpl implements RivenditaDao {
 
     }
 
+    /**
+     * Ricerca nel database un item tramite un identificativo univoco.
+     *
+     * @param id l'identificativo dell'item
+     * @return item trovato nel database
+     */
     @Override
     public Rivendita doRetrieveById(int id) {
         String insertSQL =
@@ -70,6 +93,13 @@ public class RivenditaDaoImpl implements RivenditaDao {
         }
     }
 
+    /**
+     * Ricerca nel database tutti gli item,
+     * eventualmente ordinati tramite un filtro.
+     *
+     * @param filter filtro di ordinamento delle tuple
+     * @return lista di item trovata nel database
+     */
     @Override
     public List<Rivendita> doRetrieveAll(String filter) {
         String insertSQL =
@@ -101,6 +131,11 @@ public class RivenditaDaoImpl implements RivenditaDao {
         }
     }
 
+    /**
+     * Aggiorna l'item bel database.
+     *
+     * @param item l'item da aggiornare
+     */
     @Override
     public void doUpdate(Rivendita item) {
         String insertSQL =
@@ -123,6 +158,11 @@ public class RivenditaDaoImpl implements RivenditaDao {
         }
     }
 
+    /**
+     * Elimina item dal database.
+     *
+     * @param item l'item da eliminare
+     */
     @Override
     public void doDelete(Rivendita item) {
         String insertSQL =
@@ -144,18 +184,5 @@ public class RivenditaDaoImpl implements RivenditaDao {
     }
 
     private static DataSource ds;
-
-    static {
-        try {
-            Context initCtx = new InitialContext();
-            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-
-            ds = (DataSource) envCtx.lookup("jdbc/storage");
-
-        } catch (NamingException e) {
-            System.out.println("Error:" + e.getMessage());
-        }
-    }
-
     private static final String TABLE_NAME = "rivendita";
 }
