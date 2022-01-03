@@ -3,6 +3,7 @@ package it.unisa.c02.moneyart.model.dao;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
+import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -20,6 +21,15 @@ import javax.sql.DataSource;
  */
 public class AstaDaoImpl implements AstaDao {
 
+  public AstaDaoImpl() {
+    this.ds = Retriever.getIstance(DataSource.class);
+  }
+
+  /**
+   * Costruttore, permette di specificare il datasource utilizzato.
+   *
+   * @param ds il datasource utilizzato
+   */
   public AstaDaoImpl(DataSource ds) {
     this.ds = ds;
   }
@@ -32,17 +42,18 @@ public class AstaDaoImpl implements AstaDao {
   @Override
   public void doCreate(Asta item) {
 
-    String insertSql = "INSERT INTO " + TABLE_NAME
+    String sql = "INSERT INTO " + TABLE_NAME
             + "(id_opera, data_inizio, data_fine, stato) "
             + "VALUES(?, ?, ?, ?)";
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql,
+         PreparedStatement preparedStatement = connection.prepareStatement(sql,
             PreparedStatement.RETURN_GENERATED_KEYS)) {
-      preparedStatement.setObject(1, item.getIdOpera(), Types.INTEGER);
+      preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getDataInizio(), Types.DATE);
       preparedStatement.setObject(3, item.getDataFine(), Types.DATE);
-      preparedStatement.setString(4, item.getStato().toString());
+      preparedStatement.setObject(4, item.getStato().toString(), Types.VARCHAR);
+
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
@@ -50,7 +61,6 @@ public class AstaDaoImpl implements AstaDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      // TODO: Gestire meglio le eccezioni
     }
   }
 
@@ -62,21 +72,25 @@ public class AstaDaoImpl implements AstaDao {
    */
   @Override
   public Asta doRetrieveById(int id) {
-    String retrieveSql = "SELECT * FROM " + TABLE_NAME
+    String sql = "SELECT * FROM " + TABLE_NAME
             + " WHERE id = ?";
 
-    Asta asta = new Asta();
+    Asta asta = null;
 
     try (Connection connection = ds.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
 
       if (rs.next()) {
+        asta = new Asta();
+
         asta.setId(rs.getObject("id", Integer.class));
-        asta.setIdOpera(rs.getObject("id_opera", Integer.class));
+        Opera opera = new Opera();
+        opera.setId(rs.getObject("id_opera", Integer.class));
+        asta.setOpera(opera);
         asta.setDataInizio(rs.getObject("data_inizio", Date.class));
         asta.setDataFine(rs.getObject("data_fine", Date.class));
         asta.setStato(Asta.Stato.valueOf(rs.getObject("stato", String.class).toUpperCase()));
@@ -84,7 +98,6 @@ public class AstaDaoImpl implements AstaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      // TODO: Gestire meglio le eccezioni
     }
 
     return asta;
@@ -99,22 +112,26 @@ public class AstaDaoImpl implements AstaDao {
    */
   @Override
   public List<Asta> doRetrieveAll(String filter) {
-    String retrieveSql = "SELECT * FROM " + TABLE_NAME;
+    String sql = "SELECT * FROM " + TABLE_NAME;
 
-    // TODO: gestisci eventuali filtri
+    if (filter != null && !filter.equals("")) {
+      sql += " ORDER BY " + filter;
+    }
 
     List<Asta> aste = new ArrayList<>();
 
     try (Connection connection = ds.getConnection();
          Statement statement = connection.createStatement()) {
 
-      ResultSet rs = statement.executeQuery(retrieveSql);
+      ResultSet rs = statement.executeQuery(sql);
 
       while (rs.next()) {
         Asta asta = new Asta();
 
         asta.setId(rs.getObject("id", Integer.class));
-        asta.setIdOpera(rs.getObject("id_opera", Integer.class));
+        Opera opera = new Opera();
+        opera.setId(rs.getObject("id_opera", Integer.class));
+        asta.setOpera(opera);
         asta.setDataInizio(rs.getObject("data_inizio", Date.class));
         asta.setDataFine(rs.getObject("data_fine", Date.class));
         asta.setStato(Asta.Stato.valueOf(rs.getObject("stato", String.class).toUpperCase()));
@@ -124,7 +141,6 @@ public class AstaDaoImpl implements AstaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      // TODO: Gestire meglio le eccezioni
     }
 
     return aste;
@@ -137,22 +153,21 @@ public class AstaDaoImpl implements AstaDao {
    */
   @Override
   public void doUpdate(Asta item) {
-    String updateSql = "UPDATE " + TABLE_NAME
-            + " set id_opera = ?, data_inizio = ?, data_fine = ?, stato = ? WHERE id = ?";
+    String sql = "UPDATE " + TABLE_NAME
+            + " SET id_opera = ?, data_inizio = ?, data_fine = ?, stato = ? WHERE id = ?";
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(updateSql)) {
-      preparedStatement.setObject(1, item.getIdOpera(), Types.INTEGER);
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+      preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getDataInizio(), Types.DATE);
       preparedStatement.setObject(3, item.getDataFine(), Types.DATE);
-      preparedStatement.setObject(4, item.getStato().toString().toUpperCase());
+      preparedStatement.setObject(4, item.getStato().toString().toUpperCase(), Types.VARCHAR);
 
       preparedStatement.setObject(5, item.getId(), Types.INTEGER);
 
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      // TODO: Gestire meglio le eccezioni
     }
   }
 
@@ -163,17 +178,16 @@ public class AstaDaoImpl implements AstaDao {
    */
   @Override
   public void doDelete(Asta item) {
-    String deleteSql = "DELETE FROM " + TABLE_NAME
+    String sql = "DELETE FROM " + TABLE_NAME
             + " WHERE id = ?";
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setObject(1, item.getId(), Types.INTEGER);
 
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      // TODO: Gestire meglio le eccezioni
     }
 
   }
@@ -186,15 +200,15 @@ public class AstaDaoImpl implements AstaDao {
    */
   @Override
   public List<Asta> doRetrieveByStato(Asta.Stato s) {
-    String retrieveSql = "SELECT * FROM " + TABLE_NAME
+    String sql = "SELECT * FROM " + TABLE_NAME
             + " WHERE stato = ?";
 
     List<Asta> aste = new ArrayList<>();
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-      preparedStatement.setString(1, s.toString().toUpperCase());
+      preparedStatement.setObject(1, s.toString().toUpperCase(), Types.VARCHAR);
 
       ResultSet rs = preparedStatement.executeQuery();
 
@@ -202,7 +216,9 @@ public class AstaDaoImpl implements AstaDao {
         Asta asta = new Asta();
 
         asta.setId(rs.getObject("id", Integer.class));
-        asta.setIdOpera(rs.getObject("id_opera", Integer.class));
+        Opera opera = new Opera();
+        opera.setId(rs.getObject("id_opera", Integer.class));
+        asta.setOpera(opera);
         asta.setDataInizio(rs.getObject("data_inizio", Date.class));
         asta.setDataFine(rs.getObject("data_fine", Date.class));
         asta.setStato(Asta.Stato.valueOf(rs.getObject("stato", String.class).toUpperCase()));
@@ -212,7 +228,6 @@ public class AstaDaoImpl implements AstaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      // TODO: Gestire meglio le eccezioni
     }
 
     return aste;
@@ -221,20 +236,20 @@ public class AstaDaoImpl implements AstaDao {
   /**
    * Restituisce le aste associate ad una specifica opera.
    *
-   * @param o l'opera di cui si vogliono recuperare le aste
+   * @param id l'identificativo dell'opera di cui si vogliono recuperare le aste
    * @return le aste associate all'opera specificata
    */
   @Override
-  public List<Asta> doRetrieveByOpera(Opera o) {
-    String retrieveSql = "SELECT * FROM " + TABLE_NAME
+  public List<Asta> doRetrieveByOperaId(int id) {
+    String sql = "SELECT * FROM " + TABLE_NAME
             + " WHERE id_opera = ?";
 
     List<Asta> aste = new ArrayList<>();
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-      preparedStatement.setObject(1, o.getId(), Types.INTEGER);
+      preparedStatement.setObject(1, id, Types.INTEGER);
 
       ResultSet rs = preparedStatement.executeQuery();
 
@@ -242,7 +257,10 @@ public class AstaDaoImpl implements AstaDao {
         Asta asta = new Asta();
 
         asta.setId(rs.getObject("id", Integer.class));
-        asta.setIdOpera(rs.getObject("id_opera", Integer.class));
+        Opera opera = new Opera();
+        //opera.setId(rs.getObject("id_opera", Integer.class));
+        opera.setId(id);
+        asta.setOpera(opera);
         asta.setDataInizio(rs.getObject("data_inizio", Date.class));
         asta.setDataFine(rs.getObject("data_fine", Date.class));
         asta.setStato(Asta.Stato.valueOf(rs.getObject("stato", String.class).toUpperCase()));
@@ -252,7 +270,6 @@ public class AstaDaoImpl implements AstaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      // TODO: Gestire meglio le eccezioni
     }
 
     return aste;

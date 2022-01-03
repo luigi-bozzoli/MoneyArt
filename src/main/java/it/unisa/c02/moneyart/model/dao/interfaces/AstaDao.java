@@ -23,8 +23,8 @@ public interface AstaDao extends GenericDao<Asta> {
   /**
    * Restituisce le aste associate ad una specifica opera.
    *
-   * @param o l'opera di cui si vogliono recuperare le aste
+   * @param id l'identificativo dell'opera di cui si vogliono recuperare le aste
    * @return le aste associate all'opera specificata
    */
-  List<Asta> doRetrieveByOpera(Opera o);
+  List<Asta> doRetrieveByOperaId(int id);
 }

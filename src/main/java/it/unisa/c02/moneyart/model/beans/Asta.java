@@ -10,17 +10,17 @@ public class Asta {
   /**
    * Costruttore della classe Asta.
    *
+   * @param opera riferimento all'identificativo di opera
    * @param dataInizio data di inizio dell'asta
    * @param dataFine data di fine dell'asta
    * @param stato stato corrente dell'asta ('in corso' , 'terminata' , 'annullata')
-   * @param idOpera riferimento all'identificativo di opera
    */
-  public Asta(Date dataInizio, Date dataFine, Stato stato, Opera idOpera) {
+  public Asta(Opera opera, Date dataInizio, Date dataFine, Stato stato) {
     this.id = NO_ID;
+    this.opera = opera;
     this.dataInizio = dataInizio;
     this.dataFine = dataFine;
     this.stato = stato;
-    this.idOpera = idOpera;
   }
 
   /**
@@ -44,6 +44,24 @@ public class Asta {
    */
   public void setId(Integer id) {
     this.id = id;
+  }
+
+  /**
+   * Restituisce l'opera messa all'asta
+   *
+   * @return l'opera messa all'asta
+   */
+  public Opera getOpera() {
+    return opera;
+  }
+
+  /**
+   * Assegna l'opera da mettere all'asta.
+   *
+   * @param opera l'opera da mettere all'asta
+   */
+  public void setOpera(Opera opera) {
+    this.opera = opera;
   }
 
   /**
@@ -101,31 +119,13 @@ public class Asta {
   }
 
   /**
-   * Restituisce l'identificativo dell'opera in asta.
-   *
-   * @return idOpera
-   */
-  public Opera getIdOpera() {
-    return idOpera;
-  }
-
-  /**
-   * Assegna l'identificativo all'opera in asta.
-   *
-   * @param idOpera nuovo identificativo al riferimento di opera
-   */
-  public void setIdOpera(Opera idOpera) {
-    this.idOpera = idOpera;
-  }
-
-  /**
    * Restituisce lo stato dell'asta.
    *
    * @return dello stato dell'asta
    */
   public String toString() {
-    return "id: " + this.id + "Data inizio: " + this.dataInizio + "Data fine: " +  this.dataFine
-      + "Stato: " + this.stato + "id opera: " + idOpera.getId();
+    return "id: " + this.id + "id opera: " + opera.getId() + "Data inizio: " + this.dataInizio
+            + "Data fine: " +  this.dataFine + "Stato: " + this.stato ;
   }
 
   /**
@@ -133,7 +133,7 @@ public class Asta {
    */
   public final static int NO_ID = -1;
   private Integer id;
-  private Opera idOpera;
+  private Opera opera;
   private Date dataInizio;
   private Date dataFine;
   private Stato stato;
