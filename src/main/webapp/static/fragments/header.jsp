@@ -26,7 +26,7 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
         </form>
         <div class="log-buttons">
-            <a href="#" class="login-button">Login</a>
+            <a href="<%=request.getContextPath()%>/pages/login.jsp" class="login-button">Login</a>
             <a href="<%=request.getContextPath()%>/pages/signup.jsp" class="signup-button">Signup</a>
         </div>
     </div>

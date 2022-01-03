@@ -27,12 +27,11 @@
 
     <body>
         <%@include file="../static/fragments/header.jsp"%>
-
             <div class="signup-box">
                 <img class="signup-logo" src="<%=request.getContextPath()%>/static/image/logo-moneyart.png" alt="Logo MoneyArt">
                 <form class="signup" method="post" name="login">
                     <div class="signup-input">
-                        <label for="username">Username</label>
+                        <label for="username">Username - Email</label>
                         <div class="input-icon">
                             <i class="fas fa-at"></i>
                             <input name="username" id="username" type="text" placeholder="JohnDoe99">
@@ -49,9 +48,6 @@
                     <button type="submit">Login</button>
                 </form>
             </div>
-
-
-
     </body>
 
     </html>

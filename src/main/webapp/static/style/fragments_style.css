@@ -1,9 +1,11 @@
-.navbar-brand img{
+.navbar-brand img {
     margin-right: 30px;
     width: 150px;
 }
+
 .navbar li a {
-    font-size: 20px;;
+    font-size: 20px;
+    ;
     margin-left: 8px;
     margin-right: 8px;
 }
@@ -69,24 +71,24 @@
     padding: 5px 15px;
     border: solid transparent;
     border-radius: 20px;
-
 }
 
-.login-button{
+.login-button {
     background-color: #EBA83A;
 }
 
-.signup-button{
+.signup-button {
     background-color: #BB371A;
 }
 
-.login-button:hover{
+.login-button:hover {
     color: white;
     text-decoration: none;
     background-color: #BB371A;
     transition: .4s;
 }
-.signup-button:hover{
+
+.signup-button:hover {
     color: white;
     text-decoration: none;
     background-color: #EBA83A;
@@ -101,4 +103,60 @@
         width: 300px;
         margin-left: 0;
     }
+}
+
+
+/* FOOTER */
+
+.page-footer {
+    background-color: #FFF8D9;
+    text-align: center;
+}
+
+.container {
+    margin: auto;
+}
+
+.footer-logo {
+    width: 60%;
+}
+
+.page-footer a {
+    color: #EBA83A;
+    font-size: 20px;
+}
+
+.page-footer a:hover {
+    color: #BB371A;
+}
+
+.social-buttons {
+    text-align: center;
+    display: flex;
+}
+
+a.social {
+    border-radius: 50px;
+    border-width: 0px;
+    height: 50px;
+    width: 50px;
+    font-size: 25px;
+    margin: auto;
+    cursor: pointer;
+}
+
+a.social:hover {
+    color: #BB371A !important;
+}
+
+p.payment-method {
+    font-size: 25px;
+    margin: auto;
+    height: 50px;
+    width: 50px;
+}
+
+.list-unstyled {
+    margin-top: 40px;
+    margin-bottom: auto;
 }
