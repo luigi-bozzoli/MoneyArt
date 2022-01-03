@@ -2,6 +2,7 @@ package it.unisa.c02.moneyart.model.dao;
 
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDAO;
+import it.unisa.c02.moneyart.utils.production.Retriever;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -12,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UtenteDaoImpl implements UtenteDAO {
+
+    public UtenteDaoImpl() {
+        this.ds = Retriever.getIstance(DataSource.class);
+    }
+
     @Override
     public void doCreate(Utente item) {
         String insertSQL =
@@ -24,12 +30,12 @@ public class UtenteDaoImpl implements UtenteDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL,
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setObject(1, item.getSeguito(), Types.INTEGER);
-            preparedStatement.setString(2, item.getEmail().toLowerCase());
-            preparedStatement.setString(3, item.getPassword());
-            preparedStatement.setString(4, item.getUsername());
-            preparedStatement.setString(5, item.getNome());
-            preparedStatement.setString(6, item.getCognome());
-            preparedStatement.setBlob(7, item.getFotoProfilo());
+            preparedStatement.setObject(2, item.getEmail().toLowerCase(), Types.VARCHAR);
+            preparedStatement.setObject(3, item.getPassword(), Types.VARCHAR);
+            preparedStatement.setObject(4, item.getUsername(), Types.VARCHAR);
+            preparedStatement.setObject(5, item.getNome(), Types.VARCHAR);
+            preparedStatement.setObject(6, item.getCognome(), Types.VARCHAR);
+            preparedStatement.setObject(7, item.getFotoProfilo(), Types.BLOB);
             preparedStatement.setObject(8, item.getSaldo(), Types.DOUBLE);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -38,20 +44,19 @@ public class UtenteDaoImpl implements UtenteDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
     @Override
     public Utente doRetrieveById(int id) {
-        String insertSQL =
+        String sql =
                 "select * from " + TABLE_NAME +
                         " where id = ? ";
        Utente utente = null;
 
 
         try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, id);
 
@@ -69,23 +74,24 @@ public class UtenteDaoImpl implements UtenteDAO {
                 utente.setFotoProfilo(rs.getObject("foto", Blob.class));
                 utente.setSaldo(rs.getObject("saldo", Float.class));
             }
-            return utente;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException(e.getMessage());
         }
+        return utente;
     }
 
     @Override
     public List<Utente> doRetrieveAll(String filter) {
-        String insertSQL =
+        String sql =
                 "select * from " + TABLE_NAME;
         List<Utente> utenti = null;
-
+        if (filter != null && !filter.equals("")) {
+            sql += " ORDER BY " + filter;
+        }
 
         try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             utenti = new ArrayList<>();
 
             ResultSet rs = preparedStatement.executeQuery();
@@ -102,28 +108,25 @@ public class UtenteDaoImpl implements UtenteDAO {
                 utente.setFotoProfilo(rs.getObject("foto", Blob.class));
                 utente.setSaldo(rs.getObject("saldo", Float.class));
                 utenti.add(utente);
-
-
             }
-            return utenti;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException(e.getMessage());
         }
+        return utenti;
     }
 
     @Override
     public void doUpdate(Utente item) {
-        String insertSQL =
+        String sql =
                 "UPDATE " + TABLE_NAME +
                         " set id_seguito = ?, email = ?, pwd = ?, username = ?, nome = ?, cognome = ?, "
-                        + " set foto = ?, saldo = ?"
+                        + " foto = ?, saldo = ?"
                         + " where id = ?";
 
 
         try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, item.getSeguito(), Types.INTEGER);
             preparedStatement.setString(2, item.getEmail().toLowerCase());
             preparedStatement.setString(3, item.getPassword());
@@ -137,19 +140,18 @@ public class UtenteDaoImpl implements UtenteDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
     @Override
     public void doDelete(Utente item) {
-        String insertSQL =
+        String sql =
                 "delete from " + TABLE_NAME +
                         " where id = ? ";
 
 
         try (Connection connection = ds.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setObject(1, item.getId(), Types.INTEGER);
 
             preparedStatement.executeUpdate();
@@ -157,24 +159,10 @@ public class UtenteDaoImpl implements UtenteDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException(e.getMessage());
-        }
-
-    }
-
-    private static DataSource ds;
-
-    static {
-        try {
-            Context initCtx = new InitialContext();
-            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-
-            ds = (DataSource) envCtx.lookup("jdbc/storage");
-
-        } catch (NamingException e) {
-            System.out.println("Error:" + e.getMessage());
         }
     }
+
+    private  DataSource ds;
 
     private static final String TABLE_NAME = "utente";
 }
