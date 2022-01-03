@@ -52,12 +52,12 @@ public class NotificaDaoImpl implements NotificaDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql,
              PreparedStatement.RETURN_GENERATED_KEYS)) {
-      preparedStatement.setObject(1, item.getIdUtente(), Types.INTEGER);
-      preparedStatement.setObject(2, item.getIdRivendita(), Types.INTEGER);
-      preparedStatement.setObject(3, item.getIdAsta(), Types.INTEGER);
+      preparedStatement.setObject(1, item.getUtente().getId(), Types.INTEGER);
+      preparedStatement.setObject(2, item.getRivendita().getId(), Types.INTEGER);
+      preparedStatement.setObject(3, item.getAsta().getId(), Types.INTEGER);
       preparedStatement.setObject(4, item.isLetta(), Types.BOOLEAN);
-      preparedStatement.setString(5, item.getTipo().toString());
-      preparedStatement.setString(6, item.getContenuto());
+      preparedStatement.setObject(5, item.getTipo().toString(), Types.VARCHAR);
+      preparedStatement.setObject(6, item.getContenuto(), Types.VARCHAR);
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
@@ -89,19 +89,7 @@ public class NotificaDaoImpl implements NotificaDao {
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
-      notifica = new Notifica();
-
-      while (rs.next()) {
-        notifica.setId(rs.getObject("id", Integer.class));
-        notifica.setIdUtente(rs.getObject("id_utente", Integer.class));
-        notifica.setIdRivendita(rs.getObject("id_rivendita", Integer.class));
-        notifica.setIdAsta(rs.getObject("id_asta", Integer.class));
-        notifica.setLetta(rs.getObject("letta", Boolean.class));
-        notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
-        notifica.setContenuto(rs.getObject("contenuto", String.class));
-
-
-      }
+      notifica = getSingleResultFromResultSet(rs);
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -127,23 +115,9 @@ public class NotificaDaoImpl implements NotificaDao {
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      notifiche = new ArrayList<>();
-
       ResultSet rs = preparedStatement.executeQuery();
+      notifiche = getMultipleResultFromResultSet(rs);
 
-      while (rs.next()) {
-        Notifica notifica = new Notifica();
-        notifica.setId(rs.getObject("id", Integer.class));
-        notifica.setIdUtente(rs.getObject("id_utente", Integer.class));
-        notifica.setIdRivendita(rs.getObject("id_rivendita", Integer.class));
-        notifica.setIdAsta(rs.getObject("id_asta", Integer.class));
-        notifica.setLetta(rs.getObject("letta", Boolean.class));
-        notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
-        notifica.setContenuto(rs.getObject("contenuto", String.class));
-        notifiche.add(notifica);
-
-
-      }
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -165,12 +139,12 @@ public class NotificaDaoImpl implements NotificaDao {
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setObject(1, item.getIdUtente(), Types.INTEGER);
-      preparedStatement.setObject(2, item.getIdRivendita(), Types.INTEGER);
-      preparedStatement.setObject(3, item.getIdAsta(), Types.INTEGER);
+      preparedStatement.setObject(1, item.getUtente().getId(), Types.INTEGER);
+      preparedStatement.setObject(2, item.getRivendita().getId(), Types.INTEGER);
+      preparedStatement.setObject(3, item.getAsta().getId(), Types.INTEGER);
       preparedStatement.setObject(4, item.isLetta(), Types.BOOLEAN);
-      preparedStatement.setString(5, item.getTipo().toString());
-      preparedStatement.setString(6, item.getContenuto());
+      preparedStatement.setObject(5, item.getTipo().toString(), Types.VARCHAR);
+      preparedStatement.setObject(6, item.getContenuto(), Types.VARCHAR);
       preparedStatement.setObject(7, item.getId(), Types.INTEGER);
       preparedStatement.executeUpdate();
 
@@ -210,7 +184,7 @@ public class NotificaDaoImpl implements NotificaDao {
    * @return tutte le notifiche destinate a utente
    */
   @Override
-  public List<Notifica> doRetriveAllByUtente(Utente utente) {
+  public List<Notifica> doRetrieveAllByUtente(Utente utente) {
     String sql = "select * from " + TABLE_NAME + " where id_utente = ? ";
     List<Notifica> notifiche = null;
 
@@ -218,23 +192,10 @@ public class NotificaDaoImpl implements NotificaDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setInt(1, utente.getId());
-      notifiche = new ArrayList<>();
 
       ResultSet rs = preparedStatement.executeQuery();
+      notifiche = getMultipleResultFromResultSet(rs);
 
-      while (rs.next()) {
-        Notifica notifica = new Notifica();
-        notifica.setId(rs.getObject("id", Integer.class));
-        notifica.setIdUtente(rs.getObject("id_utente", Integer.class));
-        notifica.setIdRivendita(rs.getObject("id_rivendita", Integer.class));
-        notifica.setIdAsta(rs.getObject("id_asta", Integer.class));
-        notifica.setLetta(rs.getObject("letta", Boolean.class));
-        notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
-        notifica.setContenuto(rs.getObject("contenuto", String.class));
-        notifiche.add(notifica);
-
-
-      }
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -249,7 +210,7 @@ public class NotificaDaoImpl implements NotificaDao {
    * @return tutte le notifiche che fanno riferimento ad asta
    */
   @Override
-  public List<Notifica> doRetriveAllByAsta(Asta asta) {
+  public List<Notifica> doRetrieveAllByAsta(Asta asta) {
     String sql = "select * from " + TABLE_NAME + " where id_asta = ? ";
     List<Notifica> notifiche = null;
 
@@ -257,23 +218,9 @@ public class NotificaDaoImpl implements NotificaDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setInt(1, asta.getId());
-      notifiche = new ArrayList<>();
-
       ResultSet rs = preparedStatement.executeQuery();
+      notifiche = getMultipleResultFromResultSet(rs);
 
-      while (rs.next()) {
-        Notifica notifica = new Notifica();
-        notifica.setId(rs.getObject("id", Integer.class));
-        notifica.setIdUtente(rs.getObject("id_utente", Integer.class));
-        notifica.setIdRivendita(rs.getObject("id_rivendita", Integer.class));
-        notifica.setIdAsta(rs.getObject("id_asta", Integer.class));
-        notifica.setLetta(rs.getObject("letta", Boolean.class));
-        notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
-        notifica.setContenuto(rs.getObject("contenuto", String.class));
-        notifiche.add(notifica);
-
-
-      }
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -288,7 +235,7 @@ public class NotificaDaoImpl implements NotificaDao {
    * @return tutte le notifiche che fanno riferimento a rivendita
    */
   @Override
-  public List<Notifica> doRetiveAllByRivendita(Rivendita rivendita) {
+  public List<Notifica> doRetrieveAllByRivendita(Rivendita rivendita) {
     String sql = "select * from " + TABLE_NAME + " where id_rivendita = ? ";
     List<Notifica> notifiche = null;
 
@@ -296,26 +243,67 @@ public class NotificaDaoImpl implements NotificaDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setInt(1, rivendita.getId());
-      notifiche = new ArrayList<>();
 
       ResultSet rs = preparedStatement.executeQuery();
+      notifiche = getMultipleResultFromResultSet(rs);
 
-      while (rs.next()) {
-        Notifica notifica = new Notifica();
-        notifica.setId(rs.getObject("id", Integer.class));
-        notifica.setIdUtente(rs.getObject("id_utente", Integer.class));
-        notifica.setIdRivendita(rs.getObject("id_rivendita", Integer.class));
-        notifica.setIdAsta(rs.getObject("id_asta", Integer.class));
-        notifica.setLetta(rs.getObject("letta", Boolean.class));
-        notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
-        notifica.setContenuto(rs.getObject("contenuto", String.class));
-        notifiche.add(notifica);
-
-
-      }
 
     } catch (SQLException e) {
       e.printStackTrace();
+    }
+    return notifiche;
+  }
+
+  private Notifica getSingleResultFromResultSet(ResultSet rs) throws SQLException {
+    Notifica notifica = null;
+    while (rs.next()) {
+      notifica = new Notifica();
+      notifica.setId(rs.getObject("id", Integer.class));
+
+      Utente utente = new Utente();
+      utente.setId(rs.getObject("id_utente", Integer.class));
+      notifica.setUtente(utente);
+
+      Rivendita rivendita = new Rivendita();
+      rivendita.setId(rs.getObject("id_rivendita", Integer.class));
+      notifica.setRivendita(rivendita);
+
+      Asta asta = new Asta();
+      asta.setId(rs.getObject("id_asta", Integer.class));
+      notifica.setAsta(asta);
+
+      notifica.setLetta(rs.getObject("letta", Boolean.class));
+      notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
+      notifica.setContenuto(rs.getObject("contenuto", String.class));
+
+
+    }
+    return notifica;
+  }
+
+  private List<Notifica> getMultipleResultFromResultSet(ResultSet rs) throws SQLException {
+    List<Notifica> notifiche = new ArrayList<>();
+    while (rs.next()) {
+      Notifica notifica = new Notifica();
+      notifica.setId(rs.getObject("id", Integer.class));
+
+      Utente utente = new Utente();
+      utente.setId(rs.getObject("id_utente", Integer.class));
+      notifica.setUtente(utente);
+
+      Rivendita rivendita = new Rivendita();
+      rivendita.setId(rs.getObject("id_rivendita", Integer.class));
+      notifica.setRivendita(rivendita);
+
+      Asta asta = new Asta();
+      asta.setId(rs.getObject("id_asta", Integer.class));
+      notifica.setAsta(asta);
+
+      notifica.setLetta(rs.getObject("letta", Boolean.class));
+      notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
+      notifica.setContenuto(rs.getObject("contenuto", String.class));
+
+
     }
     return notifiche;
   }

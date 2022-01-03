@@ -27,12 +27,12 @@ public class Notifica {
    *                  (questo dobbiamo toglierlo credo raga)
    * @param letta inidica se la notifica è stata letta
    */
-  public Notifica(Integer idUtente, Integer idAsta, Integer idRivendita, Tipo tipo,
+  public Notifica(Utente idUtente, Asta idAsta, Rivendita idRivendita, Tipo tipo,
                   String contenuto, boolean letta) {
     this.id = Notifica.NO_ID;
-    this.idUtente = idUtente;
-    this.idAsta = idAsta;
-    this.idRivendita = idRivendita;
+    this.utente = idUtente;
+    this.asta = idAsta;
+    this.rivendita = idRivendita;
     this.tipo = tipo;
     this.contenuto = contenuto;
     this.letta = letta;
@@ -63,57 +63,57 @@ public class Notifica {
   }
 
   /**
-   * Restituisce l'id del destinatario.
+   * Restituisce il destinatario.
    *
-   * @return l'id del destinatario della notifica
+   * @return il destinatario della notifica
    */
-  public Integer getIdUtente() {
-    return idUtente;
+  public Utente getUtente() {
+    return utente;
   }
 
   /**
    * Modifica il destinatario.
    *
-   * @param idUtente l'id del destinatario a cui si deve riferire l'opera
+   * @param utente il destinatario a cui si deve riferire l'opera
    */
-  public void setIdUtente(Integer idUtente) {
-    this.idUtente = idUtente;
+  public void setUtente(Utente utente) {
+    this.utente = utente;
   }
 
   /**
-   * Restituisce l'id dell'asta associata alla notifica.
+   * Restituisce l'asta associata alla notifica.
    *
-   * @return l'id dell'opera a cui si riferisce
+   * @return l'asta a cui si riferisce la notifica
    */
-  public Integer getIdAsta() {
-    return idAsta;
+  public Asta getAsta() {
+    return asta;
   }
 
   /**
    * Modifica l'asta associata alla notifica.
    *
-   * @param idAsta l'id dell'asta a cui si deve riferire la notifica
+   * @param asta l'asta a cui si deve riferire la notifica
    */
-  public void setIdAsta(Integer idAsta) {
-    this.idAsta = idAsta;
+  public void setAsta(Asta asta) {
+    this.asta = asta;
   }
 
   /**
-   * Restituisce l'id della rivendita associata alla notifica.
+   * Restituisce la rivendita associata alla notifica.
    *
-   * @return l'id della rivendita a cui si riferisce l'opera
+   * @return la rivendita a cui si riferisce l'opera
    */
-  public Integer getIdRivendita() {
-    return idRivendita;
+  public Rivendita getRivendita() {
+    return rivendita;
   }
 
   /**
    * Modifica la rivendita associata alla notifica.
    *
-   * @param idRivendita l'id della rivendita a cui si riferisce la notifica
+   * @param rivendita la rivendita a cui si riferisce la notifica
    */
-  public void setIdRivendita(Integer idRivendita) {
-    this.idRivendita = idRivendita;
+  public void setRivendita(Rivendita rivendita) {
+    this.rivendita = rivendita;
   }
 
   /**
@@ -181,11 +181,11 @@ public class Notifica {
         +
         "id=" + id
         +
-        ", idUtente=" + idUtente
+        ", idUtente=" + utente
         +
-        ", idAsta=" + idAsta
+        ", idAsta=" + asta
         +
-        ", idRivendita=" + idRivendita
+        ", idRivendita=" + rivendita
         +
         ", tipo=" + tipo
         +
@@ -197,9 +197,9 @@ public class Notifica {
   }
 
   private Integer id;
-  private Integer idUtente;
-  private Integer idAsta;
-  private Integer idRivendita;
+  private Utente utente;
+  private Asta asta;
+  private Rivendita rivendita;
   private Tipo tipo;
   private String contenuto;
   private Boolean letta;
