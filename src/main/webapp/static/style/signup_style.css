@@ -42,6 +42,12 @@ h1, h2, h3, h4, h5, h6, p, ol, ul {
     gap: 8px;
     border-radius: 20px;
     color: #454545;
+    transition: .8s;
+}
+
+.signup>.signup-input:hover {
+    box-shadow: 0 0 10px rgba(187, 55, 26, 0.3);
+    transition: .8s;
 }
 
 .signup-input .input-icon input {
