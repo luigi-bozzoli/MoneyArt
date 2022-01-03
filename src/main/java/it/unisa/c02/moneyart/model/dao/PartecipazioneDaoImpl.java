@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.model.dao;
 
 import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
@@ -151,11 +152,11 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
   /**
    * Ricerca nel database tutti gli utenti che hanno partecipato ad un'asta.
    *
-   * @param asta identificativo di un'asta
+   * @param id identificativo di un'asta
    * @return la collezione di utenti trovata nel database
    */
   @Override
-  public List<Utente> doRetrieveByAuctionId(Asta asta) {
+  public List<Utente> doRetrieveByAuctionId(int id) {
     String retrieveSql = "select id_utente from" + TABLE_NAME
         + " where id_asta = ? ";
 
@@ -164,7 +165,6 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
 
-      preparedStatement.setInt(1, asta.getId());
       utenti = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
 
@@ -190,11 +190,11 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
   /**
    * Restituisce tutte le aste a cui ha partecipato un utente.
    *
-   * @param utente identificativo di un utente
+   * @param id identificativo di un utente
    * @return la collezione di aste trovate nel database
    */
   @Override
-  public List<Asta> doRetrieveByUserId(Utente utente) {
+  public List<Asta> doRetrieveByUserId(int id) {
     String retrieveSql = "select id_asta from" + TABLE_NAME
         + " where id_utente = ? ";
 
@@ -203,15 +203,17 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
 
-      preparedStatement.setInt(1, utente.getId());
       aste = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
 
       while (rs.next()) {
         Asta asta = new Asta();
+        Opera opera = new Opera();
 
+        opera.setId(rs.getObject("id_opera", Integer.class));
         asta.setDataInizio(rs.getObject("data_inizio", Date.class));
         asta.setDataFine(rs.getObject("data_fine", Date.class));
+        asta.setStato(Asta.Stato.valueOf(rs.getObject("stato", String.class)));
         aste.add(asta);
       }
 
