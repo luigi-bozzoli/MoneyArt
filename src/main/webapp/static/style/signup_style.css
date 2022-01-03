@@ -1,9 +1,17 @@
-body{
+body {
     font-family: 'Inter', sans-serif !important;
     overflow-x: hidden;
 }
 
-h1,h2,h3,h4,h5,h6,p,ol,ul{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
     color: #454545;
     margin-bottom: 20px;
 }
@@ -14,6 +22,7 @@ h1,h2,h3,h4,h5,h6,p,ol,ul{
     flex-direction: column;
     gap: 20px;
 }
+
 .signup-box {
     overflow: hidden;
     background-color: rgba(213, 219, 179, 0.2);
@@ -26,6 +35,7 @@ h1,h2,h3,h4,h5,h6,p,ol,ul{
     margin-top: 4vh;
     margin-bottom: 5vh;
 }
+
 .signup-box .signup-logo {
     width: 45%;
     min-width: 150px;
@@ -34,7 +44,7 @@ h1,h2,h3,h4,h5,h6,p,ol,ul{
     margin-left: auto;
 }
 
-.signup > .signup-input {
+.signup>.signup-input {
     background: white;
     box-shadow: 0 0 10px #e6e9f9;
     padding: 15px;
@@ -45,19 +55,22 @@ h1,h2,h3,h4,h5,h6,p,ol,ul{
     color: #454545;
 }
 
-.signup-input .input-icon input{
+.signup-input .input-icon input {
     outline: none;
     border: none;
     width: 100%;
+    margin-top: 5px;
 }
 
-.input-icon i{
+.input-icon i {
     margin-right: 5px;
 }
-.input-icon input::placeholder{
-    color: rgba(69,69,69,0.5);
+
+.input-icon input::placeholder {
+    color: rgba(69, 69, 69, 0.5);
 }
-.signup > button {
+
+.signup>button {
     cursor: pointer;
     color: #fff;
     font-size: 16px;
@@ -72,12 +85,13 @@ h1,h2,h3,h4,h5,h6,p,ol,ul{
     background-color: #BB371A;
     transition: 0.3s;
 }
-.signup > button:hover {
+
+.signup>button:hover {
     background-color: #EBA83A;
 }
 
 @media screen and (max-width: 1200px) {
-    .signup-box{
+    .signup-box {
         width: 100%;
     }
 }
