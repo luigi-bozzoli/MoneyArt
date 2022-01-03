@@ -1,7 +1,7 @@
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
-import it.unisa.c02.moneyart.utils.instantiation.GenericInstantiator;
-import it.unisa.c02.moneyart.utils.instantiation.ObjectSource;
+import it.unisa.c02.moneyart.utils.production.GenericProducer;
+import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.util.HashMap;
 import java.util.Map;
 import javax.naming.Context;
@@ -32,8 +32,8 @@ public class MainContext implements ServletContextListener {
     } catch (NamingException e) {
       e.printStackTrace();
     }
-    Map<String, GenericInstantiator<?>> istantiators = inizializeIstantiators(ds);
-    ObjectSource.setIstantiator(istantiators);
+    Map<Retriever.RetriverKey, GenericProducer<?>> istantiators = inizializeProducers();
+    Retriever.setProducers(istantiators);
 
     context.setAttribute("DataSource", ds);
     System.out.println("DataSource creation: " + ds.toString());
@@ -49,14 +49,29 @@ public class MainContext implements ServletContextListener {
     System.out.println("DataSource deletion: " + ds.toString());
   }
 
-  private HashMap<String, GenericInstantiator<?>> inizializeIstantiators(DataSource ds) {
-    HashMap<String, GenericInstantiator<?>> istantiators = new HashMap<>();
+  private HashMap<Retriever.RetriverKey, GenericProducer<?>> inizializeProducers() {
+    HashMap<Retriever.RetriverKey, GenericProducer<?>> istantiators = new HashMap<>();
 
-    GenericInstantiator<NotificaDao> notificaIstantiator = () -> {
-      return new NotificaDaoImpl(ds);
+    GenericProducer<NotificaDao> notificaIstantiator = () -> {
+      return new NotificaDaoImpl();
     };
-    istantiators.put(NotificaDao.class.getName(), notificaIstantiator);
+    istantiators.put(new Retriever.RetriverKey(NotificaDao.class.getName()), notificaIstantiator);
 
+    try {
+      Context initCtx = new InitialContext();
+      Context envCtx = (Context) initCtx.lookup("java:comp/env");
+
+
+      DataSource ds = (DataSource) envCtx.lookup("jdbc/storage");
+      GenericProducer<DataSource> dataSourceInstantiator = () -> {
+        return ds;
+      };
+      istantiators.put(new Retriever.RetriverKey(DataSource.class.getName()),dataSourceInstantiator);
+
+
+    } catch (NamingException e) {
+      e.printStackTrace();
+    }
 
 
     return istantiators;

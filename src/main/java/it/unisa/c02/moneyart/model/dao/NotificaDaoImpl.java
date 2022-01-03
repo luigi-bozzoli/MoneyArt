@@ -5,6 +5,7 @@ import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
+import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +22,15 @@ import javax.sql.DataSource;
 public class NotificaDaoImpl implements NotificaDao {
 
 
+  public NotificaDaoImpl(){
+    this.ds = (DataSource) Retriever.getIstance(DataSource.class);
+  }
+
+  /**
+   * Costruttore, permette di specificare il datasource utilizzato.
+   *
+   * @param ds il datasource utilizzato
+   */
   public NotificaDaoImpl(DataSource ds) {
     this.ds = ds;
   }
