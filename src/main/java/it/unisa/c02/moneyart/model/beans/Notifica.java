@@ -18,14 +18,14 @@ public class Notifica {
   /**
    * Costruttore della classe Notifica.
    *
-   * @param idUtente identificativo del destinatario
-   * @param idAsta identificativo dell'asta a cui l'opera si riferisce
+   * @param idUtente    identificativo del destinatario
+   * @param idAsta      identificativo dell'asta a cui l'opera si riferisce
    * @param idRivendita identificativo della rivendita a cui l'opera si riferisce
-   * @param tipo descrive il tipo della notifica,
-   *             ovvero la motivazione della sua creazione
-   * @param contenuto il contenuto della notifica
-   *                  (questo dobbiamo toglierlo credo raga)
-   * @param letta inidica se la notifica è stata letta
+   * @param tipo        descrive il tipo della notifica,
+   *                    ovvero la motivazione della sua creazione
+   * @param contenuto   il contenuto della notifica
+   *                    (questo dobbiamo toglierlo credo raga)
+   * @param letta       inidica se la notifica è stata letta
    */
   public Notifica(Utente idUtente, Asta idAsta, Rivendita idRivendita, Tipo tipo,
                   String contenuto, boolean letta) {
@@ -170,22 +170,17 @@ public class Notifica {
     this.letta = letta;
   }
 
-  /**
-   * Restituisce la rappresentazione sottoforma di stringa di una notifica.
-   *
-   * @return la stringa che rappresenta notifica
-   */
   @Override
   public String toString() {
     return "Notifica{"
         +
         "id=" + id
         +
-        ", idUtente=" + utente
+        ", utente=" + utente
         +
-        ", idAsta=" + asta
+        ", asta=" + asta
         +
-        ", idRivendita=" + rivendita
+        ", rivendita=" + rivendita
         +
         ", tipo=" + tipo
         +
@@ -195,6 +190,13 @@ public class Notifica {
         +
         '}';
   }
+
+  /**
+   * Restituisce la rappresentazione sottoforma di stringa di una notifica.
+   *
+   * @return la stringa che rappresenta notifica
+   */
+
 
   private Integer id;
   private Utente utente;

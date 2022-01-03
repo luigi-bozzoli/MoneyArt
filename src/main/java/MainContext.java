@@ -1,5 +1,18 @@
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.PartecipazioneDaoImpl;
+import it.unisa.c02.moneyart.model.dao.RivenditaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.SegnalazioneDaoImpl;
+import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
+import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.SegnalazioneDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDAO;
 import it.unisa.c02.moneyart.utils.production.GenericProducer;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.util.HashMap;
@@ -52,26 +65,42 @@ public class MainContext implements ServletContextListener {
   private HashMap<Retriever.RetriverKey, GenericProducer<?>> inizializeProducers() {
     HashMap<Retriever.RetriverKey, GenericProducer<?>> istantiators = new HashMap<>();
 
-    GenericProducer<NotificaDao> notificaIstantiator = () -> {
-      return new NotificaDaoImpl();
-    };
-    istantiators.put(new Retriever.RetriverKey(NotificaDao.class.getName()), notificaIstantiator);
-
+    //creazione DataSource
     try {
       Context initCtx = new InitialContext();
       Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
 
       DataSource ds = (DataSource) envCtx.lookup("jdbc/storage");
-      GenericProducer<DataSource> dataSourceInstantiator = () -> {
-        return ds;
-      };
-      istantiators.put(new Retriever.RetriverKey(DataSource.class.getName()),dataSourceInstantiator);
+      GenericProducer<DataSource> dataSourceInstantiator = () -> ds;
+      istantiators.put(new Retriever.RetriverKey(DataSource.class.getName()),
+          dataSourceInstantiator);
 
 
     } catch (NamingException e) {
       e.printStackTrace();
     }
+
+    /*
+    GenericProducer<NotificaDao> notificaIstantiator = () -> new NotificaDaoImpl();
+    istantiators.put(new Retriever.RetriverKey(NotificaDao.class.getName()), notificaIstantiator);
+    GenericProducer<AstaDao> astaIstantiator = () -> new AstaDaoImpl();
+    istantiators.put(new Retriever.RetriverKey(AstaDao.class.getName()), astaIstantiator);
+    GenericProducer<UtenteDAO> utenteIstantiator = () -> new UtenteDaoImpl();
+    istantiators.put(new Retriever.RetriverKey(UtenteDAO.class.getName()), utenteIstantiator);
+    GenericProducer<OperaDao> operaIstantiator = () -> new OperaDaoImpl();
+    istantiators.put(new Retriever.RetriverKey(OperaDao.class.getName()), operaIstantiator);
+    GenericProducer<RivenditaDao> rivenditaIstantiator = () -> new RivenditaDaoImpl();
+    istantiators.put(new Retriever.RetriverKey(RivenditaDao.class.getName()), rivenditaIstantiator);
+    GenericProducer<SegnalazioneDao> segnalazioneIstantiator = () -> new SegnalazioneDaoImpl();
+    istantiators.put(new Retriever.RetriverKey(SegnalazioneDao.class.getName()),
+        segnalazioneIstantiator);
+    GenericProducer<PartecipazioneDao> partecipazioneIstantiator =
+        () -> new PartecipazioneDaoImpl();
+    istantiators.put(new Retriever.RetriverKey(PartecipazioneDao.class.getName()),
+        partecipazioneIstantiator);
+
+     */
 
 
     return istantiators;
