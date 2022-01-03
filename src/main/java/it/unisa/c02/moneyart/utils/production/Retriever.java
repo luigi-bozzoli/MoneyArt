@@ -32,12 +32,12 @@ public class Retriever {
    * @param interfaccia l'interfaccia da istanziare
    * @return l'oggetto che implementa l'interfaccia, viene usata l'implementazione di default
    */
-  public static Object getIstance(Class<?> interfaccia) {
+  public static <T> T getIstance(Class<T> interfaccia) {
     if (producers == null) {
       throw new IllegalStateException("i produttori non sono stati settati");
     }
     RetriverKey key = new RetriverKey(interfaccia.getName());
-    GenericProducer<?> producer = producers.get(key);
+    GenericProducer<T> producer = (GenericProducer<T>) producers.get(key);
     if (producer == null) {
       throw new IllegalArgumentException(
           "non è presente un produttore per l'interfaccia " + interfaccia.getName());
@@ -52,12 +52,12 @@ public class Retriever {
    * @param qualificatore usato per distinguere fra le possibili implementazioni disponibili dell'interfaccia
    * @return l'oggetto che implementa l'interfaccia
    */
-  public static Object getIstance(Class<?> interfaccia, String qualificatore) {
+  public static <T> T getIstance(Class<T> interfaccia, String qualificatore) {
     if (producers == null) {
       throw new IllegalStateException("i produttori non sono stati settati");
     }
     RetriverKey key = new RetriverKey(interfaccia.getName(), qualificatore);
-    GenericProducer<?> producer = producers.get(key);
+    GenericProducer<T> producer = (GenericProducer<T>) producers.get(key);
     if (producer == null) {
       throw new IllegalArgumentException(
           "non è presente un produttore per l'interfaccia " + interfaccia.getName());
@@ -88,7 +88,6 @@ public class Retriever {
      * il qualificatore verrà impostato come default.
      *
      * @param interfaceName il nome dell'interfaccia
-     *
      */
     public RetriverKey(String interfaceName) {
       this.interfaceName = interfaceName;
