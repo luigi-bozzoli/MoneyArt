@@ -48,6 +48,7 @@ h1,h2,h3,h4,h5,h6,p,ol,ul{
 .signup-input .input-icon input{
     outline: none;
     border: none;
+    width: 100%;
 }
 
 .input-icon i{

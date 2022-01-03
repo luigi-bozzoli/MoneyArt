@@ -16,9 +16,9 @@ public class Segnalazione {
    * @param commento eventuale commento della segnalazione
    * @param letta indica se la segnalazione è stata letta
    */
-  public Segnalazione(Integer idAsta, String commento, boolean letta) {
+  public Segnalazione(Asta asta, String commento, boolean letta) {
     this.id = Segnalazione.NO_ID;
-    this.idAsta = idAsta;
+    this.asta = asta;
     this.commento = commento;
     this.letta = letta;
   }
@@ -52,17 +52,17 @@ public class Segnalazione {
    *
    * @return identificativo dell'asta segnalata.
    */
-  public Integer getIdAsta() {
-    return idAsta;
+  public Asta getAsta() {
+    return asta;
   }
 
   /**
    * Imposta l'identificativo dell'asta segnalata.
    *
-   * @param idAsta identificativo dell'asta segnalata
+   * @param asta identificativo dell'asta segnalata
    */
-  public void setIdAsta(Integer idAsta) {
-    this.idAsta = idAsta;
+  public void setAsta(Asta asta) {
+    this.asta = asta;
   }
 
   /**
@@ -104,7 +104,7 @@ public class Segnalazione {
   public static final int NO_ID = -1;
 
   private Integer id;
-  private Integer idAsta;
+  private Asta asta;
   private String commento;
   private boolean letta;
 
