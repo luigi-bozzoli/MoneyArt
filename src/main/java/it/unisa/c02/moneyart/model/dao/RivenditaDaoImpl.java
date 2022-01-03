@@ -174,6 +174,14 @@ public class RivenditaDaoImpl implements RivenditaDao {
         }
     }
 
+    /**
+     * Metodo privato per restituire un singolo oggetto Rivendita dopo aver
+     * effettuato un'interrogazione al db.
+     *
+     * @param rs il ResultSet
+     * @return l'oggetto Segnalazione
+     * @throws SQLException l'eccezione sql lanciata in caso di errore
+     */
     private Rivendita getSingleResultFromResultSet(ResultSet rs) throws SQLException {
         Rivendita rivendita = null;
         if (rs.next()) {
@@ -193,6 +201,14 @@ public class RivenditaDaoImpl implements RivenditaDao {
         return rivendita;
     }
 
+    /**
+     * Metodo privato per restituire una collezione di oggetti Rivendita
+     * dopo aver effettuato un'interrogazione al db.
+     *
+     * @param rs il ResultSet
+     * @return la collezione di oggetti Segnalazione
+     * @throws SQLException l'eccezione sql lanciata in caso di errore
+     */
     private List<Rivendita> getMultipleResultFromResultSet(ResultSet rs) throws SQLException {
         List<Rivendita> rivendite = new ArrayList<>();
         while (rs.next()) {
