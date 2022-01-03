@@ -105,8 +105,8 @@ public class Asta {
    *
    * @return idOpera
    */
-  public Integer getIdOpera() {
-    return idOpera.getId();
+  public Opera getIdOpera() {
+    return idOpera;
   }
 
   /**
@@ -125,7 +125,7 @@ public class Asta {
    */
   public String toString() {
     return "id: " + this.id + "Data inizio: " + this.dataInizio + "Data fine: " +  this.dataFine
-      + "Stato: " + this.stato + "id opera: " + getIdOpera();
+      + "Stato: " + this.stato + "id opera: " + idOpera.getId();
   }
 
   /**

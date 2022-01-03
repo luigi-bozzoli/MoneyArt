@@ -52,8 +52,8 @@ public class Partecipazione {
      *
      * @return identificativo dell'asta a cui l'utente ha partecipato
      */
-    public Integer getIdAsta() {
-        return idAsta.getId();
+    public Asta getIdAsta() {
+        return idAsta;
     }
 
     /**
@@ -70,8 +70,8 @@ public class Partecipazione {
      *
      * @return identificativo dell'utente che ha partecipato all'asta
      */
-    public Integer getIdUtente() {
-        return idUtente.getId();
+    public Utente getIdUtente() {
+        return idUtente;
     }
 
     /**

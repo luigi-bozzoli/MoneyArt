@@ -82,8 +82,15 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
       while (rs.next()) {
         partecipazione.setId(rs.getObject("id", Integer.class));
-        partecipazione.setIdUtente(rs.getObject("id_utente", Integer.class));
-        partecipazione.setIdAsta(rs.getObject("id_asta", Integer.class));
+
+        Utente utente = new Utente();
+        utente.setId(rs.getObject("id_utente", Integer.class));
+        partecipazione.setIdUtente(utente);
+
+        Asta asta = new Asta();
+        asta.setId(rs.getObject("id_asta", Integer.class));
+        partecipazione.setIdAsta(asta);
+
         partecipazione.setOfferta(rs.getObject("offerta", Double.class));
 
       }
@@ -121,8 +128,15 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
         Partecipazione partecipazione = new Partecipazione();
 
         partecipazione.setId(rs.getObject("id", Integer.class));
-        partecipazione.setIdUtente(rs.getObject("id_utente", Integer.class));
-        partecipazione.setIdAsta(rs.getObject("id_asta", Integer.class));
+
+        Utente utente = new Utente();
+        utente.setId(rs.getObject("id_utente", Integer.class));
+        partecipazione.setIdUtente(utente);
+
+        Asta asta = new Asta();
+        asta.setId(rs.getObject("id_asta", Integer.class));
+        partecipazione.setIdAsta(asta);
+
         partecipazione.setOfferta(rs.getObject("offerta", Double.class));
         partecipanti.add(partecipazione);
 
@@ -137,11 +151,11 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
   /**
    * Ricerca nel database tutti gli utenti che hanno partecipato ad un'asta.
    *
-   * @param id identificativo di un'asta
+   * @param asta identificativo di un'asta
    * @return la collezione di utenti trovata nel database
    */
   @Override
-  public List<Utente> doRetrieveByUserId(int id) {
+  public List<Utente> doRetrieveByAuctionId(Asta asta) {
     String retrieveSql = "select id_utente from" + TABLE_NAME
         + " where id_asta = ? ";
 
@@ -150,6 +164,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
 
+      preparedStatement.setInt(1, asta.getId());
       utenti = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
 
@@ -175,11 +190,11 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
   /**
    * Restituisce tutte le aste a cui ha partecipato un utente.
    *
-   * @param id identificativo di un utente
+   * @param utente identificativo di un utente
    * @return la collezione di aste trovate nel database
    */
   @Override
-  public List<Asta> doRetrieveByAuctionId(int id) {
+  public List<Asta> doRetrieveByUserId(Utente utente) {
     String retrieveSql = "select id_asta from" + TABLE_NAME
         + " where id_utente = ? ";
 
@@ -188,6 +203,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
 
+      preparedStatement.setInt(1, utente.getId());
       aste = new ArrayList<>();
       ResultSet rs = preparedStatement.executeQuery();
 
