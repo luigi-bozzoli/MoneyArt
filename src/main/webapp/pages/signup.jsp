@@ -27,6 +27,11 @@
 <body>
     <%@include file="../static/fragments/header.jsp"%>
 
+    <div class="page-heading">
+        <h1>Crea un nuovo account</h1>
+        <span class="line-break"></span>
+    </div>
+
     <div class="signup-box">
         <img class="signup-logo" src="<%=request.getContextPath()%>/static/image/logo-moneyart.png" alt="Logo MoneyArt">
         <form class="signup" method="post" name="signup">

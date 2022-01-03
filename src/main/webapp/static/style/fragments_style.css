@@ -1,3 +1,48 @@
+body,
+html{font-size: 16px; box-sizing: border-box; margin: 0; padding: 0;}
+*,*::before, *::after{box-sizing: border-box;}
+h1,h2,h3,h4,h5,h6,p,ol,ul{margin: 0; padding: 0;}
+ol, ul{list-style-type: none;}
+img{height: auto;}
+
+/* Base */
+body{
+    font-family: 'Inter', sans-serif !important;
+    overflow-x: hidden;
+}
+
+h1,h2,h3,h4,h5,h6,p,ol,ul{
+    color: #454545 !important;
+    margin-bottom: 20px;
+}
+
+h1{font-size: 60px !important; line-height: 1 !important; font-weight: 800 !important;}
+h2{font-size: 40px !important; line-height: 1.3 !important; font-weight: 800 !important;}
+h3{font-size: 30px !important; line-height: 1.3 !important; font-weight: 800 !important;}
+h4{font-size: 25px !important; line-height: 1.3 !important; font-weight: 800 !important;}
+h5{font-size: 20px !important; line-height: 1.3 !important; font-weight: 800 !important;}
+h6{font-size: 15px !important; line-height: 1.3 !important; font-weight: 800 !important;}
+
+img{width: 100%; height: auto;}
+
+a{text-decoration: none;}
+
+@media screen and (max-width: 1200px) {
+    h1{font-size: 50px !important;}
+    h2{font-size: 35px !important;}
+    h3{font-size: 28px !important;}
+    p,ul,ol{font-size: 14px !important;}
+}
+
+@media screen and (max-width: 768px) {
+    h1{font-size: 40px !important;}
+    h2{font-size: 30px !important;}
+    h3{font-size: 25px !important;}
+    p,ul,ol{font-size: 12px !important;}
+}
+
+/*Header & Navbar*/
+
 .navbar-brand img {
     margin-right: 30px;
     width: 150px;
@@ -5,7 +50,6 @@
 
 .navbar li a {
     font-size: 20px;
-    ;
     margin-left: 8px;
     margin-right: 8px;
 }
@@ -159,4 +203,22 @@ p.payment-method {
 .list-unstyled {
     margin-top: 40px;
     margin-bottom: auto;
+}
+
+/* Utils */
+
+.page-heading h1{
+    text-align: center;
+    font-weight: 300 !important;
+    font-size: 40px !important;
+    margin-top: 4vh;
+    margin-bottom: 0;
+}
+
+.line-break{
+    border-bottom: 2px solid #BB371A;
+    width: 50px;
+    height: 5px;
+    display: block;
+    margin: auto auto 40px;
 }
