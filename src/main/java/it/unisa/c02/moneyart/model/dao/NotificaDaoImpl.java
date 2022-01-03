@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 public class NotificaDaoImpl implements NotificaDao {
 
 
-  public NotificaDaoImpl(){
+  public NotificaDaoImpl() {
     this.ds = (DataSource) Retriever.getIstance(DataSource.class);
   }
 
@@ -44,13 +44,13 @@ public class NotificaDaoImpl implements NotificaDao {
   public void doCreate(Notifica item) {
 
 
-    String insertSql = "INSERT INTO " + TABLE_NAME
+    String sql = "INSERT INTO " + TABLE_NAME
         + "(id_utente,id_rivendita,id_asta ,letta, tipo,contenuto) "
         + " VALUES(?, ? , ?, ?, ?, ?) ";
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql,
+         PreparedStatement preparedStatement = connection.prepareStatement(sql,
              PreparedStatement.RETURN_GENERATED_KEYS)) {
       preparedStatement.setObject(1, item.getIdUtente(), Types.INTEGER);
       preparedStatement.setObject(2, item.getIdRivendita(), Types.INTEGER);
@@ -65,7 +65,6 @@ public class NotificaDaoImpl implements NotificaDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
 
 
@@ -79,14 +78,14 @@ public class NotificaDaoImpl implements NotificaDao {
    */
   @Override
   public Notifica doRetrieveById(int id) {
-    String insertSql =
+    String sql =
         "select * from " + TABLE_NAME
             + " where id = ? ";
     Notifica notifica = null;
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
@@ -103,12 +102,11 @@ public class NotificaDaoImpl implements NotificaDao {
 
 
       }
-      return notifica;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+    return notifica;
   }
 
   /**
@@ -120,12 +118,15 @@ public class NotificaDaoImpl implements NotificaDao {
    */
   @Override
   public List<Notifica> doRetrieveAll(String filter) {
-    String insertSql = "select * from " + TABLE_NAME;
+    String sql = "select * from " + TABLE_NAME;
     List<Notifica> notifiche = null;
+    if (filter != null && !filter.equals("")) {
+      sql += " ORDER BY " + filter;
+    }
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       notifiche = new ArrayList<>();
 
       ResultSet rs = preparedStatement.executeQuery();
@@ -143,12 +144,11 @@ public class NotificaDaoImpl implements NotificaDao {
 
 
       }
-      return notifiche;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+    return notifiche;
   }
 
   /**
@@ -158,13 +158,13 @@ public class NotificaDaoImpl implements NotificaDao {
    */
   @Override
   public void doUpdate(Notifica item) {
-    String insertSql = "UPDATE " + TABLE_NAME
+    String sql = "UPDATE " + TABLE_NAME
         + " set id_utente = ?, id_rivendita = ? ,id_asta = ? , letta = ?, tipo = ?,contenuto = ? "
         + " where id = ?";
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setObject(1, item.getIdUtente(), Types.INTEGER);
       preparedStatement.setObject(2, item.getIdRivendita(), Types.INTEGER);
       preparedStatement.setObject(3, item.getIdAsta(), Types.INTEGER);
@@ -176,7 +176,6 @@ public class NotificaDaoImpl implements NotificaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
   }
 
@@ -187,12 +186,12 @@ public class NotificaDaoImpl implements NotificaDao {
    */
   @Override
   public void doDelete(Notifica item) {
-    String insertSql = "delete from " + TABLE_NAME
+    String sql = "delete from " + TABLE_NAME
         + " where id = ? ";
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setObject(1, item.getId(), Types.INTEGER);
 
       preparedStatement.executeUpdate();
@@ -200,7 +199,6 @@ public class NotificaDaoImpl implements NotificaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
 
   }
@@ -213,12 +211,12 @@ public class NotificaDaoImpl implements NotificaDao {
    */
   @Override
   public List<Notifica> doRetriveAllByUtente(Utente utente) {
-    String insertSql = "select * from " + TABLE_NAME + " where id_utente = ? ";
+    String sql = "select * from " + TABLE_NAME + " where id_utente = ? ";
     List<Notifica> notifiche = null;
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setInt(1, utente.getId());
       notifiche = new ArrayList<>();
 
@@ -237,12 +235,11 @@ public class NotificaDaoImpl implements NotificaDao {
 
 
       }
-      return notifiche;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+    return notifiche;
   }
 
   /**
@@ -253,12 +250,12 @@ public class NotificaDaoImpl implements NotificaDao {
    */
   @Override
   public List<Notifica> doRetriveAllByAsta(Asta asta) {
-    String insertSql = "select * from " + TABLE_NAME + " where id_asta = ? ";
+    String sql = "select * from " + TABLE_NAME + " where id_asta = ? ";
     List<Notifica> notifiche = null;
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setInt(1, asta.getId());
       notifiche = new ArrayList<>();
 
@@ -277,12 +274,11 @@ public class NotificaDaoImpl implements NotificaDao {
 
 
       }
-      return notifiche;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+    return notifiche;
   }
 
   /**
@@ -293,12 +289,12 @@ public class NotificaDaoImpl implements NotificaDao {
    */
   @Override
   public List<Notifica> doRetiveAllByRivendita(Rivendita rivendita) {
-    String insertSql = "select * from " + TABLE_NAME + " where id_rivendita = ? ";
-    List<Notifica> notifiche;
+    String sql = "select * from " + TABLE_NAME + " where id_rivendita = ? ";
+    List<Notifica> notifiche = null;
 
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setInt(1, rivendita.getId());
       notifiche = new ArrayList<>();
 
@@ -317,12 +313,11 @@ public class NotificaDaoImpl implements NotificaDao {
 
 
       }
-      return notifiche;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+    return notifiche;
   }
 
 
