@@ -17,8 +17,8 @@ public class Opera {
    * @param descrizione descrizione dell'opera
    * @param stato       stato dell'opera (all'asta, in vendita, in possesso)
    * @param immagine    immagine dell'opera
-   * @param possessore  id dell'utente che possiede l'opera
-   * @param artista     id dell'artista (utente creatore dell'opera)
+   * @param possessore  l'utente che possiede l'opera
+   * @param artista     l'artista (utente creatore dell'opera)
    * @param certificato identificativo del certificato dell'opera
    * @param prezzo      prezzo dell'opera
    */

@@ -8,7 +8,7 @@ import java.util.Map;
 public class Retriever {
 
 
-  private static Map<RetriverKey, GenericProducer<?>> producers;
+  private static Map<RetrieverKey, GenericProducer<?>> producers;
 
   /**
    * Setta le interfacce restituibili dalla classe, una volta settate è impossibile modificarle.
@@ -16,7 +16,7 @@ public class Retriever {
    * @param newProducers mappa che associa il nome completo di un interfaccia
    *                     a un oggetto che produce oggetti che implementano quell'interfaccia
    */
-  public static void setProducers(Map<RetriverKey, GenericProducer<?>> newProducers) {
+  public static void setProducers(Map<RetrieverKey, GenericProducer<?>> newProducers) {
 
     if (producers == null) {
       producers = newProducers;
@@ -36,7 +36,7 @@ public class Retriever {
     if (producers == null) {
       throw new IllegalStateException("i produttori non sono stati settati");
     }
-    RetriverKey key = new RetriverKey(interfaccia.getName());
+    RetrieverKey key = new RetrieverKey(interfaccia.getName());
     GenericProducer<T> producer = (GenericProducer<T>) producers.get(key);
     if (producer == null) {
       throw new IllegalArgumentException(
@@ -49,14 +49,15 @@ public class Retriever {
    * Restituisce un istanza di un oggetto che implementa un interfaccia.
    *
    * @param interfaccia   l'interfaccia da istanziare
-   * @param qualificatore usato per distinguere fra le possibili implementazioni disponibili dell'interfaccia
+   * @param qualificatore usato per distinguere fra le
+   *                      possibili implementazioni disponibili dell'interfaccia
    * @return l'oggetto che implementa l'interfaccia
    */
   public static <T> T getIstance(Class<T> interfaccia, String qualificatore) {
     if (producers == null) {
       throw new IllegalStateException("i produttori non sono stati settati");
     }
-    RetriverKey key = new RetriverKey(interfaccia.getName(), qualificatore);
+    RetrieverKey key = new RetrieverKey(interfaccia.getName(), qualificatore);
     GenericProducer<T> producer = (GenericProducer<T>) producers.get(key);
     if (producer == null) {
       throw new IllegalArgumentException(
@@ -69,7 +70,7 @@ public class Retriever {
    * è una coppia di due stringhe,
    * usata come chiave per individuare il produttore di una specifica interfaccia.
    */
-  public static class RetriverKey {
+  public static class RetrieverKey {
 
     /**
      * Istanzia la coppia specificando entrambi i valori.
@@ -78,7 +79,7 @@ public class Retriever {
      * @param qualificatore stringa usata per distinguere
      *                      specifici produttori della stessa interfaccia
      */
-    public RetriverKey(String interfaceName, String qualificatore) {
+    public RetrieverKey(String interfaceName, String qualificatore) {
       this.interfaceName = interfaceName;
       this.qualificatore = qualificatore;
     }
@@ -89,7 +90,7 @@ public class Retriever {
      *
      * @param interfaceName il nome dell'interfaccia
      */
-    public RetriverKey(String interfaceName) {
+    public RetrieverKey(String interfaceName) {
       this.interfaceName = interfaceName;
       this.qualificatore = DEFAULT_QUALIFIER;
     }

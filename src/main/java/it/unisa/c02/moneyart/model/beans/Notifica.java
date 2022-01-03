@@ -18,9 +18,9 @@ public class Notifica {
   /**
    * Costruttore della classe Notifica.
    *
-   * @param idUtente    identificativo del destinatario
-   * @param idAsta      identificativo dell'asta a cui l'opera si riferisce
-   * @param idRivendita identificativo della rivendita a cui l'opera si riferisce
+   * @param idUtente    il destinatario
+   * @param idAsta      l'asta a cui l'opera si riferisce
+   * @param idRivendita la rivendita a cui l'opera si riferisce
    * @param tipo        descrive il tipo della notifica,
    *                    ovvero la motivazione della sua creazione
    * @param contenuto   il contenuto della notifica

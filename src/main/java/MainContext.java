@@ -1,4 +1,3 @@
-import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
@@ -45,8 +44,8 @@ public class MainContext implements ServletContextListener {
     } catch (NamingException e) {
       e.printStackTrace();
     }
-    Map<Retriever.RetriverKey, GenericProducer<?>> istantiators = inizializeProducers();
-    Retriever.setProducers(istantiators);
+    Map<Retriever.RetrieverKey, GenericProducer<?>> producers = inizializeProducers();
+    Retriever.setProducers(producers);
 
     context.setAttribute("DataSource", ds);
     System.out.println("DataSource creation: " + ds.toString());
@@ -62,8 +61,8 @@ public class MainContext implements ServletContextListener {
     System.out.println("DataSource deletion: " + ds.toString());
   }
 
-  private HashMap<Retriever.RetriverKey, GenericProducer<?>> inizializeProducers() {
-    HashMap<Retriever.RetriverKey, GenericProducer<?>> istantiators = new HashMap<>();
+  private HashMap<Retriever.RetrieverKey, GenericProducer<?>> inizializeProducers() {
+    HashMap<Retriever.RetrieverKey, GenericProducer<?>> producers = new HashMap<>();
 
     //creazione DataSource
     try {
@@ -73,7 +72,7 @@ public class MainContext implements ServletContextListener {
 
       DataSource ds = (DataSource) envCtx.lookup("jdbc/storage");
       GenericProducer<DataSource> dataSourceInstantiator = () -> ds;
-      istantiators.put(new Retriever.RetriverKey(DataSource.class.getName()),
+      producers.put(new Retriever.RetrieverKey(DataSource.class.getName()),
           dataSourceInstantiator);
 
 
@@ -81,28 +80,28 @@ public class MainContext implements ServletContextListener {
       e.printStackTrace();
     }
 
-    /*
-    GenericProducer<NotificaDao> notificaIstantiator = () -> new NotificaDaoImpl();
-    istantiators.put(new Retriever.RetriverKey(NotificaDao.class.getName()), notificaIstantiator);
-    GenericProducer<AstaDao> astaIstantiator = () -> new AstaDaoImpl();
-    istantiators.put(new Retriever.RetriverKey(AstaDao.class.getName()), astaIstantiator);
-    GenericProducer<UtenteDAO> utenteIstantiator = () -> new UtenteDaoImpl();
-    istantiators.put(new Retriever.RetriverKey(UtenteDAO.class.getName()), utenteIstantiator);
-    GenericProducer<OperaDao> operaIstantiator = () -> new OperaDaoImpl();
-    istantiators.put(new Retriever.RetriverKey(OperaDao.class.getName()), operaIstantiator);
-    GenericProducer<RivenditaDao> rivenditaIstantiator = () -> new RivenditaDaoImpl();
-    istantiators.put(new Retriever.RetriverKey(RivenditaDao.class.getName()), rivenditaIstantiator);
-    GenericProducer<SegnalazioneDao> segnalazioneIstantiator = () -> new SegnalazioneDaoImpl();
-    istantiators.put(new Retriever.RetriverKey(SegnalazioneDao.class.getName()),
-        segnalazioneIstantiator);
-    GenericProducer<PartecipazioneDao> partecipazioneIstantiator =
+
+    GenericProducer<NotificaDao> notificaProducer = () -> new NotificaDaoImpl();
+    producers.put(new Retriever.RetrieverKey(NotificaDao.class.getName()), notificaProducer);
+    GenericProducer<AstaDao> astaProducer = () -> new AstaDaoImpl();
+    producers.put(new Retriever.RetrieverKey(AstaDao.class.getName()), astaProducer);
+    GenericProducer<UtenteDAO> utenteProducer = () -> new UtenteDaoImpl();
+    producers.put(new Retriever.RetrieverKey(UtenteDAO.class.getName()), utenteProducer);
+    GenericProducer<OperaDao> operaProducer = () -> new OperaDaoImpl();
+    producers.put(new Retriever.RetrieverKey(OperaDao.class.getName()), operaProducer);
+    GenericProducer<RivenditaDao> rivenditaProducer = () -> new RivenditaDaoImpl();
+    producers.put(new Retriever.RetrieverKey(RivenditaDao.class.getName()), rivenditaProducer);
+    GenericProducer<SegnalazioneDao> segnalazioneProducer = () -> new SegnalazioneDaoImpl();
+    producers.put(new Retriever.RetrieverKey(SegnalazioneDao.class.getName()),
+        segnalazioneProducer);
+    GenericProducer<PartecipazioneDao> partecipazioneProducer =
         () -> new PartecipazioneDaoImpl();
-    istantiators.put(new Retriever.RetriverKey(PartecipazioneDao.class.getName()),
-        partecipazioneIstantiator);
+    producers.put(new Retriever.RetrieverKey(PartecipazioneDao.class.getName()),
+        partecipazioneProducer);
 
-     */
+    
 
 
-    return istantiators;
+    return producers;
   }
 }
