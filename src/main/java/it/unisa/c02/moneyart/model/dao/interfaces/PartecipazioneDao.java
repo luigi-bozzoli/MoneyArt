@@ -10,7 +10,20 @@ import java.util.List;
  */
 
 public interface PartecipazioneDao extends GenericDao<Partecipazione>{
-  public List<Double> doRetrieveOffers(int id);
-  public List<Asta> doRetrieveByUserId(int id);
-  public List<Utente> doRetrieveByAuctionId(int id);
+
+  /**
+   * Ricerca tutte le partecipazioni relative ad un utente.
+   *
+   * @param id identificativo di un utente
+   * @return la collezione di partecipazioni trovata nel database
+   */
+  List<Partecipazione> doRetrieveAllByUserId(int id);
+
+  /**
+   * Ricerca nel database tutte le partecipazioni relative ad un'asta.
+   *
+   * @param id identificativo di un'asta
+   * @return la collezione di partecipazioni trovata nel database
+   */
+  List<Partecipazione> doRetrieveAllByAuctionId(int id);
 }

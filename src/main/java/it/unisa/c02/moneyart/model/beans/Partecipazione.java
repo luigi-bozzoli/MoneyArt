@@ -12,14 +12,14 @@ public class Partecipazione {
     /**
      * Costruttore della classe Partecipazione.
      *
-     * @param idAsta identificativo dell'asta a cui l'utente ha partecipato
-     * @param idUtente identificativo dell'utente che ha partecipato all'asta
+     * @param Asta identificativo dell'asta a cui l'utente ha partecipato
+     * @param Utente identificativo dell'utente che ha partecipato all'asta
      * @param offerta offerta dell'utente
      */
-    public Partecipazione(Asta idAsta, Utente idUtente, double offerta) {
+    public Partecipazione(Asta Asta, Utente Utente, double offerta) {
         this.id = Partecipazione.NO_ID;
-        this.idAsta = idAsta;
-        this.idUtente = idUtente;
+        this.asta = Asta;
+        this.utente = Utente;
         this.offerta = offerta;
     }
 
@@ -52,17 +52,17 @@ public class Partecipazione {
      *
      * @return identificativo dell'asta a cui l'utente ha partecipato
      */
-    public Asta getIdAsta() {
-        return idAsta;
+    public Asta getAsta() {
+        return asta;
     }
 
     /**
      * Imposta l'identificativo dell'asta a cui l'utente ha partecipato.
      *
-     * @param idAsta identificativo dell'asta a cui l'utente ha partecipato
+     * @param asta identificativo dell'asta a cui l'utente ha partecipato
      */
-    public void setIdAsta(Asta idAsta) {
-        this.idAsta = idAsta;
+    public void setAsta(Asta asta) {
+        this.asta = asta;
     }
 
     /**
@@ -70,17 +70,17 @@ public class Partecipazione {
      *
      * @return identificativo dell'utente che ha partecipato all'asta
      */
-    public Utente getIdUtente() {
-        return idUtente;
+    public Utente getUtente() {
+        return utente;
     }
 
     /**
      * Imposta l'identificativo dell'utente che ha partecipato all'asta.
      *
-     * @param idUtente identificativo dell'utente che ha partecipato all'asta
+     * @param utente identificativo dell'utente che ha partecipato all'asta
      */
-    public void setIdUtente(Utente idUtente) {
-        this.idUtente = idUtente;
+    public void setUtente(Utente utente) {
+        this.utente = utente;
     }
 
     /**
@@ -104,8 +104,8 @@ public class Partecipazione {
     public static final int NO_ID = -1;
 
     private Integer id;
-    private Asta idAsta;
-    private Utente idUtente;
+    private Asta asta;
+    private Utente utente;
     private double offerta;
 
 }
