@@ -1,3 +1,5 @@
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteServiceImpl;
 import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
@@ -98,8 +100,8 @@ public class MainContext implements ServletContextListener {
         () -> new PartecipazioneDaoImpl();
     producers.put(new Retriever.RetrieverKey(PartecipazioneDao.class.getName()),
         partecipazioneProducer);
-
-    
+    GenericProducer<UtenteService> utenteServiceProducer = () -> new UtenteServiceImpl();
+    producers.put(new Retriever.RetrieverKey(UtenteService.class.getName()), utenteServiceProducer);
 
 
     return producers;
