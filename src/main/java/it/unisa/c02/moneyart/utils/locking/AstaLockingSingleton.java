@@ -1,4 +1,4 @@
-package it.unisa.c02.moneyart.utils.astaLocking;
+package it.unisa.c02.moneyart.utils.locking;
 
 import it.unisa.c02.moneyart.model.beans.Asta;
 import java.util.HashMap;
