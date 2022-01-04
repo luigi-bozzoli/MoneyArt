@@ -184,7 +184,7 @@ public class NotificaDaoImpl implements NotificaDao {
    * @return tutte le notifiche destinate a utente
    */
   @Override
-  public List<Notifica> doRetrieveAllByUtenteId(int id) {
+  public List<Notifica> doRetrieveAllByUserId(int id) {
     String sql = "select * from " + TABLE_NAME + " where id_utente = ? ";
     List<Notifica> notifiche = null;
 
@@ -210,7 +210,7 @@ public class NotificaDaoImpl implements NotificaDao {
    * @return tutte le notifiche che fanno riferimento ad asta
    */
   @Override
-  public List<Notifica> doRetrieveAllByAstaId(int id) {
+  public List<Notifica> doRetrieveAllByAuctionId(int id) {
     String sql = "select * from " + TABLE_NAME + " where id_asta = ? ";
     List<Notifica> notifiche = null;
 

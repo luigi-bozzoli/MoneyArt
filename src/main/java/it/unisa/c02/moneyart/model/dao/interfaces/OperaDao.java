@@ -1,7 +1,6 @@
 package it.unisa.c02.moneyart.model.dao.interfaces;
 
 import it.unisa.c02.moneyart.model.beans.Opera;
-import it.unisa.c02.moneyart.model.beans.Utente;
 import java.util.List;
 
 /**
@@ -15,7 +14,7 @@ public interface OperaDao extends GenericDao<Opera> {
    * @param id l'id dell'utente possessore delle opere
    * @return tutte le opere in possesso dell'utente
    */
-  List<Opera> doRetrieveAllByPossessoreId(int id);
+  List<Opera> doRetrieveAllByOwnerId(int id);
 
   /**
    * Restituisce tutte le opere create dall'utente.
@@ -23,6 +22,6 @@ public interface OperaDao extends GenericDao<Opera> {
    * @param id l'id dell'utente creatore delle opere
    * @return tutte le opere create dall'utente
    */
-  List<Opera> doRetrieveAllByArtistaId(int id);
+  List<Opera> doRetrieveAllByArtistId(int id);
 
 }

@@ -14,7 +14,7 @@ public interface NotificaDao extends GenericDao<Notifica> {
    * @param id l'id del destinatario delle notifiche
    * @return tutte le notifiche destinate a utente
    */
-  List<Notifica> doRetrieveAllByUtenteId(int id);
+  List<Notifica> doRetrieveAllByUserId(int id);
 
   /**
    * Restituisce tutte le notifiche che fanno riferimento ad una specifica asta.
@@ -22,7 +22,7 @@ public interface NotificaDao extends GenericDao<Notifica> {
    * @param id l'id dell'asta a cui devono far riferimento le notifiche
    * @return tutte le notifiche che fanno riferimento ad asta
    */
-  List<Notifica> doRetrieveAllByAstaId(int id);
+  List<Notifica> doRetrieveAllByAuctionId(int id);
 
   /**
    * Restituisce tutte le notifiche che fanno riferimento ad una specifica rivendita.

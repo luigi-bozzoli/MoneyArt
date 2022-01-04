@@ -184,7 +184,7 @@ public class OperaDaoImpl implements OperaDao {
    * @return tutte le opere in possesso dell'utente
    */
   @Override
-  public List<Opera> doRetrieveAllByPossessoreId(int id) {
+  public List<Opera> doRetrieveAllByOwnerId(int id) {
     String retrieveSql = "SELECT * FROM " + TABLE_NAME
         + " WHERE id_utente = ?";
     List<Opera> opere = null;
@@ -210,7 +210,7 @@ public class OperaDaoImpl implements OperaDao {
    * @return tutte le opere create dall'utente
    */
   @Override
-  public List<Opera> doRetrieveAllByArtistaId(int id) {
+  public List<Opera> doRetrieveAllByArtistId(int id) {
     String retrieveSql = "SELECT * FROM " + TABLE_NAME
         + " WHERE id_artista = ?";
     List<Opera> opere = null;
