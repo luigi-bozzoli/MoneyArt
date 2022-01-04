@@ -6,9 +6,9 @@ import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.List;
 
 public class UtenteServiceImpl implements UtenteService {
@@ -39,8 +39,7 @@ public class UtenteServiceImpl implements UtenteService {
       e.printStackTrace();
     }
     Utente utente = utenteDao.doRetrieveByUsername(username);
-
-    if (utente != null && utente.getPassword().equals(pswC)) {
+    if (utente != null && Arrays.equals(utente.getPassword(), pswC)) {
       return utente;
     } else {
       return null;
@@ -53,7 +52,10 @@ public class UtenteServiceImpl implements UtenteService {
     if (utente == null) {
       return null;
     }
-    utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+    if (utente.getSeguito().getId() != null) {
+
+      utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+    }
     utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
     utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
     utente.setNotifiche(notificaDao.doRetrieveAllByUserId(utente.getId()));

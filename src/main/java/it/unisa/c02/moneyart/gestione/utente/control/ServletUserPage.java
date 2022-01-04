@@ -3,10 +3,13 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "ServletUserPage", value = "/userPage")
 public class ServletUserPage extends HttpServlet {
