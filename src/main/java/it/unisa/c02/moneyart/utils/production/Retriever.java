@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.utils.production;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * classe che si occupa di restituire oggetti data l'interfaccia che devono implementare.
@@ -93,6 +94,23 @@ public class Retriever {
     public RetrieverKey(String interfaceName) {
       this.interfaceName = interfaceName;
       this.qualificatore = DEFAULT_QUALIFIER;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      RetrieverKey that = (RetrieverKey) o;
+      return interfaceName.equals(that.interfaceName) && qualificatore.equals(that.qualificatore);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(interfaceName, qualificatore);
     }
 
     private String interfaceName;
