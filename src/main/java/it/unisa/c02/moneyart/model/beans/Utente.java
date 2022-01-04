@@ -23,7 +23,7 @@ public class Utente {
    * @param saldo       saldo dell'utente
    */
   public Utente(String nome, String cognome, Blob fotoProfilo,
-                String email, String username, Utente seguito, String password, Float saldo) {
+                String email, String username, Utente seguito, byte[] password, Float saldo) {
     this.id = null;
     this.nome = nome;
     this.cognome = cognome;
@@ -154,7 +154,7 @@ public class Utente {
    *
    * @return password cifrata dell'utente
    */
-  public String getPassword() {
+  public byte[] getPassword() {
     return password;
   }
 
@@ -163,7 +163,7 @@ public class Utente {
    *
    * @param password password cifrata in SHA256
    */
-  public void setPassword(String password) {
+  public void setPassword(byte[] password) {
     this.password = password;
   }
 
@@ -296,7 +296,7 @@ public class Utente {
   private Blob fotoProfilo;
   private String email;
   private String username;
-  private String password;
+  private byte[] password;
   private Utente seguito;
   private Float saldo;
 
