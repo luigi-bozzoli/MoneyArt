@@ -19,7 +19,7 @@ public interface UtenteDAO extends GenericDao<Utente> {
      * @param username l'username dell'utente
      * @return l'utente con quell'username
      */
-    public Utente doRetrieveByUsername(String username);
+    Utente doRetrieveByUsername(String username);
 
     /**
      * Restituisce tutti gli utenti che seguono utente
@@ -27,6 +27,6 @@ public interface UtenteDAO extends GenericDao<Utente> {
      * @param utente l'utente di cui vogliamo conoscere i follower
      * @return i follower di quell'utente
      */
-    public List<Utente> getFollowers (Utente utente);
+    List<Utente> getFollowers (Utente utente);
 
 }
