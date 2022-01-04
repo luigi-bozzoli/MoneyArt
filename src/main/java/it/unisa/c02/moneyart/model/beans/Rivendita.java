@@ -1,6 +1,8 @@
 package it.unisa.c02.moneyart.model.beans;
 
 
+import java.util.List;
+
 /**
  * Questa classe rappresenta una Rivendita legata ad un'opera.
  * Una segnalazione è caratterizzata da: id (autogenerato dal DB),
@@ -12,12 +14,12 @@ public class Rivendita {
   /**
    * Costruttore dell classe Rivendita.
    *
-   * @param opera opera a cui la rivendita fa riferimento
-   * @param stato stato della rivendita
+   * @param opera  opera a cui la rivendita fa riferimento
+   * @param stato  stato della rivendita
    * @param prezzo prezzo dell'opera rivenduta
    */
   public Rivendita(Opera opera, Stato stato, double prezzo) {
-    this.id = Rivendita.NO_ID;
+    this.id = null;
     this.opera = opera;
     this.stato = stato;
     this.prezzo = prezzo;
@@ -34,7 +36,7 @@ public class Rivendita {
    *
    * @return identificativo della rivendita
    */
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -43,7 +45,7 @@ public class Rivendita {
    *
    * @param id identificativo della rivendita
    */
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -101,10 +103,51 @@ public class Rivendita {
     this.prezzo = prezzo;
   }
 
-  private int id;
+  /**
+   * Restituisce la lista di notifiche relative alla Rivendita.
+   *
+   * @return la lista di notifiche relative alla Rivendita
+   */
+  public List<Notifica> getNotifiche() {
+    return notifiche;
+  }
+
+  /**
+   * Imposta la lista di notifiche relative alla rivendita.
+   *
+   * @param notifiche la lista di notifiche relative alla rivendita
+   */
+  public void setNotifiche(List<Notifica> notifiche) {
+    this.notifiche = notifiche;
+  }
+
+  /**
+   * Restituisce la rappresentazione sotto forma di stringa di una rivendita.
+   *
+   * @return la stringa che rappresenta rivendita
+   */
+  @Override
+  public String toString() {
+    return "Rivendita{"
+        +
+        "id=" + id
+        +
+        ", opera=" + opera
+        +
+        ", stato=" + stato
+        +
+        ", prezzo=" + prezzo
+        +
+        '}';
+  }
+
+  private Integer id;
   private Opera opera;
   private Stato stato;
   private double prezzo;
+
+  private List<Notifica> notifiche;
+
 
   /**
    * ENUM che rappresenta i possibili stati della rivendita.
@@ -116,8 +159,4 @@ public class Rivendita {
   }
 
 
-  /**
-   * costante per segnalare la mancanza di identificatore.
-   */
-  public static final int NO_ID = -1;
 }

@@ -12,12 +12,12 @@ public class Segnalazione {
   /**
    * Costruttore dell classe Segnalazione.
    *
-   * @param idAsta identificativo dell'asta segnalata
+   * @param asta l'asta segnalata
    * @param commento eventuale commento della segnalazione
    * @param letta indica se la segnalazione è stata letta
    */
   public Segnalazione(Asta asta, String commento, boolean letta) {
-    this.id = Segnalazione.NO_ID;
+    this.id = null;
     this.asta = asta;
     this.commento = commento;
     this.letta = letta;
@@ -101,7 +101,25 @@ public class Segnalazione {
     this.letta = letta;
   }
 
-  public static final int NO_ID = -1;
+  /**
+   * Restituisce la rappresentazione sotto forma di stringa di una segnalazione.
+   *
+   * @return la stringa che rappresenta segnalazione
+   */
+  @Override
+  public String toString() {
+    return "Segnalazione{"
+        +
+        "id=" + id
+        +
+        ", asta=" + asta
+        +
+        ", commento='" + commento + '\''
+        +
+        ", letta=" + letta
+        +
+        '}';
+  }
 
   private Integer id;
   private Asta asta;
