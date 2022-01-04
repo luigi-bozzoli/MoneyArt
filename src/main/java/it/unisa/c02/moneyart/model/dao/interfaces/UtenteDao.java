@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Questa classe rappresenta il DAO di un Utente.
  */
-public interface UtenteDAO extends GenericDao<Utente> {
+public interface UtenteDao extends GenericDao<Utente> {
 //signature metodi aggiuntivi.....
 
     /**

@@ -1,7 +1,7 @@
 package it.unisa.c02.moneyart.model.dao;
 
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDAO;
+import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import javax.sql.DataSource;
 import java.sql.*;
@@ -12,7 +12,7 @@ import java.util.List;
  * Implementa la classe che esplicita i metodi
  * definiti nell'interfaccia UtenteDao.
  */
-public class UtenteDaoImpl implements UtenteDAO {
+public class UtenteDaoImpl implements UtenteDao {
 
     public UtenteDaoImpl() {
         this.ds = Retriever.getIstance(DataSource.class);
