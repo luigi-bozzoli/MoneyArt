@@ -13,18 +13,18 @@ public class Utente {
   /**
    * Costruttore della classe Utente.
    *
-   * @param nome nome dell'utente
-   * @param cognome cognome dell'utente
+   * @param nome        nome dell'utente
+   * @param cognome     cognome dell'utente
    * @param fotoProfilo foto profilo dell'utente
-   * @param email email dell'utente
-   * @param username username dell'utente
-   * @param password password dell'utente
-   * @param seguito id dell'artista seguito
-   * @param saldo saldo dell'utente
+   * @param email       email dell'utente
+   * @param username    username dell'utente
+   * @param password    password dell'utente
+   * @param seguito     id dell'artista seguito
+   * @param saldo       saldo dell'utente
    */
   public Utente(String nome, String cognome, Blob fotoProfilo,
                 String email, String username, Utente seguito, String password, Float saldo) {
-    this.id = Utente.NO_ID;
+    this.id = null;
     this.nome = nome;
     this.cognome = cognome;
     this.fotoProfilo = fotoProfilo;
@@ -38,7 +38,7 @@ public class Utente {
   /**
    * Costruttore vuoto della classe Utente.
    **/
-  public Utente(){
+  public Utente() {
   }
 
   /**
@@ -239,7 +239,7 @@ public class Utente {
   }
 
   /**
-   * Imposta le opere in possesso dell'utente (vinte/acquistate)
+   * Imposta le opere in possesso dell'utente (vinte/acquistate).
    */
   public void setOpereInPossesso(List<Opera> opereInPossesso) {
     this.opereInPossesso = opereInPossesso;
@@ -253,13 +253,42 @@ public class Utente {
   }
 
   /**
-   * Imposta le partecipazioni dell'utente
+   * Imposta le partecipazioni dell'utente.
    */
   public void setPartecipazioni(List<Partecipazione> partecipazioni) {
     this.partecipazioni = partecipazioni;
   }
 
-  public static final int NO_ID = -1;
+
+  /**
+   * Restituisce la rappresentazione sotto forma di stringa di un utente.
+   *
+   * @return la stringa che rappresenta utente
+   */
+  @Override
+  public String toString() {
+    return "Utente{"
+        +
+        "id=" + id
+        +
+        ", nome='" + nome + '\''
+        +
+        ", cognome='" + cognome + '\''
+        +
+        ", fotoProfilo=" + fotoProfilo
+        +
+        ", email='" + email + '\''
+        +
+        ", username='" + username + '\''
+        +
+        ", password='" + password + '\''
+        +
+        ", seguito=" + seguito
+        +
+        ", saldo=" + saldo
+        +
+        '}';
+  }
 
   private Integer id;
   private String nome;
