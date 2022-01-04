@@ -203,6 +203,62 @@ public class Utente {
     this.saldo = saldo;
   }
 
+  /**
+   * Restituisce le opere create dall'utente (artista).
+   */
+  public List<Opera> getOpereCreate() {
+    return opereCreate;
+  }
+
+  /**
+   * Restituisce le opere in possesso dell'utente (vinte/acquistate).
+   */
+  public List<Opera> getOpereInPossesso() {
+    return opereInPossesso;
+  }
+
+  /**
+   * Restituisce le notifiche dell'utente.
+   */
+  public List<Notifica> getNotifiche() {
+    return notifiche;
+  }
+
+  /**
+   * Restituisce le partecipazioni dell'utente.
+   */
+  public List<Partecipazione> getPartecipazioni() {
+    return partecipazioni;
+  }
+
+  /**
+   * Imposta le opere create dall'utente (artista).
+   */
+  public void setOpereCreate(List<Opera> opereCreate) {
+    this.opereCreate = opereCreate;
+  }
+
+  /**
+   * Imposta le opere in possesso dell'utente (vinte/acquistate)
+   */
+  public void setOpereInPossesso(List<Opera> opereInPossesso) {
+    this.opereInPossesso = opereInPossesso;
+  }
+
+  /**
+   * Imposta le notifche dell'utente.
+   */
+  public void setNotifiche(List<Notifica> notifiche) {
+    this.notifiche = notifiche;
+  }
+
+  /**
+   * Imposta le partecipazioni dell'utente
+   */
+  public void setPartecipazioni(List<Partecipazione> partecipazioni) {
+    this.partecipazioni = partecipazioni;
+  }
+
   public static final int NO_ID = -1;
 
   private Integer id;

@@ -242,7 +242,7 @@ public class UtenteDaoImpl implements UtenteDAO {
         String sql = "SELECT U2.id, U2.id_seguito, U2.email, U2.pwd, U2.username, "+
                             "U2.nome, U2.cognome, U2.foto, U2.saldo " +
                      "FROM "+ TABLE_NAME +" as U1, "+ TABLE_NAME +" as U2 " +
-                     "WHERE U1.id = U2.id_seguito";
+                     "WHERE U1.id = U2.id_seguito ";
 
         List<Utente> utenti = null;
 
@@ -271,7 +271,7 @@ public class UtenteDaoImpl implements UtenteDAO {
         }
         return utenti;
     }
-     
+
     private  DataSource ds;
 
     private static final String TABLE_NAME = "utente";
