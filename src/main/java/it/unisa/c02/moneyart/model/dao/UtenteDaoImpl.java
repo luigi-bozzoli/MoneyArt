@@ -234,6 +234,34 @@ public class UtenteDaoImpl implements UtenteDao {
   }
 
   /**
+   * Restituisce l'utente in base all'email
+   *
+   * @param email l'email dell'utente
+   * @return l'utente con quell'email
+   */
+  @Override
+  public Utente doRetrieveByEmail(String email) {
+    String sql =
+      "select * from " + TABLE_NAME
+        + " where email = ? ";
+    Utente utente = null;
+
+
+    try (Connection connection = ds.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+      preparedStatement.setString(1, email);
+
+      ResultSet rs = preparedStatement.executeQuery();
+      utente = getSingleResultFromResultSet(rs);
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return utente;
+  }
+
+  /**
    * Metodo privato per restituire un singolo oggetto Notifica dopo aver
    * effettuato un'interrogazione al db.
    *
