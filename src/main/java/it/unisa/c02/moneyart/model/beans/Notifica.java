@@ -172,7 +172,7 @@ public class Notifica {
 
 
   /**
-   * Restituisce la rappresentazione sottoforma di stringa di una notifica.
+   * Restituisce la rappresentazione sotto forma di stringa di una notifica.
    *
    * @return la stringa che rappresenta notifica
    */

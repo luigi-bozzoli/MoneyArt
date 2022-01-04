@@ -26,7 +26,6 @@ public class Opera {
                Blob immagine, Utente possessore, Utente artista,
                String certificato, double prezzo) {
 
-    this.id = Opera.NO_ID;
     this.nome = nome;
     this.descrizione = descrizione;
     this.stato = stato;
@@ -241,7 +240,16 @@ public class Opera {
     this.rivendite = rivendite;
   }
 
-  public static final int NO_ID = -1;
+  /**
+   * Restituisce la rappresentazione sotto forma di stringa di un'asta.
+   *
+   * @return la stringa che rappresenta l'asta
+   */
+  public String toString() {
+    return " id: " + this.id + " id utente: " + possessore.getId() + " Artista: " + artista.getId()
+      + " Nome: " +  this.nome + " Prezzo: " + this.prezzo + " Descrizione: " + this.descrizione
+      + " Stato: " + this.stato;
+  }
 
   private Integer id;
   private String nome;

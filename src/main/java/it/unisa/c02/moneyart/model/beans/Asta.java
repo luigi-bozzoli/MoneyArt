@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.model.beans;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Questa classe rappresenta un'asta.
@@ -16,7 +17,6 @@ public class Asta {
    * @param stato stato corrente dell'asta ('in corso' , 'terminata' , 'annullata')
    */
   public Asta(Opera opera, Date dataInizio, Date dataFine, Stato stato) {
-    this.id = NO_ID;
     this.opera = opera;
     this.dataInizio = dataInizio;
     this.dataFine = dataFine;
@@ -47,7 +47,7 @@ public class Asta {
   }
 
   /**
-   * Restituisce l'opera messa all'asta
+   * Restituisce l'opera messa all'asta.
    *
    * @return l'opera messa all'asta
    */
@@ -119,24 +119,80 @@ public class Asta {
   }
 
   /**
-   * Restituisce lo stato dell'asta.
+   * Restituisce una collezione di segnalazioni relative all'asta.
    *
-   * @return dello stato dell'asta
+   * @return segnalazioni
+   */
+  public List<Segnalazione> getSegnalazioni() {
+    return segnalazioni;
+  }
+
+  /**
+   * Assegna una lista di segnalazioni all'asta.
+   *
+   * @param segnalazioni segnalazioni associate all'asta
+   */
+  public void setSegnalazioni(List<Segnalazione> segnalazioni) {
+    this.segnalazioni = segnalazioni;
+  }
+
+  /**
+   * Restituisce una collezione di notifiche relative all'asta.
+   *
+   * @return notifiche
+   */
+  public List<Notifica> getNotifiche() {
+    return notifiche;
+  }
+
+  /**
+   * Assegna una lista di notifiche all'asta.
+   *
+   * @param notifiche notifiche associate all'asta
+   */
+  public void setNotifiche(List<Notifica> notifiche) {
+    this.notifiche = notifiche;
+  }
+
+  /**
+   * Restituisce una collezione di partecipazioni.
+   *
+   * @return partecipazioni dell'asta
+   */
+  public List<Partecipazione> getPartecipazioni() {
+    return partecipazioni;
+  }
+
+  /**
+   * Assegna una lista di partecipazioni all'asta.
+   *
+   * @param partecipazioni partecipazioni associate all'asta
+   */
+  public void setPartecipazioni(List<Partecipazione> partecipazioni) {
+    this.partecipazioni = partecipazioni;
+  }
+
+  /**
+   * Restituisce la rappresentazione sotto forma di stringa di un'asta.
+   *
+   * @return la stringa che rappresenta l'asta
    */
   public String toString() {
-    return "id: " + this.id + "id opera: " + opera.getId() + "Data inizio: " + this.dataInizio
-            + "Data fine: " +  this.dataFine + "Stato: " + this.stato ;
+    return "id: " + this.id + " id opera: " + opera.getId() + " Data inizio: " + this.dataInizio
+            + " Data fine: " +  this.dataFine + " Stato: " + this.stato;
   }
 
   /**
    * Variabili d'istanza.
    */
-  public final static int NO_ID = -1;
   private Integer id;
   private Opera opera;
   private Date dataInizio;
   private Date dataFine;
   private Stato stato;
+  private List<Segnalazione> segnalazioni;
+  private List<Notifica> notifiche;
+  private List<Partecipazione> partecipazioni;
 
   /**
    * L'enumerazione seguente determina lo stato corrente di un'asta.
