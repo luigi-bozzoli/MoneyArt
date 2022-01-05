@@ -7,10 +7,9 @@ import java.util.List;
  * Questa classe rappresenta il DAO di un Utente.
  */
 public interface UtenteDao extends GenericDao<Utente> {
-//signature metodi aggiuntivi.....
 
   /**
-   * Restituisce l'utente in base all'username
+   * Restituisce l'utente in base all'username.
    *
    * @param username l'username dell'utente
    * @return l'utente con quell'username
@@ -26,7 +25,15 @@ public interface UtenteDao extends GenericDao<Utente> {
   List<Utente> doRetrieveFollowersByUserId(int id);
 
   /**
-   * Restituisce l'utente in base all'email
+   * Restituisce tutti gli utenti nel database che hanno un riscontro con la ricerca.
+   *
+   * @param text stringa da ricercare
+   * @return una lista di utenti che hanno un riscontro positivo con la ricerca
+   */
+  List<Utente> researchUser(String text);
+
+  /**
+   * Restituisce l'utente in base all'email.
    *
    * @param email l'email dell'utente
    * @return l'utente con quell'email

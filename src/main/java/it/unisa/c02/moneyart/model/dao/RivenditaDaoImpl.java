@@ -180,6 +180,41 @@ public class RivenditaDaoImpl implements RivenditaDao {
   }
 
   /**
+   * Ricerca nel database tutti gli item
+   * con un determinato stato.
+   *
+   * @param s stato ricercato
+   * @return lista di item trovata nel database
+   */
+  @Override
+  public List<Rivendita> doRetrieveByStato(String s) {
+    String sql =
+        "select * from " + TABLE_NAME
+        + " where stato = ? ";
+
+    List<Rivendita> rivendite = null;
+
+    if (s.isEmpty()) {
+      return null;
+    }
+
+    try (Connection connection = ds.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+      rivendite = new ArrayList<>();
+
+      ResultSet rs = preparedStatement.executeQuery();
+      rivendite = getMultipleResultFromResultSet(rs);
+
+      return rivendite;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw new IllegalArgumentException(e.getMessage());
+    }
+
+  }
+
+  /**
    * Metodo privato per restituire un singolo oggetto Rivendita dopo aver
    * effettuato un'interrogazione al db.
    *

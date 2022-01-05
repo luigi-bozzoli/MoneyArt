@@ -6,10 +6,10 @@ import it.unisa.c02.moneyart.model.beans.Utente;
 import java.util.List;
 
 /**
- * Questa classe rappresenta il DAO di una partecipazione
+ * Questa classe rappresenta il DAO di una partecipazione.
  */
 
-public interface PartecipazioneDao extends GenericDao<Partecipazione>{
+public interface PartecipazioneDao extends GenericDao<Partecipazione> {
 
   /**
    * Ricerca tutte le partecipazioni relative ad un utente.

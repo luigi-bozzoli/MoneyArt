@@ -47,10 +47,8 @@ public class MainContext implements ServletContextListener {
    */
   public void contextInitialized(ServletContextEvent sce) {
     System.out.println("Startup web application");
-
-    ServletContext context = sce.getServletContext();
-
     DataSource ds = null;
+    ServletContext context = sce.getServletContext();
     try {
       Context initCtx = new InitialContext();
       Context envCtx = (Context) initCtx.lookup("java:comp/env");
