@@ -9,6 +9,14 @@ import java.util.List;
 public interface OperaDao extends GenericDao<Opera> {
 
   /**
+   * Restituisce le opere avente un dato nome.
+   *
+   * @param name dell'opera da cercare
+   * @return lista di opere avente il nome dell'argomento
+   */
+  List<Opera> doRetrieveAllByName(String name);
+
+  /**
    * Restituisce tutte le opere che sono in possesso dell'utente.
    *
    * @param id l'id dell'utente possessore delle opere
