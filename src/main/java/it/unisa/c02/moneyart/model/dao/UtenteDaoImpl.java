@@ -39,7 +39,7 @@ public class UtenteDaoImpl implements UtenteDao {
     String sql =
         "INSERT INTO " + TABLE_NAME
             +
-            "(id_sequito, email, pwd, username, nome, cognome, foto, saldo) "
+            "(id_seguito, email, pwd, username, nome, cognome, foto, saldo) "
             + " VALUES(?, ? , ?, ?, ?, ?, ?, ?) ";
 
 
@@ -313,7 +313,7 @@ public class UtenteDaoImpl implements UtenteDao {
       utente.setCognome(rs.getObject("cognome", String.class));
       //utente.setFotoProfilo(rs.getObject("foto", Blob.class));
       utente.setFotoProfilo(rs.getBlob("foto"));
-      utente.setSaldo(rs.getObject("saldo", Float.class));
+      utente.setSaldo(rs.getObject("saldo", Double.class));
 
     }
     return utente;
@@ -343,7 +343,7 @@ public class UtenteDaoImpl implements UtenteDao {
       utente.setNome(rs.getObject("nome", String.class));
       utente.setCognome(rs.getObject("cognome", String.class));
       utente.setFotoProfilo(rs.getObject("foto", Blob.class));
-      utente.setSaldo(rs.getObject("saldo", Float.class));
+      utente.setSaldo(rs.getObject("saldo", Double.class));
       utenti.add(utente);
     }
     return utenti;
