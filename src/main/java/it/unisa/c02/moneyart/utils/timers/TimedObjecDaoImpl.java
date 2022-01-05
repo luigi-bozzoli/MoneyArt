@@ -12,9 +12,18 @@ import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
 
+
+/**
+ * Implementa la classe che esplicita i metodi
+ * definiti nell'interfaccia TimedObjecDao.
+ */
 public class TimedObjecDaoImpl implements TimedObjectDao {
 
-
+  /**
+   * Costruttore, permette di specificare il datasource utilizzato.
+   *
+   * @param ds il datasource utilizzato
+   */
   public TimedObjecDaoImpl(DataSource ds) {
     this.ds = ds;
   }
@@ -23,6 +32,11 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
     this.ds = Retriever.getIstance(DataSource.class, "Timer");
   }
 
+  /**
+   * Inserisce un item nel database.
+   *
+   * @param item l'oggetto da inserire nel database
+   */
   @Override
   public void doCreate(TimedObject item) {
     String sql = "INSERT INTO " + TABLE_NAME
@@ -46,6 +60,12 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
 
   }
 
+  /**
+   * Ricerca nel database un item tramite un identificativo unico.
+   *
+   * @param id l'identificativo dell'item
+   * @return l'item trovato nel database
+   */
   @Override
   public TimedObject doRetrieveById(int id) {
     String sql = "SELECT * FROM " + TABLE_NAME
@@ -77,6 +97,13 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
     return timedObject;
   }
 
+  /**
+   * Ricerca nel database tutti gli item, eventualmente ordinati
+   * tramite un filtro.
+   *
+   * @param filter filtro di ordinamento delle tuple
+   * @return la collezione di item trovata nel database
+   */
   @Override
   public List<TimedObject> doRetrieveAll(String filter) {
     String sql = "SELECT * FROM " + TABLE_NAME;
@@ -109,6 +136,11 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
     return timedObjects;
   }
 
+  /**
+   * Aggiorna l'item nel database.
+   *
+   * @param item l'item da aggiornare
+   */
   @Override
   public void doUpdate(TimedObject item) {
 
@@ -129,6 +161,11 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
 
   }
 
+  /**
+   * Elimina l'item dal database.
+   *
+   * @param item l'item da eliminare
+   */
   @Override
   public void doDelete(TimedObject item) {
     String sql = "DELETE FROM " + TABLE_NAME
