@@ -29,6 +29,7 @@ public class Segnalazione {
   public Segnalazione() {
 
   }
+  
   /**
    * Restituisce l'identificativo della segnalazione.
    *

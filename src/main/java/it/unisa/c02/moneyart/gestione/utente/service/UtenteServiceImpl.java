@@ -14,9 +14,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Questa classe implementa i metodi dell'interfaccia utenteService.
+ */
 public class UtenteServiceImpl implements UtenteService {
 
-
+  /**
+   * Costruttore senza paramentri.
+   */
   public UtenteServiceImpl() {
     this.utenteDao = Retriever.getIstance(UtenteDao.class);
     this.operaDao = Retriever.getIstance(OperaDao.class);
@@ -24,6 +29,14 @@ public class UtenteServiceImpl implements UtenteService {
     this.partecipazioneDao = Retriever.getIstance(PartecipazioneDao.class);
   }
 
+  /**
+   * Costruttore con paramentri.
+   *
+   * @param utenteDao dao dell'utente
+   * @param operaDao dao dell'opera
+   * @param notificaDao dao della notifica
+   * @param partecipazioneDao dao della partecipazione
+   */
   public UtenteServiceImpl(UtenteDao utenteDao, OperaDao operaDao, NotificaDao notificaDao,
                            PartecipazioneDao partecipazioneDao) {
     this.notificaDao = notificaDao;
@@ -36,7 +49,7 @@ public class UtenteServiceImpl implements UtenteService {
    * Retituisce un bean utente creato interrogando il database.
    *
    * @param username username o email dell'utente
-   * @param password
+   * @param password password dell'utente
    * @return il bean utente se sono state trovate le credenziali nel database, null altrimenti
    */
   @Override
@@ -117,6 +130,21 @@ public class UtenteServiceImpl implements UtenteService {
 
   @Override
   public List<Utente> getAllUsers() {
+    return null;
+  }
+
+  /**
+   * Restituisce tutti gli utenti nel database che hanno un riscontro con la ricerca.
+   *
+   * @param txt stringa da ricercare
+   * @return una lista di utenti che hanno un riscontro positivo con la ricerca
+   */
+  @Override
+  public List<Utente> searchUsers(String txt) {
+    List<Utente> utenti = utenteDao.researchUser(txt);
+    if (utenti != null) {
+      return utenti;
+    }
     return null;
   }
 
@@ -270,7 +298,7 @@ public class UtenteServiceImpl implements UtenteService {
    */
   @Override
   public boolean transfer(Utente sender, Utente receiver, float amount) {
-    if (withdraw(sender,amount)) {
+    if (withdraw(sender, amount)) {
       return deposit(receiver, amount);
     }
     return false;
@@ -315,6 +343,6 @@ public class UtenteServiceImpl implements UtenteService {
 
   private PartecipazioneDao partecipazioneDao;
 
-  private final Pattern VALID_EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-" +
-          "]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+  private  static final Pattern VALID_EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-"
+      + "]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 }
