@@ -207,7 +207,7 @@ public class UtenteServiceImpl implements UtenteService {
 
     return followers.size();
   }
-  
+
   @Override
   public boolean deposit(Utente utente, double amount) {
     return false;
