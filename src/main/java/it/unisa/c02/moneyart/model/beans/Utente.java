@@ -18,12 +18,12 @@ public class Utente {
    * @param fotoProfilo foto profilo dell'utente
    * @param email       email dell'utente
    * @param username    username dell'utente
-   * @param password    password dell'utente
    * @param seguito     id dell'artista seguito
+   * @param password    password dell'utente
    * @param saldo       saldo dell'utente
    */
   public Utente(String nome, String cognome, Blob fotoProfilo,
-                String email, String username, Utente seguito, byte[] password, Float saldo) {
+                String email, String username, Utente seguito, byte[] password, Double saldo) {
     this.id = null;
     this.nome = nome;
     this.cognome = cognome;
@@ -190,7 +190,7 @@ public class Utente {
    *
    * @return saldo dell'utente
    */
-  public Float getSaldo() {
+  public Double getSaldo() {
     return saldo;
   }
 
@@ -199,7 +199,7 @@ public class Utente {
    *
    * @param saldo wallet dell'utente
    */
-  public void setSaldo(Float saldo) {
+  public void setSaldo(Double saldo) {
     this.saldo = saldo;
   }
 
@@ -298,7 +298,7 @@ public class Utente {
   private String username;
   private byte[] password;
   private Utente seguito;
-  private Float saldo;
+  private Double saldo;
 
   /* Liste utili */
   private List<Opera> opereCreate;
