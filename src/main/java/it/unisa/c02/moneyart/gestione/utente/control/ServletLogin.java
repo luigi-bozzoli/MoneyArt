@@ -3,10 +3,14 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "ServletLogin", value = "/login")
 public class ServletLogin extends HttpServlet {
@@ -35,7 +39,7 @@ public class ServletLogin extends HttpServlet {
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
       dispatcher.forward(request, response);
     } else {
-      request.setAttribute("error", "autenticazione fallita, Riprova");
+      request.setAttribute("error", "Autenticazione fallita, riprova!");
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/login.jsp");
       dispatcher.forward(request, response);
     }
@@ -45,6 +49,6 @@ public class ServletLogin extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
+    doGet(request, response);
   }
 }

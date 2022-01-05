@@ -230,6 +230,38 @@ public class OperaDaoImpl implements OperaDao {
   }
 
   /**
+   * Restituisce tutte le opere avente un dato nome.
+   *
+   * @param name il nome dell'opera da cercare delle
+   * @return tutte le opere con il nome dell'argomento
+   */
+  @Override
+  public List<Opera> doRetrieveAllByName(String name) {
+
+    if (name != null) {
+      String retrieveSql = "SELECT * FROM " + TABLE_NAME
+          + " WHERE nome LIKE %?%";
+
+      List<Opera> opere = null;
+
+      try (Connection connection = ds.getConnection();
+           PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+        preparedStatement.setString(1, name);
+
+        ResultSet rs = preparedStatement.executeQuery();
+        opere = getMultipleResultFromResultSet(rs);
+      } catch (SQLException e) {
+
+        e.printStackTrace();
+      }
+
+      return opere;
+    }
+
+    return null;
+  }
+
+  /**
    * Metodo privato per restituire un singolo oggetto Opera dopo aver
    * effettuato un'interrogazione al db.
    *

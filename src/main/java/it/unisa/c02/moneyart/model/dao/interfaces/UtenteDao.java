@@ -25,4 +25,12 @@ public interface UtenteDao extends GenericDao<Utente> {
    */
   List<Utente> doRetrieveFollowersByUserId(int id);
 
+  /**
+   * Restituisce l'utente in base all'email
+   *
+   * @param email l'email dell'utente
+   * @return l'utente con quell'email
+   */
+  Utente doRetrieveByEmail(String email);
+
 }

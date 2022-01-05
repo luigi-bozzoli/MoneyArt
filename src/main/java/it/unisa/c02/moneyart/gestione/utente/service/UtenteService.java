@@ -11,7 +11,7 @@ public interface UtenteService {
 
   boolean signUpUser(Utente utente);
 
-  Utente updateUser(Utente utente);
+  void updateUser(Utente utente);
 
   List<Utente> getAllUsers();
 
@@ -23,11 +23,15 @@ public interface UtenteService {
 
   boolean unfollow(Utente follower);
 
+  public int getNumberOfFollowers(Utente utente);
+
   boolean deposit(Utente utente, double amount);
 
   boolean withdraw(Utente utente, double amount);
 
   boolean transfer(Utente sender, Utente receiver, double amount);
+
+  byte[] encryptPassword(String password);
 
 
 
