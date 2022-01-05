@@ -61,6 +61,7 @@ public class UtenteServiceImpl implements UtenteService {
 
   /**
    * Restituisce un bean utente creato interrogando il database.
+   *
    * @param id id dell'utente
    * @returnil bean utente se sono state trovate le credenziali nel database,
    *           null altrimenti
@@ -113,8 +114,6 @@ public class UtenteServiceImpl implements UtenteService {
     }
     utente.setId(oldData.getId());
     utenteDao.doUpdate(utente);
-
-
   }
 
   @Override
@@ -208,18 +207,74 @@ public class UtenteServiceImpl implements UtenteService {
     return followers.size();
   }
 
+  /**
+   * Permette ad un utente di depositare sul proprio saldo.
+   *
+   * @param utente l'utente interessato a depositare
+   * @param amount l'importo da depositare (da aggiungere al saldo)
+   * @return true se il deposito è avvenuto con successo
+   * e false se l'amount è inferiore o uguale a zero
+   */
   @Override
-  public boolean deposit(Utente utente, double amount) {
-    return false;
+  public boolean deposit(Utente utente, float amount) {
+    if(amount <= 0){
+      return false;
+    }
+    utente = utenteDao.doRetrieveByUsername(utente.getUsername());
+    utente.setSaldo(utente.getSaldo() + amount);
+
+    return true;
   }
 
+  /**
+   * Permette ad un utente di prelevare dal proprio saldo.
+   *
+   * @param utente l'utente interessato a prelevare
+   * @param amount l'importo da prelevare (da sottrarre al saldo)
+   * @return true se il prelievo è avvenuto con successo
+   * e false se l'amount è inferiore o uguale a zero e se il saldo dell'utente
+   * è minore dell'amount
+   */
   @Override
-  public boolean withdraw(Utente utente, double amount) {
-    return false;
+  public boolean withdraw(Utente utente, float amount) {
+    utente = utenteDao.doRetrieveByUsername(utente.getUsername());
+    if (amount < utente.getSaldo() || amount >= 0){
+      utente.setSaldo(utente.getSaldo() - amount);
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
+  /**
+   * Restituisce il saldo di un utente.
+   *
+   * @param utente utente interessato a conoscere il suo saldo
+   * @return saldo attuale dell'utente
+   */
   @Override
-  public boolean transfer(Utente sender, Utente receiver, double amount) {
+  public float getBalance(Utente utente){
+    utente = utenteDao.doRetrieveByUsername(utente.getUsername());
+
+    return utente.getSaldo();
+  }
+
+  /**
+   * Permette il trasferimento di un determinato importo
+   * da un utente (sender) ad un altro (receiver).
+   *
+   * @param sender utente che invia il denaro
+   * @param receiver utente che riceve il denaro
+   * @param amount importo da trasferire
+   * @return true se il trasferimento è avvenuto con successo
+   * e false altrimenti
+   */
+  @Override
+  public boolean transfer(Utente sender, Utente receiver, float amount) {
+    if(withdraw(sender,amount)){
+      return deposit(receiver, amount);
+    }
     return false;
   }
 
