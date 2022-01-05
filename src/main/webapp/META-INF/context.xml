@@ -8,4 +8,11 @@
               username="root"
               password="root"
               url="jdbc:mysql://localhost:3306/moneyart?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+    <Resource name="jdbc/timer"
+              auth="Container"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              type="javax.sql.DataSource"
+              username="root"
+              password="root"
+              url="jdbc:mysql://localhost:3306/timerservice?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
 </Context>

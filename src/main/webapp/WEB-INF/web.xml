@@ -11,6 +11,12 @@
             <res-type>javax.sql.DataSource</res-type>
             <res-auth>Container</res-auth>
         </resource-ref>
+        <resource-ref>
+            <description>JNDI reference to a data source for timer persistence</description>
+            <res-ref-name>jdbc/timer</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+        </resource-ref>
         <welcome-file-list>
             <welcome-file>/pages/home.jsp</welcome-file>
         </welcome-file-list>
