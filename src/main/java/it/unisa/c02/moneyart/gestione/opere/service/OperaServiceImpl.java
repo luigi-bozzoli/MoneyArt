@@ -97,7 +97,7 @@ public class OperaServiceImpl implements OperaService {
 
     List<Opera> opere = operaDao.doRetrieveAllByName(name);
 
-    if(opere != null) {
+    if (opere != null) {
       return opere;
     } else {
       return null;

@@ -15,6 +15,8 @@ public interface UtenteService {
 
   List<Utente> getAllUsers();
 
+  List<Utente> searchUsers(String txt);
+
   boolean checkUsername(String username);
 
   boolean checkEmail(String email);
@@ -23,13 +25,15 @@ public interface UtenteService {
 
   boolean unfollow(Utente follower);
 
-  public int getNumberOfFollowers(Utente utente);
+  int getNumberOfFollowers(Utente utente);
 
-  boolean deposit(Utente utente, double amount);
+  boolean deposit(Utente utente, float amount);
 
-  boolean withdraw(Utente utente, double amount);
+  boolean withdraw(Utente utente, float amount);
 
-  boolean transfer(Utente sender, Utente receiver, double amount);
+  float getBalance(Utente utente);
+
+  boolean transfer(Utente sender, Utente receiver, float amount);
 
   byte[] encryptPassword(String password);
 

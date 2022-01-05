@@ -14,9 +14,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Questa classe implementa i metodi dell'interfaccia utenteService.
+ */
 public class UtenteServiceImpl implements UtenteService {
 
-
+  /**
+   * Costruttore senza paramentri.
+   */
   public UtenteServiceImpl() {
     this.utenteDao = Retriever.getIstance(UtenteDao.class);
     this.operaDao = Retriever.getIstance(OperaDao.class);
@@ -24,6 +29,14 @@ public class UtenteServiceImpl implements UtenteService {
     this.partecipazioneDao = Retriever.getIstance(PartecipazioneDao.class);
   }
 
+  /**
+   * Costruttore con paramentri.
+   *
+   * @param utenteDao dao dell'utente
+   * @param operaDao dao dell'opera
+   * @param notificaDao dao della notifica
+   * @param partecipazioneDao dao della partecipazione
+   */
   public UtenteServiceImpl(UtenteDao utenteDao, OperaDao operaDao, NotificaDao notificaDao,
                            PartecipazioneDao partecipazioneDao) {
     this.notificaDao = notificaDao;
@@ -36,9 +49,8 @@ public class UtenteServiceImpl implements UtenteService {
    * Retituisce un bean utente creato interrogando il database.
    *
    * @param username username o email dell'utente
-   * @param password
-   * @return il bean utente se sono state trovate le credenziali nel database,
- *           null altrimenti
+   * @param password password dell'utente
+   * @return il bean utente se sono state trovate le credenziali nel database, null altrimenti
    */
   @Override
   public Utente checkUser(String username, String password) {
@@ -46,7 +58,7 @@ public class UtenteServiceImpl implements UtenteService {
 
     Utente utente;
 
-    if(!validateEmail(username)) {
+    if (!validateEmail(username)) {
       utente = utenteDao.doRetrieveByUsername(username);
     } else {
       utente = utenteDao.doRetrieveByEmail(username);
@@ -61,6 +73,7 @@ public class UtenteServiceImpl implements UtenteService {
 
   /**
    * Restituisce un bean utente creato interrogando il database.
+   *
    * @param id id dell'utente
    * @returnil bean utente se sono state trovate le credenziali nel database,
    *           null altrimenti
@@ -91,7 +104,7 @@ public class UtenteServiceImpl implements UtenteService {
    */
   @Override
   public boolean signUpUser(Utente utente) {
-    if(checkEmail(utente.getEmail()) || checkUsername(utente.getUsername())) {
+    if (checkEmail(utente.getEmail()) || checkUsername(utente.getUsername())) {
       return false;
     } else {
       utenteDao.doCreate(utente);
@@ -108,17 +121,30 @@ public class UtenteServiceImpl implements UtenteService {
   public void updateUser(Utente utente) {
     Utente oldData = utenteDao.doRetrieveByUsername(utente.getUsername());
 
-    if(utente.getFotoProfilo() == null) {
+    if (utente.getFotoProfilo() == null) {
       utente.setFotoProfilo(oldData.getFotoProfilo());
     }
     utente.setId(oldData.getId());
     utenteDao.doUpdate(utente);
-
-
   }
 
   @Override
   public List<Utente> getAllUsers() {
+    return null;
+  }
+
+  /**
+   * Restituisce tutti gli utenti nel database che hanno un riscontro con la ricerca.
+   *
+   * @param txt stringa da ricercare
+   * @return una lista di utenti che hanno un riscontro positivo con la ricerca
+   */
+  @Override
+  public List<Utente> searchUsers(String txt) {
+    List<Utente> utenti = utenteDao.researchUser(txt);
+    if (utenti != null) {
+      return utenti;
+    }
     return null;
   }
 
@@ -132,7 +158,7 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public boolean checkUsername(String username) {
     Utente utente = utenteDao.doRetrieveByUsername(username);
-    if(utente != null) {
+    if (utente != null) {
       return true;
     } else {
       return false;
@@ -149,7 +175,7 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public boolean checkEmail(String email) {
     Utente utente = utenteDao.doRetrieveByEmail(email);
-    if(utente != null) {
+    if (utente != null) {
       return true;
     } else {
       return false;
@@ -168,7 +194,7 @@ public class UtenteServiceImpl implements UtenteService {
   public boolean follow(Utente follower, Utente followed) {
     followed = utenteDao.doRetrieveByUsername(followed.getUsername());
 
-    if(follower.getSeguito() == null) {
+    if (follower.getSeguito() == null) {
       follower.setSeguito(followed);
       return true;
     } else {
@@ -177,7 +203,7 @@ public class UtenteServiceImpl implements UtenteService {
   }
 
   /**
-   * Permette ad un utente di cancellare il follow da un artista
+   * Permette ad un utente di cancellare il follow da un artista.
    *
    * @param follower l'artista da smettere di seguire.
    * @return true se l'utente smette di seguire con successo un artista,
@@ -185,7 +211,7 @@ public class UtenteServiceImpl implements UtenteService {
    */
   @Override
   public boolean unfollow(Utente follower) {
-    if(follower.getSeguito() == null) {
+    if (follower.getSeguito() == null) {
       return false;
     } else {
       follower.setSeguito(null);
@@ -208,18 +234,73 @@ public class UtenteServiceImpl implements UtenteService {
     return followers.size();
   }
 
+  /**
+   * Permette ad un utente di depositare sul proprio saldo.
+   *
+   * @param utente l'utente interessato a depositare
+   * @param amount l'importo da depositare (da aggiungere al saldo)
+   * @return true se il deposito è avvenuto con successo
+   *         e false se l'amount è inferiore o uguale a zero
+   */
   @Override
-  public boolean deposit(Utente utente, double amount) {
-    return false;
+  public boolean deposit(Utente utente, float amount) {
+    if (amount <= 0) {
+      return false;
+    }
+    utente = utenteDao.doRetrieveByUsername(utente.getUsername());
+    utente.setSaldo(utente.getSaldo() + amount);
+
+    return true;
   }
 
+  /**
+   * Permette ad un utente di prelevare dal proprio saldo.
+   *
+   * @param utente l'utente interessato a prelevare
+   * @param amount l'importo da prelevare (da sottrarre al saldo)
+   * @return true se il prelievo è avvenuto con successo
+   *         e false se l'amount è inferiore o uguale a zero
+   *         e se il saldo dell'utente è minore dell'amount
+   */
   @Override
-  public boolean withdraw(Utente utente, double amount) {
-    return false;
+  public boolean withdraw(Utente utente, float amount) {
+    utente = utenteDao.doRetrieveByUsername(utente.getUsername());
+    if (amount < utente.getSaldo() || amount >= 0) {
+      utente.setSaldo(utente.getSaldo() - amount);
+      return true;
+    } else {
+      return false;
+    }
   }
 
+  /**
+   * Restituisce il saldo di un utente.
+   *
+   * @param utente utente interessato a conoscere il suo saldo
+   * @return saldo attuale dell'utente
+   */
   @Override
-  public boolean transfer(Utente sender, Utente receiver, double amount) {
+  public float getBalance(Utente utente) {
+    utente = utenteDao.doRetrieveByUsername(utente.getUsername());
+
+    return utente.getSaldo();
+  }
+
+  /**
+   * Permette il trasferimento di un determinato importo
+   * da un utente (sender) ad un altro (receiver).
+   *
+   * @param sender utente che invia il denaro
+   * @param receiver utente che riceve il denaro
+   * @param amount importo da trasferire
+   * @return true se il trasferimento è avvenuto con successo
+   *         e false altrimenti
+   */
+  @Override
+  public boolean transfer(Utente sender, Utente receiver, float amount) {
+    if (withdraw(sender, amount)) {
+      return deposit(receiver, amount);
+    }
     return false;
   }
 
@@ -262,5 +343,6 @@ public class UtenteServiceImpl implements UtenteService {
 
   private PartecipazioneDao partecipazioneDao;
 
-  private final Pattern VALID_EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+  private  static final Pattern VALID_EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-"
+      + "]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 }
