@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.model.dao;
 
 
+import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
@@ -233,8 +234,34 @@ public class UtenteDaoImpl implements UtenteDao {
     return utenti;
   }
 
+  @Override
+  public List<Utente> researchUser(String text) {
+
+    if (text != null) {
+      String retrieveSql = "SELECT * FROM " + TABLE_NAME
+          + " WHERE nome LIKE %?% OR cognome LIKE %?% OR username LIKE %?%";
+
+      List<Utente> opere = null;
+
+      try (Connection connection = ds.getConnection();
+           PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+        preparedStatement.setString(1, text);
+
+        ResultSet rs = preparedStatement.executeQuery();
+        opere = getMultipleResultFromResultSet(rs);
+      } catch (SQLException e) {
+
+        e.printStackTrace();
+      }
+
+      return opere;
+    }
+
+    return null;
+  }
+
   /**
-   * Restituisce l'utente in base all'email
+   * Restituisce l'utente in base all'email.
    *
    * @param email l'email dell'utente
    * @return l'utente con quell'email
@@ -242,7 +269,7 @@ public class UtenteDaoImpl implements UtenteDao {
   @Override
   public Utente doRetrieveByEmail(String email) {
     String sql =
-      "select * from " + TABLE_NAME
+        "select * from " + TABLE_NAME
         + " where email = ? ";
     Utente utente = null;
 

@@ -15,6 +15,8 @@ public interface UtenteService {
 
   List<Utente> getAllUsers();
 
+  List<Utente> searchUsers(String txt);
+
   boolean checkUsername(String username);
 
   boolean checkEmail(String email);
