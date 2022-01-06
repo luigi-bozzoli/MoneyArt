@@ -10,16 +10,26 @@ import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import it.unisa.c02.moneyart.utils.formattingDates.FormattingDates;
 import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import it.unisa.c02.moneyart.utils.timers.TimedObject;
 import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import it.unisa.c02.moneyart.utils.timers.TimerService;
+
 import java.util.List;
+
 
 public class AstaServiceImpl implements AstaService, TimerService {
 
+  /**
+   * Costruttore senza paramentri.
+   */
   public AstaServiceImpl() {
     this.astaDao = Retriever.getIstance(AstaDao.class);
     this.operaDao = Retriever.getIstance(OperaDao.class);
@@ -32,11 +42,12 @@ public class AstaServiceImpl implements AstaService, TimerService {
 
   /**
    * Verifica la correttezza delle date inserite durante la fase di creazione dell'asta.
-   *
+   * Formato data dd/mm/yyyy --> Si assumono le 24:00:00 come orario fisso per i giorni
    * @param startDate data di inizio per l'asta
    * @param endDate   data di fine per l'asta
    * @return vero o falso
    */
+
   private boolean checkDate(Date startDate, Date endDate) {
     long millis = System.currentTimeMillis();
     Date today = new Date(millis);
@@ -46,8 +57,6 @@ public class AstaServiceImpl implements AstaService, TimerService {
   }
 
 
-  //non mi convice fatto così
-
   /**
    * Aggiunge una nuova asta.
    *
@@ -56,7 +65,6 @@ public class AstaServiceImpl implements AstaService, TimerService {
    */
   @Override
   public boolean addAsta(Asta asta) {
-
 
     if (!checkDate(asta.getDataInizio(), asta.getDataFine())) {
       return false;
@@ -87,7 +95,6 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * @param asta l'asta da verificare
    * @return la migliore offerta per l'asta o null se non è presente alcuna offerta
    */
-
   @Override
   public Partecipazione bestOffer(Asta asta) {
     List<Partecipazione> partecipazioni = partecipazioneDao.doRetrieveAllByAuctionId(asta.getId());

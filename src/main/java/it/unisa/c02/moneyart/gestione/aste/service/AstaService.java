@@ -37,7 +37,7 @@ public interface AstaService {
    * @param asta l'asta da verificare
    * @return la migliore offerta per l'asta o null se non è presente alcuna offerta
    */
-  Partecipazione bestOffer(Asta asta);
+   Partecipazione bestOffer(Asta asta);
 
 
 }

@@ -14,7 +14,7 @@ public class Asta {
    * @param opera      riferimento all'identificativo di opera
    * @param dataInizio data di inizio dell'asta
    * @param dataFine   data di fine dell'asta
-   * @param stato      stato corrente dell'asta ('in corso' , 'terminata' , 'annullata')
+   * @param stato      stato corrente dell'asta ('in corso' , 'terminata' , 'eliminata', 'creata')
    */
   public Asta(Opera opera, Date dataInizio, Date dataFine, Stato stato) {
     this.opera = opera;
