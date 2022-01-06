@@ -40,9 +40,19 @@ import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialBlob;
 import org.apache.commons.io.FileUtils;
 
+/**
+ * permette di inizializzare il sistema all'avvio.
+ */
 @WebListener
 public class MainContext implements ServletContextListener {
 
+  /**
+   * Inizializza il sistema settando le implementazioni delle interfacce,
+   * inizializza i servizi attivabili tramite un timer,
+   * riattiva i timer presenti nella memoria persistente.
+   *
+   * @param sce l'evento di attivazione del sistema
+   */
   public void contextInitialized(ServletContextEvent sce) {
     System.out.println("Startup web application");
     DataSource ds = null;
@@ -71,6 +81,12 @@ public class MainContext implements ServletContextListener {
     }
   }
 
+  /**
+   * Effettua operazioni di deallocazione di risorse prima della terminazione del sistema
+   * dealloca il datasource e disattiva i timer attualmente attivi.
+   *
+   * @param sce l'evento di attivazione del sistema
+   */
   public void contextDestroyed(ServletContextEvent sce) {
     ServletContext context = sce.getServletContext();
 
@@ -147,8 +163,8 @@ public class MainContext implements ServletContextListener {
 
   private void initializeTimerService() {
     TimerScheduler timerService = TimerScheduler.getInstance();
-    TimerService avviaAsta = (timedObject) -> {
-      System.out.println(" ");
+    TimerService avviaAsta = (serializable) -> {
+      System.out.println(serializable);
     };
     timerService.registerTimedService("avviaAsta", avviaAsta);
 
