@@ -12,6 +12,6 @@ public interface TimerService {
    *
    * @param item dati necessari per l'esecuzione del servizio
    */
-  void executeTimedTask(Serializable item);
+  void executeTimedTask(TimedObject item);
 
 }

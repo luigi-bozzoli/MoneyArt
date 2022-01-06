@@ -81,12 +81,13 @@ public class TimerScheduler {
   /**
    * Ripristina i timer che erano stati salvati nella memoria persistente e li riattiva.
    */
-  public void retrivePersistentTimers() {
+  public int retrivePersistentTimers() {
     List<TimedObject> timedObjects = timedObjectDao.doRetrieveAll("id");
     for (TimedObject timedObject : timedObjects) {
       timedObjectDao.doDelete(timedObject);
       scheduleTimedService(timedObject);
     }
+    return timedObjects.size();
   }
 
   /**
@@ -123,7 +124,7 @@ public class TimerScheduler {
     public void run() {
       try {
 
-        service.executeTimedTask(timedObject.getAttribute());
+        service.executeTimedTask(timedObject);
       } finally {
         timedObjectDao.doDelete(timedObject);
         timedTaskSet.remove(timer);

@@ -1,5 +1,13 @@
+import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaService;
+import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaServiceImpl;
+import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneService;
+import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneServiceImpl;
+import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
+import it.unisa.c02.moneyart.gestione.opere.service.OperaServiceImpl;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteServiceImpl;
+import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
+import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaServiceImpl;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
@@ -15,6 +23,7 @@ import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.SegnalazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
 import it.unisa.c02.moneyart.utils.production.GenericProducer;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import it.unisa.c02.moneyart.utils.timers.TimedObjecDaoImpl;
@@ -66,10 +75,13 @@ public class MainContext implements ServletContextListener {
     } catch (NamingException e) {
       e.printStackTrace();
     }
+    System.out.println("-- Inizializzazione dei producer --");
     Map<Retriever.RetrieverKey, GenericProducer<?>> producers = initializeProducers();
     Retriever.setProducers(producers);
 
-    initializeTimerService();
+    System.out.println("-- Ripristino dei timer persistenti --");
+    int timerRipristinati = initializeTimerService();
+    System.out.println("-- " + timerRipristinati + " timer sono stati ripristinati --");
 
     context.setAttribute("DataSource", ds);
     System.out.println("DataSource creation: " + ds.toString());
@@ -100,7 +112,7 @@ public class MainContext implements ServletContextListener {
   private HashMap<Retriever.RetrieverKey, GenericProducer<?>> initializeProducers() {
     HashMap<Retriever.RetrieverKey, GenericProducer<?>> producers = new HashMap<>();
 
-    //creazione DataSource
+    //creazione dei  DataSource
     try {
       Context initCtx = new InitialContext();
       Context envCtx = (Context) initCtx.lookup("java:comp/env");
@@ -109,10 +121,17 @@ public class MainContext implements ServletContextListener {
       GenericProducer<DataSource> dataSourceInstantiator = () -> ds;
       producers.put(new Retriever.RetrieverKey(DataSource.class.getName()),
           dataSourceInstantiator);
+
+      DataSource dsTimer = (DataSource) envCtx.lookup("jdbc/timer");
+      GenericProducer<DataSource> dataSourceInstantiatorTimer = () -> dsTimer;
+      producers.put(new Retriever.RetrieverKey(DataSource.class.getName(), "Timer"),
+          dataSourceInstantiatorTimer);
+
     } catch (NamingException e) {
       e.printStackTrace();
     }
 
+    //creazione dei producer per i dao
     GenericProducer<NotificaDao> notificaProducer = () -> new NotificaDaoImpl();
     producers.put(new Retriever.RetrieverKey(NotificaDao.class.getName()), notificaProducer);
 
@@ -137,42 +156,63 @@ public class MainContext implements ServletContextListener {
     producers.put(new Retriever.RetrieverKey(PartecipazioneDao.class.getName()),
         partecipazioneProducer);
 
+    GenericProducer<TimedObjectDao> timedObjectDao = () -> new TimedObjecDaoImpl();
+    producers.put(new Retriever.RetrieverKey(TimedObjectDao.class.getName()), timedObjectDao);
+
+
+    //creazione producer per i service
     GenericProducer<UtenteService> utenteServiceProducer = () -> new UtenteServiceImpl();
     producers.put(new Retriever.RetrieverKey(UtenteService.class.getName()), utenteServiceProducer);
+
+    GenericProducer<OperaService> operaServiceProducer = () -> new OperaServiceImpl();
+    producers.put(new Retriever.RetrieverKey(OperaService.class.getName()), operaServiceProducer);
+
+    GenericProducer<RivenditaService> rivenditaServiceProducer = () -> new RivenditaServiceImpl();
+    producers.put(new Retriever.RetrieverKey(RivenditaService.class.getName()),
+        rivenditaServiceProducer);
+
+    GenericProducer<NotificaService> notificaServiceProducer = () -> new NotificaServiceImpl();
+    producers.put(new Retriever.RetrieverKey(NotificaService.class.getName()),
+        notificaServiceProducer);
+
+    GenericProducer<SegnalazioneService> segnalazioneServiceProducer =
+        () -> new SegnalazioneServiceImpl();
+    producers.put(new Retriever.RetrieverKey(SegnalazioneService.class.getName()),
+        segnalazioneServiceProducer);
+
+    //una volta creato Asta service decommentare
+    /*
+    GenericProducer<AstaService> astaServiceProducer = () -> new AstaServiceImpl();
+    producers.put(new Retriever.RetrieverKey(AstaService.class.getName()),
+        astaServiceProducer);
+
+     */
+    //crezione producer per utilities
+
+    GenericProducer<AstaLockingSingleton> astaLockingSingletonProducer =
+        () -> AstaLockingSingleton.retrieveIstance();
+    producers.put(new Retriever.RetrieverKey(AstaLockingSingleton.class.getName()),
+        astaLockingSingletonProducer);
 
     GenericProducer<TimerScheduler> timerServiceProducer = () -> TimerScheduler.getInstance();
     producers.put(new Retriever.RetrieverKey(TimerScheduler.class.getName()), timerServiceProducer);
 
-    GenericProducer<TimedObjectDao> timedObjectDao = () -> new TimedObjecDaoImpl();
-    producers.put(new Retriever.RetrieverKey(TimedObjectDao.class.getName()), timedObjectDao);
-    try {
-      Context initCtx = new InitialContext();
-      Context envCtx = (Context) initCtx.lookup("java:comp/env");
-
-      DataSource ds = (DataSource) envCtx.lookup("jdbc/timer");
-      GenericProducer<DataSource> dataSourceInstantiator = () -> ds;
-      producers.put(new Retriever.RetrieverKey(DataSource.class.getName(), "Timer"),
-          dataSourceInstantiator);
-
-    } catch (NamingException e) {
-      e.printStackTrace();
-    }
 
     return producers;
   }
 
-  private void initializeTimerService() {
+  private int initializeTimerService() {
     TimerScheduler timerService = TimerScheduler.getInstance();
-    TimerService avviaAsta = (serializable) -> {
-      System.out.println(serializable);
+    TimerService avviaAsta = (timedObject) -> {
+      System.out.println(timedObject.getAttribute());
     };
     timerService.registerTimedService("avviaAsta", avviaAsta);
 
-    timerService.retrivePersistentTimers();
+    return timerService.retrivePersistentTimers();
   }
 
   private void populateDatabase(String filePath)
-          throws NoSuchAlgorithmException, IOException, SQLException {
+      throws NoSuchAlgorithmException, IOException, SQLException {
     // Necessario per salvare le password crittografate
     MessageDigest md = MessageDigest.getInstance("SHA-256");
 
@@ -187,7 +227,7 @@ public class MainContext implements ServletContextListener {
 
     logger.info("-- Inizio popolamento database --");
     logger.info("-- Path immagini profilo utente: "
-            + filePath.concat("static\\demo\\profilePics\\") + " --");
+        + filePath.concat("static\\demo\\profilePics\\") + " --");
 
     // Attualmente nessun utente segue un altro utente ("followed" ha id = null)
     // TODO: Impostare dei "follow" di esempio
@@ -196,111 +236,111 @@ public class MainContext implements ServletContextListener {
     // Le password non rispettano le regex dei documenti
     // TODO: Scrivere delle password valide
     Utente admin = new Utente(
-            "Money",
-            "Art",
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
-            "admin@moneyart.it",
-            "admin",
-            followed,
-            md.digest("admin".getBytes()),
-            0d
+        "Money",
+        "Art",
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
+        "admin@moneyart.it",
+        "admin",
+        followed,
+        md.digest("admin".getBytes()),
+        0d
     );
 
     Utente utente0 = new Utente(
-            "Alfonso",
-            "Cannavale",
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
-            "alfonso.cannavale@gmail.com",
-            "alfcan",
-            followed,
-            md.digest("pippo123".getBytes()),
-            1000d
+        "Alfonso",
+        "Cannavale",
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
+        "alfonso.cannavale@gmail.com",
+        "alfcan",
+        followed,
+        md.digest("pippo123".getBytes()),
+        1000d
     );
 
     Utente utente1 = new Utente(
-            "Nicolò",
-            "Delogu",
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
-            "nicolò.delogu@gmail.com",
-            "XJustUnluckyX",
-            followed,
-            md.digest("pippo123".getBytes()),
-            1500d
+        "Nicolò",
+        "Delogu",
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
+        "nicolò.delogu@gmail.com",
+        "XJustUnluckyX",
+        followed,
+        md.digest("pippo123".getBytes()),
+        1500d
     );
 
     Utente utente2 = new Utente(
-            "Michael",
-            "De Santis",
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
-            "michael.desantis@gmail.com",
-            "shoyll",
-            followed,
-            md.digest("pippo123".getBytes()),
-            2000d
+        "Michael",
+        "De Santis",
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
+        "michael.desantis@gmail.com",
+        "shoyll",
+        followed,
+        md.digest("pippo123".getBytes()),
+        2000d
     );
 
     Utente utente3 = new Utente(
-            "Daniele",
-            "Galloppo",
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
-            "daniele.galloppo@gmail.com",
-            "DG266",
-            followed,
-            md.digest("pippo123".getBytes()),
-            2500d
+        "Daniele",
+        "Galloppo",
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
+        "daniele.galloppo@gmail.com",
+        "DG266",
+        followed,
+        md.digest("pippo123".getBytes()),
+        2500d
     );
 
     Utente utente4 = new Utente(
-            "Dario",
-            "Mazza",
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
-            "dario.mazza@gmail.com",
-            "xDaryamo",
-            followed,
-            md.digest("pippo123".getBytes()),
-            3000d
+        "Dario",
+        "Mazza",
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
+        "dario.mazza@gmail.com",
+        "xDaryamo",
+        followed,
+        md.digest("pippo123".getBytes()),
+        3000d
     );
 
     Utente utente5 = new Utente(
-            "Mario",
-            "Peluso",
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
-            "mario.peluso@gmail.com",
-            "MarioPeluso",
-            followed,
-            md.digest("pippo123".getBytes()),
-            100d
+        "Mario",
+        "Peluso",
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
+        "mario.peluso@gmail.com",
+        "MarioPeluso",
+        followed,
+        md.digest("pippo123".getBytes()),
+        100d
     );
 
     Utente utente6 = new Utente(
-            "Aurelio",
-            "Sepe",
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
-            "aurelio.sepe@gmail.com",
-            "AurySepe",
-            followed,
-            md.digest("pippo123".getBytes()),
-            200d
+        "Aurelio",
+        "Sepe",
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
+        "aurelio.sepe@gmail.com",
+        "AurySepe",
+        followed,
+        md.digest("pippo123".getBytes()),
+        200d
     );
 
     Utente utente7 = new Utente(
-            "Stefano",
-            "Zarro",
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
-            "stefano.zarro@gmail.com",
-            "stepzar",
-            followed,
-            md.digest("pippo123".getBytes()),
-            10d
+        "Stefano",
+        "Zarro",
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\profilePics\\gattoProfilePic.jpg")))),
+        "stefano.zarro@gmail.com",
+        "stepzar",
+        followed,
+        md.digest("pippo123".getBytes()),
+        10d
     );
 
     if (utenteDao.doRetrieveByUsername("admin") == null) {
