@@ -280,7 +280,7 @@ public class UtenteServiceImpl implements UtenteService {
    * @return saldo attuale dell'utente
    */
   @Override
-  public float getBalance(Utente utente) {
+  public double getBalance(Utente utente) {
     utente = utenteDao.doRetrieveByUsername(utente.getUsername());
 
     return utente.getSaldo();

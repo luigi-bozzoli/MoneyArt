@@ -102,8 +102,8 @@ public class RivenditaServiceImpl implements RivenditaService {
     opera.setPossessore(utente);
     opera.setStato(Opera.Stato.IN_POSSESSO);
     Utente owner = opera.getPossessore();
-    utente.setSaldo((float) (utente.getSaldo() - getResellPrice(opera)));
-    owner.setSaldo((float) (owner.getSaldo() + getResellPrice(opera)));
+    utente.setSaldo(utente.getSaldo() - getResellPrice(opera));
+    owner.setSaldo(owner.getSaldo() + getResellPrice(opera));
 
     rivendita.setStato(Rivendita.Stato.TERMINATA);
 

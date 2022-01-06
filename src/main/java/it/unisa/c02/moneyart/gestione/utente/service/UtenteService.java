@@ -31,7 +31,7 @@ public interface UtenteService {
 
   boolean withdraw(Utente utente, float amount);
 
-  float getBalance(Utente utente);
+  double getBalance(Utente utente);
 
   boolean transfer(Utente sender, Utente receiver, float amount);
 
