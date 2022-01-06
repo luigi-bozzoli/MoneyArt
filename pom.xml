@@ -51,6 +51,17 @@
             <artifactId>maven-site-plugin</artifactId>
             <version>3.10.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.h-thurow</groupId>
+            <artifactId>tomcat8jndi</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-dbcp</artifactId>
+            <!-- 7.0.79 | 8.0.47 -->
+            <version>8.0.47</version>
+        </dependency>
         <!-- Teniamolo a mente per il testing -->
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
