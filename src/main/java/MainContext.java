@@ -206,6 +206,8 @@ public class MainContext implements ServletContextListener {
     TimerScheduler timerService = TimerScheduler.getInstance();
     TimerService avviaAsta = new AstaServiceImpl();
     timerService.registerTimedService("avviaAsta", avviaAsta);
+    TimerService terminaAsta = new AstaServiceImpl();
+    timerService.registerTimedService("terminaAsta", avviaAsta);
 
     return timerService.retrivePersistentTimers();
   }

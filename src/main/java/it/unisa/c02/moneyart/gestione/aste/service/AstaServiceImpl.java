@@ -11,6 +11,7 @@ import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
+import it.unisa.c02.moneyart.utils.production.Retriever;
 import it.unisa.c02.moneyart.utils.timers.TimedObject;
 import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
 import java.util.Date;
@@ -18,6 +19,17 @@ import it.unisa.c02.moneyart.utils.timers.TimerService;
 import java.util.List;
 
 public class AstaServiceImpl implements AstaService, TimerService {
+
+  public AstaServiceImpl() {
+    this.astaDao = Retriever.getIstance(AstaDao.class);
+    this.operaDao = Retriever.getIstance(OperaDao.class);
+    this.utenteDao = Retriever.getIstance(UtenteDao.class);
+    this.partecipazioneDao = Retriever.getIstance(PartecipazioneDao.class);
+    this.astaLockingSingleton = Retriever.getIstance(AstaLockingSingleton.class);
+    this.timerScheduler = Retriever.getIstance(TimerScheduler.class);
+    this.utenteService = Retriever.getIstance(UtenteService.class);
+  }
+
   /**
    * Verifica la correttezza delle date inserite durante la fase di creazione dell'asta.
    *
@@ -79,7 +91,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
   @Override
   public Partecipazione bestOffer(Asta asta) {
     List<Partecipazione> partecipazioni = partecipazioneDao.doRetrieveAllByAuctionId(asta.getId());
-    if (partecipazioni == null) {
+    if (partecipazioni == null || partecipazioni.isEmpty()) {
       return null;
     }
     Partecipazione bestOffer = partecipazioni.get(0);
@@ -92,7 +104,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
   }
 
   private void avviaAsta(Asta asta) {
-    if (asta.getStato() == Asta.Stato.CREATA) {
+    if (asta.getStato().equals(Asta.Stato.CREATA)) {
       asta.setStato(Asta.Stato.IN_CORSO);
       astaDao.doUpdate(asta);
       TimedObject timedObject = new TimedObject(asta.getId(), "terminaAsta", asta.getDataFine());
@@ -135,10 +147,10 @@ public class AstaServiceImpl implements AstaService, TimerService {
 
   @Override
   public void executeTimedTask(TimedObject item) {
-    Asta asta = astaDao.doRetrieveById(item.getId());
-    if (item.getTaskType() == "avviaAsta") {
+    Asta asta = astaDao.doRetrieveById((Integer) item.getAttribute());
+    if (item.getTaskType().equals("avviaAsta")) {
       avviaAsta(asta);
-    } else if (item.getTaskType() == "terminaAsta") {
+    } else if (item.getTaskType().equals("terminaAsta")) {
       terminaAsta(asta);
     }
 

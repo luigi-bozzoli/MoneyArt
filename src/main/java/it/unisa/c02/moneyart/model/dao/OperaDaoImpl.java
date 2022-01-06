@@ -286,7 +286,7 @@ public class OperaDaoImpl implements OperaDao {
       opera.setNome(rs.getObject("nome", String.class));
       opera.setPrezzo(rs.getObject("prezzo", Double.class));
       opera.setDescrizione(rs.getObject("descrizione", String.class));
-      opera.setImmagine(rs.getObject("immagine", Blob.class));
+      opera.setImmagine(rs.getBlob("immagine"));
       opera.setCertificato(rs.getObject("certificato", String.class));
       opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
     }
@@ -318,7 +318,7 @@ public class OperaDaoImpl implements OperaDao {
       opera.setNome(rs.getObject("nome", String.class));
       opera.setPrezzo(rs.getObject("prezzo", Double.class));
       opera.setDescrizione(rs.getObject("descrizione", String.class));
-      opera.setImmagine(rs.getObject("immagine", Blob.class));
+      opera.setImmagine(rs.getBlob("immagine"));
       opera.setCertificato(rs.getObject("certificato", String.class));
       opera.setStato(Opera.Stato.valueOf(rs.getObject("stato", String.class)));
       opere.add(opera);
