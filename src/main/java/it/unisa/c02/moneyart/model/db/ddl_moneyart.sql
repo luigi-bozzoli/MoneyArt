@@ -25,7 +25,7 @@ create table opera (
     descrizione text, 
     immagine blob not null,
     certificato text,
-    stato enum("ALL_ASTA", "IN_VENDITA", "IN_POSSESSO") default "IN_POSSESSO" not null,
+    stato enum("ALL_ASTA", "IN_VENDITA", "IN_POSSESSO", "PREVENDITA") default "IN_POSSESSO" not null,
     
 	unique (id_artista, nome), /* Uno stesso artista non può avere 2 opere con lo stesso nome */
     foreign key (id_utente) references utente(id) on update no action on delete no action, 
@@ -37,7 +37,7 @@ create table asta (
     id_opera bigint not null, /*FK*/
     data_inizio date not null,
     data_fine date not null,
-    stato enum("IN_CORSO", "TERMINATA", "ELIMINATA") default "IN_CORSO" not null,
+    stato enum("IN_CORSO", "TERMINATA", "ELIMINATA", "CREATA") default "IN_CORSO" not null,
      
     foreign key (id_opera) references opera(id) on update no action on delete cascade 
 );

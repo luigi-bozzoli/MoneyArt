@@ -1,3 +1,4 @@
+import it.unisa.c02.moneyart.gestione.aste.service.AstaServiceImpl;
 import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaService;
 import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaServiceImpl;
 import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneService;
@@ -203,9 +204,7 @@ public class MainContext implements ServletContextListener {
 
   private int initializeTimerService() {
     TimerScheduler timerService = TimerScheduler.getInstance();
-    TimerService avviaAsta = (timedObject) -> {
-      System.out.println(timedObject.getAttribute());
-    };
+    TimerService avviaAsta = new AstaServiceImpl();
     timerService.registerTimedService("avviaAsta", avviaAsta);
 
     return timerService.retrivePersistentTimers();

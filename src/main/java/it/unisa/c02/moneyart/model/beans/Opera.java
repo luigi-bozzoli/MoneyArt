@@ -269,9 +269,10 @@ public class Opera {
    * ALL_ASTA: l'opera è all'asta
    * IN_VENDITA: l'opera, precedentemente vinta all'asta, è messa in vendita
    * IN_POSSESSO: l'opera è in possesso di un utente (non si trova né all'asta né in vendita)
+   * PREVENDITA: l'opera non è in vendita o all'asta e non è ancora mai stata venduta
    */
   public enum Stato {
-    ALL_ASTA, IN_VENDITA, IN_POSSESSO
+    ALL_ASTA, IN_VENDITA, IN_POSSESSO,PREVENDITA
   }
 
 }

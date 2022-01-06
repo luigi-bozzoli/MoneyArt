@@ -1,78 +1,157 @@
 package it.unisa.c02.moneyart.gestione.aste.service;
 
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
 
-import java.sql.Date;
+import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
+import it.unisa.c02.moneyart.utils.timers.TimedObject;
+import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
+import java.util.Date;
+import it.unisa.c02.moneyart.utils.timers.TimerService;
+import java.util.List;
 
-public class AstaServiceImpl implements AstaService{
-    /**
-     * Verifica la correttezza delle date inserite durante la fase di creazione dell'asta
-     * @param startDate data di inizio per l'asta
-     * @param endDate   data di fine per l'asta
-     * @return vero o falso
-     */
-    @Override
-    public boolean checkDate(Date startDate, Date endDate) {
-        long  millis=System.currentTimeMillis();
-        Date today = new Date(millis);
+public class AstaServiceImpl implements AstaService, TimerService {
+  /**
+   * Verifica la correttezza delle date inserite durante la fase di creazione dell'asta.
+   *
+   * @param startDate data di inizio per l'asta
+   * @param endDate   data di fine per l'asta
+   * @return vero o falso
+   */
+  private boolean checkDate(Date startDate, Date endDate) {
+    long millis = System.currentTimeMillis();
+    Date today = new Date(millis);
 
-        if ( (!startDate.equals(today)) || startDate.before(today) )
-            return false;
-        if ( (endDate.before(today)) || endDate.before(startDate) )
-            return false;
+    return (startDate.after(today) || startDate.equals(today)) && endDate.after(startDate);
 
-        return true;
+  }
+
+
+  //non mi convice fatto così
+
+  /**
+   * Aggiunge una nuova asta.
+   *
+   * @param asta l'asta da aggiungere
+   * @return vero se l'aggiunta è andata a buon fine, falso altrimenti
+   */
+  @Override
+  public boolean addAsta(Asta asta) {
+
+
+    if (!checkDate(asta.getDataInizio(), asta.getDataFine())) {
+      return false;
+    }
+    asta.setStato(Asta.Stato.CREATA);
+    astaDao.doCreate(asta);
+    TimedObject timedObject = new TimedObject(asta.getId(), "avviaAsta", asta.getDataInizio());
+    timerScheduler.scheduleTimedService(timedObject);
+    return true;
+  }
+
+  /**
+   * Rimuove un'asta.
+   *
+   * @param asta l'asta da rimuovere
+   * @return vero se la rimozione è andata a buon fine, falso altrimenti
+   */
+  @Override
+  public boolean removeAsta(Asta asta) {
+    astaDao.doDelete(asta);
+    return true;
+  }
+
+
+  /**
+   * Restituisce la migliore offerta fatta all'asta.
+   *
+   * @param asta l'asta da verificare
+   * @return la migliore offerta per l'asta o null se non è presente alcuna offerta
+   */
+
+  @Override
+  public Partecipazione bestOffer(Asta asta) {
+    List<Partecipazione> partecipazioni = partecipazioneDao.doRetrieveAllByAuctionId(asta.getId());
+    if (partecipazioni == null) {
+      return null;
+    }
+    Partecipazione bestOffer = partecipazioni.get(0);
+    for (Partecipazione partecipazione : partecipazioni) {
+      if (partecipazione.getOfferta() > bestOffer.getOfferta()) {
+        bestOffer = partecipazione;
+      }
+    }
+    return bestOffer;
+  }
+
+  private void avviaAsta(Asta asta) {
+    if (asta.getStato() == Asta.Stato.CREATA) {
+      asta.setStato(Asta.Stato.IN_CORSO);
+      astaDao.doUpdate(asta);
+      TimedObject timedObject = new TimedObject(asta.getId(), "terminaAsta", asta.getDataFine());
+      timerScheduler.scheduleTimedService(timedObject);
     }
 
+  }
 
-    //non mi convice fatto così
-    /**
-     * Aggiunge una nuova asta
-     * @param asta l'asta da aggiungere
-     * @return vero se l'aggiunta è andata a buon fine, falso altrimenti
-     */
-    @Override
-    public boolean addAsta(Asta asta) {
-        astaDao.doCreate(asta);
-        return true;
+  private void terminaAsta(Asta asta) {
+
+    astaLockingSingleton.lockAsta(asta);
+    try {
+      asta = astaDao.doRetrieveById(asta.getId());
+      asta.setStato(Asta.Stato.TERMINATA);
+
+      Opera opera = operaDao.doRetrieveById(asta.getOpera().getId());
+
+      Partecipazione miglioreOfferta = bestOffer(asta);
+      Utente artista = utenteDao.doRetrieveById(opera.getArtista().getId());
+      if (miglioreOfferta == null) {
+        opera.setStato(Opera.Stato.PREVENDITA);
+
+      } else {
+        Utente vincitore = utenteDao.doRetrieveById(miglioreOfferta.getUtente().getId());
+        opera.setStato(Opera.Stato.IN_POSSESSO);
+        opera.setPossessore(vincitore);
+        utenteService.transfer(vincitore, artista, (float) miglioreOfferta.getOfferta());
+
+      }
+
+      astaDao.doUpdate(asta);
+      operaDao.doUpdate(opera);
+
+
+    } finally {
+      astaLockingSingleton.unlockAsta(asta);
     }
 
-    /**
-     * Rimuove un'asta
-     *
-     * @param asta l'asta da rimuovere
-     * @return vero se la rimozione è andata a buon fine, falso altrimenti
-     */
-    @Override
-    public boolean removeAsta(Asta asta) {
-        astaDao.doDelete(asta);
-        return true;
+  }
+
+  @Override
+  public void executeTimedTask(TimedObject item) {
+    Asta asta = astaDao.doRetrieveById(item.getId());
+    if (item.getTaskType() == "avviaAsta") {
+      avviaAsta(asta);
+    } else if (item.getTaskType() == "terminaAsta") {
+      terminaAsta(asta);
     }
 
-    /**
-     * Verifica se l'asta è terminata per lo scadere del tempo
-     *
-     * @param asta l'asta da verificare
-     * @return vero o falso
-     */
-    @Override
-    public boolean isTerminated(Asta asta) {
-        return false;
-    }
+  }
 
-    /**
-     * Verifica se l'asta è terminata perchè vinta da qualcuno
-     *
-     * @param asta l'asta da verificare
-     * @return l'utente che ha vinto quell'asta
-     */
 
-    @Override
-    public Utente winAsta(Asta asta) {
-        return null;
-    }
+  private AstaDao astaDao;
+  private OperaDao operaDao;
+  private UtenteDao utenteDao;
+  private PartecipazioneDao partecipazioneDao;
 
-    private AstaDao astaDao;
+  private TimerScheduler timerScheduler;
+  private AstaLockingSingleton astaLockingSingleton;
+
+  private UtenteService utenteService;
 }

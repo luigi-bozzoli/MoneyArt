@@ -11,10 +11,10 @@ public class Asta {
   /**
    * Costruttore della classe Asta.
    *
-   * @param opera riferimento all'identificativo di opera
+   * @param opera      riferimento all'identificativo di opera
    * @param dataInizio data di inizio dell'asta
-   * @param dataFine data di fine dell'asta
-   * @param stato stato corrente dell'asta ('in corso' , 'terminata' , 'annullata')
+   * @param dataFine   data di fine dell'asta
+   * @param stato      stato corrente dell'asta ('in corso' , 'terminata' , 'annullata')
    */
   public Asta(Opera opera, Date dataInizio, Date dataFine, Stato stato) {
     this.opera = opera;
@@ -26,7 +26,8 @@ public class Asta {
   /**
    * Costruttore vuoto.
    */
-  public Asta() {}
+  public Asta() {
+  }
 
   /**
    * Restituisce l'identificativo dell'asta.
@@ -179,7 +180,7 @@ public class Asta {
    */
   public String toString() {
     return "id: " + this.id + " id opera: " + opera.getId() + " Data inizio: " + this.dataInizio
-            + " Data fine: " +  this.dataFine + " Stato: " + this.stato;
+        + " Data fine: " + this.dataFine + " Stato: " + this.stato;
   }
 
   /**
@@ -201,7 +202,7 @@ public class Asta {
    * ELIMINATA: L'asta è stata eliminata
    */
   public enum Stato {
-    IN_CORSO, TERMINATA, ELIMINATA
+    IN_CORSO, TERMINATA, ELIMINATA, CREATA
   }
 }
 
