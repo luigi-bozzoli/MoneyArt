@@ -1,7 +1,6 @@
 package it.unisa.c02.moneyart.gestione.vendite.rivendite.control;
 
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
-import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -27,8 +26,8 @@ public class ServletRivendita extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    Opera opera = (Opera) request.getSession().getAttribute("opera");
-    rivenditaService.resell(opera);
+    Integer idOpera = Integer.parseInt(request.getParameter("idOpera"));
+    rivenditaService.resell(idOpera);
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/rivendita.jsp");
     dispatcher.forward(request, response);
   }

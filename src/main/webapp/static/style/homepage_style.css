@@ -1,4 +1,6 @@
-
+html {
+    overflow-x: hidden
+}
 /* Header and Hero Section*/
 .button {
     padding: 10px 20px;
@@ -114,7 +116,7 @@
 .carousel .thumb-wrapper {
     padding: 25px 15px;
     margin-bottom: 20px;
-    background: rgba(255, 248, 217, 0.5);;
+    background: rgba(255, 248, 217, 0.5);
     border-radius: 6px;
     text-align: center;
     position: relative;

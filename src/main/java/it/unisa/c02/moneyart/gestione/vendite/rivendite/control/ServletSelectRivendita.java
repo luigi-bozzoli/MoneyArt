@@ -1,7 +1,6 @@
 package it.unisa.c02.moneyart.gestione.vendite.rivendite.control;
 
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
-import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -27,8 +26,8 @@ public class ServletSelectRivendita extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    Rivendita rivendita = (Rivendita) request.getSession().getAttribute("rivendita");
-    rivenditaService.getResells(rivendita.getStato().toString());
+    String statoRivendita = (String) request.getParameter("statoRivendita");
+    rivenditaService.getResells(statoRivendita);
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/rivendite.jsp");
     dispatcher.forward(request, response);
   }

@@ -104,8 +104,28 @@ a{text-decoration: none;}
     transition: .4s;
 }
 
+.form-inline {
+    flex-wrap: nowrap !important;
+}
+
 .log-buttons {
     display: flex;
+}
+.account-buttons {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.account-buttons i {
+    padding: 0 5px;
+    font-size: 25px;
+    margin: 5px 10px;
+    color: #454545;
+    transition: .4s
+}
+.account-buttons i:hover {
+    opacity: 0.6;
+    transition: .4s
 }
 
 .login-button,
@@ -140,7 +160,8 @@ a{text-decoration: none;}
 }
 
 @media screen and (max-width: 1200px) {
-    .log-buttons {
+    .log-buttons,
+    .account-buttons i {
         margin-top: 20px;
     }
     .searchbar {
@@ -230,4 +251,8 @@ p.payment-method {
     margin: 10px auto 40px;
 }
 
+.error p {
+    color: #BB371A !important;
+}
 /* sidebar utente */
+

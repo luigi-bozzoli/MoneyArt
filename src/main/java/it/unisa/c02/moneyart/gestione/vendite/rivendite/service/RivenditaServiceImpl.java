@@ -60,11 +60,12 @@ public class RivenditaServiceImpl implements RivenditaService {
   /**
    * Pone un'opera posseduta dall'utente in rivendita.
    *
-   * @param opera bean dell'opera da mettere in vendita
+   * @param idOpera identificativo dell'opera da mettere in vendita
    * @return true se l'operazione va a buon fine, false altrimenti
    */
   @Override
-  public boolean resell(Opera opera) {
+  public boolean resell(Integer idOpera) {
+    Opera opera = operaDao.doRetrieveById(idOpera);
     if (opera == null) {
       return false;
     }
@@ -88,12 +89,15 @@ public class RivenditaServiceImpl implements RivenditaService {
   /**
    * Realizza la funzionalità di acquisto diretto di un'opera.
    *
-   * @param rivendita bean della rivendita
-   * @param utente bean dell'utente che vuole acquistare l'opera in vendita
+   * @param idRivendita identificativo della rivendita
+   * @param idUtente identificativo dell'utente che vuole acquistare l'opera in vendita
    * @return true se l'operazione va a buon fine, false altrimenti
    */
   @Override
-  public boolean buy(Rivendita rivendita, Utente utente) {
+  public boolean buy(Integer idRivendita, Integer idUtente) {
+    Rivendita rivendita = rivenditaDao.doRetrieveById(idRivendita);
+    Utente utente = utenteDao.doRetrieveById(idUtente);
+
     if (rivendita == null || utente == null) {
       return false;
     }
@@ -123,6 +127,7 @@ public class RivenditaServiceImpl implements RivenditaService {
    */
   @Override
   public List<Rivendita> getResells(String stato) {
+
     return rivenditaDao.doRetrieveByStato(stato);
   }
 
