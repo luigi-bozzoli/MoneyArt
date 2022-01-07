@@ -40,7 +40,7 @@
         </div>
         <div class="signup-box">
             <img class="signup-logo" src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/image/logo-moneyart.png" alt="Logo MoneyArt">
-            <form class="signup" method="post" name="login">
+            <form class="signup" method="post" name="login" action="<c:out value="${pageContext.servletContext.contextPath}"/>/login">
                 <div class="signup-input">
                     <label for="username">Username - Email</label>
                     <div class="input-icon">
