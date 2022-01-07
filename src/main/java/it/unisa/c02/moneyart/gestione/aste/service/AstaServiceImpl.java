@@ -70,6 +70,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
       return false;
     }
     asta.setStato(Asta.Stato.CREATA);
+    asta.setDataInizio(FormattingDates.setMidnightTime(asta.getDataInizio())); //Il giorno di inizio di un'asta parte sempre da mezzanotte
     astaDao.doCreate(asta);
     TimedObject timedObject = new TimedObject(asta.getId(), "avviaAsta", asta.getDataInizio());
     timerScheduler.scheduleTimedService(timedObject);

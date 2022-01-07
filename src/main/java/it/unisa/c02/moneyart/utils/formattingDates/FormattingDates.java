@@ -1,24 +1,50 @@
 package it.unisa.c02.moneyart.utils.formattingDates;
 
-import java.text.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class FormattingDates {
 
-   public static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    /**
+     * Converte una stringa contente una data nel formato "dd/MM/yyyy"
+     * in tipo Date (java.util.Date)
+     * @param dataS la stringa contente una data nel formato "dd/MM/yyyy"
+     * @return la stessa data in formato Date
+     */
+    public static Date fromStringToDate (String dataS) throws ParseException {
+        if (dataS == null) return null;
 
-    /*                    Test di utilizzo
-    public static void main(String[] args) throws ParseException {
-        long  millis=System.currentTimeMillis();
-        java.util.Date date = new java.util.Date(millis);
-        System.out.println("stampa data: \n"+date);
+        return sdf.parse(dataS);
 
-        String date1 = "12/11/1998";
-        System.out.println(sdf.parse(date1)); //converte la stringa in data (tipo Date) e la stampa
     }
-    */
 
+   /**
+    * Converte un tipo Date in una stringa del formato "dd/MM/yyyy"
+    */
+   public static String fromDateToString (Date data) {
+      if (data == null) return null;
+
+      return sdf.format(data);
+
+   }
+
+   /**
+    * La data viene restituita con il tempo a mezzanotte
+    * @param date la data originaria
+    * @return la data con il tempo impostato a mezzanotte
+   */
+   public static Date setMidnightTime (Date date) {
+       if (date == null) return null;
+       Date dateM = date;
+
+       dateM.setHours(0);
+       dateM.setMinutes(0);
+       dateM.setSeconds(0);
+
+       return dateM;
+   }
+
+   private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 }
