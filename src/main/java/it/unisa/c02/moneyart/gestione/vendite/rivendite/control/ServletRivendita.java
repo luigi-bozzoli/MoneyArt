@@ -26,7 +26,7 @@ public class ServletRivendita extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    Integer idOpera = (Integer) request.getSession().getAttribute("idOpera");
+    Integer idOpera = Integer.parseInt(request.getParameter("idOpera"));
     rivenditaService.resell(idOpera);
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/rivendita.jsp");
     dispatcher.forward(request, response);

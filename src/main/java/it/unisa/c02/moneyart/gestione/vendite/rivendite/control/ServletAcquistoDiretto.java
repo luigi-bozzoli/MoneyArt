@@ -28,7 +28,7 @@ public class ServletAcquistoDiretto extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    Integer idRivendita = (Integer) request.getSession().getAttribute("idRivendita");
+    Integer idRivendita = Integer.parseInt(request.getParameter("idRivendita"));
     Integer idUtente = (Integer) request.getSession().getAttribute("idUtente");
     rivenditaService.buy(idRivendita, idUtente);
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/acquistoDiretto.jsp");

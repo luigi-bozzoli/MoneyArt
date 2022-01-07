@@ -26,7 +26,7 @@ public class ServletSelectRivendita extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    String statoRivendita = (String) request.getSession().getAttribute("statoRivendita");
+    String statoRivendita = (String) request.getParameter("statoRivendita");
     rivenditaService.getResells(statoRivendita);
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/rivendite.jsp");
     dispatcher.forward(request, response);
