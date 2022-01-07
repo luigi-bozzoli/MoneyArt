@@ -230,4 +230,8 @@ p.payment-method {
     margin: 10px auto 40px;
 }
 
+.error p {
+    color: #BB371A !important;
+}
 /* sidebar utente */
+

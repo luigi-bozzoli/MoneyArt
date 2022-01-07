@@ -3,7 +3,7 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
-import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
-@WebServlet(name = "ServletLogin", value = "/login")
-public class ServletLogin extends HttpServlet {
-
+@WebServlet(name = "ServletSignup", value = "/signup")
+public class ServletSignup extends HttpServlet {
   private UtenteService utenteService;
 
   @Override
@@ -25,28 +25,34 @@ public class ServletLogin extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+    throws ServletException, IOException {
     doPost(request, response);
-
 
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+    throws ServletException, IOException {
     HttpSession session = request.getSession();
 
+    String name = request.getParameter("name");
+    String surname = request.getParameter("surname");
+    String email = request.getParameter("email");
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
-    Utente utente = utenteService.checkUser(username, password);
-    if (utente != null) {
+    Utente utente = new Utente(name, surname, null, email, username, new Utente(), utenteService.encryptPassword(password), 0D);
+
+    boolean notFound = utenteService.signUpUser(utente);
+
+
+    if (notFound) {
       session.setAttribute("utente", utente);
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
       dispatcher.forward(request, response);
     } else {
-      request.setAttribute("error", "Autenticazione fallita, riprova!");
-      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/login.jsp");
+      request.setAttribute("error", "Esiste già un account con questi dati, riprova!");
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/signup.jsp");
       dispatcher.forward(request, response);
     }
   }
