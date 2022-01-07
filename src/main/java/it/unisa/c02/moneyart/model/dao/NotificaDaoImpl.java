@@ -43,11 +43,9 @@ public class NotificaDaoImpl implements NotificaDao {
   @Override
   public void doCreate(Notifica item) {
 
-
     String sql = "INSERT INTO " + TABLE_NAME
-        + "(id_utente,id_rivendita,id_asta ,letta, tipo,contenuto) "
-        + " VALUES(?, ? , ?, ?, ?, ?) ";
-
+        + "(id_utente, id_rivendita, id_asta, letta, tipo, contenuto) "
+        + " VALUES(?, ?, ?, ?, ?, ?) ";
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql,
@@ -66,8 +64,6 @@ public class NotificaDaoImpl implements NotificaDao {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
-
   }
 
   /**

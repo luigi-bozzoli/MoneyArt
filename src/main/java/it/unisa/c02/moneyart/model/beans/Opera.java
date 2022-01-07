@@ -20,11 +20,10 @@ public class Opera {
    * @param possessore  l'utente che possiede l'opera
    * @param artista     l'artista (utente creatore dell'opera)
    * @param certificato identificativo del certificato dell'opera
-   * @param prezzo      prezzo dell'opera
    */
   public Opera(String nome, String descrizione, Stato stato,
                Blob immagine, Utente possessore, Utente artista,
-               String certificato, double prezzo) {
+               String certificato) {
 
     this.nome = nome;
     this.descrizione = descrizione;
@@ -33,7 +32,6 @@ public class Opera {
     this.possessore = possessore;
     this.artista = artista;
     this.certificato = certificato;
-    this.prezzo = prezzo;
   }
 
   /**
@@ -187,24 +185,6 @@ public class Opera {
   }
 
   /**
-   * Restituisce il prezzo dell'opera.
-   *
-   * @return prezzo dell'opera
-   */
-  public double getPrezzo() {
-    return prezzo;
-  }
-
-  /**
-   * Imposta il prezzo dell'opera.
-   *
-   * @param prezzo prezzo dell'opera
-   */
-  public void setPrezzo(double prezzo) {
-    this.prezzo = prezzo;
-  }
-
-  /**
    * Restituisce una lista di tutte le aste relative all'opera.
    *
    * @return una lista di aste relativa all'opera
@@ -247,8 +227,7 @@ public class Opera {
    */
   public String toString() {
     return " id: " + this.id + " id utente: " + possessore.getId() + " Artista: " + artista.getId()
-      + " Nome: " +  this.nome + " Prezzo: " + this.prezzo + " Descrizione: " + this.descrizione
-      + " Stato: " + this.stato;
+      + " Nome: " +  this.nome + " Descrizione: " + this.descrizione + " Stato: " + this.stato;
   }
 
   private Integer id;
@@ -259,7 +238,6 @@ public class Opera {
   private Utente possessore;
   private Utente artista;
   private String certificato;
-  private double prezzo;
 
   private List<Asta> aste;
   private List<Rivendita> rivendite;

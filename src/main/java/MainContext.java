@@ -9,6 +9,12 @@ import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteServiceImpl;
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaServiceImpl;
+import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Partecipazione;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.beans.Segnalazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
@@ -36,6 +42,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -113,7 +120,7 @@ public class MainContext implements ServletContextListener {
   private HashMap<Retriever.RetrieverKey, GenericProducer<?>> initializeProducers() {
     HashMap<Retriever.RetrieverKey, GenericProducer<?>> producers = new HashMap<>();
 
-    //creazione dei  DataSource
+    //creazione dei DataSource
     try {
       Context initCtx = new InitialContext();
       Context envCtx = (Context) initCtx.lookup("java:comp/env");
@@ -229,7 +236,12 @@ public class MainContext implements ServletContextListener {
     logger.info("-- Inizio popolamento database --");
     logger.info("-- Path immagini profilo utente: "
         + filePath.concat("static\\demo\\profilePics\\") + " --");
+    logger.info("-- Path immagini opere: "
+            + filePath.concat("static\\demo\\") + " --");
 
+    // POPOLAMENTO TABELLA UTENTE ------------------------
+
+    Utente retrieved = null;
     // Attualmente nessun utente segue un altro utente ("followed" ha id = null)
     // TODO: Impostare dei "follow" di esempio
     Utente followed = new Utente();
@@ -347,43 +359,266 @@ public class MainContext implements ServletContextListener {
     if (utenteDao.doRetrieveByUsername("admin") == null) {
       utenteDao.doCreate(admin);
     }
+    admin.setId(1);
 
     if (utenteDao.doRetrieveByUsername("alfcan") == null) {
       utenteDao.doCreate(utente0);
     }
+    utente0.setId(2);
 
     if (utenteDao.doRetrieveByUsername("XJustUnluckyX") == null) {
       utenteDao.doCreate(utente1);
     }
+    utente1.setId(3);
 
     if (utenteDao.doRetrieveByUsername("shoyll") == null) {
       utenteDao.doCreate(utente2);
     }
+    utente2.setId(4);
 
     if (utenteDao.doRetrieveByUsername("DG266") == null) {
       utenteDao.doCreate(utente3);
     }
+    utente3.setId(5);
 
     if (utenteDao.doRetrieveByUsername("xDaryamo") == null) {
       utenteDao.doCreate(utente4);
     }
+    utente4.setId(6);
 
     if (utenteDao.doRetrieveByUsername("MarioPeluso") == null) {
       utenteDao.doCreate(utente5);
     }
+    utente5.setId(7);
 
     if (utenteDao.doRetrieveByUsername("AurySepe") == null) {
       utenteDao.doCreate(utente6);
     }
+    utente6.setId(8);
 
     if (utenteDao.doRetrieveByUsername("stepzar") == null) {
       utenteDao.doCreate(utente7);
     }
+    utente7.setId(9);
 
     logger.info("-- Popolamento della tabella \"utente\" terminato (1/7) --");
 
-    // TODO: Popolamento delle altre tabelle
+    // POPOLAMENTO TABELLA OPERA ------------------------
+
+    Opera opera0 = new Opera(
+            "Bears Deluxe #3742",
+            "Descrizione",
+            Opera.Stato.ALL_ASTA,
+            new SerialBlob(FileUtils.readFileToByteArray(
+                    new File(filePath.concat("static\\demo\\bears-deluxe-3742.png")))),
+            utente0,
+            utente0,
+            null
+    );
+
+    Opera opera1 = new Opera(
+            "The Shibosis",
+            "Descrizione",
+            Opera.Stato.IN_VENDITA,
+            new SerialBlob(FileUtils.readFileToByteArray(
+                    new File(filePath.concat("static\\demo\\shibosis.jpg")))),
+            utente1,
+            utente0,
+            null
+    );
+
+    Opera opera2 = new Opera(
+            "CupCat",
+            "Descrizione",
+            Opera.Stato.PREVENDITA,
+            new SerialBlob(FileUtils.readFileToByteArray(
+                    new File(filePath.concat("static\\demo\\cupcat.jpg")))),
+            utente3,
+            utente3,
+            null
+    );
+
+    Opera opera3 = new Opera(
+            "TIGXR",
+            "Descrizione",
+            Opera.Stato.PREVENDITA,
+            new SerialBlob(FileUtils.readFileToByteArray(
+                    new File(filePath.concat("static\\demo\\tiger.jpg")))),
+            utente4,
+            utente4,
+            null
+    );
+
+    Opera opera4 = new Opera(
+            "Bears Deluxe #3742",
+            "Descrizione",
+            Opera.Stato.ALL_ASTA,
+            new SerialBlob(FileUtils.readFileToByteArray(
+                    new File(filePath.concat("static\\demo\\bears-deluxe-3742.png")))),
+            utente5,
+            utente5,
+            null
+    );
+
+    if (operaDao.doRetrieveById(1) == null) {
+      operaDao.doCreate(opera0);
+    }
+    opera0.setId(1);
+
+    if (operaDao.doRetrieveById(2) == null) {
+      operaDao.doCreate(opera1);
+    }
+    opera1.setId(2);
+
+    if (operaDao.doRetrieveById(3) == null) {
+      operaDao.doCreate(opera2);
+    }
+    opera2.setId(3);
+
+    if (operaDao.doRetrieveById(4) == null) {
+      operaDao.doCreate(opera3);
+    }
+    opera3.setId(4);
+
+    if (operaDao.doRetrieveById(5) == null) {
+      operaDao.doCreate(opera4);
+    }
+    opera4.setId(5);
+
+    logger.info("-- Popolamento della tabella \"opera\" terminato (2/7) --");
+
+    // POPOLAMENTO TABELLA ASTA ------------------------
+
+    long giornoMillis = 1 * 1000 * 60 * 60 * 24;
+
+    Asta asta0 = new Asta(
+            opera0,
+            new Date(System.currentTimeMillis() - giornoMillis * 1),
+            new Date(System.currentTimeMillis() + giornoMillis * 6),
+            Asta.Stato.IN_CORSO
+    );
+
+    Asta asta1 = new Asta(
+            opera4,
+            new Date(System.currentTimeMillis()),
+            new Date(System.currentTimeMillis() + giornoMillis * 7),
+            Asta.Stato.IN_CORSO
+    );
+
+    if (astaDao.doRetrieveById(1) == null) {
+      astaDao.doCreate(asta0);
+    }
+    asta0.setId(1);
+
+    if (astaDao.doRetrieveById(2) == null) {
+      astaDao.doCreate(asta1);
+    }
+    asta1.setId(2);
+
+    logger.info("-- Popolamento della tabella \"asta\" terminato (3/7) --");
+
+    // POPOLAMENTO TABELLA RIVENDITA ------------------------
+
+    Rivendita rivendita0 = new Rivendita(
+            opera1,
+            Rivendita.Stato.IN_CORSO,
+            999.99d
+    );
+
+    if (rivenditaDao.doRetrieveById(1) == null) {
+      rivenditaDao.doCreate(rivendita0);
+    }
+    rivendita0.setId(1);
+
+    logger.info("-- Popolamento della tabella \"rivendita\" terminato (4/7) --");
+
+    // POPOLAMENTO TABELLA PARTECIPAZIONE ------------------------
+
+    Partecipazione partecipazione0 = new Partecipazione(
+            asta0,
+            utente3,
+            485.99d
+    );
+
+    Partecipazione partecipazione1 = new Partecipazione(
+            asta0,
+            utente4,
+            486d
+    );
+
+    Partecipazione partecipazione2 = new Partecipazione(
+            asta0,
+            utente5,
+            499.99d
+    );
+
+    if (partecipazioneDao.doRetrieveById(1) == null) {
+      partecipazioneDao.doCreate(partecipazione0);
+    }
+    partecipazione0.setId(1);
+
+    if (partecipazioneDao.doRetrieveById(2) == null) {
+      partecipazioneDao.doCreate(partecipazione1);
+    }
+    partecipazione1.setId(2);
+
+    if (partecipazioneDao.doRetrieveById(3) == null) {
+      partecipazioneDao.doCreate(partecipazione2);
+    }
+    partecipazione2.setId(3);
+
+    logger.info("-- Popolamento della tabella \"partecipazione\" terminato (5/7) --");
+
+    // POPOLAMENTO TABELLA NOTIFICA ------------------------
+
+    Rivendita noRivendita = new Rivendita();
+
+    Notifica notifica0 = new Notifica(
+            utente3,
+            asta0,
+            noRivendita,
+            Notifica.Tipo.SUPERATO,
+            "Contenuto della notifica.",
+            false
+    );
+
+    Notifica notifica1 = new Notifica(
+            utente4,
+            asta0,
+            noRivendita,
+            Notifica.Tipo.SUPERATO,
+            "Contenuto della notifica.",
+            true
+    );
+
+    if (notificaDao.doRetrieveById(1) == null) {
+      notificaDao.doCreate(notifica0);
+    }
+    notifica0.setId(1);
+
+    if (notificaDao.doRetrieveById(2) == null) {
+      notificaDao.doCreate(notifica1);
+    }
+    notifica1.setId(2);
+
+    logger.info("-- Popolamento della tabella \"notifica\" terminato (6/7) --");
+
+    // POPOLAMENTO TABELLA SEGNALAZIONE ------------------------
+
+    Segnalazione segnalazione0 = new Segnalazione(
+            asta1,
+            utente5.getUsername() + " ha copiato l'opera di "
+                    + utente0.getUsername() + "attualmente all'asta.",
+            false
+    );
+
+    if (segnalazioneDao.doRetrieveById(1) == null) {
+      segnalazioneDao.doCreate(segnalazione0);
+    }
+    segnalazione0.setId(1);
+
+    logger.info("-- Popolamento della tabella \"segnalazione\" terminato (7/7) --");
   }
 
-  private Logger logger = Logger.getLogger("MainContext.class");
+  private static final Logger logger = Logger.getLogger("MainContext.class");
 }

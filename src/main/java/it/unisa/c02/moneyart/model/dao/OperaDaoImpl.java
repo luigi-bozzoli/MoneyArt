@@ -44,8 +44,8 @@ public class OperaDaoImpl implements OperaDao {
   @Override
   public void doCreate(Opera item) {
     String insertSql = "INSERT INTO " + TABLE_NAME
-        + "(id_utente, id_artista, nome, prezzo, descrizione, immagine, certificato, stato)"
-        + " VALUES(?, ? , ?, ?, ?, ?, ?, ?) ";
+        + "(id_utente, id_artista, nome, descrizione, immagine, certificato, stato)"
+        + " VALUES(?, ?, ?, ?, ?, ?, ?) ";
 
 
     try (Connection connection = ds.getConnection();
@@ -54,11 +54,10 @@ public class OperaDaoImpl implements OperaDao {
       preparedStatement.setObject(1, item.getPossessore().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getArtista().getId(), Types.INTEGER);
       preparedStatement.setObject(3, item.getNome(), Types.VARCHAR);
-      preparedStatement.setObject(4, item.getPrezzo(), Types.DOUBLE);
-      preparedStatement.setObject(5, item.getDescrizione(), Types.VARCHAR);
-      preparedStatement.setObject(6, item.getImmagine(), Types.BLOB);
-      preparedStatement.setObject(7, item.getCertificato(), Types.VARCHAR);
-      preparedStatement.setObject(8, item.getStato().toString(), Types.VARCHAR);
+      preparedStatement.setObject(4, item.getDescrizione(), Types.VARCHAR);
+      preparedStatement.setObject(5, item.getImmagine(), Types.BLOB);
+      preparedStatement.setObject(6, item.getCertificato(), Types.VARCHAR);
+      preparedStatement.setObject(7, item.getStato().toString(), Types.VARCHAR);
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
@@ -133,7 +132,7 @@ public class OperaDaoImpl implements OperaDao {
   @Override
   public void doUpdate(Opera item) {
     String updateSql = "UPDATE " + TABLE_NAME
-        + " SET id_utente = ?, id_artista = ?, nome = ?, prezzo = ?,"
+        + " SET id_utente = ?, id_artista = ?, nome = ?,"
         + " descrizione = ?, immagine = ?, certificato = ?, stato = ?"
         + " WHERE id = ?";
 
@@ -142,12 +141,11 @@ public class OperaDaoImpl implements OperaDao {
       preparedStatement.setObject(1, item.getPossessore().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getArtista().getId(), Types.INTEGER);
       preparedStatement.setObject(3, item.getNome(), Types.VARCHAR);
-      preparedStatement.setObject(4, item.getPrezzo(), Types.DOUBLE);
-      preparedStatement.setObject(5, item.getDescrizione(), Types.VARCHAR);
-      preparedStatement.setObject(6, item.getImmagine(), Types.BLOB);
-      preparedStatement.setObject(7, item.getCertificato(), Types.VARCHAR);
-      preparedStatement.setObject(8, item.getStato().toString(), Types.VARCHAR);
-      preparedStatement.setObject(9, item.getId(), Types.INTEGER);
+      preparedStatement.setObject(4, item.getDescrizione(), Types.VARCHAR);
+      preparedStatement.setObject(5, item.getImmagine(), Types.BLOB);
+      preparedStatement.setObject(6, item.getCertificato(), Types.VARCHAR);
+      preparedStatement.setObject(7, item.getStato().toString(), Types.VARCHAR);
+      preparedStatement.setObject(8, item.getId(), Types.INTEGER);
       preparedStatement.executeUpdate();
 
     } catch (SQLException e) {
@@ -284,7 +282,6 @@ public class OperaDaoImpl implements OperaDao {
       opera.setArtista(artista);
 
       opera.setNome(rs.getObject("nome", String.class));
-      opera.setPrezzo(rs.getObject("prezzo", Double.class));
       opera.setDescrizione(rs.getObject("descrizione", String.class));
       opera.setImmagine(rs.getBlob("immagine"));
       opera.setCertificato(rs.getObject("certificato", String.class));
@@ -316,7 +313,6 @@ public class OperaDaoImpl implements OperaDao {
       opera.setArtista(artista);
 
       opera.setNome(rs.getObject("nome", String.class));
-      opera.setPrezzo(rs.getObject("prezzo", Double.class));
       opera.setDescrizione(rs.getObject("descrizione", String.class));
       opera.setImmagine(rs.getBlob("immagine"));
       opera.setCertificato(rs.getObject("certificato", String.class));

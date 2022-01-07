@@ -229,15 +229,12 @@ public class RivenditaDaoImpl implements RivenditaDao {
       rivendita.setId(rs.getObject("id", Integer.class));
 
       Opera opera = new Opera();
-      opera.setId(rs.getObject("id_utente", Integer.class));
+      opera.setId(rs.getObject("id_opera", Integer.class));
       rivendita.setOpera(opera);
 
-      rivendita.setOpera(rs.getObject("id_opera", Opera.class));
       rivendita.setPrezzo(rs.getObject("prezzo", Double.class));
       rivendita.setStato(Rivendita.Stato.valueOf(rs.getObject("stato", String.class)
           .toUpperCase()));
-
-
     }
     return rivendita;
   }

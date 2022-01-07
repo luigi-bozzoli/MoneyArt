@@ -4,9 +4,9 @@ use moneyart;
 
 create table utente (
 	id bigint auto_increment primary key,
-    id_seguito bigint, /*FK*/
+    id_seguito bigint, /* FK */
 	email varchar (100) not null unique,
-    pwd binary (32) not null,   # ...o binary (32)
+    pwd binary (32) not null,
     username varchar (100) not null unique,
     nome varchar (100) not null,
     cognome varchar (100) not null,
@@ -20,10 +20,9 @@ create table opera (
 	id bigint auto_increment primary key,
     id_utente bigint not null, /*FK*/
     id_artista bigint not null, /*FK*/
-    nome varchar (255) not null, 
-    prezzo double precision not null default 0,   # DA RIMUOVERE
+    nome varchar (255) not null,
     descrizione text, 
-    immagine blob not null,
+    immagine longblob not null,
     certificato text,
     stato enum("ALL_ASTA", "IN_VENDITA", "IN_POSSESSO", "PREVENDITA") default "IN_POSSESSO" not null,
     
@@ -34,7 +33,7 @@ create table opera (
 
 create table asta (
 	id bigint auto_increment primary key,
-    id_opera bigint not null, /*FK*/
+    id_opera bigint not null, /* FK */
     data_inizio date not null,
     data_fine date not null,
     stato enum("IN_CORSO", "TERMINATA", "ELIMINATA", "CREATA") default "IN_CORSO" not null,
@@ -44,7 +43,7 @@ create table asta (
 
 create table rivendita (
 	id bigint auto_increment primary key,
-    id_opera bigint not null, /*FK*/
+    id_opera bigint not null, /* FK */
     prezzo double precision not null,
     stato enum ("IN_CORSO", "TERMINATA") default "IN_CORSO" not null,
     
@@ -53,8 +52,8 @@ create table rivendita (
 
 create table partecipazione (
 	id bigint auto_increment primary key,
-    id_utente bigint not null, /*FK*/
-    id_asta bigint not null, /*FK*/
+    id_utente bigint not null, /* FK */
+    id_asta bigint not null, /* FK */
     offerta double precision not null default 0,
 
     foreign key (id_utente) references utente(id) on update no action on delete no action, 
@@ -63,9 +62,9 @@ create table partecipazione (
 
 create table notifica (
 	id bigint auto_increment primary key,
-    id_utente bigint not null, /*FK*/
-    id_rivendita bigint, /*FK*/
-    id_asta bigint, /*FK*/
+    id_utente bigint not null, /* FK */
+    id_rivendita bigint, /* FK */
+    id_asta bigint, /* FK */
     letta boolean default false not null,
     tipo enum("VITTORIA", "ANNULLAMENTO", "SUPERATO", "TERMINATA") not null,
     contenuto varchar(255) not null, 
