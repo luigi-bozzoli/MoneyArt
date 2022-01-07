@@ -1,3 +1,4 @@
+import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
 import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaService;
 import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaServiceImpl;
@@ -188,13 +189,12 @@ public class MainContext implements ServletContextListener {
     producers.put(new Retriever.RetrieverKey(SegnalazioneService.class.getName()),
         segnalazioneServiceProducer);
 
-    //una volta creato Asta service decommentare
-    /*
+
     GenericProducer<AstaService> astaServiceProducer = () -> new AstaServiceImpl();
     producers.put(new Retriever.RetrieverKey(AstaService.class.getName()),
         astaServiceProducer);
 
-     */
+
     //crezione producer per utilities
 
     GenericProducer<AstaLockingSingleton> astaLockingSingletonProducer =
