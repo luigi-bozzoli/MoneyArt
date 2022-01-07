@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - MoneyArt</title>
+
+    <!-- FAVICON -->
+
+    <!-- PAGE CSS -->
+    <link rel="stylesheet" href="../static/style/checkout_style.css">
+
+    <!-- FONTAWESOME CDN -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+</head>
+
+<body>
+    <section class="container">
+        <section class="content">
+            <article id="checkoutNav" class="shadow">
+                <ul>
+                    <li class="active">
+                        <p>01</p>
+                        <i class="fa fa-credit-card" aria-hidden="true"></i>
+                        <p>Pagamento</p>
+                    </li>
+                    <li>
+                        <p>02</p>
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        <p>Successo</p>
+                    </li>
+                </ul>
+            </article>
+            <article id="product" class="shadow"><img src="https://static.open.online/wp-content/uploads/2021/12/Nft-2-1280x677.jpg" alt="nft"></article>
+            <div class="title-product">
+                <h1>NOME NFT</h1>
+                <h5>by @artista</h5>
+            </div>
+            <article id="checkoutCard" class="shadow">
+                <div id="details">
+                    <dl class="">
+                        <dt>Prodotto</dt>
+                        <dd> <img id="thumbnail" src="https://static.open.online/wp-content/uploads/2021/12/Nft-2-1280x677.jpg" alt="Lunar 2"></dd>
+                        <dt></dt>
+                        <dd></dd>
+                        <dt>Prezzo</dt>
+                        <dd> $69.99 </dd>
+                    </dl>
+                </div>
+                <form action="">
+                    <div id="cards">
+
+                        <ul>
+                            <li><label for="" name="Card Type">Riepilogo Ordine</label></li>
+                            <li><i class="fa fa-cc-visa" aria-hidden="true"></i></li>
+                            <li><i class="fa fa-cc-paypal" aria-hidden="true"></i></li>
+                            <li><i class="fa fa-cc-amex" aria-hidden="true"></i></li>
+                            <li><i class="fa fa-cc-mastercard" aria-hidden="true"></i></li>
+                        </ul>
+                    </div>
+                    <div id="riepilogo-info">
+                        <ul>
+                            <li>
+                                <p>Nome NFT</p>
+                            </li>
+                            <li>
+                                <p>
+                                    <a href="#">username Artista</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <input type="submit" value="Check out" id="btnSubmit">
+                </form>
+            </article>
+        </section>
+    </section>
+</body>
+
+</html>
