@@ -29,7 +29,7 @@ public class ServletAcquistoDiretto extends HttpServlet {
       throws ServletException, IOException {
 
     Integer idRivendita = Integer.parseInt(request.getParameter("idRivendita"));
-    Integer idUtente = (Integer) request.getSession().getAttribute("idUtente");
+    Integer idUtente = Integer.parseInt(request.getParameter("idUtente"));
     rivenditaService.buy(idRivendita, idUtente);
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/acquistoDiretto.jsp");
     dispatcher.forward(request, response);
