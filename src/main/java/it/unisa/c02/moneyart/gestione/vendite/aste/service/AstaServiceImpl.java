@@ -1,4 +1,4 @@
-package it.unisa.c02.moneyart.gestione.aste.service;
+package it.unisa.c02.moneyart.gestione.vendite.aste.service;
 
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Asta;
