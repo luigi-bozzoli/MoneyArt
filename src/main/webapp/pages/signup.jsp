@@ -33,7 +33,7 @@
     </div>
 
     <div class="signup-box">
-        <img class="signup-logo" src="<%=request.getContextPath()%>/static/image/logo-moneyart.png" alt="Logo MoneyArt">
+        <img class="signup-logo" src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/image/logo-moneyart.png" alt="Logo MoneyArt">
         <form class="signup" method="post" name="signup">
             <div class="signup-input">
                 <label for="name">Nome</label>

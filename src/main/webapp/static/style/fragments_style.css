@@ -214,6 +214,13 @@ p.payment-method {
     margin-top: 4vh;
     margin-bottom: 0;
 }
+.page-heading h2{
+    text-align: center;
+    font-weight: 300 !important;
+    font-size: 35px !important;
+    margin-top: 4vh;
+    margin-bottom: 0;
+}
 
 .line-break{
     border-bottom: 2px solid #BB371A;

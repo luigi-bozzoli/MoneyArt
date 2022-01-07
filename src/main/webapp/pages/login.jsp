@@ -6,12 +6,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/style/signup_style.css">
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/style/fragments_style.css">
+        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/signup_style.css">
+        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/fragments_style.css">
 
         <!-- FAVICON -->
-        <link rel="shortcut icon" href="<%=request.getContextPath()%>/static/favicon.ico" type="image/x-icon">
-        <link rel="icon" href="<%=request.getContextPath()%>/static/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/favicon.ico" type="image/x-icon">
 
         <!-- BOOTSTRAP CDN -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -33,7 +33,7 @@
             <span class="line-break"></span>
         </div>
         <div class="signup-box">
-            <img class="signup-logo" src="<%=request.getContextPath()%>/static/image/logo-moneyart.png" alt="Logo MoneyArt">
+            <img class="signup-logo" src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/image/logo-moneyart.png" alt="Logo MoneyArt">
             <form class="signup" method="post" name="login">
                 <div class="signup-input">
                     <label for="username">Username - Email</label>

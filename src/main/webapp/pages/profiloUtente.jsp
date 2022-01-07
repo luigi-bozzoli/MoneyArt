@@ -8,15 +8,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Profilo Utente - MoneyArt</title>
 
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/style/homepage_style.css">
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/style/fragments_style.css">
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/style/template_bootstrap.css">
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/style/profiloUtente_style.css">
+        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/homepage_style.css">
+        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/fragments_style.css">
+        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/template_bootstrap.css">
+        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/profiloUtente_style.css">
 
 
         <!-- FAVICON -->
-        <link rel="shortcut icon" href="<%=request.getContextPath()%>/static/favicon.ico" type="image/x-icon">
-        <link rel="icon" href="<%=request.getContextPath()%>/static/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/favicon.ico" type="image/x-icon">
 
         <!-- BOOTSTRAP CDN -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -37,7 +37,7 @@
                     <div class=" image d-flex flex-column justify-content-center align-items-center">
 
                         <button class="btn-profile btn-secondary">
-                            <img src="<%=request.getContextPath()%>/static/image/user-placeholder.png" alt="Foto Profilo" height="100" width="100" />
+                            <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/image/user-placeholder.png" alt="Foto Profilo" height="100" width="100" />
                         </button>
 
                         <span class="name mt-3">NOME COGNOME</span>
