@@ -1,4 +1,4 @@
-import it.unisa.c02.moneyart.gestione.aste.service.AstaServiceImpl;
+import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
 import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaService;
 import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaServiceImpl;
 import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneService;
