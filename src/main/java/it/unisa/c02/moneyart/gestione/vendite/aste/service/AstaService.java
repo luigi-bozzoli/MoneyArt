@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.gestione.vendite.aste.service;
 
 import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 
@@ -57,6 +58,14 @@ public interface AstaService {
    * @return vero se la rimozione è andata a buon fine, falso altrimenti
    */
   boolean removeAsta(Asta asta);
+
+  /**
+   * annulla un asta.
+   *
+   * @param asta l'asta da annullare
+   * @return vero se l'annullamento è andata a buon fine, falso altrimenti
+   */
+  boolean annullaAsta(Asta asta);
 
 
 //_______________________________Gestione e terminazione asta________________________________

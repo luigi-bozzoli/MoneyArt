@@ -27,13 +27,13 @@ public interface UtenteService {
 
   int getNumberOfFollowers(Utente utente);
 
-  boolean deposit(Utente utente, float amount);
+  boolean deposit(Utente utente, double amount);
 
-  boolean withdraw(Utente utente, float amount);
+  boolean withdraw(Utente utente, double amount);
 
   double getBalance(Utente utente);
 
-  boolean transfer(Utente sender, Utente receiver, float amount);
+  boolean transfer(Utente sender, Utente receiver, double amount);
 
   byte[] encryptPassword(String password);
 

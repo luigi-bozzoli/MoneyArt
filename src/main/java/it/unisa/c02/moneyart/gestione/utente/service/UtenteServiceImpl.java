@@ -244,12 +244,14 @@ public class UtenteServiceImpl implements UtenteService {
    *         e false se l'amount è inferiore o uguale a zero
    */
   @Override
-  public boolean deposit(Utente utente, float amount) {
+  public boolean deposit(Utente utente, double amount) {
     if (amount <= 0) {
       return false;
     }
     utente = utenteDao.doRetrieveByUsername(utente.getUsername());
     utente.setSaldo(utente.getSaldo() + amount);
+    utente.setSaldoDisponibile(utente.getSaldoDisponibile() + amount);
+    utenteDao.doUpdate(utente);
 
     return true;
   }
@@ -264,10 +266,11 @@ public class UtenteServiceImpl implements UtenteService {
    *         e se il saldo dell'utente è minore dell'amount
    */
   @Override
-  public boolean withdraw(Utente utente, float amount) {
+  public boolean withdraw(Utente utente, double amount) {
     utente = utenteDao.doRetrieveByUsername(utente.getUsername());
-    if (amount < utente.getSaldo() || amount >= 0) {
+    if (amount <= utente.getSaldoDisponibile() || amount >= 0) {
       utente.setSaldo(utente.getSaldo() - amount);
+      utente.setSaldoDisponibile(utente.getSaldoDisponibile() - amount);
       return true;
     } else {
       return false;
@@ -298,7 +301,7 @@ public class UtenteServiceImpl implements UtenteService {
    *         e false altrimenti
    */
   @Override
-  public boolean transfer(Utente sender, Utente receiver, float amount) {
+  public boolean transfer(Utente sender, Utente receiver, double amount) {
     if (withdraw(sender, amount)) {
       return deposit(receiver, amount);
     }

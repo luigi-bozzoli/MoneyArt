@@ -188,8 +188,50 @@ public class AstaServiceImpl implements AstaService, TimerService {
    */
   @Override
   public boolean removeAsta(Asta asta) {
+    if (asta.getStato().equals(Asta.Stato.IN_CORSO)) {
+      astaAnnullata(asta);
+    }
+    //manda la notifica al proprietario
     astaDao.doDelete(asta);
     return true;
+  }
+
+  /**
+   * annulla un asta.
+   *
+   * @param asta l'asta da annullare
+   * @return vero se l'annullamento è andata a buon fine, falso altrimenti
+   */
+  @Override
+  public boolean annullaAsta(Asta asta) {
+
+    if (asta.getStato().equals(Asta.Stato.IN_CORSO)) {
+      astaAnnullata(asta);
+    }
+    astaDao.doDelete(asta);
+    return true;
+  }
+
+  /**
+   * effettua tutte le modifiche causate dall'annullamento di un asta.
+   * Ripristina il saldo del miglior offerente.
+   * imposta lo stato dell'opera.
+   * avvisa il miglior offerente della cancellazione
+   *
+   * @param asta l'asta che è stata annullata
+   */
+  private void astaAnnullata(Asta asta) {
+
+    Partecipazione bestOffer = bestOffer(asta);
+    if (bestOffer != null) {
+      Utente offerente = utenteDao.doRetrieveById(bestOffer.getUtente().getId());
+      offerente.setSaldoDisponibile(offerente.getSaldoDisponibile() + bestOffer.getOfferta());
+      utenteDao.doUpdate(offerente);
+      //manda una notifica all'offerente
+    }
+    Opera opera = operaDao.doRetrieveById(asta.getOpera().getId());
+    opera.setStato(Opera.Stato.PREVENDITA);
+    operaDao.doUpdate(opera);
   }
 
 

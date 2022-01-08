@@ -26,8 +26,8 @@ public class RivenditaServiceImpl implements RivenditaService {
   /**
    * Costruttore della classe.
    *
-   * @param operaDao dao di un'opera
-   * @param utenteDao dao di un utente
+   * @param operaDao     dao di un'opera
+   * @param utenteDao    dao di un utente
    * @param rivenditaDao dao di un utente
    */
   public RivenditaServiceImpl(UtenteDao utenteDao, OperaDao operaDao, RivenditaDao rivenditaDao) {
@@ -47,12 +47,12 @@ public class RivenditaServiceImpl implements RivenditaService {
   @Override
   public double getResellPrice(Opera opera) {
     if (opera == null) {
-      return  0;
+      return 0;
     }
 
     double prezzo = 0;
-    Utente artist = opera.getArtista();
-    Integer followers = utenteDao.doRetrieveFollowersByUserId(artist.getId()).size();
+    Utente artista = opera.getArtista();
+    Integer followers = utenteDao.doRetrieveFollowersByUserId(artista.getId()).size();
     prezzo = followers * prezzo;
     return prezzo;
   }
@@ -70,7 +70,7 @@ public class RivenditaServiceImpl implements RivenditaService {
       return false;
     }
 
-    if ((opera.getAste() != null) && opera.getStato().equals(Opera.Stato.IN_POSSESSO)) {
+    if (opera.getStato().equals(Opera.Stato.IN_POSSESSO)) {
       Rivendita rivendita = new Rivendita();
       rivendita.setOpera(opera);
       rivendita.setStato(Rivendita.Stato.IN_CORSO);
@@ -90,7 +90,7 @@ public class RivenditaServiceImpl implements RivenditaService {
    * Realizza la funzionalità di acquisto diretto di un'opera.
    *
    * @param idRivendita identificativo della rivendita
-   * @param idUtente identificativo dell'utente che vuole acquistare l'opera in vendita
+   * @param idUtente    identificativo dell'utente che vuole acquistare l'opera in vendita
    * @return true se l'operazione va a buon fine, false altrimenti
    */
   @Override
@@ -98,16 +98,18 @@ public class RivenditaServiceImpl implements RivenditaService {
     Rivendita rivendita = rivenditaDao.doRetrieveById(idRivendita);
     Utente utente = utenteDao.doRetrieveById(idUtente);
 
-    if (rivendita == null || utente == null) {
+    if (rivendita == null || utente == null ||
+        !rivendita.getStato().equals(Rivendita.Stato.IN_CORSO) ||
+        utente.getSaldoDisponibile() < rivendita.getPrezzo()) {
       return false;
     }
-
-    Opera opera = rivendita.getOpera();
+    Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
     opera.setPossessore(utente);
     opera.setStato(Opera.Stato.IN_POSSESSO);
-    Utente owner = opera.getPossessore();
-    utente.setSaldo(utente.getSaldo() - getResellPrice(opera));
-    owner.setSaldo(owner.getSaldo() + getResellPrice(opera));
+    Utente owner = utenteDao.doRetrieveById(opera.getPossessore().getId());
+    utente.setSaldo(utente.getSaldo() - rivendita.getPrezzo());
+    utente.setSaldoDisponibile(utente.getSaldoDisponibile() - rivendita.getPrezzo());
+    owner.setSaldo(owner.getSaldo() + rivendita.getPrezzo());
 
     rivendita.setStato(Rivendita.Stato.TERMINATA);
 
