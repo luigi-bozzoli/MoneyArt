@@ -107,6 +107,7 @@ public class UtenteServiceImpl implements UtenteService {
     if (checkEmail(utente.getEmail()) || checkUsername(utente.getUsername())) {
       return false;
     } else {
+      utente.setSaldoDisponibile(utente.getSaldo());
       utenteDao.doCreate(utente);
       return true;
     }

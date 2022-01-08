@@ -33,6 +33,7 @@ public class Utente {
     this.password = password;
     this.seguito = seguito;
     this.saldo = saldo;
+    this.saldoDisponibile = saldo;
   }
 
   /**
@@ -259,6 +260,23 @@ public class Utente {
     this.partecipazioni = partecipazioni;
   }
 
+  /**
+   * Restituisce il saldo attualmente disponibile dell'utente.
+   *
+   * @return il saldo disponibile dell'utente
+   */
+  public Double getSaldoDisponibile() {
+    return saldoDisponibile;
+  }
+
+  /**
+   * Modifica il saldo attualmente disponibile dell'utente.
+   *
+   * @param saldoDisponibile il nuovo saldo disponibile
+   */
+  public void setSaldoDisponibile(Double saldoDisponibile) {
+    this.saldoDisponibile = saldoDisponibile;
+  }
 
   /**
    * Restituisce la rappresentazione sotto forma di stringa di un utente.
@@ -299,6 +317,7 @@ public class Utente {
   private byte[] password;
   private Utente seguito;
   private Double saldo;
+  private Double saldoDisponibile;
 
   /* Liste utili */
   private List<Opera> opereCreate;

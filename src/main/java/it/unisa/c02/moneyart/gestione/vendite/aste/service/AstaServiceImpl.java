@@ -110,17 +110,29 @@ public class AstaServiceImpl implements AstaService, TimerService {
       //prendo la versione aggiornata di asta e utente
       utente = utenteDao.doRetrieveById(utente.getId());
       asta = astaDao.doRetrieveById(asta.getId());
+      //prendo la migliore offerta attuale
+      Partecipazione currentBestOffer = bestOffer(asta);
       //controllo le precondizioni
-      if (!asta.getStato().equals(Asta.Stato.IN_CORSO) || utente.getSaldo() < offerta ||
-          offerta <= bestOffer(asta).getOfferta()) {
+      if (!asta.getStato().equals(Asta.Stato.IN_CORSO) || utente.getSaldoDisponibile() < offerta ||
+          (currentBestOffer != null && offerta <= currentBestOffer.getOfferta())) {
         return false;
       }
+      //creo la nuova offerta
       Partecipazione nuovaOfferta = new Partecipazione(asta, utente, offerta);
-      //aggiungere saldo disponibile e non disponibile dell'utente
-      //e scalare quello disponibile di una quantità pari a offerta
-      //bisogna anche cambiare il controllo sopra
-      //aggiornaUtente
+      //riduco il saldo disponibile dell'offerente
+      utente.setSaldoDisponibile(utente.getSaldoDisponibile() - offerta);
+      //ripristino il saldo disponibile del vecchio miglior offerente
+      if (currentBestOffer != null) {
+        Utente oldBestBidder = utenteDao.doRetrieveById(currentBestOffer.getUtente().getId());
+        oldBestBidder.setSaldoDisponibile(
+            oldBestBidder.getSaldoDisponibile() + currentBestOffer.getOfferta());
+        utenteDao.doUpdate(oldBestBidder);
+        //qui in teoria c'è anche la questione degli observer
+
+      }
+      //aggiorno i dati perstistenti
       partecipazioneDao.doCreate(nuovaOfferta);
+      utenteDao.doUpdate(utente);
       return true;
 
 

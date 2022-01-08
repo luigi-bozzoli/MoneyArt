@@ -22,7 +22,7 @@ public class OperaServiceImpl implements OperaService {
   /**
    * Costruttore della classe.
    *
-   * @param opera dao di un'opera
+   * @param opera  dao di un'opera
    * @param utente dao di un utente
    */
   public OperaServiceImpl(OperaDao opera, UtenteDao utente) {
@@ -38,8 +38,8 @@ public class OperaServiceImpl implements OperaService {
    */
   @Override
   public boolean addArtwork(Opera opera) {
-    if (checkOpera(opera) == true
-          && checkArtwork(opera.getArtista().getId(), opera.getNome()) == true) {
+    if (checkOpera(opera)
+        && !checkArtwork(opera.getArtista().getId(), opera.getNome())) {
       operaDao.doCreate(opera);
       return true;
     } else {
@@ -51,7 +51,7 @@ public class OperaServiceImpl implements OperaService {
   /**
    * Controlla l'univocità del nome di un'opera presente nel db.
    *
-   * @param id dell'utente creatore
+   * @param id   dell'utente creatore
    * @param name titolo dell'opera
    * @return true se esiste un'opera con quel nome, false altrimenti
    */
