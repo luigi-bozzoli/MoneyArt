@@ -10,19 +10,8 @@ body {
     font-family: 'Inter', sans-serif !important;
 }
 
-.container {}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-header div {
-    width: 100px;
-    height: 40px;
-    overflow: visible;
+section.container {
+    margin: 100px auto;
 }
 
 .shadow {
@@ -78,10 +67,15 @@ label {
     width: 100px;
     height: 400px;
     background: #BB371A;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-radius: 10px;
     grid-row: c;
     z-index: 2;
+    color: white;
+}
+
+#checkoutNav p,
+#checkoutNav i{
+  color: white !important;
 }
 
 #checkoutNav ul {
@@ -94,7 +88,8 @@ label {
     grid-row: b / -1;
 }
 
-#checkoutNav ul i.fa {
+#checkoutNav ul i.fa,
+#checkoutNav ul i.fas{
     font-size: 25px;
 }
 
@@ -164,43 +159,10 @@ label {
     padding: 0;
     font-size: 18px;
 }
-
-#checkoutCard ul li input {
-    width: 30px;
-    height: 30px;
-    margin-left: 70px;
-    color: #BB371A;
-}
-
 #thumbnail {
     width: 175px;
     height: auto;
     border-radius: 20px;
-}
-
-form {
-    padding-top: 1em;
-}
-
-form>* {
-    padding: 0 0.8em;
-    margin-bottom: 1.5em;
-}
-
-form> :last-child {
-    margin: 0;
-}
-
-#checkoutCard form #cards {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-#checkoutCard form #cards ul {
-    margin: 0;
-    padding: 0;
-    width: 100%;
 }
 
 #cards i.fa {
@@ -223,33 +185,10 @@ form> :last-child {
     grid-column: 1 / -1;
 }
 
-#riepilogo-info input {
-    padding: 0;
-    /* 
-the following are required to fix what 
-seems to be buggy behaviour between inputs 
-and css grid in firefox. 
-The width and min-width are especially important.
-If the elements were spans instead of inputs this wouldn't be necessary.
- */
-    width: auto;
-    height: auto;
-    min-width: 60px;
-    min-height: 35px;
-}
-
 #securityInfo {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
-}
-
-#securityInfo input {
-    padding: 0;
-    width: auto;
-    height: auto;
-    min-width: 60px;
-    min-height: 35px;
 }
 
 #btnSubmit {
@@ -267,20 +206,8 @@ If the elements were spans instead of inputs this wouldn't be necessary.
     font-size: 20px;
 }
 
-footer {
-    text-align: center;
-    padding: 10px;
-    color: #FBFBFB;
-}
-
-footer a {
-    color: #FBFBFB;
-    padding: 0 20px;
-    text-decoration: none;
-}
-
-footer a:hover {
-    color: #BB371A;
+#card-checkout {
+    margin: auto 10px;
 }
 
 @media screen and ( max-width: 746px) {
@@ -296,6 +223,7 @@ footer a:hover {
         margin: 0 0 1em 0;
         border-radius: 0;
         display: block;
+        color: white;
     }
     #checkoutNav ul {
         display: flex;
@@ -305,9 +233,5 @@ footer a:hover {
     }
     #checkoutCard {
         margin: auto;
-    }
-    footer {
-        display: flex;
-        flex-direction: column;
     }
 }

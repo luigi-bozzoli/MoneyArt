@@ -10,6 +10,7 @@
     <title>Checkout - MoneyArt</title>
 
     <!-- PAGE CSS -->
+    <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/fragments_style.css">
     <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/checkout_style.css">
 
     <!-- FAVICON -->
@@ -30,6 +31,8 @@
 </head>
 
 <body>
+    <%@include file="../static/fragments/header.jsp"%>
+
     <section class="container">
         <section class="content">
             <article id="checkoutNav" class="shadow">
@@ -41,7 +44,7 @@
                     </li>
                     <li>
                         <p>02</p>
-                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        <i class="fas fa-thumbs-up"></i>
                         <p>Successo</p>
                     </li>
                 </ul>
@@ -63,34 +66,36 @@
                     </dl>
                 </div>
                 <form action="">
-                    <div id="cards">
-
-                        <ul>
-                            <li><label for="" name="Card Type">Riepilogo Ordine</label></li>
-                            <li><i class="fa fa-cc-visa" aria-hidden="true"></i></li>
-                            <li><i class="fa fa-cc-paypal" aria-hidden="true"></i></li>
-                            <li><i class="fa fa-cc-amex" aria-hidden="true"></i></li>
-                            <li><i class="fa fa-cc-mastercard" aria-hidden="true"></i></li>
-                        </ul>
+                    <div id="card-checkout">
+                        <div id="cards">
+                            <ul>
+                                <li><label for="" name="Card Type">Riepilogo Ordine</label></li>
+                                <li><i class="fa fa-cc-visa" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-cc-paypal" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-cc-amex" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-cc-mastercard" aria-hidden="true"></i></li>
+                            </ul>
+                        </div>
+                        <div id="riepilogo-info">
+                            <ul>
+                                <li>
+                                    <p>Nome NFT</p>
+                                </li>
+                                <li>
+                                    <p>
+                                        <a href="#">username Artista</a>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <div id="riepilogo-info">
-                        <ul>
-                            <li>
-                                <p>Nome NFT</p>
-                            </li>
-                            <li>
-                                <p>
-                                    <a href="#">username Artista</a>
-                                </p>
-                            </li>
-                        </ul>
-                    </div>
-
                     <input type="submit" value="Check out" id="btnSubmit">
                 </form>
             </article>
         </section>
     </section>
+
+    <%@include file="../static/fragments/footer.jsp"%>
 </body>
 
 </html>
