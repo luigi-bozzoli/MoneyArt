@@ -182,6 +182,10 @@ a{text-decoration: none;}
     margin: auto;
 }
 
+.container .contatti {
+    margin-top: 30px;
+}
+
 .footer-logo {
     width: 60%;
 }

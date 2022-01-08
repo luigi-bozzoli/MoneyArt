@@ -15,6 +15,12 @@
                 <br>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure autem<br>ab nemo ad dolorem ut, sunt sit unde reprehenderit mollitia totam neque<br>animi impedit doloremque rem. Quae velit est optio!</p>
 
+                <!-- Copyright -->
+                <div class="footer-copyright py-3">
+                    <p>2021 Copyright: <a href="#">MoneyArt</a></p>
+                </div>
+                <!-- Copyright-->
+
             </div>
             <!-- Grid column -->
 
@@ -59,11 +65,6 @@
                 </div>
 
                 <div class="container">
-                    <h5>Contatti</h5>
-                    <a href="" style="font-size: 15px;">info@moneyart.com</a>
-                </div>
-
-                <div class="container">
                     <h5>Metodi di pagamento:</h5>
                     <div class="social-buttons">
                         <p class="payment-method"><i class="fab fa-cc-mastercard"></i></p>
@@ -71,6 +72,13 @@
                         <p class="payment-method"><i class="fab fa-cc-paypal"></i></p>
                         <p class="payment-method"><i class="fab fa-apple-pay"></i></p>
                     </div>
+                </div>
+
+                <br>
+
+                <div class="container contatti">
+                    <h5>Contatti</h5>
+                    <a href="" style="font-size: 15px;">info@moneyart.com</a>
                 </div>
 
 
@@ -83,12 +91,6 @@
 
     </div>
     <!-- Footer Links -->
-
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">
-        <p>2021 Copyright: <a href="#">MoneyArt</a></p>
-    </div>
-    <!-- Copyright -->
 
 </footer>
 <!-- Footer -->

@@ -11,7 +11,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "ServletAnnullaAsta", value = "/removeAuction")
+@WebServlet(name = "ServletAnnullaAsta", value = "/camcelAuction")
 public class ServletAnnullaAsta extends HttpServlet {
 
   @Override
