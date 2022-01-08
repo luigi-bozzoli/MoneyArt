@@ -3,6 +3,8 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
+import org.apache.commons.io.IOUtils;
+
 import java.sql.Blob;
 import java.sql.SQLException;
 import javax.servlet.*;
@@ -32,7 +34,7 @@ public class ServletModificaFotoProfilo extends HttpServlet {
     }
     Blob nuovaImmagine;
     try {
-      nuovaImmagine = new SerialBlob(immagine.getInputStream().readAllBytes());
+      nuovaImmagine = new SerialBlob(IOUtils.toByteArray(immagine.getInputStream()));
     } catch (SQLException e) {
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
           "errore nella processing dell'immagine");

@@ -4,6 +4,8 @@ import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
+import org.apache.commons.io.IOUtils;
+
 import java.sql.Blob;
 import java.sql.SQLException;
 import javax.servlet.*;
@@ -48,7 +50,7 @@ public class ServletCreaOpera extends HttpServlet {
     Utente artista = (Utente) request.getSession().getAttribute("utente");
     Blob blob;
     try {
-      blob = new SerialBlob(immagine.getInputStream().readAllBytes());
+      blob = new SerialBlob(IOUtils.toByteArray(immagine.getInputStream()));
     } catch (SQLException e) {
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
           "errore durante il processamento dell'immagine");
