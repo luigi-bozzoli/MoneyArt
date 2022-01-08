@@ -6,23 +6,21 @@ import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.utils.production.Retriever;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+
+/**
+ * Servlet per la creazione e aggiunta di un'asta.
+ */
 @WebServlet(name = "ServletCreaAsta", value = "/newAuction")
 public class ServletCreaAsta extends HttpServlet {
-
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    operaService = Retriever.getIstance(OperaService.class);
-    AstaService astaService = Retriever.getIstance(AstaService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -2,6 +2,7 @@ package it.unisa.c02.moneyart.gestione.vendite.aste.controller;
 
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -14,24 +15,21 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet per la rimozione di un'asta.
  */
-@WebServlet(name = "ServletRimuoviAsta", value = "/rimuoviAsta")
+@WebServlet(name = "ServletRimuoviAsta", value = "/removeAuction")
 public class ServletRimuoviAsta extends HttpServlet {
-
-  private AstaService astaService;
-
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    this.astaService = Retriever.getIstance(AstaService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
 
-    Asta asta = (Asta) request.getSession().getAttribute("asta");
-    astaService.removeAsta(asta);
-    //potremmo fare una pagina "Operazione avvenuta con successo"
+    if (request.getParameter("idAsta") != null) {
+      int id = Integer.valueOf(request.getParameter("idAsta"));
+      Asta asta = astaService.getAuction(id);
+      astaService.removeAsta(asta);
+    } else {
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametro mancante");
+    }
+
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/aste.jsp");
     dispatcher.forward(request, response);
   }
@@ -41,5 +39,7 @@ public class ServletRimuoviAsta extends HttpServlet {
           throws ServletException, IOException {
     doGet(request, response);
   }
+
+  private AstaService astaService;
 
 }
