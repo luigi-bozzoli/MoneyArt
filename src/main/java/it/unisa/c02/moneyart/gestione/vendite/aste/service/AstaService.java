@@ -5,6 +5,7 @@ import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 
 import java.util.Date;
+import java.util.List;
 
 public interface AstaService {
 
@@ -14,14 +15,32 @@ public interface AstaService {
 
   /**
    * Restituisce tutte le informazioni relative ad un asta.
-   * Precondizione:
-   * Postcondizione:
    *
    * @param id l'identificativo dell'asta
    * @return l'asta identificata dall'id
-   * @post prova
    */
   Asta getAuction(int id);
+
+  /**
+   * Restituisce tutte le aste esistenti sulla piattaforma.
+   *
+   * @return la lista di tutte le aste presenti sulla piattaforma.
+   */
+  List<Asta> getAllAuctions();
+
+  /**
+   * Permette ad un utente di partecipare ad un asta.
+   * Precondizine: L'Asta non deve essere terminata,
+   * l'utente deve avere un saldo sufficente per effettuare l'offerta e
+   * L'offerta è superiore a quella attuale dell'asta
+   * Postcondizione: l'offerta viene registrata
+   *
+   * @param utente  l'utente che vuole effettuare l'offerta
+   * @param asta    l'asta per cui si vuole effetuare l'offerta
+   * @param offerta l'offerta fatta dall'utente
+   * @return vero se l'offerta va a buon fine, falso altrimenti
+   */
+  boolean partecipateAuction(Utente utente, Asta asta, double offerta);
 
   /**
    * Aggiunge una nuova asta.

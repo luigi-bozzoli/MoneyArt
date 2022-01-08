@@ -51,7 +51,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * @param timerScheduler       permette di attivare servizi allo
    *                             scadere di un timer
    * @param astaLockingSingleton permette di serializzare l'accesso ad un asta
-♦   * @param utenteService        permette di accedere alle funzionalità
+   *                             ♦   * @param utenteService        permette di accedere alle funzionalità
    *                             del sottositema per la gestione degli utenti
    */
   public AstaServiceImpl(AstaDao astaDao,
@@ -72,16 +72,61 @@ public class AstaServiceImpl implements AstaService, TimerService {
 
   /**
    * Restituisce tutte le informazioni relative ad un asta.
-   * Precondizione:
-   * Postcondizione:
    *
    * @param id l'identificativo dell'asta
    * @return l'asta identificata dall'id
-   * @post prova
    */
   @Override
   public Asta getAuction(int id) {
     return astaDao.doRetrieveById(id);
+  }
+
+  /**
+   * Restituisce tutte le aste esistenti sulla piattaforma.
+   *
+   * @return la lista di tutte le aste presenti sulla piattaforma.
+   */
+  @Override
+  public List<Asta> getAllAuctions() {
+    return astaDao.doRetrieveAll("id");
+  }
+
+  /**
+   * Permette ad un utente di partecipare ad un asta.
+   * Precondizine: L'Asta non deve essere terminata,
+   * l'utente deve avere un saldo sufficente per effettuare l'offerta e
+   * L'offerta è superiore a quella attuale dell'asta
+   * Postcondizione: l'offerta viene registrata
+   *
+   * @param utente  l'utente che vuole effettuare l'offerta
+   * @param asta    l'asta per cui si vuole effetuare l'offerta
+   * @param offerta l'offerta fatta dall'utente
+   * @return vero se l'offerta va a buon fine, falso altrimenti
+   */
+  @Override
+  public boolean partecipateAuction(Utente utente, Asta asta, double offerta) {
+    astaLockingSingleton.lockAsta(asta);
+    try {
+      //prendo la versione aggiornata di asta e utente
+      utente = utenteDao.doRetrieveById(utente.getId());
+      asta = astaDao.doRetrieveById(asta.getId());
+      //controllo le precondizioni
+      if (!asta.getStato().equals(Asta.Stato.IN_CORSO) || utente.getSaldo() < offerta ||
+          offerta <= bestOffer(asta).getOfferta()) {
+        return false;
+      }
+      Partecipazione nuovaOfferta = new Partecipazione(asta, utente, offerta);
+      //aggiungere saldo disponibile e non disponibile dell'utente
+      //e scalare quello disponibile di una quantità pari a offerta
+      //bisogna anche cambiare il controllo sopra
+      //aggiornaUtente
+      partecipazioneDao.doCreate(nuovaOfferta);
+      return true;
+
+
+    } finally {
+      astaLockingSingleton.unlockAsta(asta);
+    }
   }
 
   /**

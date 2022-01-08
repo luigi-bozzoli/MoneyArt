@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(filterName = "FilterLogin", urlPatterns = {"/userPage"})
+@WebFilter(filterName = "FilterLogin", urlPatterns = {"/userPage", "/newOffer"})
 public class FilterLogin implements Filter {
   public void init(FilterConfig config) throws ServletException {
   }
