@@ -41,4 +41,5 @@ public class ServletAcquistoDiretto extends HttpServlet {
 
     doGet(request, response);
   }
+
 }
