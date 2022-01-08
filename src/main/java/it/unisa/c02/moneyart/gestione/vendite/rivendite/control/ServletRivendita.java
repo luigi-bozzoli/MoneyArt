@@ -28,7 +28,7 @@ public class ServletRivendita extends HttpServlet {
 
     Integer idOpera = Integer.parseInt(request.getParameter("idOpera"));
     rivenditaService.resell(idOpera);
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/rivendita.jsp");
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/opere.jsp");
     dispatcher.forward(request, response);
   }
 

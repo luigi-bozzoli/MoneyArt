@@ -1,7 +1,6 @@
 package it.unisa.c02.moneyart.gestione.vendite.rivendite.control;
 
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
-import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
@@ -29,7 +28,8 @@ public class ServletAcquistoDiretto extends HttpServlet {
       throws ServletException, IOException {
 
     Integer idRivendita = Integer.parseInt(request.getParameter("idRivendita"));
-    Integer idUtente = Integer.parseInt(request.getParameter("idUtente"));
+    Utente utente = (Utente) request.getSession().getAttribute("utente");
+    Integer idUtente = utente.getId();
     rivenditaService.buy(idRivendita, idUtente);
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/acquistoDiretto.jsp");
     dispatcher.forward(request, response);
@@ -41,4 +41,5 @@ public class ServletAcquistoDiretto extends HttpServlet {
 
     doGet(request, response);
   }
+
 }
