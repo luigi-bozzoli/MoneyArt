@@ -18,17 +18,9 @@ public class ServletLogin extends HttpServlet {
   private UtenteService utenteService;
 
   @Override
-  public void init() throws ServletException {
-    super.init();
-    this.utenteService = Retriever.getIstance(UtenteService.class);
-  }
-
-  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     doPost(request, response);
-
-
   }
 
   @Override

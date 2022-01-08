@@ -25,7 +25,6 @@ public class ServletLogout extends HttpServlet {
       dispatcher.forward(request, response);
     }
 
-
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {

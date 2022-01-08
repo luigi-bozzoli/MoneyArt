@@ -15,13 +15,6 @@ import java.io.IOException;
 public class ServletAnnullaAsta extends HttpServlet {
 
   @Override
-  public void init() throws ServletException {
-    super.init();
-    astaService = Retriever.getIstance(AstaService.class);
-    operaService = Retriever.getIstance(OperaService.class);
-  }
-
-  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     Utente utente = (Utente) request.getSession().getAttribute("utente");

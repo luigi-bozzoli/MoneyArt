@@ -22,12 +22,6 @@ import javax.sql.rowset.serial.SerialBlob;
 public class ServletCreaOpera extends HttpServlet {
 
   @Override
-  public void init() throws ServletException {
-    super.init();
-    operaService = Retriever.getIstance(OperaService.class);
-  }
-
-  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     doPost(request, response);
