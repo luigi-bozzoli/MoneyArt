@@ -16,9 +16,6 @@ import it.unisa.c02.moneyart.utils.production.Retriever;
 import it.unisa.c02.moneyart.utils.timers.TimedObject;
 import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import it.unisa.c02.moneyart.utils.timers.TimerService;
 
@@ -41,8 +38,56 @@ public class AstaServiceImpl implements AstaService, TimerService {
   }
 
   /**
+   * Costruttore.
+   *
+   * @param astaDao              il dao per accedere agli oggetti
+   *                             Asta memorizzati in modo peristente
+   * @param operaDao             il dao per accedere agli oggetti
+   *                             Opera memorizzati in modo peristente
+   * @param utenteDao            il dao per accedere agli oggetti
+   *                             Utente memorizzati in modo peristente
+   * @param partecipazioneDao    il dao per accedere agli oggetti
+   *                             Partecipazione memorizzati in modo peristente
+   * @param timerScheduler       permette di attivare servizi allo
+   *                             scadere di un timer
+   * @param astaLockingSingleton permette di serializzare l'accesso ad un asta
+♦   * @param utenteService        permette di accedere alle funzionalità
+   *                             del sottositema per la gestione degli utenti
+   */
+  public AstaServiceImpl(AstaDao astaDao,
+                         OperaDao operaDao,
+                         UtenteDao utenteDao,
+                         PartecipazioneDao partecipazioneDao,
+                         TimerScheduler timerScheduler,
+                         AstaLockingSingleton astaLockingSingleton,
+                         UtenteService utenteService) {
+    this.astaDao = astaDao;
+    this.operaDao = operaDao;
+    this.utenteDao = utenteDao;
+    this.partecipazioneDao = partecipazioneDao;
+    this.timerScheduler = timerScheduler;
+    this.astaLockingSingleton = astaLockingSingleton;
+    this.utenteService = utenteService;
+  }
+
+  /**
+   * Restituisce tutte le informazioni relative ad un asta.
+   * Precondizione:
+   * Postcondizione:
+   *
+   * @param id l'identificativo dell'asta
+   * @return l'asta identificata dall'id
+   * @post prova
+   */
+  @Override
+  public Asta getAuction(int id) {
+    return astaDao.doRetrieveById(id);
+  }
+
+  /**
    * Verifica la correttezza delle date inserite durante la fase di creazione dell'asta.
    * Formato data dd/mm/yyyy --> Si assumono le 24:00:00 come orario fisso per i giorni
+   *
    * @param startDate data di inizio per l'asta
    * @param endDate   data di fine per l'asta
    * @return vero o falso
@@ -70,7 +115,8 @@ public class AstaServiceImpl implements AstaService, TimerService {
       return false;
     }
     asta.setStato(Asta.Stato.CREATA);
-    asta.setDataInizio(FormattingDates.setMidnightTime(asta.getDataInizio())); //Il giorno di inizio di un'asta parte sempre da mezzanotte
+    asta.setDataInizio(FormattingDates.setMidnightTime(
+        asta.getDataInizio())); //Il giorno di inizio di un'asta parte sempre da mezzanotte
     astaDao.doCreate(asta);
     TimedObject timedObject = new TimedObject(asta.getId(), "avviaAsta", asta.getDataInizio());
     timerScheduler.scheduleTimedService(timedObject);

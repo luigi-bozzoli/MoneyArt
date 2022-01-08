@@ -33,7 +33,7 @@ public class ServletMigliorOfferta extends HttpServlet {
     Asta asta = (Asta) request.getSession().getAttribute("asta");
     Partecipazione partecipazione = astaService.bestOffer(asta);
     request.setAttribute("offerta", partecipazione);
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asta.jsp");
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/provaAsta.jsp");
     dispatcher.forward(request, response);
   }
 
