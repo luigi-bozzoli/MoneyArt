@@ -40,5 +40,15 @@ http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_1.xsd" version="2.1">
         </attribute>
     </tag>
 
+    <tag>
+    <name>rivendita</name>
+    <tag-class>it.unisa.c02.moneyart.view.RivenditaTag</tag-class>
+    <body-content>scriptless</body-content>
+    <attribute>
+        <name>id</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    </tag>
 
 </taglib>

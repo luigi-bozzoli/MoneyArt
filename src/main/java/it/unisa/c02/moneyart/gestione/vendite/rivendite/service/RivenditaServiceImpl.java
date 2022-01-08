@@ -37,6 +37,11 @@ public class RivenditaServiceImpl implements RivenditaService {
 
   }
 
+  @Override
+  public Rivendita getResell(Integer id) {
+    return rivenditaDao.doRetrieveById(id);
+  }
+
   /**
    * Calcola il valore di un'opera in base al numero di followers dell'artista dell'opera.
    *

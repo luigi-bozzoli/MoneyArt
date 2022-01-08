@@ -14,4 +14,6 @@ public interface RivenditaService {
   boolean buy(Integer idRivendita, Integer idUtente);
 
   List<Rivendita> getResells(String stato);
+
+  Rivendita getResell(Integer id);
 }
