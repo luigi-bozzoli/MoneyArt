@@ -46,6 +46,17 @@ public class NotificaServiceImpl implements NotificaService {
   }
 
   /**
+   * Restituisce la notifica
+   *
+   * @param id
+   * @return
+   */
+  @Override
+  public Notifica getNotification(int id){
+    return notificaDao.doRetrieveById(id);
+  }
+
+  /**
    * Imposta il parametro "letta" a true.
    *
    * @param notifica notifica da impostare come letta

@@ -9,6 +9,8 @@ public interface NotificaService {
 
   List<Notifica> getNotificationsByUser(Utente utente);
 
+  Notifica getNotification(int id);
+
   void readNotifaction (Notifica notifica);
 
   void unreadNotification (Notifica notifica);
