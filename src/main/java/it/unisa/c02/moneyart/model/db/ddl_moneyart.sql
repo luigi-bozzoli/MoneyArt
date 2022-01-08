@@ -83,5 +83,3 @@ create table segnalazione (
 
     foreign key (id_asta) references asta(id) on update no action on delete cascade
 );
- 
-
