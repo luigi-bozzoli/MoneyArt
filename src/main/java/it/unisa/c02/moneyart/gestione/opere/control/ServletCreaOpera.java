@@ -5,7 +5,6 @@ import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import org.apache.commons.io.IOUtils;
-
 import java.sql.Blob;
 import java.sql.SQLException;
 import javax.servlet.*;
@@ -37,15 +36,10 @@ public class ServletCreaOpera extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    for (String parametro : PARAMETRI_NECESSARI) {
-      if (request.getParameter(parametro) == null) {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametri mancanti");
-        return;
-      }
-    }
+
     Part immagine = request.getPart("immagine");
-    String nome = request.getParameter(PARAMETRI_NECESSARI[0]);
-    String descrizione = request.getParameter(PARAMETRI_NECESSARI[1]);
+    String nome = request.getParameter("nome");
+    String descrizione = request.getParameter("descrizione");
 
     Utente artista = (Utente) request.getSession().getAttribute("utente");
     Blob blob;
@@ -57,17 +51,22 @@ public class ServletCreaOpera extends HttpServlet {
       return;
     }
     Opera nuovaOpera =
-        new Opera(nome, descrizione, Opera.Stato.PREVENDITA, blob, artista, artista, null);
+      new Opera(nome, descrizione, Opera.Stato.PREVENDITA, blob, artista, artista, null);
     nuovaOpera.setImmagine(blob);
     if (!operaService.addArtwork(nuovaOpera)) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-          "l'opera è già presente sulla piattaforma");
+      request.setAttribute("error",
+        "L'opera è già presente nella piattaforma!");
+      RequestDispatcher dispatcher = request
+          .getRequestDispatcher("/pages/aggiungi-opera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
+      dispatcher.forward(request, response);
+    } else {
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/dettaglio-opera?id="
+          + nuovaOpera.getId() + ".jsp"); // TODO: aggiungere il link alla pagina del wallet
+      dispatcher.forward(request, response);
     }
 
 
   }
-
-  private static final String[] PARAMETRI_NECESSARI = {"nome", "descrizione"};
 
 
   private OperaService operaService;

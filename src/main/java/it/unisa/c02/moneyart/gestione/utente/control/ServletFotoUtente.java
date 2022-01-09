@@ -26,19 +26,11 @@ public class ServletFotoUtente extends HttpServlet {
       throws ServletException, IOException {
     int idUtente;
     response.setContentType("image/*");
-    try {
 
-      idUtente = Integer.parseInt(request.getParameter("id"));
-    } catch (NumberFormatException e) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametri mancanti");
-      return;
+    idUtente = Integer.parseInt(request.getParameter("id"));
 
-    }
     Utente utente = utenteService.getUserInformation(idUtente);
-    if (utente == null) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "utente non trovato");
-      return;
-    }
+
     Blob imgBlob = utente.getFotoProfilo();
     byte[] imageBytes;
     try {

@@ -14,6 +14,7 @@
     <title>Asta</title>
 </head>
 <body>
+
     <bean:asta id="${param.id}">
         <bean:opera id="${asta.opera.id}">
             <div>

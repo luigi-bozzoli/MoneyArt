@@ -12,7 +12,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "ServletAnnullaAsta", value = "/camcelAuction")
+@WebServlet(name = "ServletAnnullaAsta", value = "/cancelAuction")
 public class ServletAnnullaAsta extends HttpServlet {
 
   @Override
@@ -26,13 +26,10 @@ public class ServletAnnullaAsta extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     Utente utente = (Utente) request.getSession().getAttribute("utente");
-    int astaId;
-    try {
-      astaId = Integer.parseInt(request.getParameter("id"));
-    } catch (Exception e) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametri mancanti o invalidi");
-      return;
-    }
+
+    int astaId = astaId = Integer.parseInt(request.getParameter("id"));
+
+
     Asta asta = astaService.getAuction(astaId);
     Opera opera = operaService.getArtwork(asta.getOpera().getId());
     if (opera.getArtista().getId() != utente.getId()) {

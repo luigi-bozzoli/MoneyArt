@@ -6,6 +6,8 @@ import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.utils.production.Retriever;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,14 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 public class ServletAddNotifica extends HttpServlet {
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  public void init() throws ServletException {
+    super.init();
+    notificaService = Retriever.getIstance(NotificaService.class);
+    utenteService = Retriever.getIstance(UtenteService.class);
+  }
 
-    for(String paramentro: PARAMETRI_NECESSARI){
-      if(request.getParameter(paramentro) == null){
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametri mancanti");
-        return;
-      }
-    }
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     int idDestinatario = Integer.valueOf(request.getParameter("idDestinatario"));
     Utente utente = new Utente();
@@ -59,5 +61,4 @@ public class ServletAddNotifica extends HttpServlet {
   private NotificaService notificaService;
   private UtenteService utenteService;
 
-  private static final String[] PARAMETRI_NECESSARI = {"idDestinatario", "idAsta", "idRivendita", "tipo", "contenuto"};
 }

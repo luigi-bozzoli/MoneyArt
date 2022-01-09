@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface NotificaService {
 
-  List<Notifica> getNotificationsByUser(Utente utente);
+  List<Notifica> getNotificationsByUser(int idUtente);
 
   Notifica getNotification(int id);
 
-  void readNotifaction (Notifica notifica);
+  void readNotification (Notifica notifica);
 
   void unreadNotification (Notifica notifica);
 

@@ -28,13 +28,9 @@ public class ServletRimuoviAsta extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
 
-    if (request.getParameter("idAsta") != null) {
-      int id = Integer.valueOf(request.getParameter("idAsta"));
-      Asta asta = astaService.getAuction(id);
-      astaService.removeAsta(asta);
-    } else {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametro mancante");
-    }
+    int id = Integer.valueOf(request.getParameter("idAsta"));
+    Asta asta = astaService.getAuction(id);
+    astaService.removeAsta(asta);
 
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/aste.jsp");
     dispatcher.forward(request, response);

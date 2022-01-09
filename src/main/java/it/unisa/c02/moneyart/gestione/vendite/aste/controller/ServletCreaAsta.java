@@ -10,6 +10,7 @@ import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,51 +34,52 @@ public class ServletCreaAsta extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    Utente utente = (Utente) request.getSession().getAttribute("utente");
-    for (String parametro : PARAMETRI_NECESSARI) {
-      if (request.getParameter(parametro) == null) {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametri mancanti");
-        return;
-      }
-    }
-    String idOperaS = request.getParameter(PARAMETRI_NECESSARI[0]);
-    String dataInizioS = request.getParameter(PARAMETRI_NECESSARI[1]);
-    String dataFineS = request.getParameter(PARAMETRI_NECESSARI[2]);
-    int idOpera;
-    Date dataInizio;
-    Date dataFine;
-    try {
-
-      idOpera = Integer.parseInt(idOperaS);
-      dataInizio = new SimpleDateFormat("dd/MM/yyyy").parse(dataInizioS);
-      dataFine = new SimpleDateFormat("dd/MM/yyyy").parse(dataFineS);
-      //
-    } catch (Exception e) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-          "i parametri non sono nel giusto formato");
-      return;
-    }
-    Opera opera = operaService.getArtwork(idOpera);
-    if (opera == null || !utente.getId().equals(opera.getArtista().getId())) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-          "non sei il creatore di quest opera");
-      return;
-    }
-    Asta asta = new Asta(opera, dataInizio, dataFine, Asta.Stato.CREATA);
-    if (!astaService.addAsta(asta)) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-          "errore nella creazione dell'asta");
-      return;
-    }
-
-
+    doPost(request, response);
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    doGet(request, response);
+    Utente utente = (Utente) request.getSession().getAttribute("utente");
+    String idOperaS = request.getParameter("id");
+    String dataInizioS = request.getParameter("inizio");
+    String dataFineS = request.getParameter("fine");
+
+    int idOpera;
+    Date dataInizio;
+    Date dataFine;
+
+    try {
+      idOpera = Integer.parseInt(idOperaS);
+      dataInizio = new SimpleDateFormat("dd/MM/yyyy").parse(dataInizioS);
+      dataFine = new SimpleDateFormat("dd/MM/yyyy").parse(dataFineS);
+
+    } catch (Exception e) {
+      request.setAttribute("error",
+        "Formato date non corrette!");
+      response.sendRedirect("/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
+      return;
+
+    }
+    Opera opera = operaService.getArtwork(idOpera);
+    if (opera == null || !utente.getId().equals(opera.getArtista().getId())) {
+      request.setAttribute("error",
+        "Non sei il creatore di quest'opera!");
+      response.sendRedirect("/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
+      return;
+    }
+    Asta asta = new Asta(opera, dataInizio, dataFine, Asta.Stato.CREATA);
+    if (!astaService.addAsta(asta)) {
+      request.setAttribute("error",
+        "Errore creazione asta!");
+      response.sendRedirect("/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
+      return;
+    }
+
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/dettaglio-asta?id="
+      + asta.getId() + ".jsp"); // TODO: aggiungere il link alla pagina dell'asta
+    dispatcher.forward(request, response);
   }
 
   private OperaService operaService;

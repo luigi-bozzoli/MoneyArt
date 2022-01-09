@@ -107,6 +107,8 @@
         <!-- /Form -->
     </div>
 
+    <%@include file="../static/fragments/footer.jsp"%>
+
 
 
 

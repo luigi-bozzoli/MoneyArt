@@ -25,22 +25,17 @@ public class ServletNuovaOfferta extends HttpServlet {
     double offerta;
     RequestDispatcher dispatcher;
     Utente utente = (Utente) request.getSession().getAttribute("utente");
-    try {
 
-      astaId = Integer.parseInt(request.getParameter("asta"));
-      offerta = Double.parseDouble(request.getParameter("offerta"));
-    } catch (NumberFormatException e) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametri mancanti");
-      return;
+    astaId = Integer.parseInt(request.getParameter("asta"));
+    offerta = Double.parseDouble(request.getParameter("offerta"));
 
-    }
     Asta asta = astaService.getAuction(astaId);
     if (asta == null) {
       response.sendError(HttpServletResponse.SC_BAD_REQUEST, "asta non trovata");
       return;
     }
     if (astaService.partecipateAuction(utente, asta, offerta)) {
-      dispatcher = request.getRequestDispatcher("pages/??");
+      dispatcher = request.getRequestDispatcher("pages/??"); // TODO: aggiungere il link alla view
       dispatcher.forward(request, response);
 
     } else {

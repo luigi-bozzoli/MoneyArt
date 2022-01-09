@@ -33,14 +33,13 @@ public class NotificaServiceImpl implements NotificaService {
   /**
    * Restituisce tutte le notifiche di un utente.
    *
-   * @param utente utente interessato alle notifiche
+   * @param idUtente id dell'utente interessato alle notifiche
    * @return List di notifiche
    */
   @Override
-  public List<Notifica> getNotificationsByUser(Utente utente) {
-    utente = utenteDao.doRetrieveByUsername(utente.getUsername());
+  public List<Notifica> getNotificationsByUser(int idUtente) {
 
-    List<Notifica> notifies = notificaDao.doRetrieveAllByUserId(utente.getId());
+    List<Notifica> notifies = notificaDao.doRetrieveAllByUserId(idUtente);
 
     return notifies;
   }
@@ -62,7 +61,7 @@ public class NotificaServiceImpl implements NotificaService {
    * @param notifica notifica da impostare come letta
    */
   @Override
-  public void readNotifaction(Notifica notifica) {
+  public void readNotification(Notifica notifica) {
     notifica = notificaDao.doRetrieveById(notifica.getId());
     notifica.setLetta(true);
 
