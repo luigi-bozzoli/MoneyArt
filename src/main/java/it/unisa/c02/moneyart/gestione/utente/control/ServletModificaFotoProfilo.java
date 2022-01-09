@@ -18,6 +18,12 @@ import javax.sql.rowset.serial.SerialBlob;
 public class ServletModificaFotoProfilo extends HttpServlet {
 
   @Override
+  public void init() throws ServletException {
+    super.init();
+    utenteService = Retriever.getIstance(UtenteService.class);
+  }
+
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     Utente utente = (Utente) request.getSession().getAttribute("utente");

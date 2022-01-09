@@ -6,6 +6,7 @@ import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +22,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ServletCreaAsta", value = "/newAuction")
 public class ServletCreaAsta extends HttpServlet {
+
+  @Override
+  public void init() throws ServletException {
+    super.init();
+    astaService = Retriever.getIstance(AstaService.class);
+    operaService = Retriever.getIstance(OperaService.class);
+  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)

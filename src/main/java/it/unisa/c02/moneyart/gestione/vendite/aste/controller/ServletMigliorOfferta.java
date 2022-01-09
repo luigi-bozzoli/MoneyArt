@@ -1,8 +1,10 @@
 package it.unisa.c02.moneyart.gestione.vendite.aste.controller;
 
+import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Partecipazione;
+import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +18,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ServletMigliorOfferta", value = "/bestOffer")
 public class ServletMigliorOfferta extends HttpServlet {
+
+  @Override
+  public void init() throws ServletException {
+    super.init();
+    astaService = Retriever.getIstance(AstaService.class);
+  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)

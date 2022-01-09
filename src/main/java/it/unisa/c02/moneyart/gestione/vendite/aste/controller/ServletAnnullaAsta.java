@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.gestione.vendite.aste.controller;
 
 import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Opera;
@@ -13,6 +14,13 @@ import java.io.IOException;
 
 @WebServlet(name = "ServletAnnullaAsta", value = "/camcelAuction")
 public class ServletAnnullaAsta extends HttpServlet {
+
+  @Override
+  public void init() throws ServletException {
+    super.init();
+    astaService = Retriever.getIstance(AstaService.class);
+    operaService = Retriever.getIstance(OperaService.class);
+  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)

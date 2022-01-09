@@ -12,8 +12,10 @@ import java.io.IOException;
 @WebServlet(name = "ServletNuovaOfferta", value = "/newOffer")
 public class ServletNuovaOfferta extends HttpServlet {
 
-  public ServletNuovaOfferta(AstaService astaService) {
-    this.astaService = astaService;
+  @Override
+  public void init() throws ServletException {
+    super.init();
+    astaService = Retriever.getIstance(AstaService.class);
   }
 
   @Override

@@ -16,6 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 public class ServletFotoOpera extends HttpServlet {
 
   @Override
+  public void init() throws ServletException {
+    super.init();
+    operaService = Retriever.getIstance(OperaService.class);
+  }
+
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 

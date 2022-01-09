@@ -1,6 +1,8 @@
-package it.unisa.c02.moneyart.gestione.vendite.aste.controller;
+package it.unisa.c02.moneyart.gestione.utente.control;
 
+import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
+import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Blob;
@@ -12,6 +14,12 @@ import java.io.IOException;
 
 @WebServlet(name = "ServletFotoUtente", value = "/userPicture")
 public class ServletFotoUtente extends HttpServlet {
+
+  @Override
+  public void init() throws ServletException {
+    super.init();
+    utenteService = Retriever.getIstance(UtenteService.class);
+  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)

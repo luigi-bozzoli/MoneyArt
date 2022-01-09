@@ -17,6 +17,12 @@ public class ServletUserPage extends HttpServlet {
   private UtenteService utenteService;
 
   @Override
+  public void init() throws ServletException {
+    super.init();
+    utenteService = Retriever.getIstance(UtenteService.class);
+  }
+
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     Utente utente = (Utente) request.getSession().getAttribute("utente");
