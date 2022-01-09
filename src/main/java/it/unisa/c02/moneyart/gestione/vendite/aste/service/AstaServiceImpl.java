@@ -10,7 +10,6 @@ import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
-import it.unisa.c02.moneyart.utils.formattingDates.FormattingDates;
 import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import it.unisa.c02.moneyart.utils.timers.TimedObject;
@@ -172,12 +171,23 @@ public class AstaServiceImpl implements AstaService, TimerService {
       return false;
     }
     asta.setStato(Asta.Stato.CREATA);
-    asta.setDataInizio(FormattingDates.setMidnightTime(
+    asta.setDataInizio(setMidnightTime(
         asta.getDataInizio())); //Il giorno di inizio di un'asta parte sempre da mezzanotte
     astaDao.doCreate(asta);
     TimedObject timedObject = new TimedObject(asta.getId(), "avviaAsta", asta.getDataInizio());
     timerScheduler.scheduleTimedService(timedObject);
     return true;
+  }
+
+  /* La data viene restituita con il tempo impostato a mezzanotte */
+  private Date setMidnightTime (Date date) {
+    if (date == null) return null;
+
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+
+    return date;
   }
 
   /**
