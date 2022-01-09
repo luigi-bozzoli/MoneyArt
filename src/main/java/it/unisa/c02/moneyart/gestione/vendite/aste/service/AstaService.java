@@ -30,6 +30,14 @@ public interface AstaService {
   List<Asta> getAllAuctions();
 
   /**
+   * Restituisce le aste sulla piattaforma che si trovano in un determinato stato.
+   *
+   * @param s stato delle aste da restituire
+   * @return la lista di tutte le aste presenti sulla piattaforma in un determinato stato.
+   */
+  List<Asta> getAuctionsByState(Asta.Stato s);
+
+  /**
    * Permette ad un utente di partecipare ad un asta.
    * Precondizine: L'Asta non deve essere terminata,
    * l'utente deve avere un saldo sufficente per effettuare l'offerta e
