@@ -70,10 +70,6 @@
                         <div id="cards">
                             <ul>
                                 <li><label for="" name="Card Type">Riepilogo Ordine</label></li>
-                                <li><i class="fa fa-cc-visa" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-cc-paypal" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-cc-amex" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-cc-mastercard" aria-hidden="true"></i></li>
                             </ul>
                         </div>
                         <div id="riepilogo-info">

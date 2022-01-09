@@ -71,6 +71,7 @@ label {
     grid-row: c;
     z-index: 2;
     color: white;
+    padding-top: 10px;
 }
 
 #checkoutNav p,
@@ -221,7 +222,7 @@ label {
         width: auto;
         height: auto;
         margin: 0 0 1em 0;
-        border-radius: 0;
+        border-radius: 10px;
         display: block;
         color: white;
     }
