@@ -29,6 +29,7 @@ public class ServletGetAste extends HttpServlet {
     String action = request.getParameter("action");
 
     List<Asta> aste = null;
+
     switch (action) {
       case "inCorso":
         Asta.Stato inCorso = Asta.Stato.IN_CORSO;

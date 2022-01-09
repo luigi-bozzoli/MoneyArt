@@ -8,6 +8,8 @@ public interface SegnalazioneService {
 
   List<Segnalazione> getReports(String filter);
 
+  Segnalazione getReport(int id);
+
   void addReport(Segnalazione segnalazione);
 
   void removeReport(Segnalazione segnalazione);

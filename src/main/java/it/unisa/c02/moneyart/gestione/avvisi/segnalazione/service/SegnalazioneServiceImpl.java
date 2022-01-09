@@ -38,6 +38,11 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
   }
 
   @Override
+  public Segnalazione getReport(int id) {
+    return segnalazioneDao.doRetrieveById(id);
+  }
+
+  @Override
   public void addReport(Segnalazione segnalazione) {
     segnalazioneDao.doCreate(segnalazione);
   }
