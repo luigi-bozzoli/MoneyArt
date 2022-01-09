@@ -60,6 +60,7 @@
                     <button type="submit">Login</button>
             </form>
         </div>
+        <%@include file="../static/fragments/footer.jsp"%>
     </body>
 
     </html>

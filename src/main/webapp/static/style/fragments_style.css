@@ -219,14 +219,14 @@ a.social:hover {
 }
 
 p.payment-method {
-    font-size: 25px;
+    font-size: 25px !important;
     margin: auto;
     height: 50px;
     width: 50px;
 }
 
 .list-unstyled {
-    margin-top: 40px;
+    margin-top: 15px;
     margin-bottom: auto;
 }
 

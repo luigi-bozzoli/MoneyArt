@@ -1,4 +1,5 @@
 <!-- Footer -->
+<img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/image/wave-footer.svg" alt="">
 <footer class="page-footer font-small blue pt-4">
 
     <!-- Footer Links -->
@@ -8,18 +9,14 @@
         <div class="row">
 
             <!-- Grid column -->
-            <div class="col-md-6 mt-md-0 mt-3">
+            <div class="col-md-4 mt-md-0 mt-3">
 
                 <!-- Content -->
                 <img class="footer-logo" src="<%=request.getContextPath()%>/static/image/logo-moneyart.png" alt="MoneyArt" srcset="">
                 <br>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure autem<br>ab nemo ad dolorem ut, sunt sit unde reprehenderit mollitia totam neque<br>animi impedit doloremque rem. Quae velit est optio!</p>
+                <p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure autem ab nemo ad dolorem ut, sunt sit unde reprehenderit mollitia totam neque animi impedit doloremque rem. Quae velit est optio!
 
-                <!-- Copyright -->
-                <div class="footer-copyright py-3">
-                    <p>2021 Copyright: <a href="#">MoneyArt</a></p>
-                </div>
-                <!-- Copyright-->
+
 
             </div>
             <!-- Grid column -->
@@ -27,23 +24,23 @@
             <hr class="clearfix w-100 d-md-none pb-3">
 
             <!-- Grid column -->
-            <div class="col-md-3 mb-md-0 mb-3">
+            <div class="col-md-4 mb-md-0 mb-3 text-center">
 
                 <!-- Links -->
                 <h3>Link Utili</h3>
 
                 <ul class="list-unstyled">
                     <li>
-                        <a href="#!">Marketplace</a>
+                        <a href="#">Marketplace</a>
                     </li>
                     <li>
-                        <a href="#!">Aste</a>
+                        <a href="#">Aste</a>
                     </li>
                     <li>
-                        <a href="#!">Artisti</a>
+                        <a href="#">Artisti</a>
                     </li>
                     <li>
-                        <a href="#!">Contatti</a>
+                        <a href="#">Contatti</a>
                     </li>
                 </ul>
 
@@ -51,10 +48,10 @@
             <!-- Grid column -->
 
             <!-- Grid column -->
-            <div class="col-md-3 mb-md-0 mb-3" style="text-align: center;">
+            <div class="col-md-4 mb-md-0" style="text-align: center;">
 
                 <!-- Links -->
-                <div class="container">
+                <div class="container mb-3">
                     <h5 class="text-uppercase">Entra nella community:</h5>
                     <div class="social-buttons">
                         <a class="social"><i class="fab fa-instagram"></i></a>
@@ -64,7 +61,7 @@
                     </div>
                 </div>
 
-                <div class="container">
+                <div class="container mb-3">
                     <h5>Metodi di pagamento:</h5>
                     <div class="social-buttons">
                         <p class="payment-method"><i class="fab fa-cc-mastercard"></i></p>
@@ -74,15 +71,6 @@
                     </div>
                 </div>
 
-                <br>
-
-                <div class="container contatti">
-                    <h5>Contatti</h5>
-                    <a href="" style="font-size: 15px;">info@moneyart.com</a>
-                </div>
-
-
-
             </div>
             <!-- Grid column -->
 
@@ -91,6 +79,20 @@
 
     </div>
     <!-- Footer Links -->
+    <div class="container contatti mt-3 pt-3">
+        <h6 class="d-inline-block">Contatti - </h6>
+        <a href="mailto:info@moneyart.com" style="font-size: 15px;">info@moneyart.com</a>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="footer-copyright py-3">
+                    <p>Copyright &copy; 2022 MoneyArt - Tutti i diritti sono riservati. </p>
+                </div>
+            </div>
 
+        </div>
+
+    </div>
 </footer>
 <!-- Footer -->

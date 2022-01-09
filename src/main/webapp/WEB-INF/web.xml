@@ -26,5 +26,30 @@
                 <taglib-location>/WEB-INF/mytags.tld</taglib-location>
             </taglib>
         </jsp-config>
+        <error-page>
+            <!-- Missing login -->
+            <error-code>401</error-code>
+            <location>/static/error/error401.jsp</location>
+        </error-page>
+        <error-page>
+            <!-- Forbidden directory listing -->
+            <error-code>403</error-code>
+            <location>/static/error/error403.jsp</location>
+        </error-page>
+        <error-page>
+            <!-- Missing resource -->
+            <error-code>404</error-code>
+            <location>/static/error/error404.jsp</location>
+        </error-page>
+        <error-page>
+            <!-- Uncaught exception -->
+            <error-code>500</error-code>
+            <location>/static/error/error500.jsp</location>
+        </error-page>
+        <error-page>
+            <!-- Unsupported servlet method -->
+            <error-code>503</error-code>
+            <location>/static/error/error503.js</location>
+        </error-page>
 
 </web-app>

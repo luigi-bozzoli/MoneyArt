@@ -1,7 +1,10 @@
 package it.unisa.c02.moneyart.gestione.avvisi.notifica.control;
 
 import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaService;
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.utils.production.Retriever;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,13 +16,28 @@ import java.io.IOException;
 public class ServletReadNotifica extends HttpServlet {
 
   @Override
+  public void init() throws ServletException {
+    super.init();
+    notificaService = Retriever.getIstance(NotificaService.class);
+  }
+  
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    if(request.getParameter("idNotifica") == null) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametri mancanti");
-      return;
-    }
+
+    String action = request.getParameter("action");
     Notifica notifica = notificaService.getNotification(Integer.valueOf(request.getParameter("idNotifica")));
-    notificaService.readNotifaction(notifica);
+
+    switch (action) {
+
+      case "read":
+        notificaService.readNotification(notifica);
+        break;
+
+      case "unread":
+        notificaService.unreadNotification(notifica);
+        break;
+    }
+
   }
 
   @Override

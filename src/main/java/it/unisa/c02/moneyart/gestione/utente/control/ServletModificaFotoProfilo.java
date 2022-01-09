@@ -28,10 +28,7 @@ public class ServletModificaFotoProfilo extends HttpServlet {
       throws ServletException, IOException {
     Utente utente = (Utente) request.getSession().getAttribute("utente");
     Part immagine = request.getPart("immagine");
-    if (immagine == null) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametri incorreti o mancanti");
-      return;
-    }
+
     Blob nuovaImmagine;
     try {
       nuovaImmagine = new SerialBlob(IOUtils.toByteArray(immagine.getInputStream()));

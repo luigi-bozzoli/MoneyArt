@@ -120,12 +120,6 @@ public class UtenteServiceImpl implements UtenteService {
    */
   @Override
   public void updateUser(Utente utente) {
-    Utente oldData = utenteDao.doRetrieveByUsername(utente.getUsername());
-
-    if (utente.getFotoProfilo() == null) {
-      utente.setFotoProfilo(oldData.getFotoProfilo());
-    }
-    utente.setId(oldData.getId());
     utenteDao.doUpdate(utente);
   }
 
@@ -268,7 +262,7 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public boolean withdraw(Utente utente, double amount) {
     utente = utenteDao.doRetrieveByUsername(utente.getUsername());
-    if (amount <= utente.getSaldoDisponibile() || amount >= 0) {
+    if (amount <= utente.getSaldoDisponibile() && amount > 0) {
       utente.setSaldo(utente.getSaldo() - amount);
       utente.setSaldoDisponibile(utente.getSaldoDisponibile() - amount);
       return true;

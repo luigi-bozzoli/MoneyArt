@@ -27,14 +27,9 @@ public class ServletFotoOpera extends HttpServlet {
 
     int idOpera;
     response.setContentType("image/*");
-    try {
 
-      idOpera = Integer.parseInt(request.getParameter("id"));
-    } catch (NumberFormatException e) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "parametri mancanti");
-      return;
+    idOpera = Integer.parseInt(request.getParameter("id"));
 
-    }
     Opera opera = operaService.getArtwork(idOpera);
     if (opera == null) {
       response.sendError(HttpServletResponse.SC_BAD_REQUEST, "opera non trovato");
