@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/fragments_style.css">
         <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/template_bootstrap.css">
         <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/profiloUtente_style.css">
+        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/template_bootstrap.css">
 
 
         <!-- FAVICON -->
@@ -23,6 +24,9 @@
         <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
 
+        <!-- BOOTSTRAP BUNDLE -->
+        <script src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/js/bootstrap.bundle.js"/>
+
         <!-- BOOTSTRAP CDN -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -32,10 +36,12 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     </head>
 
-    <body>
+    <body class="sidebar-mini layout-fixed sidebar-collapse" style="height: auto;">
         <%@include file="../static/fragments/header.jsp"%>
 
-            <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+        <%@include file="../static/fragments/sidebar.jsp"%>
+
+            <div class="content-wrapper container mt-4 mb-4 p-3 d-flex justify-content-center">
                 <div class="card p-4">
                     <div class=" image d-flex flex-column justify-content-center align-items-center">
 
@@ -63,6 +69,8 @@
             </div>
 
             <%@include file="../static/fragments/footer.jsp"%>
+
+            <script src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/js/sidebar.js"></script>
     </body>
 
     </html>

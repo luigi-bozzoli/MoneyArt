@@ -258,5 +258,32 @@ p.payment-method {
 .error p {
     color: #BB371A !important;
 }
+
 /* sidebar utente */
 
+/* sidebar utente */
+
+.sidebar {
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar p {
+    font-size: 16px;
+    color: #9C9C9C !important;
+    font-weight: bold;
+    padding-left: 0.5rem;
+}
+
+.sidebar .nav-icon {
+    color: #9C9C9C !important;
+}
+
+a.nav-link:hover p,
+a.nav-link:hover i {
+    color: #EBA83A !important;
+}

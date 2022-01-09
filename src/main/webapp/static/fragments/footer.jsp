@@ -1,4 +1,5 @@
 <!-- Footer -->
+<div class="content-wrapper">
 <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/image/wave-footer.svg" alt="">
 <footer class="page-footer font-small blue pt-4">
 
@@ -95,4 +96,5 @@
 
     </div>
 </footer>
+</div>
 <!-- Footer -->
