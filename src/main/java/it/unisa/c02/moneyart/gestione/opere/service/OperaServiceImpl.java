@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.gestione.opere.service;
 
 import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.blockchain.MoneyArtNft;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
@@ -17,6 +18,7 @@ public class OperaServiceImpl implements OperaService {
   public OperaServiceImpl() {
     this.operaDao = Retriever.getIstance(OperaDao.class);
     this.utenteDao = Retriever.getIstance(UtenteDao.class);
+    this.moneyArtNft = Retriever.getIstance(MoneyArtNft.class);
   }
 
   /**
@@ -25,9 +27,10 @@ public class OperaServiceImpl implements OperaService {
    * @param opera  dao di un'opera
    * @param utente dao di un utente
    */
-  public OperaServiceImpl(OperaDao opera, UtenteDao utente) {
+  public OperaServiceImpl(OperaDao opera, UtenteDao utente, MoneyArtNft moneyArtNft) {
     this.operaDao = opera;
     this.utenteDao = utente;
+    this.moneyArtNft = moneyArtNft;
   }
 
   /**
@@ -41,6 +44,7 @@ public class OperaServiceImpl implements OperaService {
     if (checkOpera(opera)
         && !checkArtwork(opera.getArtista().getId(), opera.getNome())) {
       operaDao.doCreate(opera);
+      moneyArtNft.create(opera.getId() + "");
       return true;
     } else {
       return false;
@@ -134,4 +138,5 @@ public class OperaServiceImpl implements OperaService {
    */
   private OperaDao operaDao;
   private UtenteDao utenteDao;
+  private MoneyArtNft moneyArtNft;
 }

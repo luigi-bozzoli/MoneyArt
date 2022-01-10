@@ -17,6 +17,7 @@ import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Segnalazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.blockchain.MoneyArtNft;
 import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
@@ -40,6 +41,7 @@ import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
 import it.unisa.c02.moneyart.utils.timers.TimerService;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -57,6 +59,11 @@ import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialBlob;
 import org.apache.commons.io.FileUtils;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.StaticGasProvider;
 
 /**
  * permette di inizializzare il sistema all'avvio.
@@ -205,6 +212,9 @@ public class MainContext implements ServletContextListener {
     GenericProducer<TimerScheduler> timerServiceProducer = () -> TimerScheduler.getInstance();
     producers.put(new Retriever.RetrieverKey(TimerScheduler.class.getName()), timerServiceProducer);
 
+    GenericProducer<MoneyArtNft> moneyArtNftProducer = () -> contractInizializer();
+    producers.put(new Retriever.RetrieverKey(MoneyArtNft.class.getName()), moneyArtNftProducer);
+
 
     return producers;
   }
@@ -237,7 +247,7 @@ public class MainContext implements ServletContextListener {
     logger.info("-- Path immagini profilo utente: "
         + filePath.concat("static\\demo\\profilePics\\") + " --");
     logger.info("-- Path immagini opere: "
-            + filePath.concat("static\\demo\\") + " --");
+        + filePath.concat("static\\demo\\") + " --");
 
     // POPOLAMENTO TABELLA UTENTE ------------------------
 
@@ -412,58 +422,58 @@ public class MainContext implements ServletContextListener {
     // POPOLAMENTO TABELLA OPERA ------------------------
 
     Opera opera0 = new Opera(
-            "Bears Deluxe #3742",
-            "Descrizione",
-            Opera.Stato.ALL_ASTA,
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\bears-deluxe-3742.png")))),
-            utente0,
-            utente0,
-            null
+        "Bears Deluxe #3742",
+        "Descrizione",
+        Opera.Stato.ALL_ASTA,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\bears-deluxe-3742.png")))),
+        utente0,
+        utente0,
+        null
     );
 
     Opera opera1 = new Opera(
-            "The Shibosis",
-            "Descrizione",
-            Opera.Stato.IN_VENDITA,
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\shibosis.jpg")))),
-            utente1,
-            utente0,
-            null
+        "The Shibosis",
+        "Descrizione",
+        Opera.Stato.IN_VENDITA,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\shibosis.jpg")))),
+        utente1,
+        utente0,
+        null
     );
 
     Opera opera2 = new Opera(
-            "CupCat",
-            "Descrizione",
-            Opera.Stato.PREVENDITA,
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\cupcat.jpg")))),
-            utente3,
-            utente3,
-            null
+        "CupCat",
+        "Descrizione",
+        Opera.Stato.PREVENDITA,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\cupcat.jpg")))),
+        utente3,
+        utente3,
+        null
     );
 
     Opera opera3 = new Opera(
-            "TIGXR",
-            "Descrizione",
-            Opera.Stato.PREVENDITA,
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\tiger.jpg")))),
-            utente4,
-            utente4,
-            null
+        "TIGXR",
+        "Descrizione",
+        Opera.Stato.PREVENDITA,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\tiger.jpg")))),
+        utente4,
+        utente4,
+        null
     );
 
     Opera opera4 = new Opera(
-            "Bears Deluxe #3742",
-            "Descrizione",
-            Opera.Stato.ALL_ASTA,
-            new SerialBlob(FileUtils.readFileToByteArray(
-                    new File(filePath.concat("static\\demo\\bears-deluxe-3742.png")))),
-            utente5,
-            utente5,
-            null
+        "Bears Deluxe #3742",
+        "Descrizione",
+        Opera.Stato.ALL_ASTA,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat("static\\demo\\bears-deluxe-3742.png")))),
+        utente5,
+        utente5,
+        null
     );
 
     if (operaDao.doRetrieveById(1) == null) {
@@ -498,17 +508,17 @@ public class MainContext implements ServletContextListener {
     long giornoMillis = 1 * 1000 * 60 * 60 * 24;
 
     Asta asta0 = new Asta(
-            opera0,
-            new Date(System.currentTimeMillis() - giornoMillis * 1),
-            new Date(System.currentTimeMillis() + giornoMillis * 6),
-            Asta.Stato.IN_CORSO
+        opera0,
+        new Date(System.currentTimeMillis() - giornoMillis * 1),
+        new Date(System.currentTimeMillis() + giornoMillis * 6),
+        Asta.Stato.IN_CORSO
     );
 
     Asta asta1 = new Asta(
-            opera4,
-            new Date(System.currentTimeMillis()),
-            new Date(System.currentTimeMillis() + giornoMillis * 7),
-            Asta.Stato.IN_CORSO
+        opera4,
+        new Date(System.currentTimeMillis()),
+        new Date(System.currentTimeMillis() + giornoMillis * 7),
+        Asta.Stato.IN_CORSO
     );
 
     if (astaDao.doRetrieveById(1) == null) {
@@ -526,9 +536,9 @@ public class MainContext implements ServletContextListener {
     // POPOLAMENTO TABELLA RIVENDITA ------------------------
 
     Rivendita rivendita0 = new Rivendita(
-            opera1,
-            Rivendita.Stato.IN_CORSO,
-            999.99d
+        opera1,
+        Rivendita.Stato.IN_CORSO,
+        999.99d
     );
 
     if (rivenditaDao.doRetrieveById(1) == null) {
@@ -541,21 +551,21 @@ public class MainContext implements ServletContextListener {
     // POPOLAMENTO TABELLA PARTECIPAZIONE ------------------------
 
     Partecipazione partecipazione0 = new Partecipazione(
-            asta0,
-            utente3,
-            485.99d
+        asta0,
+        utente3,
+        485.99d
     );
 
     Partecipazione partecipazione1 = new Partecipazione(
-            asta0,
-            utente4,
-            486d
+        asta0,
+        utente4,
+        486d
     );
 
     Partecipazione partecipazione2 = new Partecipazione(
-            asta0,
-            utente5,
-            499.99d
+        asta0,
+        utente5,
+        499.99d
     );
 
     if (partecipazioneDao.doRetrieveById(1) == null) {
@@ -580,21 +590,21 @@ public class MainContext implements ServletContextListener {
     Rivendita noRivendita = new Rivendita();
 
     Notifica notifica0 = new Notifica(
-            utente3,
-            asta0,
-            noRivendita,
-            Notifica.Tipo.SUPERATO,
-            "Contenuto della notifica.",
-            false
+        utente3,
+        asta0,
+        noRivendita,
+        Notifica.Tipo.SUPERATO,
+        "Contenuto della notifica.",
+        false
     );
 
     Notifica notifica1 = new Notifica(
-            utente4,
-            asta0,
-            noRivendita,
-            Notifica.Tipo.SUPERATO,
-            "Contenuto della notifica.",
-            true
+        utente4,
+        asta0,
+        noRivendita,
+        Notifica.Tipo.SUPERATO,
+        "Contenuto della notifica.",
+        true
     );
 
     if (notificaDao.doRetrieveById(1) == null) {
@@ -612,10 +622,10 @@ public class MainContext implements ServletContextListener {
     // POPOLAMENTO TABELLA SEGNALAZIONE ------------------------
 
     Segnalazione segnalazione0 = new Segnalazione(
-            asta1,
-            utente5.getUsername() + " ha copiato l'opera di "
-                    + utente0.getUsername() + "attualmente all'asta.",
-            false
+        asta1,
+        utente5.getUsername() + " ha copiato l'opera di "
+            + utente0.getUsername() + "attualmente all'asta.",
+        false
     );
 
     if (segnalazioneDao.doRetrieveById(1) == null) {
@@ -625,6 +635,39 @@ public class MainContext implements ServletContextListener {
 
     logger.info("-- Popolamento della tabella \"segnalazione\" terminato (7/7) --");
   }
+
+  private MoneyArtNft contractInizializer() {
+    Web3j web3j = Web3j.build(new HttpService("HTTP://127.0.0.1:7545"));
+
+    ContractGasProvider contractGasProvider = getGasProvider();
+
+    Credentials credentials = getCredentialsFromPrivateKey();
+
+    return loadContract(CONTRACT_ADDRESS, web3j, credentials, contractGasProvider);
+
+  }
+
+  private static ContractGasProvider getGasProvider() {
+    ContractGasProvider contractGasProvider = new StaticGasProvider(GAS_PRICE, GAS_LIMIT);
+    return contractGasProvider;
+  }
+
+  private static Credentials getCredentialsFromPrivateKey() {
+    return Credentials.create(PRIVATE_KEY);
+  }
+
+  private static MoneyArtNft loadContract(String contractAddress, Web3j web3j,
+                                          Credentials credentials,
+                                          ContractGasProvider contractGasProvider) {
+    return MoneyArtNft.load(contractAddress, web3j, credentials, contractGasProvider);
+  }
+
+  private final static String PRIVATE_KEY =
+      "d53e4c1d9fb9ae4748924a1b2fd6396ba5de7bab31bd686c1c871ce1e9f51d28";
+
+  private final static BigInteger GAS_LIMIT = BigInteger.valueOf(6721975L);
+  private final static BigInteger GAS_PRICE = BigInteger.valueOf(20000000000L);
+  private final static String CONTRACT_ADDRESS = "0xC33918f93E9F46Ef4366ebfa84C3dA8C10AB9ec6";
 
   private static final Logger logger = Logger.getLogger("MainContext.class");
 }
