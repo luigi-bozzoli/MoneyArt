@@ -25,19 +25,25 @@ public class ServletAnnullaAsta extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    Utente utente = (Utente) request.getSession().getAttribute("utente");
 
+    Utente utente = (Utente) request.getSession().getAttribute("utente");
+    String action = request.getParameter("action");
     int astaId = astaId = Integer.parseInt(request.getParameter("id"));
 
 
     Asta asta = astaService.getAuction(astaId);
-    Opera opera = operaService.getArtwork(asta.getOpera().getId());
-    if (opera.getArtista().getId() != utente.getId()) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "non sei il creatore dell'asta");
-      return;
-    }
-    astaService.removeAsta(asta);
 
+    boolean risultato;
+    switch (action) {
+      case "remove":
+        risultato = astaService.annullaAsta(asta);
+        break;
+      case "delete":
+        risultato = astaService.removeAsta(asta);
+        break;
+    }
+
+    //TODO: aggiungere i redirect alle pagine
   }
 
   @Override

@@ -5,11 +5,13 @@ import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * Servlet che si occupa di recuperare le aste da far visualizzare.
@@ -27,6 +29,7 @@ public class ServletGetAste extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
     String action = request.getParameter("action");
+    String page = request.getParameter("page");
 
     List<Asta> aste = null;
 
@@ -45,6 +48,15 @@ public class ServletGetAste extends HttpServlet {
     }
 
     request.setAttribute("aste", aste);
+    switch (page) {
+      case "home":
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
+        dispatcher.forward(request, response);
+        break;
+    }
+
+
+
   }
 
   @Override

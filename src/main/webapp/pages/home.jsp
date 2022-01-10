@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <html lang="it">
@@ -26,10 +28,21 @@
 
         <!-- FONTAWESOME CDN -->
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+        <!-- JS -->
+        <script src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/js/home.js"></script>
     </head>
 
     <body>
         <%@include file="../static/fragments/header.jsp"%>
+
+        <c:set var="aste" value="${requestScope.aste}"/>
+
+        <c:if test="${empty aste}">
+            <c:redirect url = "/getAuctions?action=inCorso&page=home"/>
+        </c:if>
+
+
 
         <!-- HERO SECTION -->
         <div class="row hero">
@@ -65,7 +78,7 @@
                 </ol>
                 <!--/.Indicators-->
                 <div class="row">
-                <!-- Slides -->
+                    <!-- Slides -->
                     <div class="carousel-inner" role="listbox">
                         <!-- First Slide-->
                         <div class="carousel-item active">
@@ -470,8 +483,21 @@
         </div>
 
 
+        <ul>
+            <c:forEach items="${aste}" var="asta">
+                <li>
+                    <c:out value="${asta.opera.nome}"/>
+                </li>
+            </c:forEach>
+
+        </ul>
+
+
 
         <%@include file="../static/fragments/footer.jsp"%>
     </body>
 
     </html>
+
+
+

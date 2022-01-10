@@ -77,7 +77,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
    */
   @Override
   public Asta getAuction(int id) {
-    return astaDao.doRetrieveById(id);
+    Asta asta = astaDao.doRetrieveById(id);
+    asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+    return asta;
   }
 
   /**
@@ -87,7 +89,11 @@ public class AstaServiceImpl implements AstaService, TimerService {
    */
   @Override
   public List<Asta> getAllAuctions() {
-    return astaDao.doRetrieveAll("id");
+    List<Asta> aste =  astaDao.doRetrieveAll("id");
+    for(Asta asta : aste) {
+      asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+    }
+    return aste;
   }
 
   /**
@@ -97,7 +103,11 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * @return la lista di tutte le aste presenti sulla piattaforma in un determinato stato.
    */
   public List<Asta> getAuctionsByState(Asta.Stato s){
-    return astaDao.doRetrieveByStato(s);
+    List<Asta> aste  = astaDao.doRetrieveByStato(s);
+    for(Asta asta : aste) {
+      asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+    }
+    return aste;
   }
 
   /**
