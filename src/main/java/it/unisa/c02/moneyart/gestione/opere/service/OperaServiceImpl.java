@@ -43,8 +43,13 @@ public class OperaServiceImpl implements OperaService {
   public boolean addArtwork(Opera opera) {
     if (checkOpera(opera)
         && !checkArtwork(opera.getArtista().getId(), opera.getNome())) {
-      operaDao.doCreate(opera);
-      moneyArtNft.create(opera.getId() + "");
+      try {
+        moneyArtNft.create(opera.getId() + "").send();
+        operaDao.doCreate(opera);
+      } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+      }
       return true;
     } else {
       return false;
