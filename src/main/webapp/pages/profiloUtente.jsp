@@ -11,9 +11,8 @@
 
         <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/homepage_style.css">
         <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/fragments_style.css">
-        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/template_bootstrap.css">
-        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/profiloUtente_style.css">
-        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/template_bootstrap.css">
+        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/profilo_utente_style.css">
+        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/template_bootstrap.min.css">
 
 
         <!-- FAVICON -->
