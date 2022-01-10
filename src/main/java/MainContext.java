@@ -308,6 +308,8 @@ public class MainContext implements ServletContextListener {
         2500d
     );
 
+    utente3.setSaldoDisponibile(2014.01d);
+
     Utente utente4 = new Utente(
         "Dario",
         "Mazza",
@@ -320,6 +322,8 @@ public class MainContext implements ServletContextListener {
         3000d
     );
 
+    utente4.setSaldoDisponibile(2514d);
+
     Utente utente5 = new Utente(
         "Mario",
         "Peluso",
@@ -329,8 +333,10 @@ public class MainContext implements ServletContextListener {
         "MarioPeluso",
         followed,
         md.digest("pippo123".getBytes()),
-        100d
+        956d
     );
+
+    utente5.setSaldoDisponibile(456.01d);
 
     Utente utente6 = new Utente(
         "Aurelio",

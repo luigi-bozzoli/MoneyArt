@@ -12,15 +12,15 @@ create table utente (
     cognome varchar (100) not null,
     foto blob,
     saldo double precision not null,
-    saldo_disponibile double not null,
+    saldo_disponibile double precision not null,
 	
     foreign key (id_seguito) references utente(id) on update no action on delete no action
 );
 
 create table opera (  
 	id bigint auto_increment primary key,
-    id_utente bigint not null, /*FK*/
-    id_artista bigint not null, /*FK*/
+    id_utente bigint not null, /* FK */
+    id_artista bigint not null, /* FK */
     nome varchar (255) not null,
     descrizione text, 
     immagine longblob not null,

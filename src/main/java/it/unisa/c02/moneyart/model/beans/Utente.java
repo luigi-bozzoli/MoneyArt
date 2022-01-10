@@ -305,6 +305,8 @@ public class Utente {
         +
         ", saldo=" + saldo
         +
+        ", saldo disponibile=" + saldoDisponibile
+        +
         '}';
   }
 
