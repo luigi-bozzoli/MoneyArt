@@ -29,7 +29,13 @@ public class ServletRimuoviAsta extends HttpServlet {
 
     int id = Integer.valueOf(request.getParameter("idAsta"));
     Asta asta = astaService.getAuction(id);
-    astaService.removeAsta(asta);
+
+    boolean risultato = astaService.removeAsta(asta);
+
+    if(!risultato) {
+      request.setAttribute("error", "Errore durante l'annullamento dell'asta!");
+      response.sendRedirect("/getAuctionDetails?idAsta=" + id);
+    }
 
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/aste.jsp");
     dispatcher.forward(request, response);
