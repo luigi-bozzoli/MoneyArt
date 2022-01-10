@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet(name = "ServletSelectRivendita", value = "/selectRivendita")
-public class ServletSelectRivendita extends HttpServlet {
+@WebServlet(name = "ServletGetRivendite", value = "/getResells")
+public class ServletGetRivendite extends HttpServlet {
 
   private RivenditaService rivenditaService;
 

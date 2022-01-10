@@ -5,12 +5,14 @@ import it.unisa.c02.moneyart.utils.production.Retriever;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ServletRivenditaDettaglio extends HttpServlet {
+@WebServlet(name = "ServletDettaglioRivendita", value = "/resellDetails")
+public class ServletDettaglioRivendita extends HttpServlet {
 
   private RivenditaService rivenditaService;
 

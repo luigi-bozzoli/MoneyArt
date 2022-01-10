@@ -1,7 +1,9 @@
-package it.unisa.c02.moneyart.gestione.vendite.aste.controller;
+package it.unisa.c02.moneyart.gestione.opere.control;
 
+import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 
 import javax.servlet.RequestDispatcher;
@@ -13,30 +15,27 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet(name = "ServletDettaglioAste", value = "/getAuctionDetails")
-public class ServletDettaglioAsta extends HttpServlet {
+@WebServlet(name = "ServletDettaglioOpera", value = "/artwork")
+public class ServletDettaglioOpera extends HttpServlet {
 
   @Override
   public void init() throws ServletException {
     super.init();
-    astaService = Retriever.getIstance(AstaService.class);
+    operaService = Retriever.getIstance(OperaService.class);
   }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-    int id = Integer.valueOf(request.getParameter("idAsta"));
 
+    int id = Integer.valueOf(request.getParameter("idOpera"));
 
-    Asta asta = astaService.getAuction(id);
+    Opera opera = operaService.getArtwork(id);
+    request.setAttribute("opera", opera);
 
-
-
-    request.setAttribute("asta", asta);
-
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/auctionDetails.jsp");
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/artworkDetails.jsp");
     dispatcher.forward(request, response);
-    
+
   }
 
   @Override
@@ -45,6 +44,6 @@ public class ServletDettaglioAsta extends HttpServlet {
     doGet(request, response);
   }
 
-  private AstaService astaService;
+  private OperaService operaService;
 
 }
