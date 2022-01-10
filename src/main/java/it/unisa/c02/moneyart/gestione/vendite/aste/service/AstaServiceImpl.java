@@ -89,8 +89,8 @@ public class AstaServiceImpl implements AstaService, TimerService {
    */
   @Override
   public List<Asta> getAllAuctions() {
-    List<Asta> aste =  astaDao.doRetrieveAll("id");
-    for(Asta asta : aste) {
+    List<Asta> aste = astaDao.doRetrieveAll("id");
+    for (Asta asta : aste) {
       asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
     }
     return aste;
@@ -102,9 +102,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * @param s stato delle aste da restituire
    * @return la lista di tutte le aste presenti sulla piattaforma in un determinato stato.
    */
-  public List<Asta> getAuctionsByState(Asta.Stato s){
-    List<Asta> aste  = astaDao.doRetrieveByStato(s);
-    for(Asta asta : aste) {
+  public List<Asta> getAuctionsByState(Asta.Stato s) {
+    List<Asta> aste = astaDao.doRetrieveByStato(s);
+    for (Asta asta : aste) {
       asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
     }
     return aste;
@@ -200,8 +200,10 @@ public class AstaServiceImpl implements AstaService, TimerService {
   }
 
   /* La data viene restituita con il tempo impostato a mezzanotte */
-  private Date setMidnightTime (Date date) {
-    if (date == null) return null;
+  private Date setMidnightTime(Date date) {
+    if (date == null) {
+      return null;
+    }
 
     date.setHours(0);
     date.setMinutes(0);
@@ -218,12 +220,14 @@ public class AstaServiceImpl implements AstaService, TimerService {
    */
   @Override
   public boolean removeAsta(Asta asta) {
-    if (asta.getStato().equals(Asta.Stato.IN_CORSO)) {
+    if (asta.getStato().equals(Asta.Stato.IN_CORSO) || asta.getStato().equals(Asta.Stato.CREATA)) {
       astaAnnullata(asta);
+      astaDao.doDelete(asta);
+      //invia notifica all proprietario
+      return true;
+    } else {
+      return false;
     }
-    //manda la notifica al proprietario
-    astaDao.doDelete(asta);
-    return true;
   }
 
   /**
@@ -234,12 +238,16 @@ public class AstaServiceImpl implements AstaService, TimerService {
    */
   @Override
   public boolean annullaAsta(Asta asta) {
+    asta = astaDao.doRetrieveById(asta.getId());
 
-    if (asta.getStato().equals(Asta.Stato.IN_CORSO)) {
+    if (asta.getStato().equals(Asta.Stato.IN_CORSO) || asta.getStato().equals(Asta.Stato.CREATA)) {
       astaAnnullata(asta);
+      asta.setStato(Asta.Stato.ELIMINATA);
+      astaDao.doUpdate(asta);
+      return true;
+    } else {
+      return false;
     }
-    astaDao.doDelete(asta);
-    return true;
   }
 
   /**
