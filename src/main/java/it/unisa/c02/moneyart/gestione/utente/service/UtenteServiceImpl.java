@@ -8,7 +8,6 @@ import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -75,7 +74,7 @@ public class UtenteServiceImpl implements UtenteService {
    * Restituisce un bean utente creato interrogando il database.
    *
    * @param id id dell'utente
-   * @returnil bean utente se sono state trovate le credenziali nel database,
+   * @return il bean utente se sono state trovate le credenziali nel database,
    *           null altrimenti
    */
   @Override
@@ -153,10 +152,7 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public List<Utente> searchUsers(String txt) {
     List<Utente> utenti = utenteDao.researchUser(txt);
-    if (utenti != null) {
-      return utenti;
-    }
-    return null;
+    return utenti;
   }
 
   /**
@@ -169,11 +165,7 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public boolean checkUsername(String username) {
     Utente utente = utenteDao.doRetrieveByUsername(username);
-    if (utente != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return utente != null;
   }
 
   /**
@@ -186,11 +178,7 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public boolean checkEmail(String email) {
     Utente utente = utenteDao.doRetrieveByEmail(email);
-    if (utente != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return utente != null;
   }
 
   /**
