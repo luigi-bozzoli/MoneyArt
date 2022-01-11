@@ -13,7 +13,7 @@ public interface UtenteService {
 
   void updateUser(Utente utente);
 
-  List<Utente> getAllUsers();
+  List<Utente> getAllUsers(String Filter);
 
   List<Utente> searchUsers(String txt);
 
@@ -24,8 +24,6 @@ public interface UtenteService {
   boolean follow(Utente follower, Utente followed);
 
   boolean unfollow(Utente follower);
-
-  int getNumberOfFollowers(Utente utente);
 
   boolean deposit(Utente utente, double amount);
 

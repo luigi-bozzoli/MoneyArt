@@ -445,13 +445,17 @@
         <!-- /Carousel Wrapper -->
     </div>
 
+    <div class="container">
+        <div class="page-heading">
+            <h2>Cosa sono gli NFT?</h2>
+            <span class="line-break"></span>
+        </div>
+        <!-- 16:9 aspect ratio -->
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/FkUn86bH34M"></iframe>
+        </div>
+    </div>
 
-    <ul>
-        <c:forEach items="${aste}" var="asta">
-            <li>
-                <c:out value="${asta.opera.nome}"/>
-            </li>
-        </c:forEach>
 
-    </ul>
+
 <%@include file="../static/fragments/footer.jsp"%>

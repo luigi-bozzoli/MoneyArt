@@ -34,6 +34,7 @@ public class Utente {
     this.seguito = seguito;
     this.saldo = saldo;
     this.saldoDisponibile = saldo;
+    this.nFollowers = 0;
   }
 
   /**
@@ -279,6 +280,24 @@ public class Utente {
   }
 
   /**
+   * Restituisce il numero di followers dell'utente.
+   *
+   * @return il numero di followers dell'utente
+   */
+  public int getnFollowers() {
+    return nFollowers;
+  }
+
+  /**
+   * Modifica il numero di followers dell'utente.
+   *
+   * @param nFollowers il numero di followers dell'utente
+   */
+  public void setnFollowers(int nFollowers) {
+    this.nFollowers = nFollowers;
+  }
+
+  /**
    * Restituisce la rappresentazione sotto forma di stringa di un utente.
    *
    * @return la stringa che rappresenta utente
@@ -320,6 +339,7 @@ public class Utente {
   private Utente seguito;
   private Double saldo;
   private Double saldoDisponibile;
+  private int nFollowers;
 
   /* Liste utili */
   private List<Opera> opereCreate;

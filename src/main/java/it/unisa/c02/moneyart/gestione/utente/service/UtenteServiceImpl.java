@@ -92,6 +92,8 @@ public class UtenteServiceImpl implements UtenteService {
     utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
     utente.setNotifiche(notificaDao.doRetrieveAllByUserId(utente.getId()));
     utente.setPartecipazioni(partecipazioneDao.doRetrieveAllByUserId(utente.getId()));
+
+    utente.setnFollowers(getNumberOfFollowers(utente));
     return utente;
 
   }
@@ -124,8 +126,22 @@ public class UtenteServiceImpl implements UtenteService {
   }
 
   @Override
-  public List<Utente> getAllUsers() {
-    return null;
+  public List<Utente> getAllUsers(String filter) {
+    List<Utente> utenti = utenteDao.doRetrieveAll(filter);
+
+    for (Utente utente : utenti) {
+        if (utente.getSeguito().getId() != null) {
+          utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+        }
+        utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
+        utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
+        utente.setNotifiche(notificaDao.doRetrieveAllByUserId(utente.getId()));
+        utente.setPartecipazioni(partecipazioneDao.doRetrieveAllByUserId(utente.getId()));
+
+        utente.setnFollowers(getNumberOfFollowers(utente));
+    }
+
+    return utenti;
   }
 
   /**
@@ -220,10 +236,8 @@ public class UtenteServiceImpl implements UtenteService {
    * @param utente l'utente interessato a conoscere il numero dei propri followers
    * @return il numero di followers dell'utente
    */
-  @Override
-  public int getNumberOfFollowers(Utente utente) {
-    utente = utenteDao.doRetrieveByUsername(utente.getUsername());
 
+  private int getNumberOfFollowers(Utente utente) {
     List<Utente> followers = utenteDao.doRetrieveFollowersByUserId(utente.getId());
 
     return followers.size();
