@@ -1,75 +1,34 @@
-<!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-    <html lang="it">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Profilo Utente - MoneyArt</title>
+<%@include file="../static/fragments/sidebar.jsp"%>
 
-        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/homepage_style.css">
-        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/fragments_style.css">
-        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/profilo_utente_style.css">
-        <link rel="stylesheet" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/style/template_bootstrap.min.css">
+    <div class="content-wrapper container mt-4 mb-4 p-3 d-flex justify-content-center">
+        <div class="card p-4">
+            <div class=" image d-flex flex-column justify-content-center align-items-center">
 
+                <button class="btn-profile btn-secondary">
+                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/image/user-placeholder.png" alt="Foto Profilo" height="100" width="100" />
+                </button>
 
-        <!-- FAVICON -->
-        <link rel="shortcut icon" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/favicon.ico" type="image/x-icon">
-        <link rel="icon" href="<c:out value="${pageContext.servletContext.contextPath}"/>/static/favicon.ico" type="image/x-icon">
+                <span class="name mt-3">NOME COGNOME</span>
+                <span class="idd">@USERNAME</span>
 
-        <!-- JQUERY CDN -->
-        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+                <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+                    <span class="idd1">user@email.it <i class="fas fa-envelope"></i></span>
+                </div>
 
-        <!-- BOOTSTRAP BUNDLE -->
-        <script src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/js/bootstrap.bundle.js"/>
-
-        <!-- BOOTSTRAP CDN -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-
-        <!-- FONTAWESOME CDN -->
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    </head>
-
-    <body class="sidebar-mini layout-fixed sidebar-collapse" style="height: auto;">
-        <%@include file="../static/fragments/header.jsp"%>
-
-        <%@include file="../static/fragments/sidebar.jsp"%>
-
-            <div class="content-wrapper container mt-4 mb-4 p-3 d-flex justify-content-center">
-                <div class="card p-4">
-                    <div class=" image d-flex flex-column justify-content-center align-items-center">
-
-                        <button class="btn-profile btn-secondary">
-                            <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/image/user-placeholder.png" alt="Foto Profilo" height="100" width="100" />
-                        </button>
-
-                        <span class="name mt-3">NOME COGNOME</span>
-                        <span class="idd">@USERNAME</span>
-
-                        <div class="d-flex flex-row justify-content-center align-items-center gap-2">
-                            <span class="idd1">user@email.it <i class="fas fa-envelope"></i></span>
-                        </div>
-
-                        <div class="d-flex flex-row justify-content-center align-items-center mt-3">
-                            <span class="number">
-                                1000 <span class="follow">Followers</span>
-                            </span>
-                        </div>
-                        <div class=" d-flex mt-2">
-                            <button class="btn1 edit-profile">Modifica Profilo</button>
-                        </div>
-                    </div>
+                <div class="d-flex flex-row justify-content-center align-items-center mt-3">
+                    <span class="number">
+                        1000 <span class="follow">Followers</span>
+                    </span>
+                </div>
+                <div class=" d-flex mt-2">
+                    <button class="btn1 edit-profile">Modifica Profilo</button>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <%@include file="../static/fragments/footer.jsp"%>
+<%@include file="../static/fragments/footer.jsp"%>
 
-            <script src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/js/sidebar.js"></script>
-    </body>
-
-    </html>
