@@ -2,11 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@include file="../static/fragments/header.jsp"%>
+
+    <jsp:include page="/getAuctions?action=inCorso"/>
     <c:set var="aste" value="${requestScope.aste}"/>
 
-    <c:if test="${empty aste}">
-        <c:redirect url = "/getAuctions?action=inCorso&page=home"/>
-    </c:if>
     <!-- HERO SECTION -->
     <div class="row hero">
         <div class="col left-hero">

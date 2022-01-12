@@ -241,7 +241,7 @@ public class UtenteDaoImpl implements UtenteDao {
 
     if (text != null) {
       String retrieveSql = "SELECT * FROM " + TABLE_NAME
-          + " WHERE nome LIKE %?% OR cognome LIKE %?% OR username LIKE %?%";
+          + " WHERE nome LIKE '%?%' OR cognome LIKE '%?%' OR username LIKE '%?%'";
 
       List<Utente> opere = null;
 
