@@ -12,7 +12,7 @@ create table utente (
     cognome varchar (100) not null,
     foto blob,
     saldo double precision not null,
-    saldo_disponibile double precision not null,
+    # saldo_disponibile double precision not null,
 	
     foreign key (id_seguito) references utente(id) on update no action on delete no action
 );
@@ -25,7 +25,7 @@ create table opera (
     descrizione text, 
     immagine longblob not null,
     certificato text,
-    stato enum("ALL_ASTA", "IN_VENDITA", "IN_POSSESSO", "PREVENDITA") default "IN_POSSESSO" not null,
+    stato enum("ALL_ASTA", "IN_VENDITA", "IN_POSSESSO", "PREVENDITA") default "PREVENDITA" not null,
     
 	unique (id_artista, nome), /* Uno stesso artista non può avere 2 opere con lo stesso nome */
     foreign key (id_utente) references utente(id) on update no action on delete no action, 
@@ -64,15 +64,15 @@ create table partecipazione (
 create table notifica (
 	id bigint auto_increment primary key,
     id_utente bigint not null, /* FK */
-    id_rivendita bigint, /* FK */
     id_asta bigint, /* FK */
+    id_rivendita bigint, /* FK */
     letta boolean default false not null,
     tipo enum("VITTORIA", "ANNULLAMENTO", "SUPERATO", "TERMINATA") not null,
     contenuto varchar(255) not null, 
 
     foreign key (id_utente) references utente(id) on update no action on delete no action, 
-    foreign key (id_rivendita) references rivendita(id) on update no action on delete cascade,
-    foreign key (id_asta) references asta(id) on update no action on delete cascade
+    foreign key (id_asta) references asta(id) on update no action on delete cascade,
+    foreign key (id_rivendita) references rivendita(id) on update no action on delete cascade
 );
 
 create table segnalazione ( 

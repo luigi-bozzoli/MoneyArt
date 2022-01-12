@@ -102,11 +102,14 @@ public class MainContext implements ServletContextListener {
     context.setAttribute("DataSource", ds);
     System.out.println("DataSource creation: " + ds.toString());
 
+    // DA RIMUOVERE
+    /*
     try {
       populateDatabase(sce.getServletContext().getRealPath(""));
     } catch (NoSuchAlgorithmException | IOException | SQLException e) {
       e.printStackTrace();
     }
+    */
   }
 
   /**
