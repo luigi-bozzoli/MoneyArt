@@ -17,6 +17,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import org.apache.ibatis.jdbc.ScriptRunner;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.*;
 
 
@@ -26,7 +29,7 @@ class UtenteDaoImplIntegrationTest {
 
   private static DataSource dataSource;
 
-  @BeforeAll
+  @BeforeClass
   static void generalSetUp(){
     TomcatJNDI tomcatJNDI = new TomcatJNDI();
     tomcatJNDI.processContextXml(new File("src/main/webapp/META-INF/context.xml"));
@@ -42,7 +45,7 @@ class UtenteDaoImplIntegrationTest {
     }
   }
 
-  @BeforeEach
+  @Before
   void setUp() throws SQLException, FileNotFoundException {
     Connection connection = dataSource.getConnection();
     utenteDao = new UtenteDaoImpl(dataSource);
@@ -52,7 +55,7 @@ class UtenteDaoImplIntegrationTest {
     runner.runScript(reader);
   }
 
-  @AfterEach
+  @After
   void tearDown() throws SQLException, IOException {
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);

@@ -31,9 +31,9 @@ public class UtenteServiceImpl implements UtenteService {
   /**
    * Costruttore con paramentri.
    *
-   * @param utenteDao dao dell'utente
-   * @param operaDao dao dell'opera
-   * @param notificaDao dao della notifica
+   * @param utenteDao         dao dell'utente
+   * @param operaDao          dao dell'opera
+   * @param notificaDao       dao della notifica
    * @param partecipazioneDao dao della partecipazione
    */
   public UtenteServiceImpl(UtenteDao utenteDao, OperaDao operaDao, NotificaDao notificaDao,
@@ -75,7 +75,7 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param id id dell'utente
    * @return il bean utente se sono state trovate le credenziali nel database,
-   *           null altrimenti
+   * null altrimenti
    */
   @Override
   public Utente getUserInformation(int id) {
@@ -129,15 +129,15 @@ public class UtenteServiceImpl implements UtenteService {
     List<Utente> utenti = utenteDao.doRetrieveAll(filter);
 
     for (Utente utente : utenti) {
-        if (utente.getSeguito().getId() != null) {
-          utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
-        }
-        utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
-        utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
-        utente.setNotifiche(notificaDao.doRetrieveAllByUserId(utente.getId()));
-        utente.setPartecipazioni(partecipazioneDao.doRetrieveAllByUserId(utente.getId()));
+      if (utente.getSeguito().getId() != null) {
+        utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+      }
+      utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
+      utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
+      utente.setNotifiche(notificaDao.doRetrieveAllByUserId(utente.getId()));
+      utente.setPartecipazioni(partecipazioneDao.doRetrieveAllByUserId(utente.getId()));
 
-        utente.setnFollowers(getNumberOfFollowers(utente));
+      utente.setnFollowers(getNumberOfFollowers(utente));
     }
 
     return utenti;
@@ -160,7 +160,7 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param username l'username da ricercare nel database
    * @return true se è stato trovato un altro utente con lo stesso username,
-   *         false altrimenti
+   * false altrimenti
    */
   @Override
   public boolean checkUsername(String username) {
@@ -173,7 +173,7 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param email l'email da ricercare nel database
    * @return true se è stato trovato un altro utente con la stessa email,
-   *         false altrimenti
+   * false altrimenti
    */
   @Override
   public boolean checkEmail(String email) {
@@ -187,7 +187,7 @@ public class UtenteServiceImpl implements UtenteService {
    * @param follower l'utente che intende seguire un artista
    * @param followed l'artista da seguire
    * @return true se l'utente segue con successo l'artista, false se
-   *         l'utente segue già un altro artista
+   * l'utente segue già un altro artista
    */
   @Override
   public boolean follow(Utente follower, Utente followed) {
@@ -206,7 +206,7 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param follower l'artista da smettere di seguire.
    * @return true se l'utente smette di seguire con successo un artista,
-   *         false se l'utente già non seguiva nessuno
+   * false se l'utente già non seguiva nessuno
    */
   @Override
   public boolean unfollow(Utente follower) {
@@ -237,7 +237,7 @@ public class UtenteServiceImpl implements UtenteService {
    * @param utente l'utente interessato a depositare
    * @param amount l'importo da depositare (da aggiungere al saldo)
    * @return true se il deposito è avvenuto con successo
-   *         e false se l'amount è inferiore o uguale a zero
+   * e false se l'amount è inferiore o uguale a zero
    */
   @Override
   public boolean deposit(Utente utente, double amount) {
@@ -258,8 +258,8 @@ public class UtenteServiceImpl implements UtenteService {
    * @param utente l'utente interessato a prelevare
    * @param amount l'importo da prelevare (da sottrarre al saldo)
    * @return true se il prelievo è avvenuto con successo
-   *         e false se l'amount è inferiore o uguale a zero
-   *         e se il saldo dell'utente è minore dell'amount
+   * e false se l'amount è inferiore o uguale a zero
+   * e se il saldo dell'utente è minore dell'amount
    */
   @Override
   public boolean withdraw(Utente utente, double amount) {
@@ -290,11 +290,11 @@ public class UtenteServiceImpl implements UtenteService {
    * Permette il trasferimento di un determinato importo
    * da un utente (sender) ad un altro (receiver).
    *
-   * @param sender utente che invia il denaro
+   * @param sender   utente che invia il denaro
    * @param receiver utente che riceve il denaro
-   * @param amount importo da trasferire
+   * @param amount   importo da trasferire
    * @return true se il trasferimento è avvenuto con successo
-   *         e false altrimenti
+   * e false altrimenti
    */
   @Override
   public boolean transfer(Utente sender, Utente receiver, double amount) {
@@ -343,6 +343,6 @@ public class UtenteServiceImpl implements UtenteService {
 
   private PartecipazioneDao partecipazioneDao;
 
-  private  static final Pattern VALID_EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-"
+  private static final Pattern VALID_EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-"
       + "]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 }

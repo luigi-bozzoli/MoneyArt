@@ -41,7 +41,7 @@
                 <label for="email">Email</label>
                 <div class="input-icon">
                     <i class="fas fa-envelope"></i>
-                    <input name="email" id="email" type="email" placeholder="yourmail@mail.com" required>
+                    <input name="email" id="email" type="text" placeholder="yourmail@mail.com" required>
                 </div>
             </div>
 

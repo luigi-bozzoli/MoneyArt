@@ -83,6 +83,9 @@ public class TimerScheduler {
    */
   public int retrivePersistentTimers() {
     List<TimedObject> timedObjects = timedObjectDao.doRetrieveAll("id");
+    if (timedObjects == null) {
+      return 0;
+    }
     for (TimedObject timedObject : timedObjects) {
       timedObjectDao.doDelete(timedObject);
       scheduleTimedService(timedObject);

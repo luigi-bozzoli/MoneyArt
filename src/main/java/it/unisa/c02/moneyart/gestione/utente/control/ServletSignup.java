@@ -25,14 +25,14 @@ public class ServletSignup extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
     doPost(request, response);
 
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
     HttpSession session = request.getSession();
 
     String name = request.getParameter("name");
@@ -41,7 +41,8 @@ public class ServletSignup extends HttpServlet {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
-    Utente utente = new Utente(name, surname, null, email, username, new Utente(), utenteService.encryptPassword(password), 0D);
+    Utente utente = new Utente(name, surname, null, email, username, new Utente(),
+        utenteService.encryptPassword(password), 0D);
 
     boolean notFound = utenteService.signUpUser(utente);
 
