@@ -141,7 +141,7 @@ public class UtenteDaoImpl implements UtenteDao {
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setObject(1, item.getSeguito().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getEmail().toLowerCase(), Types.VARCHAR);
-      preparedStatement.setObject(3, item.getPassword(), Types.CHAR);
+      preparedStatement.setObject(3, item.getPassword(), Types.BINARY);
       preparedStatement.setObject(4, item.getUsername(), Types.VARCHAR);
       preparedStatement.setObject(5, item.getNome(), Types.VARCHAR);
       preparedStatement.setObject(6, item.getCognome(), Types.VARCHAR);
@@ -248,6 +248,8 @@ public class UtenteDaoImpl implements UtenteDao {
       try (Connection connection = ds.getConnection();
            PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
         preparedStatement.setString(1, text);
+        preparedStatement.setString(2, text);
+        preparedStatement.setString(3, text);
 
         ResultSet rs = preparedStatement.executeQuery();
         opere = getMultipleResultFromResultSet(rs);
@@ -345,7 +347,7 @@ public class UtenteDaoImpl implements UtenteDao {
       utente.setUsername(rs.getObject("username", String.class));
       utente.setNome(rs.getObject("nome", String.class));
       utente.setCognome(rs.getObject("cognome", String.class));
-      utente.setFotoProfilo(rs.getObject("foto", Blob.class));
+      utente.setFotoProfilo(rs.getBlob("foto"));
       utente.setSaldo(rs.getObject("saldo", Double.class));
       utente.setSaldoDisponibile(rs.getObject("saldo_disponibile", Double.class));
       utenti.add(utente);

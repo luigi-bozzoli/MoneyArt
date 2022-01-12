@@ -2,6 +2,7 @@ package it.unisa.c02.moneyart.model.beans;
 
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Questa classe rappresenta una Rivendita legata ad un'opera.
@@ -139,6 +140,27 @@ public class Rivendita {
         ", prezzo=" + prezzo
         +
         '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Rivendita)) {
+      return false;
+    }
+    Rivendita rivendita = (Rivendita) o;
+    return Double.compare(rivendita.getPrezzo(), getPrezzo()) == 0 &&
+        Objects.equals(getId(), rivendita.getId()) &&
+        Objects.equals(getOpera(), rivendita.getOpera()) &&
+        getStato() == rivendita.getStato() &&
+        Objects.equals(getNotifiche(), rivendita.getNotifiche());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getOpera(), getStato(), getPrezzo(), getNotifiche());
   }
 
   private Integer id;

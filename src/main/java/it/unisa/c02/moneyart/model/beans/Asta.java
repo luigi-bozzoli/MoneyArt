@@ -2,6 +2,7 @@ package it.unisa.c02.moneyart.model.beans;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Questa classe rappresenta un'asta.
@@ -181,6 +182,31 @@ public class Asta {
   public String toString() {
     return "id: " + this.id + " id opera: " + opera.getId() + " Data inizio: " + this.dataInizio
         + " Data fine: " + this.dataFine + " Stato: " + this.stato;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Asta)) {
+      return false;
+    }
+    Asta asta = (Asta) o;
+    return Objects.equals(getId(), asta.getId()) &&
+        Objects.equals(getOpera(), asta.getOpera()) &&
+        Objects.equals(getDataInizio(), asta.getDataInizio()) &&
+        Objects.equals(getDataFine(), asta.getDataFine()) &&
+        getStato() == asta.getStato() &&
+        Objects.equals(getSegnalazioni(), asta.getSegnalazioni()) &&
+        Objects.equals(getNotifiche(), asta.getNotifiche()) &&
+        Objects.equals(getPartecipazioni(), asta.getPartecipazioni());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getOpera(), getDataInizio(), getDataFine(), getStato(),
+        getSegnalazioni(), getNotifiche(), getPartecipazioni());
   }
 
   /**

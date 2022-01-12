@@ -1,7 +1,9 @@
 package it.unisa.c02.moneyart.model.beans;
 
 import java.sql.Blob;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Questa classe rappresenta un Utente.
@@ -327,6 +329,42 @@ public class Utente {
         ", saldo disponibile=" + saldoDisponibile
         +
         '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Utente)) {
+      return false;
+    }
+    Utente utente = (Utente) o;
+    return getnFollowers() == utente.getnFollowers() &&
+        Objects.equals(getId(), utente.getId()) &&
+        Objects.equals(getNome(), utente.getNome()) &&
+        Objects.equals(getCognome(), utente.getCognome()) &&
+        Objects.equals(getFotoProfilo(), utente.getFotoProfilo()) &&
+        Objects.equals(getEmail(), utente.getEmail()) &&
+        Objects.equals(getUsername(), utente.getUsername()) &&
+        Arrays.equals(getPassword(), utente.getPassword()) &&
+        Objects.equals(getSeguito(), utente.getSeguito()) &&
+        Objects.equals(getSaldo(), utente.getSaldo()) &&
+        Objects.equals(getSaldoDisponibile(), utente.getSaldoDisponibile()) &&
+        Objects.equals(getOpereCreate(), utente.getOpereCreate()) &&
+        Objects.equals(getOpereInPossesso(), utente.getOpereInPossesso()) &&
+        Objects.equals(getNotifiche(), utente.getNotifiche()) &&
+        Objects.equals(getPartecipazioni(), utente.getPartecipazioni());
+  }
+
+  @Override
+  public int hashCode() {
+    int result =
+        Objects.hash(getId(), getNome(), getCognome(), getFotoProfilo(), getEmail(), getUsername(),
+            getSeguito(), getSaldo(), getSaldoDisponibile(), getnFollowers(), getOpereCreate(),
+            getOpereInPossesso(), getNotifiche(), getPartecipazioni());
+    result = 31 * result + Arrays.hashCode(getPassword());
+    return result;
   }
 
   private Integer id;
