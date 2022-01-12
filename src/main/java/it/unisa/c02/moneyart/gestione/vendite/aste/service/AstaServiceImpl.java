@@ -17,11 +17,14 @@ import it.unisa.c02.moneyart.utils.production.Retriever;
 import it.unisa.c02.moneyart.utils.timers.TimedObject;
 import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import it.unisa.c02.moneyart.utils.timers.TimerService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class AstaServiceImpl implements AstaService, TimerService {
@@ -311,6 +314,100 @@ public class AstaServiceImpl implements AstaService, TimerService {
       }
     }
     return bestOffer;
+  }
+
+  private List<Partecipazione> bestAuctionOfferByUser(Utente utente) {
+    Map<Integer, Partecipazione> maxForAsta = new HashMap<>();
+    List<Partecipazione> miglioriPartecipazioni = new ArrayList<>();
+    List<Partecipazione> partecipazioni = partecipazioneDao.doRetrieveAllByUserId(utente.getId());
+    for (Partecipazione partecipazione : partecipazioni) {
+      if (maxForAsta.containsKey(partecipazione.getAsta().getId())) {
+        Partecipazione max = maxForAsta.get(partecipazione.getAsta().getId());
+        if (max.getOfferta() < partecipazione.getOfferta()) {
+          maxForAsta.put(partecipazione.getAsta().getId(), partecipazione);
+        }
+
+      } else {
+        maxForAsta.put(partecipazione.getAsta().getId(), partecipazione);
+      }
+    }
+    for (Partecipazione partecipazione : maxForAsta.values()) {
+      miglioriPartecipazioni.add(partecipazione);
+    }
+    return miglioriPartecipazioni;
+  }
+
+  /**
+   * Restituisce tutte le aste vinte da un utente.
+   *
+   * @param utente l'utente per cui bisogna cercare le aste vinte
+   * @return le aste vinte dall'utente
+   */
+  @Override
+  public List<Asta> getWonAuctions(Utente utente) {
+    List<Partecipazione> partecipazioni = bestAuctionOfferByUser(utente);
+    List<Asta> aste = new ArrayList<>();
+    for (Partecipazione partecipazione : partecipazioni) {
+      Asta asta = astaDao.doRetrieveById(partecipazione.getAsta().getId());
+      if (asta.getStato().equals(Asta.Stato.TERMINATA) &&
+          bestOffer(asta).getId().equals(partecipazione.getId())) {
+        aste.add(asta);
+      }
+    }
+
+    return aste;
+  }
+
+  /**
+   * Restituisce tutte le aste perse da un utente.
+   *
+   * @param utente l'utente per cui bisogna cercare le aste perse
+   * @return le aste perse dall'utente
+   */
+  @Override
+  public List<Asta> getLostAuctions(Utente utente) {
+    List<Partecipazione> partecipazioni = bestAuctionOfferByUser(utente);
+    List<Asta> aste = new ArrayList<>();
+    for (Partecipazione partecipazione : partecipazioni) {
+      Asta asta = astaDao.doRetrieveById(partecipazione.getAsta().getId());
+      if (asta.getStato().equals(Asta.Stato.TERMINATA) &&
+          !bestOffer(asta).getId().equals(partecipazione.getId())) {
+        aste.add(asta);
+      }
+    }
+
+    return aste;
+  }
+
+  /**
+   * Restituisce tutte le aste in corso di un utente.
+   *
+   * @param utente l'utente per cui bisogna cercare le aste in corso
+   * @return le aste in corso dell'utente
+   */
+  @Override
+  public List<Asta> getCurrentAuctions(Utente utente) {
+    List<Partecipazione> partecipazioni = bestAuctionOfferByUser(utente);
+    List<Asta> aste = new ArrayList<>();
+    for (Partecipazione partecipazione : partecipazioni) {
+      Asta asta = astaDao.doRetrieveById(partecipazione.getAsta().getId());
+      if (asta.getStato().equals(Asta.Stato.IN_CORSO) &&
+          bestOffer(asta).getId().equals(partecipazione.getId())) {
+        aste.add(asta);
+      }
+    }
+
+    return aste;
+  }
+
+  /**
+   * Restituisce lo storico di tutte le offerte.
+   *
+   * @return lo storico di tutte le offerte
+   */
+  @Override
+  public List<Partecipazione> getAllOffers() {
+    return partecipazioneDao.doRetrieveAll(null);
   }
 
   private void avviaAsta(Asta asta) {

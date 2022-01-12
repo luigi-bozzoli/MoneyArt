@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @WebFilter(filterName = "FilterLogin", urlPatterns = {"/userPage", "/newOffer", "/newArtwork",
-    "/removeAuction", "/cancelAuction" ,"/newAuction", "/newProfilePicture", "/withdraw", "/deposit", "/notifies"})
+    "/cancelAuction", "/newAuction", "/newProfilePicture", "/wallet", "/notifies",
+    "/getUserArtworks", "/follow", "/logout", "/changeUserInformation", "/userAuctions",
+    "/buyArtwork", "/resell"})
 public class FilterLogin implements Filter {
   public void init(FilterConfig config) throws ServletException {
   }

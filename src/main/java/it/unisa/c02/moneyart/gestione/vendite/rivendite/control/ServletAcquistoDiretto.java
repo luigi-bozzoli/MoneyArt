@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet(name = "ServletAcquistoDiretto", value = "/acquistoDiretto")
+@WebServlet(name = "ServletAcquistoDiretto", value = "/buyArtwork")
 public class ServletAcquistoDiretto extends HttpServlet {
 
   private RivenditaService rivenditaService;
@@ -31,7 +31,8 @@ public class ServletAcquistoDiretto extends HttpServlet {
     Utente utente = (Utente) request.getSession().getAttribute("utente");
     Integer idUtente = utente.getId();
     rivenditaService.buy(idRivendita, idUtente);
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/acquistoDiretto.jsp");
+    RequestDispatcher dispatcher =
+        request.getRequestDispatcher("/pages/acquistoDiretto.jsp");//Todo:aggiungere link alla view
     dispatcher.forward(request, response);
   }
 

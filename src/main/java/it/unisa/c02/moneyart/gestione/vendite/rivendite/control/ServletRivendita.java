@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet(name = "ServletRivendita", value = "/rivendita")
+@WebServlet(name = "ServletRivendita", value = "/resell")
 public class ServletRivendita extends HttpServlet {
 
   private RivenditaService rivenditaService;
@@ -36,12 +36,14 @@ public class ServletRivendita extends HttpServlet {
     Opera opera = operaService.getArtwork(idOpera);
     Utente utente = (Utente) request.getSession().getAttribute("utente");
     if (!opera.getPossessore().getId().equals(utente.getId())) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "non possiedi quest opera");
-      return;
+      request.setAttribute("errore", "non possiedi quest opera");
+
+    } else {
+
+      rivenditaService.resell(idOpera);
     }
 
-    rivenditaService.resell(idOpera);
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/opere.jsp");
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/rivendita.jsp");//Todo: aggiungere link alla view;
     dispatcher.forward(request, response);
   }
 

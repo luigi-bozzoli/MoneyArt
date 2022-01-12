@@ -24,7 +24,7 @@ public class ServletAnnullaAsta extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
 
     Utente utente = (Utente) request.getSession().getAttribute("utente");
     int astaId = astaId = Integer.parseInt(request.getParameter("id"));
@@ -32,13 +32,13 @@ public class ServletAnnullaAsta extends HttpServlet {
 
     Asta asta = astaService.getAuction(astaId);
 
-    if(asta.getOpera().getArtista().getId() != utente.getId()) {
+    if (asta.getOpera().getArtista().getId() != utente.getId()) {
       response.sendError(HttpServletResponse.SC_BAD_REQUEST, "non sei il creatore dell'asta");
     }
 
     boolean risultato = astaService.annullaAsta(asta);
 
-    if(!risultato) {
+    if (!risultato) {
       request.setAttribute("error", "Errore durante l'annullamento dell'asta!");
       response.sendRedirect("/getAuctionDetails?idAsta=" + astaId);
     }
@@ -50,7 +50,7 @@ public class ServletAnnullaAsta extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
 
     doGet(request, response);
   }

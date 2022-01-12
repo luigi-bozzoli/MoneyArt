@@ -1,4 +1,5 @@
 package it.unisa.c02.moneyart.gestione.utente.control;
+
 import it.unisa.c02.moneyart.model.beans.Utente;
 
 import javax.servlet.RequestDispatcher;
@@ -15,19 +16,19 @@ public class ServletLogout extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
 
-      HttpSession session = request.getSession();
+    HttpSession session = request.getSession();
 
-      session.invalidate();
+    session.removeAttribute("utente");
 
-      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
-      dispatcher.forward(request, response);
-    }
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
+    dispatcher.forward(request, response);
+  }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
     doGet(request, response);
   }
 

@@ -13,11 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name="ServletGetNotifiche", value="/notifies")
+@WebServlet(name = "ServletGetNotifiche", value = "/notifies")
 public class ServletGetNotifiche extends HttpServlet {
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
     Utente utente = (Utente) request.getSession().getAttribute("utente");
 
     List<Notifica> notifiche = notificaService.getNotificationsByUser(utente.getId());
@@ -29,7 +30,8 @@ public class ServletGetNotifiche extends HttpServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
     doGet(request, response);
   }
 

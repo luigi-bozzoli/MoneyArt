@@ -14,31 +14,10 @@
 </head>
 <body>
 
-    <bean:asta id="${param.id}">
-        <bean:opera id="${asta.opera.id}">
-            <div>
-                <span>${opera.nome}</span>
-            </div>
-            <div>
-                <p>${opera.descrizione}</p>
-            </div>
-        </bean:opera>
-        <bean:bestOffer asta="${asta}">
-            <c:if test="${bestOffer}">
-                <div>
-                    <span>la migliore offerta ha <fmt:formatNumber  value="${bestOffer.offerta}" type="currency"/></span>
-                </div>
-            </c:if>
-            <c:if test="${!bestOffer}">
-                <div>
-                    <span>la migliore offerta ha <fmt:formatNumber  value="0.99" type="currency"/></span>
-                </div
-            </c:if>
-        </bean:bestOffer>
-        <div>
-            <span>data di fine : <fmt:formatDate value="${asta.dataFine}" pattern="yy.MM.dd"></fmt:formatDate></span>
-        </div>
-    </bean:asta>
+    <jsp:include page="/getAuctions?action=prova" />
+    <c:forEach items="${aste}" var="asta">
+        <c:out value="${asta}"/>
+    </c:forEach>
 
 </body>
 </html>

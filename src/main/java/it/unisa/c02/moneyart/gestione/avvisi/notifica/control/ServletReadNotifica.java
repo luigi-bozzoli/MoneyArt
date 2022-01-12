@@ -20,12 +20,14 @@ public class ServletReadNotifica extends HttpServlet {
     super.init();
     notificaService = Retriever.getIstance(NotificaService.class);
   }
-  
+
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
 
     String action = request.getParameter("action");
-    Notifica notifica = notificaService.getNotification(Integer.valueOf(request.getParameter("idNotifica")));
+    Notifica notifica =
+        notificaService.getNotification(Integer.parseInt(request.getParameter("idNotifica")));
 
     switch (action) {
 
@@ -41,7 +43,8 @@ public class ServletReadNotifica extends HttpServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
     doGet(request, response);
   }
 

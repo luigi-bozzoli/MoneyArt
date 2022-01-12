@@ -29,7 +29,6 @@ public class ServletGetAste extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
     String action = request.getParameter("action");
-    String page = request.getParameter("page");
 
     List<Asta> aste = null;
 
@@ -48,12 +47,6 @@ public class ServletGetAste extends HttpServlet {
     }
 
     request.setAttribute("aste", aste);
-    switch (page) {
-      case "home":
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
-        dispatcher.forward(request, response);
-        break;
-    }
 
 
 
