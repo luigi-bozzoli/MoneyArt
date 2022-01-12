@@ -1,4 +1,16 @@
- .card {
+.sidebar .nav-icon {
+    color: #EBA83A !important;
+}
+
+a.nav-link:hover p, a.nav-link:hover i {
+    color: #BB371A !important;
+}
+
+.content-wrapper{
+    background: none !important;
+}
+
+.card {
     width: 350px;
     background-color: #efefef;
     border: none;
