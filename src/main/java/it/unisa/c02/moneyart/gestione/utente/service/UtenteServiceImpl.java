@@ -195,6 +195,7 @@ public class UtenteServiceImpl implements UtenteService {
 
     if (follower.getSeguito() == null) {
       follower.setSeguito(followed);
+      utenteDao.doUpdate(follower);
       return true;
     } else {
       return false;
@@ -213,7 +214,9 @@ public class UtenteServiceImpl implements UtenteService {
     if (follower.getSeguito() == null) {
       return false;
     } else {
-      follower.setSeguito(null);
+      Utente utente = new Utente();
+      follower.setSeguito(utente);
+      utenteDao.doUpdate(follower);
       return true;
     }
   }
@@ -267,6 +270,7 @@ public class UtenteServiceImpl implements UtenteService {
     if (amount <= utente.getSaldoDisponibile() && amount > 0) {
       utente.setSaldo(utente.getSaldo() - amount);
       utente.setSaldoDisponibile(utente.getSaldoDisponibile() - amount);
+      utenteDao.doUpdate(utente);
       return true;
     } else {
       return false;
@@ -286,23 +290,6 @@ public class UtenteServiceImpl implements UtenteService {
     return utente.getSaldo();
   }
 
-  /**
-   * Permette il trasferimento di un determinato importo
-   * da un utente (sender) ad un altro (receiver).
-   *
-   * @param sender   utente che invia il denaro
-   * @param receiver utente che riceve il denaro
-   * @param amount   importo da trasferire
-   * @return true se il trasferimento è avvenuto con successo
-   * e false altrimenti
-   */
-  @Override
-  public boolean transfer(Utente sender, Utente receiver, double amount) {
-    if (withdraw(sender, amount)) {
-      return deposit(receiver, amount);
-    }
-    return false;
-  }
 
   /**
    * Restituisce la cifratura in SHA-256 di una stringa.

@@ -88,11 +88,7 @@ public class OperaServiceImpl implements OperaService {
   public Opera getArtwork(int id) {
     Opera opera = operaDao.doRetrieveById(id);
 
-    if (opera == null) {
-      return null;
-    } else {
-      return opera;
-    }
+    return opera;
   }
 
   /**
@@ -106,11 +102,7 @@ public class OperaServiceImpl implements OperaService {
 
     List<Opera> opere = operaDao.doRetrieveAllByName(name);
 
-    if (opere != null) {
-      return opere;
-    } else {
-      return null;
-    }
+    return opere;
   }
 
   /**
@@ -123,19 +115,11 @@ public class OperaServiceImpl implements OperaService {
   public List<Opera> getArtworkByUser(int id) {
     List<Opera> opere = operaDao.doRetrieveAllByArtistId(id);
 
-    if (opere != null) {
-      return opere;
-    } else {
-      return null;
-    }
+    return opere;
   }
 
   private boolean checkOpera(Opera opera) {
-    if (opera.getNome() != null && opera.getImmagine() != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return opera.getNome() != null && opera.getImmagine() != null;
   }
 
   /**

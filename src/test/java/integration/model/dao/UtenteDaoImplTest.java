@@ -1,5 +1,6 @@
 package integration.model.dao;
 
+
 import hthurow.tomcatjndi.TomcatJNDI;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
@@ -10,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.naming.Context;
@@ -20,17 +23,17 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.jupiter.api.*;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 
-
-class UtenteDaoImplIntegrationTest {
+public class UtenteDaoImplTest {
 
   private UtenteDao utenteDao;
 
   private static DataSource dataSource;
 
   @BeforeClass
-  static void generalSetUp(){
+  public static void generalSetUp() {
     TomcatJNDI tomcatJNDI = new TomcatJNDI();
     tomcatJNDI.processContextXml(new File("src/main/webapp/META-INF/context.xml"));
     tomcatJNDI.start();
@@ -46,17 +49,17 @@ class UtenteDaoImplIntegrationTest {
   }
 
   @Before
-  void setUp() throws SQLException, FileNotFoundException {
+  public void setUp() throws SQLException, FileNotFoundException {
     Connection connection = dataSource.getConnection();
-    utenteDao = new UtenteDaoImpl(dataSource);
+    this.utenteDao = new UtenteDaoImpl(dataSource);
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
     Reader reader = new BufferedReader(new FileReader("./src/test/database/populate_all.sql"));
     runner.runScript(reader);
   }
 
-  @After
-  void tearDown() throws SQLException, IOException {
+ // @After
+  public void tearDown() throws SQLException, IOException {
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
@@ -66,34 +69,53 @@ class UtenteDaoImplIntegrationTest {
   }
 
   @Test
-  void doCreate() {
+  public void doCreate() throws NoSuchAlgorithmException {
 
+    MessageDigest md = MessageDigest.getInstance("SHA-256");
     Utente admin = new Utente(
         "Franco",
         "Battiato",
         null,
-        "admin@moneyart.it",
+        "prova@moneyart.it",
         "franco",
         new Utente(),
-        new byte[10],
+        md.digest("admin".getBytes()),
         0d
     );
     utenteDao.doCreate(admin);
+    Utente admin2 = utenteDao.doRetrieveById(admin.getId());
+    System.out.println(admin2);
   }
 
   @Test
-  void doRetrieveById() {
+  public void doRetrieveById() {
   }
 
   @Test
-  void doRetrieveAll() {
+  public void doRetrieveAll() {
   }
 
   @Test
-  void doUpdate() {
+  public void doUpdate() {
   }
 
   @Test
-  void doDelete() {
+  public void doDelete() {
+  }
+
+  @Test
+  public void doRetrieveByUsername() {
+  }
+
+  @Test
+  public void doRetrieveFollowersByUserId() {
+  }
+
+  @Test
+  public void researchUser() {
+  }
+
+  @Test
+  public void doRetrieveByEmail() {
   }
 }

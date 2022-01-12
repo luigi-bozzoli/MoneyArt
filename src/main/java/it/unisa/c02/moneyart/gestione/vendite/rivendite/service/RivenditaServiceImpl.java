@@ -1,8 +1,10 @@
 package it.unisa.c02.moneyart.gestione.vendite.rivendite.service;
 
+import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
@@ -20,6 +22,7 @@ public class RivenditaServiceImpl implements RivenditaService {
     this.utenteDao = Retriever.getIstance(UtenteDao.class);
     this.operaDao = Retriever.getIstance(OperaDao.class);
     this.rivenditaDao = Retriever.getIstance(RivenditaDao.class);
+    this.notificaDao = Retriever.getIstance(NotificaDao.class);
 
   }
 
@@ -30,10 +33,12 @@ public class RivenditaServiceImpl implements RivenditaService {
    * @param utenteDao    dao di un utente
    * @param rivenditaDao dao di un utente
    */
-  public RivenditaServiceImpl(UtenteDao utenteDao, OperaDao operaDao, RivenditaDao rivenditaDao) {
+  public RivenditaServiceImpl(UtenteDao utenteDao, OperaDao operaDao, RivenditaDao rivenditaDao,
+                              NotificaDao notificaDao) {
     this.operaDao = operaDao;
     this.utenteDao = utenteDao;
     this.rivenditaDao = rivenditaDao;
+    this.notificaDao = notificaDao;
 
   }
 
@@ -117,11 +122,13 @@ public class RivenditaServiceImpl implements RivenditaService {
     owner.setSaldo(owner.getSaldo() + rivendita.getPrezzo());
 
     rivendita.setStato(Rivendita.Stato.TERMINATA);
+    Notifica notifica = new Notifica(owner, null, rivendita, Notifica.Tipo.TERMINATA, "", false);
 
     utenteDao.doUpdate(utente);
     utenteDao.doUpdate(owner);
     operaDao.doUpdate(opera);
     rivenditaDao.doUpdate(rivendita);
+    notificaDao.doCreate(notifica);
 
     return true;
   }
@@ -141,4 +148,5 @@ public class RivenditaServiceImpl implements RivenditaService {
   private UtenteDao utenteDao;
   private RivenditaDao rivenditaDao;
   private OperaDao operaDao;
+  private NotificaDao notificaDao;
 }
