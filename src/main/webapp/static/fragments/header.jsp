@@ -53,6 +53,9 @@
             <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profiloUtente_style.css">
             <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/template_bootstrap.css">
         </c:when>
+        <c:when test="${fn:contains(requestURI, '/esplora')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
+        </c:when>
         <c:when test="${fn:contains(requestURI, '/home')}">
             <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/homepage_style.css">
         </c:when>
