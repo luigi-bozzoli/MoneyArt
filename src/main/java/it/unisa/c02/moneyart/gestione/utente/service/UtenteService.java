@@ -31,8 +31,6 @@ public interface UtenteService {
 
   double getBalance(Utente utente);
 
-  boolean transfer(Utente sender, Utente receiver, double amount);
-
   byte[] encryptPassword(String password);
 
 

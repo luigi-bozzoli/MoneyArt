@@ -1,6 +1,8 @@
 package it.unisa.c02.moneyart.model.beans;
 
 
+import java.util.Objects;
+
 /**
  * Questa classe rappresenta una notifica legata ad una vendita.
  * è caratterizzata da:
@@ -197,7 +199,29 @@ public class Notifica {
         '}';
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Notifica)) {
+      return false;
+    }
+    Notifica notifica = (Notifica) o;
+    return Objects.equals(getId(), notifica.getId()) &&
+        Objects.equals(getUtente(), notifica.getUtente()) &&
+        Objects.equals(getAsta(), notifica.getAsta()) &&
+        Objects.equals(getRivendita(), notifica.getRivendita()) &&
+        getTipo() == notifica.getTipo() &&
+        Objects.equals(getContenuto(), notifica.getContenuto()) &&
+        Objects.equals(letta, notifica.letta);
+  }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getUtente(), getAsta(), getRivendita(), getTipo(), getContenuto(),
+        letta);
+  }
 
   private Integer id;
   private Utente utente;

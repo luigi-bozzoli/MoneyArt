@@ -2,6 +2,7 @@ package it.unisa.c02.moneyart.model.beans;
 
 import java.sql.Blob;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Questa classe rappresenta un'Opera.
@@ -227,7 +228,34 @@ public class Opera {
    */
   public String toString() {
     return " id: " + this.id + " id utente: " + possessore.getId() + " Artista: " + artista.getId()
-      + " Nome: " +  this.nome + " Descrizione: " + this.descrizione + " Stato: " + this.stato;
+        + " Nome: " + this.nome + " Descrizione: " + this.descrizione + " Stato: " + this.stato;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Opera)) {
+      return false;
+    }
+    Opera opera = (Opera) o;
+    return Objects.equals(getId(), opera.getId()) &&
+        Objects.equals(getNome(), opera.getNome()) &&
+        Objects.equals(getDescrizione(), opera.getDescrizione()) &&
+        getStato() == opera.getStato() &&
+        Objects.equals(getImmagine(), opera.getImmagine()) &&
+        Objects.equals(getPossessore(), opera.getPossessore()) &&
+        Objects.equals(getArtista(), opera.getArtista()) &&
+        Objects.equals(getCertificato(), opera.getCertificato()) &&
+        Objects.equals(getAste(), opera.getAste()) &&
+        Objects.equals(getRivendite(), opera.getRivendite());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getNome(), getDescrizione(), getStato(), getImmagine(),
+        getPossessore(), getArtista(), getCertificato(), getAste(), getRivendite());
   }
 
   private Integer id;
@@ -250,7 +278,7 @@ public class Opera {
    * PREVENDITA: l'opera non è in vendita o all'asta e non è ancora mai stata venduta
    */
   public enum Stato {
-    ALL_ASTA, IN_VENDITA, IN_POSSESSO,PREVENDITA
+    ALL_ASTA, IN_VENDITA, IN_POSSESSO, PREVENDITA
   }
 
 }

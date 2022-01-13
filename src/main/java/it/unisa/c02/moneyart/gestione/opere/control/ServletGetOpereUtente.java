@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.List;
 
 
-@WebServlet(name = "ServletGetOpere", value = "/getArtworks")
-public class ServletGetOpere extends HttpServlet {
+@WebServlet(name = "ServletGetOpere", value = "/getUserArtworks")
+public class ServletGetOpereUtente extends HttpServlet {
 
   @Override
   public void init() throws ServletException {

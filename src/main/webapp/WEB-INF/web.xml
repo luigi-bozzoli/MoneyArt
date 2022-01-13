@@ -21,10 +21,6 @@
             <welcome-file>/pages/home.jsp</welcome-file>
         </welcome-file-list>
         <jsp-config>
-            <taglib>
-                <taglib-uri>mytags</taglib-uri>
-                <taglib-location>/WEB-INF/mytags.tld</taglib-location>
-            </taglib>
         </jsp-config>
 
 

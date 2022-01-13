@@ -22,7 +22,7 @@ public class NotificaServiceImpl implements NotificaService {
   /**
    * Costruttore con parametri.
    *
-   * @param utenteDao dao di utente
+   * @param utenteDao   dao di utente
    * @param notificaDao dao di notifica
    */
   public NotificaServiceImpl(UtenteDao utenteDao, NotificaDao notificaDao) {
@@ -45,13 +45,13 @@ public class NotificaServiceImpl implements NotificaService {
   }
 
   /**
-   * Restituisce la notifica
+   * Restituisce la notifica.
    *
-   * @param id
-   * @return
+   * @param id l'identificativo della notifica da restituire
+   * @return la notifica trovata
    */
   @Override
-  public Notifica getNotification(int id){
+  public Notifica getNotification(int id) {
     return notificaDao.doRetrieveById(id);
   }
 

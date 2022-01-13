@@ -1,6 +1,8 @@
 package it.unisa.c02.moneyart.model.beans;
 
 
+import java.util.Objects;
+
 /**
  * Questa classe rappresenta una Partecipazione.
  * Una segnalazione è caratterizzata da: id (autogenerato dal DB),
@@ -119,6 +121,26 @@ public class Partecipazione {
         ", offerta=" + offerta
         +
         '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Partecipazione)) {
+      return false;
+    }
+    Partecipazione that = (Partecipazione) o;
+    return Double.compare(that.getOfferta(), getOfferta()) == 0 &&
+        Objects.equals(getId(), that.getId()) &&
+        Objects.equals(getAsta(), that.getAsta()) &&
+        Objects.equals(getUtente(), that.getUtente());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getAsta(), getUtente(), getOfferta());
   }
 
   private Integer id;

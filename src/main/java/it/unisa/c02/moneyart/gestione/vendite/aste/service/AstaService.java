@@ -86,5 +86,35 @@ public interface AstaService {
    */
   Partecipazione bestOffer(Asta asta);
 
+  /**
+   * Restituisce tutte le aste vinte da un utente.
+   *
+   * @param utente l'utente per cui bisogna cercare le aste vinte
+   * @return le aste vinte dall'utente
+   */
+  List<Asta> getWonAuctions(Utente utente);
 
+  /**
+   * Restituisce tutte le aste perse da un utente.
+   *
+   * @param utente l'utente per cui bisogna cercare le aste perse
+   * @return le aste perse dall'utente
+   */
+  List<Asta> getLostAuctions(Utente utente);
+
+  /**
+   * Restituisce tutte le aste in corso di un utente.
+   *
+   * @param utente l'utente per cui bisogna cercare le aste in corso
+   * @return le aste in corso dell'utente
+   */
+  List<Asta> getCurrentAuctions(Utente utente);
+
+
+  /**
+   * Restituisce lo storico di tutte le offerte.
+   *
+   * @return lo storico di tutte le offerte
+   */
+  List<Partecipazione> getAllOffers();
 }

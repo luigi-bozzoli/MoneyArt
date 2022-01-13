@@ -49,9 +49,11 @@
         </c:when>
         <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
             <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/homepage_style.css">
-            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/template_bootstrap.css">
-            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profiloUtente_style.css">
-            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/template_bootstrap.css">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/esplora')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
         </c:when>
         <c:when test="${fn:contains(requestURI, '/home')}">
             <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/homepage_style.css">
@@ -81,7 +83,9 @@
 
     <!-- BOOTSTRAP BUNDLE -->
     <c:if test="${fn:contains(requestURI, '/profiloUtente')}">
-        <script src="${pageContext.servletContext.contextPath}/static/js/bootstrap.bundle.js"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     </c:if>
 
     <!-- JS -->
@@ -89,7 +93,7 @@
         <script src="${pageContext.servletContext.contextPath}/static/js/signup.js"></script>
     </c:if>
     <c:if test="${fn:contains(requestURI, '/profiloUtente')}">
-        <script src="${pageContext.servletContext.contextPath}/static/js/sidebar.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
     </c:if>
 </head>
 <body>

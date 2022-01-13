@@ -24,8 +24,8 @@ public class ServletDettaglioAsta extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-    int id = Integer.valueOf(request.getParameter("idAsta"));
+      throws ServletException, IOException {
+    int id = Integer.parseInt(request.getParameter("idAsta"));
 
     Asta asta = astaService.getAuction(id);
 
@@ -38,7 +38,7 @@ public class ServletDettaglioAsta extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
     doGet(request, response);
   }
 

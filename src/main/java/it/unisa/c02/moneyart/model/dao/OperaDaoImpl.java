@@ -240,7 +240,7 @@ public class OperaDaoImpl implements OperaDao {
 
     if (name != null) {
       String retrieveSql = "SELECT * FROM " + TABLE_NAME
-          + " WHERE nome LIKE %?%";
+          + " WHERE nome LIKE '%?%'";
 
       List<Opera> opere = null;
 

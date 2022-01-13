@@ -1,6 +1,8 @@
 package it.unisa.c02.moneyart.model.beans;
 
 
+import java.util.Objects;
+
 /**
  * Questa classe rappresenta una Segnalazione.
  * Una segnalazione è caratterizzata da: id (autogenerato dal DB),
@@ -120,6 +122,25 @@ public class Segnalazione {
         ", letta=" + letta
         +
         '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Segnalazione)) {
+      return false;
+    }
+    Segnalazione that = (Segnalazione) o;
+    return isLetta() == that.isLetta() && Objects.equals(getId(), that.getId()) &&
+        Objects.equals(getAsta(), that.getAsta()) &&
+        Objects.equals(getCommento(), that.getCommento());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getAsta(), getCommento(), isLetta());
   }
 
   private Integer id;

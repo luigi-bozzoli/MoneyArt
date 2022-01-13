@@ -25,25 +25,26 @@ public class ServletRimuoviAsta extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-          throws ServletException, IOException {
+      throws ServletException, IOException {
 
-    int id = Integer.valueOf(request.getParameter("idAsta"));
+    int id = Integer.parseInt(request.getParameter("idAsta"));
     Asta asta = astaService.getAuction(id);
 
     boolean risultato = astaService.removeAsta(asta);
 
-    if(!risultato) {
+    if (!risultato) {
       request.setAttribute("error", "Errore durante l'annullamento dell'asta!");
       response.sendRedirect("/getAuctionDetails?idAsta=" + id);
     }
 
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/aste.jsp");
+    RequestDispatcher dispatcher =
+        request.getRequestDispatcher("/pages/aste.jsp");//Todo: aggiungere il link alla view
     dispatcher.forward(request, response);
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-          throws ServletException, IOException {
+      throws ServletException, IOException {
     doGet(request, response);
   }
 

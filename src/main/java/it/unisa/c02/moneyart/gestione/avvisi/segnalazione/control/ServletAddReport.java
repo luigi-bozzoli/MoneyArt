@@ -30,7 +30,7 @@ public class ServletAddReport extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    int idAsta = Integer.valueOf(request.getParameter("asta"));
+    int idAsta = Integer.parseInt(request.getParameter("asta"));
     String commento = request.getParameter("commento");
 
     Asta asta = new Asta();

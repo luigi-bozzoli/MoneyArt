@@ -46,18 +46,23 @@ public class ServletCreaOpera extends HttpServlet {
     try {
       blob = new SerialBlob(IOUtils.toByteArray(immagine.getInputStream()));
     } catch (SQLException e) {
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-          "errore durante il processamento dell'immagine");
+      request.setAttribute("error",
+          "errore nel caricamento dell'immagine");
+      RequestDispatcher dispatcher = request
+          .getRequestDispatcher(
+              "/pages/aggiungi-opera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
+      dispatcher.forward(request, response);
       return;
     }
     Opera nuovaOpera =
-      new Opera(nome, descrizione, Opera.Stato.PREVENDITA, blob, artista, artista, null);
+        new Opera(nome, descrizione, Opera.Stato.PREVENDITA, blob, artista, artista, null);
     nuovaOpera.setImmagine(blob);
     if (!operaService.addArtwork(nuovaOpera)) {
       request.setAttribute("error",
-        "L'opera è già presente nella piattaforma!");
+          "L'opera è già presente nella piattaforma!");
       RequestDispatcher dispatcher = request
-          .getRequestDispatcher("/pages/aggiungi-opera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
+          .getRequestDispatcher(
+              "/pages/aggiungi-opera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
       dispatcher.forward(request, response);
     } else {
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/dettaglio-opera?id="

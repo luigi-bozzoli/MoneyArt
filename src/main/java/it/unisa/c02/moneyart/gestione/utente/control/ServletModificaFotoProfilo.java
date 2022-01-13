@@ -28,17 +28,22 @@ public class ServletModificaFotoProfilo extends HttpServlet {
       throws ServletException, IOException {
     Utente utente = (Utente) request.getSession().getAttribute("utente");
     Part immagine = request.getPart("immagine");
+    RequestDispatcher dispatcher =
+        request.getRequestDispatcher("");//Todo: aggiungere view modifica profilo
 
     Blob nuovaImmagine;
     try {
       nuovaImmagine = new SerialBlob(IOUtils.toByteArray(immagine.getInputStream()));
     } catch (SQLException e) {
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-          "errore nella processing dell'immagine");
+      request.setAttribute("error", "errore nel caricamento dell'immagine");
+      dispatcher.forward(request, response);
       return;
+
     }
     utente.setFotoProfilo(nuovaImmagine);
     utenteService.updateUser(utente);
+    request.setAttribute("message", "immagine modificata con successo!");
+    dispatcher.forward(request, response);
 
   }
 
