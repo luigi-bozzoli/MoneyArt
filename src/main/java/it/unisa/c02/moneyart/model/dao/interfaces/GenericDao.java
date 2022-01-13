@@ -13,6 +13,7 @@ public interface GenericDao<T> {
    * Inserisce un item nel database.
    *
    * @param item l'oggetto da inserire nel database
+   * @return true se l'inserimento nel database è andato a buon fine, false altrimenti
    */
   boolean doCreate(T item);
 
