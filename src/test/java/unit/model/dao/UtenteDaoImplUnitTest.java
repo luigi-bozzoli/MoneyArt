@@ -27,6 +27,7 @@ public class UtenteDaoImplUnitTest {
   @Mock
   private ResultSet resultSet;
 
+  /*Va bene anche così, ma vorrei moccare anche gli utenti*/
   private static Utente user;
   private static Utente userFollowed;
 
