@@ -38,7 +38,7 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
    * @param item l'oggetto da inserire nel database
    */
   @Override
-  public void doCreate(TimedObject item) {
+  public boolean doCreate(TimedObject item) {
     String sql = "INSERT INTO " + TABLE_NAME
         + "(attribute, task_type, task_date) "
         + "VALUES(?, ?, ?)";
@@ -53,13 +53,12 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
         item.setId(resultSet.getInt(1));
-
+        return true;
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
-
+      return false;
   }
 
   /**
