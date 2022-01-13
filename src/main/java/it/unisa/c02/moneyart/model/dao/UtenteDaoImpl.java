@@ -242,16 +242,21 @@ public class UtenteDaoImpl implements UtenteDao {
   public List<Utente> researchUser(String text) {
 
     if (text != null) {
+      text = text
+          .replace("!", "!!")
+          .replace("%", "!%")
+          .replace("_", "!_")
+          .replace("[", "![");
       String retrieveSql = "SELECT * FROM " + TABLE_NAME
-          + " WHERE nome LIKE '%?%' OR cognome LIKE '%?%' OR username LIKE '%?%'";
+          + " WHERE nome LIKE ? OR cognome LIKE ? OR username LIKE ?";
 
       List<Utente> opere = null;
 
       try (Connection connection = ds.getConnection();
            PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
-        preparedStatement.setString(1, text);
-        preparedStatement.setString(2, text);
-        preparedStatement.setString(3, text);
+        preparedStatement.setString(1, text + "%");
+        preparedStatement.setString(2, text + "%");
+        preparedStatement.setString(3, text + "%");
 
         ResultSet rs = preparedStatement.executeQuery();
         opere = getMultipleResultFromResultSet(rs);
