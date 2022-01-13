@@ -44,7 +44,7 @@ public class UtenteDaoImplUnitTest {
             "m_red", userFollowed, new byte[10], 2.2);
     user.setId(100);
   }
- 
+
   @AfterClass
   public static void tearDownClass() {
   }
