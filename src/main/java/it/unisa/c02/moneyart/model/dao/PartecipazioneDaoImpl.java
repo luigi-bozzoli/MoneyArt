@@ -43,7 +43,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    * @param item l'oggetto da inserire nel database
    */
   @Override
-  public void doCreate(Partecipazione item) {
+  public boolean doCreate(Partecipazione item) {
     String sql = "INSERT INTO " + TABLE_NAME
         + "(id_utente, id_asta, offerta) "
         + " VALUES (?, ?, ?) ";
@@ -62,10 +62,12 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
         item.setId(resultSet.getInt(1));
+        return true;
       }
     } catch (SQLException e) {
       e.printStackTrace();
-    }
+
+    }return false;
   }
 
   /**

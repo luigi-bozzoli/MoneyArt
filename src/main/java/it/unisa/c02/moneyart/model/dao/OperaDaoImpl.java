@@ -42,7 +42,7 @@ public class OperaDaoImpl implements OperaDao {
    * @param item l'oggetto da inserire nel database
    */
   @Override
-  public void doCreate(Opera item) {
+  public boolean doCreate(Opera item) {
     String insertSql = "INSERT INTO " + TABLE_NAME
         + "(id_utente, id_artista, nome, descrizione, immagine, certificato, stato)"
         + " VALUES(?, ?, ?, ?, ?, ?, ?) ";
@@ -62,10 +62,12 @@ public class OperaDaoImpl implements OperaDao {
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
         item.setId(resultSet.getInt(1));
+        return true;
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    return false;
   }
 
   /**

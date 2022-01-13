@@ -41,7 +41,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
    * @param item l'oggetto da inserire nel database
    */
   @Override
-  public void doCreate(Segnalazione item) {
+  public boolean doCreate(Segnalazione item) {
     String sql = "INSERT INTO " + TABLE_NAME
         + "(id_asta,commento,letta) "
         + " VALUES(?, ? , ?) ";
@@ -58,10 +58,12 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
         item.setId(resultSet.getObject(1, Integer.class));
+        return true;
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    return false;
   }
 
   /**

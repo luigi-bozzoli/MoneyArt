@@ -40,7 +40,7 @@ public class AstaDaoImpl implements AstaDao {
    * @param item l'oggetto da inserire nel database
    */
   @Override
-  public void doCreate(Asta item) {
+  public boolean doCreate(Asta item) {
 
     String sql = "INSERT INTO " + TABLE_NAME
             + "(id_opera, data_inizio, data_fine, stato) "
@@ -58,10 +58,12 @@ public class AstaDaoImpl implements AstaDao {
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
         item.setId(resultSet.getInt(1));
+        return true;
       }
     } catch (SQLException e) {
       e.printStackTrace();
-    }
+
+    }return false;
   }
 
   /**

@@ -53,10 +53,12 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
         item.setId(resultSet.getInt(1));
+
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
+
 
   }
 

@@ -41,7 +41,7 @@ public class NotificaDaoImpl implements NotificaDao {
    * @param item l'oggetto da inserire nel database
    */
   @Override
-  public void doCreate(Notifica item) {
+  public boolean doCreate(Notifica item) {
 
     String sql = "INSERT INTO " + TABLE_NAME
         + "(id_utente, id_rivendita, id_asta, letta, tipo, contenuto) "
@@ -60,10 +60,12 @@ public class NotificaDaoImpl implements NotificaDao {
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
         item.setId(resultSet.getInt(1));
+        return true;
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    return false;
   }
 
   /**

@@ -4,6 +4,8 @@ import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 
+import org.eclipse.jetty.util.Fields;  /*_____?_____*/
+import static org.mockito.Mockito.verify;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
@@ -17,18 +19,24 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 @RunWith(MockitoJUnitRunner.class)
-class UtenteDaoImplUnitTest {
+public class UtenteDaoImplUnitTest {
 
   @Mock
-  private Retriever mockRetriever;
+  private Retriever retriever;
   @Mock
-  private DataSource mockDataSource;
+  private DataSource dataSource;
   @Mock
-  private Connection mockConn;
+  private Connection connection;
   @Mock
-  private PreparedStatement mockPreparedStmnt;
+  private PreparedStatement preparedStatement;
   @Mock
-  private ResultSet mockResultSet;
+  private ResultSet resultSet;
+
+
+  private static Utente user; //non lo mocco, tanto serve solo il suo costruttore
+  private static Utente userFollowed;
+
+  //Potrebbe essere moccato anche l'utente, ma non ha senso perché andiamo solo ad istanziarlo, e quindi ad usare il costruttore di Utente
 
 
   //costruttore vuoto
@@ -36,6 +44,13 @@ class UtenteDaoImplUnitTest {
 
   @BeforeClass
   public static void setUpClass() throws Exception {
+    userFollowed = new Utente("MarioVip", "RossiVip", null, "mariorossivip@unisa.it",
+            "m_red", null, new byte[10], 2000000.2);
+    userFollowed.setId(99);
+
+    user = new Utente("Mario", "Rossi", null, "mariorossi@unisa.it",
+            "m_red", userFollowed, new byte[10], 2.2);
+    user.setId(100);
   }
 
   @AfterClass
@@ -43,17 +58,20 @@ class UtenteDaoImplUnitTest {
   }
 
   @Before
-  public void setUp() throws SQLException {
-    when(mockRetriever.getIstance(any())).thenReturn(mockDataSource);
-    when(mockDataSource.getConnection()).thenReturn(mockConn);
-    when(mockDataSource.getConnection(anyString(), anyString())).thenReturn(mockConn);
-    doNothing().when(mockConn).commit();
-    when(mockConn.prepareStatement(anyString(), anyInt())).thenReturn(mockPreparedStmnt);
-    doNothing().when(mockPreparedStmnt).setString(anyInt(), anyString());
-    when(mockPreparedStmnt.execute()).thenReturn(Boolean.TRUE);
-    when(mockPreparedStmnt.getGeneratedKeys()).thenReturn(mockResultSet);
-    when(mockResultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
-    // when(mockResultSet.getInt(Fields.GENERATED_KEYS)).thenReturn(userId);
+  public void setUp() throws SQLException { //istruisco gli oggetti mock
+    //when(retriever.getIstance(any())).thenReturn(dataSource);
+    when(dataSource.getConnection()).thenReturn(connection);
+    when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
+    doNothing().when(connection).commit();
+    when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setObject(anyInt(), anyString(), any());
+    when(preparedStatement.executeUpdate()).thenReturn(1); /*modificata*/
+    when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
+    when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
+    System.out.println("\naoooooo"+user.getId()); /*debug*/
+    when(resultSet.getInt(anyInt())).thenReturn(user.getId()); /*modificata*/
   }
 
   @After
@@ -61,9 +79,25 @@ class UtenteDaoImplUnitTest {
   }
 
 
+  @Test
+  public void testDoCreate() throws SQLException {
+   UtenteDaoImpl userDao = new UtenteDaoImpl(dataSource);
 
-  @Test  /*signature da testare ==> public void doCreate(Utente item) */
-  void testDoCreate() throws SQLException {
+   boolean result = userDao.doCreate(user);
+
+    assertTrue(result);
+
+  }
+
+
+
+
+
+
+/*  metodo senza mod bool
+
+  @Test  /*signature da testare ==> public void doCreate(Utente item)
+  public void testDoCreate() throws SQLException {
     UtenteDaoImpl userDao = new UtenteDaoImpl(mockDataSource);
 
    userDao.doCreate(new Utente("Mario","Rossi", null, "mariorossi@unisa.it",
@@ -78,6 +112,9 @@ class UtenteDaoImplUnitTest {
     //verify(mockResultSet, times(1));
 
   }
+
+
+
 
   @Test
   void doRetrieveById() {
@@ -110,4 +147,7 @@ class UtenteDaoImplUnitTest {
   @Test
   void doRetrieveByEmail() {
   }
+
+ */
+
 }

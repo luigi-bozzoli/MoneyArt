@@ -14,7 +14,7 @@ public interface GenericDao<T> {
    *
    * @param item l'oggetto da inserire nel database
    */
-  void doCreate(T item);
+  boolean doCreate(T item);
 
   /**
    * Ricerca nel database un item tramite un identificativo unico.

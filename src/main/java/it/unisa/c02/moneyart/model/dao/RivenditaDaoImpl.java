@@ -38,7 +38,7 @@ public class RivenditaDaoImpl implements RivenditaDao {
    * @param item l'oggetto da inserire nel database
    */
   @Override
-  public void doCreate(Rivendita item) {
+  public boolean doCreate(Rivendita item) {
     String sql =
         "INSERT INTO " + TABLE_NAME
         + "(id_opera, prezzo, stato) "
@@ -55,12 +55,13 @@ public class RivenditaDaoImpl implements RivenditaDao {
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
         item.setId(resultSet.getInt(1));
+        return true;
       }
     } catch (SQLException e) {
       e.printStackTrace();
       throw new IllegalArgumentException(e.getMessage());
     }
-
+    return false;
 
   }
 

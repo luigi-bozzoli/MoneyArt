@@ -35,7 +35,7 @@ public class UtenteDaoImpl implements UtenteDao {
    * @param item l'oggetto da inserire nel database
    */
   @Override
-  public void doCreate(Utente item) {
+  public boolean doCreate(Utente item) {
     String sql =
         "INSERT INTO " + TABLE_NAME
             +
@@ -59,10 +59,12 @@ public class UtenteDaoImpl implements UtenteDao {
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
         item.setId(resultSet.getInt(1));
+        return true;
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    return false;
   }
 
   /**
