@@ -88,6 +88,7 @@ $(document).ready(function () {
         $('#surname').val($('#surname').attr('value'));
         $('#email').val($('#email').attr('value'));
         $('#username').val($('#username').attr('value'));
+        $(".error").html('');
         window.scrollTo(0, 0);
     });
 
