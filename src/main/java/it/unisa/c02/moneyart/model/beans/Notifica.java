@@ -31,7 +31,6 @@ public class Notifica {
    */
   public Notifica(Utente idUtente, Asta idAsta, Rivendita idRivendita, Tipo tipo,
                   String contenuto, boolean letta) {
-    this.id = Notifica.NO_ID;
     this.utente = idUtente;
     this.asta = idAsta;
     this.rivendita = idRivendita;
