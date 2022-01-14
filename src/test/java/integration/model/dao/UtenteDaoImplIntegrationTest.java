@@ -47,7 +47,7 @@ class UtenteDaoImplIntegrationTest {
   public static void generalSetUp() {
     TomcatJNDI tomcatJNDI = new TomcatJNDI();
     tomcatJNDI.processContextXml(new File("src/main/webapp/META-INF/context.xml"));
-    tomcatJNDI.start();
+    //tomcatJNDI.start();
     try {
       Context initCtx = new InitialContext();
       Context envCtx = (Context) initCtx.lookup("java:comp/env");

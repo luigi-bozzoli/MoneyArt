@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.Set;
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,12 +23,13 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "ServletLogin", value = "/login")
 public class ServletLogin extends HttpServlet {
 
+  @Inject
   private UtenteService utenteService;
 
   @Override
   public void init() throws ServletException {
     super.init();
-    utenteService = Retriever.getInstance(UtenteService.class);
+    //utenteService = Retriever.getInstance(UtenteService.class);
   }
 
   @Override
