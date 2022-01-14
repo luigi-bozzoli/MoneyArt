@@ -23,7 +23,7 @@ public class FilterLogin implements Filter {
     HttpServletRequest newRequest = (HttpServletRequest) request;
     HttpSession session = newRequest.getSession();
     if (session.getAttribute("utente") == null) {
-      request.setAttribute("errore", "necessario il login per procedere");
+      request.setAttribute("error", "necessario il login per procedere");
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/login.jsp");
       dispatcher.forward(request, response);
       return;

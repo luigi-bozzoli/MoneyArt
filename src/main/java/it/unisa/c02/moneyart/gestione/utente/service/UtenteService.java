@@ -9,6 +9,8 @@ public interface UtenteService {
 
   Utente getUserInformation(int id);
 
+  Utente getUserInformation(String username);
+
   boolean signUpUser(Utente utente);
 
   void updateUser(Utente utente);

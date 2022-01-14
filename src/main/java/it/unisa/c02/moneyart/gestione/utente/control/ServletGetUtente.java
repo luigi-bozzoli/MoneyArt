@@ -1,19 +1,20 @@
 package it.unisa.c02.moneyart.gestione.utente.control;
-
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
+
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "ServletUserPage", value = "/userPage")
-public class ServletUserPage extends HttpServlet {
+import java.io.IOException;
 
+@WebServlet(name = "ServletGetUtente", value = "/getUser")
+public class ServletGetUtente extends HttpServlet {
   private UtenteService utenteService;
 
   @Override
@@ -24,19 +25,22 @@ public class ServletUserPage extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    Utente utente = (Utente) request.getSession().getAttribute("utente");
-    int id = utente.getId();
-    utente = utenteService.getUserInformation(id);
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/profiloUtente.jsp");
-    request.setAttribute("utente", utente);
-    dispatcher.forward(request, response);
+    throws ServletException, IOException {
+      String username = request.getParameter("username");
 
+      Utente utente = utenteService.getUserInformation(username);
+
+      if (utente == null) {
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+          "Nessun utente trovato!");
+      } else {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/utenteRicercato.jsp");
+        request.setAttribute("utenteRicercato", utente);
+        dispatcher.forward(request, response);
+      }
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) {
   }
 }

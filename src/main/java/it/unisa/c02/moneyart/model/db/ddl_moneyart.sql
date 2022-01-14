@@ -10,7 +10,7 @@ create table utente (
     username varchar (100) not null unique,
     nome varchar (100) not null,
     cognome varchar (100) not null,
-    foto blob,
+    foto mediumblob,
     saldo double precision not null,
 	
     foreign key (id_seguito) references utente(id) on update no action on delete no action
