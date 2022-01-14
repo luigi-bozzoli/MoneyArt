@@ -95,7 +95,6 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
       session.removeAttribute("utente");
       session.setAttribute("utente", newUtente);
 
-      request.setAttribute("message", "Profilo modificato con successo!");
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/profiloUtente.jsp");
       dispatcher.forward(request, response);
     }

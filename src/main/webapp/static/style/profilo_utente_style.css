@@ -236,8 +236,11 @@ h5 {
 .info-propic p{
     margin-bottom: 0px !important;
     color: #b8b8b8 !important;
-    text-align: center;
     font-size: 0.9em;
+}
+
+.info-propic p {
+    text-align: center;
 }
 
 .pass-info ul {

@@ -96,6 +96,32 @@ public class UtenteServiceImpl implements UtenteService {
     return utente;
 
   }
+  /**
+   * Restituisce un bean utente creato interrogando il database.
+   *
+   * @param username l'username dell'utente
+   * @return il bean utente se sono state trovate le credenziali nel database,
+   * null altrimenti
+   */
+  @Override
+  public Utente getUserInformation(String username) {
+    Utente utente = utenteDao.doRetrieveByUsername(username);
+    if (utente == null) {
+      return null;
+    }
+    if (utente.getSeguito().getId() != null) {
+
+      utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+    }
+    utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
+    utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
+    utente.setNotifiche(notificaDao.doRetrieveAllByUserId(utente.getId()));
+    utente.setPartecipazioni(partecipazioneDao.doRetrieveAllByUserId(utente.getId()));
+
+    utente.setnFollowers(getNumberOfFollowers(utente));
+    return utente;
+
+  }
 
   /**
    * Inserisci un nuovo utente nel database.
@@ -204,7 +230,7 @@ public class UtenteServiceImpl implements UtenteService {
   /**
    * Permette ad un utente di cancellare il follow da un artista.
    *
-   * @param follower l'artista da smettere di seguire.
+   * @param follower l'utente che vuole smettere di seguire un artista.
    * @return true se l'utente smette di seguire con successo un artista,
    * false se l'utente già non seguiva nessuno
    */

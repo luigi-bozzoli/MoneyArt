@@ -21,7 +21,7 @@ public class ServletFollow extends HttpServlet {
       throws ServletException, IOException {
     Utente utente = (Utente) request.getSession().getAttribute("utente");
     String action = request.getParameter("action");
-    RequestDispatcher dispatcher = request.getRequestDispatcher("");//Todo: mettere una view valida
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/profiloUtente.jsp");
 
     switch (action) {
       case "follow":
@@ -36,8 +36,6 @@ public class ServletFollow extends HttpServlet {
         throw new IllegalStateException("Unexpected value: " + action);
     }
     dispatcher.forward(request, response);
-
-
   }
 
   @Override
