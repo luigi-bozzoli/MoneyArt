@@ -71,10 +71,8 @@ VALUES((SELECT id FROM opera WHERE nome = "The Shibosis" AND id_artista = (SELEC
 
 
 /****************************** RIVENDITE ******************************/
-
 INSERT INTO rivendita(id_opera, prezzo, stato)
 VALUES(1, 999.99, "IN_CORSO");
-
 
 
 

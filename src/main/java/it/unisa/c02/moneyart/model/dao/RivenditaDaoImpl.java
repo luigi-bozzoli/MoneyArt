@@ -2,6 +2,7 @@ package it.unisa.c02.moneyart.model.dao;
 
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
@@ -76,15 +77,12 @@ public class RivenditaDaoImpl implements RivenditaDao {
     String sql =
         "select * from " + TABLE_NAME
         + " where id = ? ";
-    Rivendita rivendita = null;
-
-
+    Rivendita rivendita;
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
-      rivendita = new Rivendita();
 
       rivendita = getSingleResultFromResultSet(rs);
 
@@ -144,8 +142,8 @@ public class RivenditaDaoImpl implements RivenditaDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);
-      preparedStatement.setObject(2, item.getStato().toString().toLowerCase());
-      preparedStatement.setObject(3, item.getPrezzo(), Types.DOUBLE);
+      preparedStatement.setObject(2, item.getPrezzo(), Types.DOUBLE);
+      preparedStatement.setObject(3, item.getStato().toString().toLowerCase());
       preparedStatement.setObject(4, item.getId(), Types.INTEGER);
       preparedStatement.executeUpdate();
 
@@ -203,6 +201,7 @@ public class RivenditaDaoImpl implements RivenditaDao {
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       rivendite = new ArrayList<>();
 
+      preparedStatement.setObject(1, s);
       ResultSet rs = preparedStatement.executeQuery();
       rivendite = getMultipleResultFromResultSet(rs);
 
