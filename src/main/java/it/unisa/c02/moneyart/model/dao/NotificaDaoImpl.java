@@ -317,7 +317,7 @@ public class NotificaDaoImpl implements NotificaDao {
       notifica.setTipo(Notifica.Tipo.valueOf(rs.getObject("tipo", String.class).toUpperCase()));
       notifica.setContenuto(rs.getObject("contenuto", String.class));
 
-
+      notifiche.add(notifica);
     }
     return notifiche;
   }
