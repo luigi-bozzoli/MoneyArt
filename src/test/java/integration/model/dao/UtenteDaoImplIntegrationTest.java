@@ -177,7 +177,7 @@ class UtenteDaoImplIntegrationTest {
     @ParameterizedTest
     @DisplayName("Retrieve non existing user")
     @ArgumentsSource(UtenteProvider.class)
-    void retirveNonExistingUser(Utente utente) {
+    void retrieveNonExistingUser(Utente utente) {
       utenteDao.doCreate(utente);
 
       Utente result = utenteDao.doRetrieveById(utente.getId() + 1);
@@ -298,7 +298,7 @@ class UtenteDaoImplIntegrationTest {
     @ParameterizedTest
     @DisplayName("Retrieve all")
     @ArgumentsSource(ListUsersProvider.class)
-    void RetireveAllTest(List<Utente> utenti) {
+    void RetrieveAllTest(List<Utente> utenti) {
       for (Utente utente : utenti) {
         utenteDao.doCreate(utente);
         Utente followed = new Utente();

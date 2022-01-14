@@ -226,6 +226,7 @@ public class Opera {
    *
    * @return la stringa che rappresenta l'asta
    */
+  @Override
   public String toString() {
     return " id: " + this.id + " id utente: " + possessore.getId() + " Artista: " + artista.getId()
         + " Nome: " + this.nome + " Descrizione: " + this.descrizione + " Stato: " + this.stato;
