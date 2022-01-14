@@ -19,8 +19,8 @@ public class ServletAddReport extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    segnalazioneService = Retriever.getIstance(SegnalazioneService.class);
-    astaService = Retriever.getIstance(AstaService.class);
+    segnalazioneService = Retriever.getInstance(SegnalazioneService.class);
+    astaService = Retriever.getInstance(AstaService.class);
   }
 
   @Override

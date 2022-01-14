@@ -7,10 +7,10 @@
     "id": "fd687b98-7b29-4703-bfe6-63fd02f6edd0",
     "name": "TC_1.1_1",
     "commands": [{
-      "id": "0b90e2d8-8e16-4ea0-bee0-6be4b581b589",
+      "id": "1cb916b6-0602-4cce-ac5e-7db82976caa0",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -136,10 +136,10 @@
     "id": "0adbff81-b308-43a9-a89b-eefbb7b26502",
     "name": "TC_1.1_2",
     "commands": [{
-      "id": "801f58e0-4b6f-4b52-a3ba-f95ded30c70a",
+      "id": "777a39bb-0bbf-4f88-9358-b8f139cfff1e",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -279,10 +279,10 @@
     "id": "fb10e272-00e0-41f7-99e8-219f075f8140",
     "name": "TC_1.1_3",
     "commands": [{
-      "id": "59a80a1b-198e-4c58-8d43-dffc778ded8c",
+      "id": "527f9e8e-5075-41ef-bef7-c9b3aa18ce43",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -408,10 +408,10 @@
     "id": "74137f0b-69d4-4f57-9c9a-8345f1bcaf2a",
     "name": "TC_1.1_4",
     "commands": [{
-      "id": "4bdd8a18-a3fd-43c3-9e9e-53d8b86e5d19",
+      "id": "d99708a9-07e4-41b1-ba45-e6054ba7542b",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -551,10 +551,10 @@
     "id": "f34c7fae-6d14-4637-8cbf-b6e05702ac73",
     "name": "TC_1.1_5",
     "commands": [{
-      "id": "430af354-949b-4d7b-b348-961d5e061591",
+      "id": "169d80b4-f9c8-44c0-bcba-5a234043d845",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -680,10 +680,10 @@
     "id": "1efd57b7-389e-413a-94cc-fa76243056ae",
     "name": "TC_1.1_6",
     "commands": [{
-      "id": "7fd18d68-69cb-4be8-b9aa-72be5d85bdd4",
+      "id": "c4f2bd5b-3630-4637-86ce-5753e08c5122",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -809,10 +809,10 @@
     "id": "84ab8378-86c6-4ed4-9afe-e5b7696cffe0",
     "name": "TC_1.1_7",
     "commands": [{
-      "id": "67918bd9-5c8c-46f5-90da-f049db6b4151",
+      "id": "fa8a745c-0587-4581-b8c5-a5c1e39450a8",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -938,10 +938,10 @@
     "id": "91d6c851-33ca-433a-bb37-2aed8a2fdef6",
     "name": "TC_1.1_8",
     "commands": [{
-      "id": "53538daa-3968-4b74-b619-1fcb3d6b7397",
+      "id": "411b7b10-8548-42aa-ae57-202c40cd13b2",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -1067,10 +1067,10 @@
     "id": "0172ee5b-b909-4a83-a555-9fd2fc821c6a",
     "name": "TC_1.1_9",
     "commands": [{
-      "id": "f3414c17-f914-4f41-a244-aaef457217ae",
+      "id": "3d60f80f-f155-402b-92dc-6cb9441cfa38",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -1196,10 +1196,10 @@
     "id": "46ca39fc-d3cd-4988-8215-0783b905d260",
     "name": "TC_1.1_10",
     "commands": [{
-      "id": "a10ca20b-a01f-45bf-bfcf-096c16c3ff06",
+      "id": "9f16f916-08a4-415c-a6eb-79d2760ad4c8",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -1325,10 +1325,10 @@
     "id": "4c06cee2-7327-454c-a90d-d01ecb10df9a",
     "name": "TC_1.1_11",
     "commands": [{
-      "id": "aec72087-6453-48ca-86df-f7e7b00ac6c5",
+      "id": "73fa6dee-f1b4-4362-80f6-aa9173612416",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -1454,10 +1454,10 @@
     "id": "f9caad27-570c-4156-896a-b0f155855ff5",
     "name": "TC_1.1_12",
     "commands": [{
-      "id": "8bf71062-57ab-455b-aedc-bc6166a24ac6",
+      "id": "f985fd06-b242-474d-8471-14d7e06e7915",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8080/MoneyArt_war/getAuctions?action=inCorso&page=home",
+      "target": "http://localhost:8080/MoneyArt_war",
       "targets": [],
       "value": ""
     }, {
@@ -1598,7 +1598,7 @@
       "command": "assert",
       "target": "test",
       "targets": [],
-      "value": "true"
+      "value": ""
     }]
   }],
   "suites": [{

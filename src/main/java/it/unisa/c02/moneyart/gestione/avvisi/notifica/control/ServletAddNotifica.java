@@ -21,8 +21,8 @@ public class ServletAddNotifica extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    notificaService = Retriever.getIstance(NotificaService.class);
-    utenteService = Retriever.getIstance(UtenteService.class);
+    notificaService = Retriever.getInstance(NotificaService.class);
+    utenteService = Retriever.getInstance(UtenteService.class);
   }
 
   @Override

@@ -4,7 +4,6 @@ import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,7 +32,7 @@ public class OperaDaoImpl implements OperaDao {
    * Costruttore vuoto.
    */
   public OperaDaoImpl() {
-    this.ds = Retriever.getIstance(DataSource.class);
+    this.ds = Retriever.getInstance(DataSource.class);
   }
 
   /**

@@ -1,7 +1,6 @@
 package it.unisa.c02.moneyart.gestione.avvisi.notifica.service;
 
 import it.unisa.c02.moneyart.model.beans.Notifica;
-import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
@@ -15,8 +14,8 @@ public class NotificaServiceImpl implements NotificaService {
    * Costruttore che istanzia tramite il Retriver i dao.
    */
   public NotificaServiceImpl() {
-    this.utenteDao = Retriever.getIstance(UtenteDao.class);
-    this.notificaDao = Retriever.getIstance(NotificaDao.class);
+    this.utenteDao = Retriever.getInstance(UtenteDao.class);
+    this.notificaDao = Retriever.getInstance(NotificaDao.class);
   }
 
   /**

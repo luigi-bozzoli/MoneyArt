@@ -25,7 +25,7 @@ public class TimerScheduler {
 
 
   private TimerScheduler() {
-    timedObjectDao = Retriever.getIstance(TimedObjectDao.class);
+    timedObjectDao = Retriever.getInstance(TimedObjectDao.class);
     services = new HashMap<>();
     timerSet = new HashSet<>();
   }

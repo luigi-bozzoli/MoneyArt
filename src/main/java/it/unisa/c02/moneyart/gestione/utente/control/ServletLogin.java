@@ -1,13 +1,11 @@
 package it.unisa.c02.moneyart.gestione.utente.control;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,7 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import jnr.ffi.annotations.In;
 
 @WebServlet(name = "ServletLogin", value = "/login")
 public class ServletLogin extends HttpServlet {
@@ -30,7 +27,7 @@ public class ServletLogin extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    utenteService = Retriever.getIstance(UtenteService.class);
+    utenteService = Retriever.getInstance(UtenteService.class);
   }
 
   @Override

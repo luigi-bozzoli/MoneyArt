@@ -15,7 +15,7 @@ public class ServletBestOffer extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    astaService = Retriever.getIstance(AstaService.class);
+    astaService = Retriever.getInstance(AstaService.class);
   }
 
   @Override

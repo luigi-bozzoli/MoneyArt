@@ -33,7 +33,7 @@ public class Retriever {
    * @param interfaccia l'interfaccia da istanziare
    * @return l'oggetto che implementa l'interfaccia, viene usata l'implementazione di default
    */
-  public static <T> T getIstance(Class<T> interfaccia) {
+  public static <T> T getInstance(Class<T> interfaccia) {
     if (producers == null) {
       throw new IllegalStateException("i produttori non sono stati settati");
     }
@@ -54,7 +54,7 @@ public class Retriever {
    *                      possibili implementazioni disponibili dell'interfaccia
    * @return l'oggetto che implementa l'interfaccia
    */
-  public static <T> T getIstance(Class<T> interfaccia, String qualificatore) {
+  public static <T> T getInstance(Class<T> interfaccia, String qualificatore) {
     if (producers == null) {
       throw new IllegalStateException("i produttori non sono stati settati");
     }

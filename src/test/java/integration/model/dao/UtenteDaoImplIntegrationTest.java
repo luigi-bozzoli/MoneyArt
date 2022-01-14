@@ -39,7 +39,7 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 @DisplayName("UtenteDao")
-class UtenteDaoImplTest {
+class UtenteDaoImplIntegrationTest {
 
   private static DataSource dataSource;
 
@@ -67,7 +67,7 @@ class UtenteDaoImplTest {
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
-    Reader reader = new BufferedReader(new FileReader("./src/test/database/ddl_moneyart.sql"));
+    Reader reader = new BufferedReader(new FileReader("./src/main/java/it/unisa/c02/moneyart/model/db/ddl_moneyart.sql"));
     runner.runScript(reader);
     connection.close();
   }
@@ -77,7 +77,7 @@ class UtenteDaoImplTest {
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
-    Reader reader = new BufferedReader(new FileReader("./src/test/database/ddl_moneyart.sql"));
+    Reader reader = new BufferedReader(new FileReader("./src/main/java/it/unisa/c02/moneyart/model/db/ddl_moneyart.sql"));
     runner.runScript(reader);
     connection.close();
 
@@ -251,7 +251,6 @@ class UtenteDaoImplTest {
           3000d
       );
 
-      utente4.setSaldoDisponibile(2514d);
 
       Utente utente5 = new Utente(
           "Mario",
@@ -264,7 +263,6 @@ class UtenteDaoImplTest {
           956d
       );
 
-      utente5.setSaldoDisponibile(456.01d);
 
       Utente utente6 = new Utente(
           "Aurelio",
@@ -430,7 +428,6 @@ class UtenteDaoImplTest {
           956d
       );
 
-      utente5.setSaldoDisponibile(456.01d);
 
       Utente utente6 = new Utente(
           "Aurelio",
@@ -563,7 +560,6 @@ class UtenteDaoImplTest {
           956d
       );
 
-      utente5.setSaldoDisponibile(456.01d);
 
       Utente utente6 = new Utente(
           "Aurelio",

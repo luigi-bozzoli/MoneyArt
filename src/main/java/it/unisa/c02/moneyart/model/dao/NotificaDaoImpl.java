@@ -23,7 +23,7 @@ public class NotificaDaoImpl implements NotificaDao {
 
 
   public NotificaDaoImpl() {
-    this.ds = Retriever.getIstance(DataSource.class);
+    this.ds = Retriever.getInstance(DataSource.class);
   }
 
   /**

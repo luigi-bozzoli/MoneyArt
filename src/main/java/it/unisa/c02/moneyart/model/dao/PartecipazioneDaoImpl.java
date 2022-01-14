@@ -25,7 +25,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    * Costruttore, utilizza un datasource istanziato esternamente.
    */
   public PartecipazioneDaoImpl() {
-    this.ds = Retriever.getIstance(DataSource.class);
+    this.ds = Retriever.getInstance(DataSource.class);
   }
 
   /**

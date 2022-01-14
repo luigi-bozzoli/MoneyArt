@@ -1,24 +1,33 @@
 package unit.model.dao;
 
-import com.mysql.cj.jdbc.Blob;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
-
-import org.junit.*;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
-import org.junit.runner.RunWith;
-import org.mockito.*;
-import org.mockito.runners.MockitoJUnitRunner;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.sql.DataSource;
-import java.sql.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class OperaDaoImplUnitTest {
 
   @Mock
@@ -38,15 +47,15 @@ public class OperaDaoImplUnitTest {
   private static Utente artista; /*l'artista dell'opera*/
 
 
-  @BeforeClass
+  @BeforeAll
   public static void setUpClass() {
   }
 
-  @AfterClass
+  @AfterAll
   public static void tearDownClass() {
   }
 
-  @Before
+  @BeforeEach
   public void setUp() throws SQLException {
     /*istruisco l'opera moccata
     when(opera.getId()).thenReturn(100);
@@ -64,17 +73,17 @@ public class OperaDaoImplUnitTest {
     when(dataSource.getConnection()).thenReturn(connection);
     when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
     doNothing().when(connection).commit();
-    when(connection.prepareStatement(anyString(), Statement.RETURN_GENERATED_KEYS)).thenReturn(preparedStatement);
+    when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
     doNothing().when(preparedStatement).setObject(anyInt(), anyString(), any());
     when(preparedStatement.executeUpdate()).thenReturn(1);
     when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
     when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
     when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
-    when(resultSet.getInt(anyInt())).thenReturn(opera.getId());
+    when(resultSet.getInt(anyInt())).thenReturn(1);
     System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
   }
 
@@ -91,7 +100,7 @@ public class OperaDaoImplUnitTest {
     when(opera.getDescrizione()).thenReturn("descrizioneDellOperaDiMario");
     doNothing().when(opera).getImmagine(); /* fault possibile*/
     when(opera.getCertificato()).thenReturn("certificatoDellOperaDiMario");
-    when(opera.getStato()).thenReturn(anyObject());  /*fault certo*/
+    when(opera.getStato()).thenReturn(any());  /*fault certo*/
 
     assertTrue(new OperaDaoImpl(dataSource).doCreate(opera));
   }

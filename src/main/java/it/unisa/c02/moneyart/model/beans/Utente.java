@@ -35,7 +35,6 @@ public class Utente {
     this.password = password;
     this.seguito = seguito;
     this.saldo = saldo;
-    this.saldoDisponibile = saldo;
     this.nFollowers = 0;
   }
 
@@ -264,24 +263,6 @@ public class Utente {
   }
 
   /**
-   * Restituisce il saldo attualmente disponibile dell'utente.
-   *
-   * @return il saldo disponibile dell'utente
-   */
-  public Double getSaldoDisponibile() {
-    return saldoDisponibile;
-  }
-
-  /**
-   * Modifica il saldo attualmente disponibile dell'utente.
-   *
-   * @param saldoDisponibile il nuovo saldo disponibile
-   */
-  public void setSaldoDisponibile(Double saldoDisponibile) {
-    this.saldoDisponibile = saldoDisponibile;
-  }
-
-  /**
    * Restituisce il numero di followers dell'utente.
    *
    * @return il numero di followers dell'utente
@@ -326,8 +307,6 @@ public class Utente {
         +
         ", saldo=" + saldo
         +
-        ", saldo disponibile=" + saldoDisponibile
-        +
         '}';
   }
 
@@ -350,7 +329,6 @@ public class Utente {
         Arrays.equals(getPassword(), utente.getPassword()) &&
         Objects.equals(getSeguito(), utente.getSeguito()) &&
         Objects.equals(getSaldo(), utente.getSaldo()) &&
-        Objects.equals(getSaldoDisponibile(), utente.getSaldoDisponibile()) &&
         Objects.equals(getOpereCreate(), utente.getOpereCreate()) &&
         Objects.equals(getOpereInPossesso(), utente.getOpereInPossesso()) &&
         Objects.equals(getNotifiche(), utente.getNotifiche()) &&
@@ -361,7 +339,7 @@ public class Utente {
   public int hashCode() {
     int result =
         Objects.hash(getId(), getNome(), getCognome(), getFotoProfilo(), getEmail(), getUsername(),
-            getSeguito(), getSaldo(), getSaldoDisponibile(), getnFollowers(), getOpereCreate(),
+            getSeguito(), getSaldo(), getnFollowers(), getOpereCreate(),
             getOpereInPossesso(), getNotifiche(), getPartecipazioni());
     result = 31 * result + Arrays.hashCode(getPassword());
     return result;
@@ -376,7 +354,6 @@ public class Utente {
   private byte[] password;
   private Utente seguito;
   private Double saldo;
-  private Double saldoDisponibile;
   private int nFollowers;
 
   /* Liste utili */

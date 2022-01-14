@@ -29,7 +29,7 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
   }
 
   public TimedObjecDaoImpl() {
-    this.ds = Retriever.getIstance(DataSource.class, "Timer");
+    this.ds = Retriever.getInstance(DataSource.class, "Timer");
   }
 
   /**

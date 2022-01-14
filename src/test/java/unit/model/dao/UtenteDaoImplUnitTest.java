@@ -3,19 +3,28 @@ package unit.model.dao;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
 
-import org.junit.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
-import org.junit.runner.RunWith;
-import org.mockito.*;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class UtenteDaoImplUnitTest {
 
   @Mock
@@ -35,7 +44,7 @@ public class UtenteDaoImplUnitTest {
   //costruttore vuoto
   public UtenteDaoImplUnitTest () { }
 
-  @BeforeClass
+  @BeforeEach
   public static void setUpClass() {
     userFollowed = new Utente("MarioVip", "RossiVip", null, "mariorossivip@unisa.it",
             "m_red", null, new byte[10], 2000000.2);
@@ -46,11 +55,10 @@ public class UtenteDaoImplUnitTest {
     user.setId(100);
   }
 
-  @AfterClass
   public static void tearDownClass() {
   }
 
-  @Before
+  @BeforeAll
   public void setUp() throws SQLException { //istruisco gli oggetti mock
     when(dataSource.getConnection()).thenReturn(connection);
     when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
@@ -64,7 +72,7 @@ public class UtenteDaoImplUnitTest {
     when(resultSet.getInt(anyInt())).thenReturn(user.getId());
   }
 
-  @After
+  @AfterAll
   public void tearDown() {
   }
 

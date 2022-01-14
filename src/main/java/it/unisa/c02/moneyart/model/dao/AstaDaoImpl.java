@@ -5,7 +5,7 @@ import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 public class AstaDaoImpl implements AstaDao {
 
   public AstaDaoImpl() {
-    this.ds = Retriever.getIstance(DataSource.class);
+    this.ds = Retriever.getInstance(DataSource.class);
   }
 
   /**

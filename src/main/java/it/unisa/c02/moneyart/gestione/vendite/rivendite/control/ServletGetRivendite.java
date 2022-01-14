@@ -19,7 +19,7 @@ public class ServletGetRivendite extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    this.rivenditaService = Retriever.getIstance(RivenditaService.class);
+    this.rivenditaService = Retriever.getInstance(RivenditaService.class);
   }
 
   @Override

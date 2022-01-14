@@ -19,7 +19,7 @@ public class ServletUserPage extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    utenteService = Retriever.getIstance(UtenteService.class);
+    utenteService = Retriever.getInstance(UtenteService.class);
   }
 
   @Override

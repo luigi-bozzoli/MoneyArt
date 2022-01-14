@@ -26,8 +26,8 @@ public class ServletCreaAsta extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    astaService = Retriever.getIstance(AstaService.class);
-    operaService = Retriever.getIstance(OperaService.class);
+    astaService = Retriever.getInstance(AstaService.class);
+    operaService = Retriever.getInstance(OperaService.class);
   }
 
   @Override

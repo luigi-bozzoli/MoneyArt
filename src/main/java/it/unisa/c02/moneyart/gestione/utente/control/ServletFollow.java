@@ -7,14 +7,13 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import jnr.ffi.annotations.In;
 
 @WebServlet(name = "ServletFollow", value = "/follow")
 public class ServletFollow extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    this.utenteService = Retriever.getIstance(UtenteService.class);
+    this.utenteService = Retriever.getInstance(UtenteService.class);
   }
 
   @Override

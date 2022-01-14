@@ -102,14 +102,13 @@ public class MainContext implements ServletContextListener {
     context.setAttribute("DataSource", ds);
     System.out.println("DataSource creation: " + ds.toString());
 
-    // DA RIMUOVERE
-    /*
+
     try {
       populateDatabase(sce.getServletContext().getRealPath(""));
     } catch (NoSuchAlgorithmException | IOException | SQLException e) {
       e.printStackTrace();
     }
-    */
+
   }
 
   /**
@@ -238,13 +237,13 @@ public class MainContext implements ServletContextListener {
     MessageDigest md = MessageDigest.getInstance("SHA-256");
 
     // Recupero Dao necessari per il popolamento del database
-    UtenteDao utenteDao = Retriever.getIstance(UtenteDao.class);
-    OperaDao operaDao = Retriever.getIstance(OperaDao.class);
-    AstaDao astaDao = Retriever.getIstance(AstaDao.class);
-    RivenditaDao rivenditaDao = Retriever.getIstance(RivenditaDao.class);
-    PartecipazioneDao partecipazioneDao = Retriever.getIstance(PartecipazioneDao.class);
-    NotificaDao notificaDao = Retriever.getIstance(NotificaDao.class);
-    SegnalazioneDao segnalazioneDao = Retriever.getIstance(SegnalazioneDao.class);
+    UtenteDao utenteDao = Retriever.getInstance(UtenteDao.class);
+    OperaDao operaDao = Retriever.getInstance(OperaDao.class);
+    AstaDao astaDao = Retriever.getInstance(AstaDao.class);
+    RivenditaDao rivenditaDao = Retriever.getInstance(RivenditaDao.class);
+    PartecipazioneDao partecipazioneDao = Retriever.getInstance(PartecipazioneDao.class);
+    NotificaDao notificaDao = Retriever.getInstance(NotificaDao.class);
+    SegnalazioneDao segnalazioneDao = Retriever.getInstance(SegnalazioneDao.class);
 
     logger.info("-- Inizio popolamento database --");
     logger.info("-- Path immagini profilo utente: "
@@ -321,7 +320,6 @@ public class MainContext implements ServletContextListener {
         2500d
     );
 
-    utente3.setSaldoDisponibile(2014.01d);
 
     Utente utente4 = new Utente(
         "Dario",
@@ -335,7 +333,6 @@ public class MainContext implements ServletContextListener {
         3000d
     );
 
-    utente4.setSaldoDisponibile(2514d);
 
     Utente utente5 = new Utente(
         "Mario",
@@ -349,7 +346,6 @@ public class MainContext implements ServletContextListener {
         956d
     );
 
-    utente5.setSaldoDisponibile(456.01d);
 
     Utente utente6 = new Utente(
         "Aurelio",
