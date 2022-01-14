@@ -58,24 +58,24 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
       response.getWriter().write(json);
     } else {
 
-      System.out.println("sium");
       String name = request.getParameter("name");
       String surname = request.getParameter("surname");
       String username = request.getParameter("username");
       String email = request.getParameter("email");
       Part immagine = request.getPart("picture");
       String password = request.getParameter("new-password");
-      System.out.println(username);
 
       Blob nuovaImmagine = null;
 
-      if(immagine != null) {
+      if(immagine.getSize() != 0) {
         try {
+          System.out.println("immagine trovata");
           nuovaImmagine = new SerialBlob(IOUtils.toByteArray(immagine.getInputStream()));
         } catch (SQLException e) {
           request.setAttribute("error", "Errore nel caricamento dell'immagine");
         }
       } else {
+        System.out.println("immagine non trovata");
         nuovaImmagine = utente.getFotoProfilo();
       }
 
@@ -95,7 +95,7 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
       session.removeAttribute("utente");
       session.setAttribute("utente", newUtente);
 
-
+      request.setAttribute("message", "Profilo modificato con successo!");
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/profiloUtente.jsp");
       dispatcher.forward(request, response);
     }

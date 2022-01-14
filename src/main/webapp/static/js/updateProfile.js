@@ -84,6 +84,10 @@ $(document).ready(function () {
         $('.overlay').addClass('d-none').css({'cursor': 'auto', 'pointer-events' : 'none'});
         $('.propic img').attr('src', img);
         $('.info-propic').html('');
+        $('#name').val($('#name').attr('value'));
+        $('#surname').val($('#surname').attr('value'));
+        $('#email').val($('#email').attr('value'));
+        $('#username').val($('#username').attr('value'));
         window.scrollTo(0, 0);
     });
 

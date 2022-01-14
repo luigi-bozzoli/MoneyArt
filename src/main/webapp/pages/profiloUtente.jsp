@@ -21,6 +21,11 @@
                         <p class="text-center">${requestScope.error}</p>
                     </c:if>
                 </div>
+                <div>
+                    <c:if test="${not empty requestScope.message}">
+                        <p class="text-center" style="color: green">${requestScope.message}</p>
+                    </c:if>
+                </div>
             </div>
         </div>
 
@@ -64,7 +69,7 @@
                         <a class="following-username ml-2" href="#"><c:out value="${user.seguito.username}"/></a>
                         </div>
                         <div class="container d-flex justify-content-center">
-                            <a class="unfollow text-center" href="#">Smetti di seguire</a>
+                            <a class="unfollow text-center" href="">Smetti di seguire</a>
                         </div>
                     </c:otherwise>
                 </c:choose>
