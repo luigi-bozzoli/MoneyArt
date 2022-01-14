@@ -4,15 +4,34 @@
 
 <%@include file="../static/fragments/sidebar.jsp"%>
 
+    <script>let ctx = "${pageContext.servletContext.contextPath}"</script>
+
     <c:if test="${empty requestScope.utente}" >
         <c:redirect url="/userPage"/>
     </c:if>
     <c:set var="user" value="${requestScope.utente}"/>
 
 
-    <div class="container d-flex flex-column mt-3 mb-3 profile-box">
+    <div class="container d-flex flex-column mt-3 mb-3 profile-box align-items-center">
+
+        <div class="container">
+            <div class="col-12">
+                <div class="error">
+                    <c:if test="${not empty requestScope.error}">
+                        <p class="text-center">${requestScope.error}</p>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+
+        <div class="container info-propic">
+        </div>
+
         <div class="propic d-flex justify-content-center mt-3">
             <img src="${pageContext.servletContext.contextPath}/userPicture?id=${user.id}" alt="Foto profilo">
+            <div class="overlay d-none">
+                <div class="text"><i class="fas fa-pen"></i></div>
+            </div>
         </div>
         <div class="info">
             <h2 class="text-center mt-3"><c:out value="${user.nome}"/> <c:out value="${user.cognome}"/></h2>
@@ -54,7 +73,7 @@
 
     <div class="update-informations d-none">
         <!-- Form -->
-        <form class="data" method="post" name="informations" action="">
+        <form class="data" method="post" name="informations" action="${pageContext.servletContext.contextPath}/changeUserInformation" enctype='multipart/form-data'>
             <div class="data-input">
                 <label for="name">Nome</label>
                 <div class="input-icon">
@@ -111,11 +130,23 @@
                 </div>
             </div>
 
-
-            <button id="update-password" class="button text-center ml-3" href="#">Cambia password</button>
-
+            <input name="picture"  id="propicForm" type="file" class="d-none" accept="image/*">
         </form>
         <!-- /Form -->
+            <button id="update-password" class="button text-center ml-3" href="#">Cambia password</button>
+
+            <div class="pass-info d-none">
+                <p>La nuova password deve essere lunga minimo 8 caratteri e deve contenere almeno:</p>
+                <ul>
+                    <li>Almeno una lettera maiuscola.</li>
+                    <li>Almeno una lettera minuscola.</li>
+                    <li>Almeno un numero.</li>
+                    <li>Almeno un carattere speciale (@$!%*#?&).</li>
+                </ul>
+            </div>
+
+
+
     </div>
 
 </div>
@@ -124,58 +155,9 @@
 
 <div id="update-choice" class="container d-none justify-content-center">
     <button id="cancel-update" class="button text-center mr-3" href="#">Annulla</button>
-    <button id="confirm-update" class="button text-center" href="#">Conferma Modifica profilo</button>
+    <button id="confirm-update" class="button text-center disabled" href="#">Conferma Modifica profilo</button>
 </div>
 
-    <script>
-        $(document).ready(function () {
-            $('#update-profile').click(function () {
-                $('.info, .balance-info, .followers-info, .following, .unfollow').removeClass('d-flex').addClass('d-none');
-                $('.update-informations').removeClass('d-none');
-                $('#update-choice').removeClass('d-none').addClass('d-flex');
-                $('#update-profile').addClass('d-none');
-            });
-            $('#cancel-update').click(function () {
-                $('.info').removeClass('d-none')    ;
-                $('.balance-info, .followers-info, .following, .unfollow').removeClass('d-none').addClass('d-flex');
-                $('.update-informations').addClass('d-none');
-                $('#update-choice').removeClass('d-flex').addClass('d-none');
-                $('#update-profile').removeClass('d-none');
-                $('#password, #new-password, #confirm-password').val('');
-
-                if(!$('.pw').hasClass('d-none')) {
-                    $('.pw').addClass('d-none');
-                    $('.pwc').removeClass('d-none');
-                }
-                $('#update-password').removeClass('d-none');
-            });
-            $('#update-password').click(function (event) {
-                $('.pw').removeClass('d-none');
-                $('.pwc').addClass('d-none');
-                $('#update-password').addClass('d-none');
-                event.preventDefault();
-            });
-
-            if($('.pw').hasClass('d-none')) {
-                $('#confirm-password').keyup(function () {
-                    let value = $('#confirm-password').val();
-                    if(value.length > 2) {
-                        $.post("${pageContext.servletContext.contextPath}/changeUserInformation", $.param({'confirmPassword' : value}), function (response) {
-                            if(response) {
-                                $(".data-input.pwc").css("border", "none");
-                                $("#confirm-update").css("pointer-events", "auto");
-                            } else {
-                                $(".data-input.pwc").css("border", "1px solid red");
-                                $("#confirm-update").css("pointer-events", "none");
-                            }
-
-
-                        });
-                    }
-                });
-            }
-        });
-    </script>
 
 
 <%@include file="../static/fragments/footer.jsp"%>

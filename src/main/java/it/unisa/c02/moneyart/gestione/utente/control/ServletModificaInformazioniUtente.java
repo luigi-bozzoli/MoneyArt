@@ -4,19 +4,24 @@ import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.production.Retriever;
+import org.apache.commons.io.IOUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 @WebServlet(name = "ServletModificaInformazioniUtente", value = "/changeUserInformation")
+@MultipartConfig
 public class ServletModificaInformazioniUtente extends HttpServlet {
 
   @Override
   public void init() throws ServletException {
     super.init();
-    utenteService = Retriever.getIstance(UtenteService.class);
+    utenteService = Retriever.getInstance(UtenteService.class);
   }
 
   @Override
@@ -29,23 +34,72 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    Utente utente = (Utente) request.getSession().getAttribute("utente");
+    HttpSession session = request.getSession();
+    Utente utente = (Utente) session.getAttribute("utente");
 
-    String password = request.getParameter("confirmPassword");
+    boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
+    if(ajax) {
+      String password = request.getParameter("password");
 
-    Utente checkUtente = utenteService.checkUser(utente.getUsername(), password);
-    boolean passOk;
-    if(checkUtente == null) {
-      passOk = false;
+      Utente checkUtente = utenteService.checkUser(utente.getUsername(), password);
+
+      boolean passOk;
+
+      if(checkUtente == null) {
+        passOk = false;
+      } else {
+        passOk = true;
+      }
+
+      String json = new Gson().toJson(passOk);
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write(json);
     } else {
-      passOk = true;
+
+      System.out.println("sium");
+      String name = request.getParameter("name");
+      String surname = request.getParameter("surname");
+      String username = request.getParameter("username");
+      String email = request.getParameter("email");
+      Part immagine = request.getPart("picture");
+      String password = request.getParameter("new-password");
+      System.out.println(username);
+
+      Blob nuovaImmagine = null;
+
+      if(immagine != null) {
+        try {
+          nuovaImmagine = new SerialBlob(IOUtils.toByteArray(immagine.getInputStream()));
+        } catch (SQLException e) {
+          request.setAttribute("error", "Errore nel caricamento dell'immagine");
+        }
+      } else {
+        nuovaImmagine = utente.getFotoProfilo();
+      }
+
+      byte[] newPassword = null;
+
+      if(password == null || password.equals("")) {
+       newPassword = utente.getPassword();
+      } else {
+        newPassword = utenteService.encryptPassword(password);
+      }
+
+
+      Utente newUtente = new Utente(name, surname, nuovaImmagine, email, username, utente.getSeguito(), newPassword, utente.getSaldo());
+      newUtente.setId(utente.getId());
+      utenteService.updateUser(newUtente);
+
+      session.removeAttribute("utente");
+      session.setAttribute("utente", newUtente);
+
+
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/profiloUtente.jsp");
+      dispatcher.forward(request, response);
     }
 
-    String json = new Gson().toJson(passOk);
-    response.setContentType("application/json");
-    response.setCharacterEncoding("UTF-8");
-    response.getWriter().write(json);
 
   }
   private UtenteService utenteService;

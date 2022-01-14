@@ -65,7 +65,7 @@ $(document).ready(function () {
         let surname = onlyLetters($(".signup input[name = surname]"));
         let email = checkEmail($(".signup input[name = email]"));
         let pw = checkPassword($(".signup input[name = password]"));
-        let usr = checkUsername($(".signup input[name = username]"))
+        let usr = checkUsername($(".signup input[name = username]"));
         let repeatPw = checkRepeatPw();
 
         if ((!name || !surname || !email || !usr) && pw) {

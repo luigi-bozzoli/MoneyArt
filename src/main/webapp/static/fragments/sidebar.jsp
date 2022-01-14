@@ -16,8 +16,12 @@
 
     <!-- STYLESHEETS -->
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/fragments_style.css">
-    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+    <c:choose>
+        <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
+        </c:when>
+    </c:choose>
 
     <!-- FAVICON -->
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/favicon.ico" type="image/x-icon">
@@ -37,6 +41,12 @@
 
     <!-- JS -->
         <script src="${pageContext.servletContext.contextPath}/static/js/sidebar.js"></script>
+        <c:choose>
+            <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
+                <script src="${pageContext.servletContext.contextPath}/static/js/updateProfile.js"></script>
+            </c:when>
+        </c:choose>
+
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-collapse" style="height: auto;">

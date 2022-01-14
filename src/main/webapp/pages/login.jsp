@@ -6,6 +6,17 @@
         <h1>Accedi</h1>
         <span class="line-break"></span>
     </div>
+
+    <div class="container">
+        <div class="col-12">
+            <div class="error">
+                <c:if test="${not empty requestScope.error}">
+                    <p class="text-center">${requestScope.error}</p>
+                </c:if>
+            </div>
+        </div>
+    </div>
+
     <div class="signup-box">
         <img class="signup-logo" src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/image/logo-moneyart.png" alt="Logo MoneyArt">
         <form class="signup" method="post" name="login" action="<c:out value="${pageContext.servletContext.contextPath}"/>/login">
