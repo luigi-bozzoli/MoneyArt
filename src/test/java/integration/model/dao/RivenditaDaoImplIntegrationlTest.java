@@ -70,6 +70,7 @@ class RivenditaDaoImplIntegrationTest {
     runner.setLogWriter(null);
     Reader reader = new BufferedReader(new FileReader("./src/test/database/populate_all.sql"));
     runner.runScript(reader);
+    connection.close();
   }
 
   @AfterEach
@@ -79,7 +80,7 @@ class RivenditaDaoImplIntegrationTest {
     runner.setLogWriter(null);
     Reader reader = new BufferedReader(new FileReader("./src/test/database/clean_all.sql"));
     runner.runScript(reader);
-
+    connection.close();
   }
 
   static class RivenditaProvider implements ArgumentsProvider {
@@ -246,6 +247,6 @@ class RivenditaDaoImplIntegrationTest {
     Rivendita result = rivenditaDao.doRetrieveById(rivendita.getId());
 
     Assertions.assertNull(result);
-    
+
   }
 }
