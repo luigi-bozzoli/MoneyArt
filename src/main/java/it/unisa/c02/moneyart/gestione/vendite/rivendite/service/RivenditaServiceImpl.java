@@ -19,10 +19,10 @@ public class RivenditaServiceImpl implements RivenditaService {
    * Costruttore senza paramentri.
    */
   public RivenditaServiceImpl() {
-    this.utenteDao = Retriever.getIstance(UtenteDao.class);
-    this.operaDao = Retriever.getIstance(OperaDao.class);
-    this.rivenditaDao = Retriever.getIstance(RivenditaDao.class);
-    this.notificaDao = Retriever.getIstance(NotificaDao.class);
+    this.utenteDao = Retriever.getInstance(UtenteDao.class);
+    this.operaDao = Retriever.getInstance(OperaDao.class);
+    this.rivenditaDao = Retriever.getInstance(RivenditaDao.class);
+    this.notificaDao = Retriever.getInstance(NotificaDao.class);
 
   }
 
@@ -110,7 +110,7 @@ public class RivenditaServiceImpl implements RivenditaService {
 
     if (rivendita == null || utente == null ||
         !rivendita.getStato().equals(Rivendita.Stato.IN_CORSO) ||
-        utente.getSaldoDisponibile() < rivendita.getPrezzo()) {
+        utente.getSaldo() < rivendita.getPrezzo()) {
       return false;
     }
     Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
@@ -118,7 +118,6 @@ public class RivenditaServiceImpl implements RivenditaService {
     opera.setStato(Opera.Stato.IN_POSSESSO);
     Utente owner = utenteDao.doRetrieveById(opera.getPossessore().getId());
     utente.setSaldo(utente.getSaldo() - rivendita.getPrezzo());
-    utente.setSaldoDisponibile(utente.getSaldoDisponibile() - rivendita.getPrezzo());
     owner.setSaldo(owner.getSaldo() + rivendita.getPrezzo());
 
     rivendita.setStato(Rivendita.Stato.TERMINATA);

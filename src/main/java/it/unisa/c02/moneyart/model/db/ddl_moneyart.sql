@@ -12,7 +12,6 @@ create table utente (
     cognome varchar (100) not null,
     foto blob,
     saldo double precision not null,
-    # saldo_disponibile double precision not null,
 	
     foreign key (id_seguito) references utente(id) on update no action on delete no action
 );

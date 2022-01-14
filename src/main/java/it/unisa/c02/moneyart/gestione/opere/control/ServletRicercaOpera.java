@@ -14,7 +14,7 @@ public class ServletRicercaOpera extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    this.operaService = Retriever.getIstance(OperaService.class);
+    this.operaService = Retriever.getInstance(OperaService.class);
   }
 
   @Override

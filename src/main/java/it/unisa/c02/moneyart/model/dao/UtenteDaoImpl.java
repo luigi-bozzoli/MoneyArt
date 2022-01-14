@@ -1,11 +1,9 @@
 package it.unisa.c02.moneyart.model.dao;
 
 
-import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import it.unisa.c02.moneyart.utils.production.Retriever;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +20,7 @@ import javax.sql.DataSource;
 public class UtenteDaoImpl implements UtenteDao {
 
   public UtenteDaoImpl() {
-    this.ds = Retriever.getIstance(DataSource.class);
+    this.ds = Retriever.getInstance(DataSource.class);
   }
 
   public UtenteDaoImpl(DataSource ds) {
@@ -39,8 +37,8 @@ public class UtenteDaoImpl implements UtenteDao {
     String sql =
         "INSERT INTO " + TABLE_NAME
             +
-            "(id_seguito, email, pwd, username, nome, cognome, foto, saldo, saldo_disponibile) "
-            + " VALUES(?, ? , ?, ?, ?, ?, ?, ?, ?) ";
+            "(id_seguito, email, pwd, username, nome, cognome, foto, saldo) "
+            + " VALUES(?, ? , ?, ?, ?, ?, ?, ?) ";
 
 
     try (Connection connection = ds.getConnection();
@@ -54,7 +52,6 @@ public class UtenteDaoImpl implements UtenteDao {
       preparedStatement.setObject(6, item.getCognome(), Types.VARCHAR);
       preparedStatement.setObject(7, item.getFotoProfilo(), Types.BLOB);
       preparedStatement.setObject(8, item.getSaldo(), Types.DOUBLE);
-      preparedStatement.setObject(9, item.getSaldoDisponibile(), Types.DOUBLE);
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
@@ -135,7 +132,7 @@ public class UtenteDaoImpl implements UtenteDao {
         "UPDATE " + TABLE_NAME
             +
             " set id_seguito = ?, email = ?, pwd = ?, username = ?, nome = ?, cognome = ?, "
-            + " foto = ?, saldo = ?, saldo_disponibile = ? "
+            + " foto = ?, saldo = ? "
             + " where id = ?";
 
 
@@ -149,8 +146,7 @@ public class UtenteDaoImpl implements UtenteDao {
       preparedStatement.setObject(6, item.getCognome(), Types.VARCHAR);
       preparedStatement.setObject(7, item.getFotoProfilo(), Types.BLOB);
       preparedStatement.setObject(8, item.getSaldo(), Types.DOUBLE);
-      preparedStatement.setObject(9, item.getSaldoDisponibile(), Types.DOUBLE);
-      preparedStatement.setObject(10, item.getId(), Types.INTEGER);
+      preparedStatement.setObject(9, item.getId(), Types.INTEGER);
       preparedStatement.executeUpdate();
 
     } catch (SQLException e) {
@@ -325,7 +321,6 @@ public class UtenteDaoImpl implements UtenteDao {
       //utente.setFotoProfilo(rs.getObject("foto", Blob.class));
       utente.setFotoProfilo(rs.getBlob("foto"));
       utente.setSaldo(rs.getObject("saldo", Double.class));
-      utente.setSaldoDisponibile(rs.getObject("saldo_disponibile", Double.class));
 
     }
     return utente;
@@ -356,7 +351,6 @@ public class UtenteDaoImpl implements UtenteDao {
       utente.setCognome(rs.getObject("cognome", String.class));
       utente.setFotoProfilo(rs.getBlob("foto"));
       utente.setSaldo(rs.getObject("saldo", Double.class));
-      utente.setSaldoDisponibile(rs.getObject("saldo_disponibile", Double.class));
       utenti.add(utente);
     }
     return utenti;

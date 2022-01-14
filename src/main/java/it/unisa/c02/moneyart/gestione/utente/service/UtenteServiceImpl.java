@@ -22,10 +22,10 @@ public class UtenteServiceImpl implements UtenteService {
    * Costruttore senza paramentri.
    */
   public UtenteServiceImpl() {
-    this.utenteDao = Retriever.getIstance(UtenteDao.class);
-    this.operaDao = Retriever.getIstance(OperaDao.class);
-    this.notificaDao = Retriever.getIstance(NotificaDao.class);
-    this.partecipazioneDao = Retriever.getIstance(PartecipazioneDao.class);
+    this.utenteDao = Retriever.getInstance(UtenteDao.class);
+    this.operaDao = Retriever.getInstance(OperaDao.class);
+    this.notificaDao = Retriever.getInstance(NotificaDao.class);
+    this.partecipazioneDao = Retriever.getInstance(PartecipazioneDao.class);
   }
 
   /**
@@ -108,7 +108,6 @@ public class UtenteServiceImpl implements UtenteService {
     if (checkEmail(utente.getEmail()) || checkUsername(utente.getUsername())) {
       return false;
     } else {
-      utente.setSaldoDisponibile(utente.getSaldo());
       utenteDao.doCreate(utente);
       return true;
     }
@@ -249,7 +248,6 @@ public class UtenteServiceImpl implements UtenteService {
     }
     utente = utenteDao.doRetrieveByUsername(utente.getUsername());
     utente.setSaldo(utente.getSaldo() + amount);
-    utente.setSaldoDisponibile(utente.getSaldoDisponibile() + amount);
     utenteDao.doUpdate(utente);
 
     return true;
@@ -267,9 +265,8 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public boolean withdraw(Utente utente, double amount) {
     utente = utenteDao.doRetrieveByUsername(utente.getUsername());
-    if (amount <= utente.getSaldoDisponibile() && amount > 0) {
+    if (amount <= utente.getSaldo() && amount > 0) {
       utente.setSaldo(utente.getSaldo() - amount);
-      utente.setSaldoDisponibile(utente.getSaldoDisponibile() - amount);
       utenteDao.doUpdate(utente);
       return true;
     } else {

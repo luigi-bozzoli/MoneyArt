@@ -5,7 +5,6 @@ import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
 import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +21,7 @@ public class ServletGetAste extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    astaService = Retriever.getIstance(AstaService.class);
+    astaService = Retriever.getInstance(AstaService.class);
   }
 
   @Override

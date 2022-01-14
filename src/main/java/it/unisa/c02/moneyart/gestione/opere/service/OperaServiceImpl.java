@@ -16,9 +16,9 @@ public class OperaServiceImpl implements OperaService {
    * Costruttore senza paramentri.
    */
   public OperaServiceImpl() {
-    this.operaDao = Retriever.getIstance(OperaDao.class);
-    this.utenteDao = Retriever.getIstance(UtenteDao.class);
-    this.moneyArtNft = Retriever.getIstance(MoneyArtNft.class);
+    this.operaDao = Retriever.getInstance(OperaDao.class);
+    this.utenteDao = Retriever.getInstance(UtenteDao.class);
+    this.moneyArtNft = Retriever.getInstance(MoneyArtNft.class);
   }
 
   /**

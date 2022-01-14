@@ -23,7 +23,7 @@ public class ServletCreaOpera extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    operaService = Retriever.getIstance(OperaService.class);
+    operaService = Retriever.getInstance(OperaService.class);
   }
 
   @Override

@@ -1,8 +1,6 @@
 package it.unisa.c02.moneyart.gestione.opere.control;
 
 import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
-import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
-import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 
@@ -21,7 +19,7 @@ public class ServletDettaglioOpera extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    operaService = Retriever.getIstance(OperaService.class);
+    operaService = Retriever.getInstance(OperaService.class);
   }
 
   @Override

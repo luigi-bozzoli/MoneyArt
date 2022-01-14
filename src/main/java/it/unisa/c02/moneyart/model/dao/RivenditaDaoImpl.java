@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 public class RivenditaDaoImpl implements RivenditaDao {
 
   public RivenditaDaoImpl() {
-    this.ds = (DataSource) Retriever.getIstance(DataSource.class);
+    this.ds = (DataSource) Retriever.getInstance(DataSource.class);
   }
 
   /**

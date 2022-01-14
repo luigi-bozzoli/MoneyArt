@@ -14,7 +14,7 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
    * Costruttore che istanzia tramite il Retriver i dao.
    */
   public SegnalazioneServiceImpl() {
-    this.segnalazioneDao = Retriever.getIstance(SegnalazioneDao.class);
+    this.segnalazioneDao = Retriever.getInstance(SegnalazioneDao.class);
   }
 
   /**

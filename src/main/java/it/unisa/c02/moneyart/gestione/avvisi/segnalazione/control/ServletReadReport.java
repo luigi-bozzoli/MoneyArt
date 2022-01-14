@@ -1,8 +1,6 @@
 package it.unisa.c02.moneyart.gestione.avvisi.segnalazione.control;
 
-import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaService;
 import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneService;
-import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Segnalazione;
 import it.unisa.c02.moneyart.utils.production.Retriever;
 
@@ -19,7 +17,7 @@ public class ServletReadReport extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init();
-    segnalazioneService = Retriever.getIstance(SegnalazioneService.class);
+    segnalazioneService = Retriever.getInstance(SegnalazioneService.class);
   }
 
   @Override

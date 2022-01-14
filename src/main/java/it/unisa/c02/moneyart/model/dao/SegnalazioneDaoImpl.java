@@ -23,7 +23,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
    * Costruttore, utilizza un datasource istanziato esternamente.
    */
   public SegnalazioneDaoImpl() {
-    this.ds = Retriever.getIstance(DataSource.class);
+    this.ds = Retriever.getInstance(DataSource.class);
   }
 
   /**
