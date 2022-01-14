@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.Reader;
 import java.security.MessageDigest;
 import java.sql.Connection;
@@ -26,7 +25,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import org.apache.ibatis.jdbc.ScriptRunner;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,16 +70,6 @@ class UtenteDaoImplIntegrationTest {
     connection.close();
   }
 
-  @AfterEach
-  public void tearDown() throws SQLException, IOException {
-    Connection connection = dataSource.getConnection();
-    ScriptRunner runner = new ScriptRunner(connection);
-    runner.setLogWriter(null);
-    Reader reader = new BufferedReader(new FileReader("./src/main/java/it/unisa/c02/moneyart/model/db/ddl_moneyart.sql"));
-    runner.runScript(reader);
-    connection.close();
-
-  }
 
   static class UtenteProvider implements ArgumentsProvider {
 
