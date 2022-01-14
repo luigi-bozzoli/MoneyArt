@@ -10,6 +10,208 @@ a.nav-link:hover p, a.nav-link:hover i {
     background: none !important;
 }
 
+.profile-box {
+    overflow: hidden;
+    background-color: rgba(213, 219, 179, 0.2);
+    border-radius: 30px;
+    box-shadow: 5px 10px 10px rgba(213, 219, 179, 0.1);
+    padding: 60px 0px 20px;
+}
+.propic img {
+    width: 25%;
+    -webkit-border-radius: 140px;
+    -moz-border-radius: 140px;
+    border-radius: 140px;
+}
+
+.info h5 {
+    color: #EBA83A !important;
+}
+
+h5 {
+    color: #EBA83A !important;
+}
+.following-username {
+    text-decoration: none;
+    color: #EBA83A;
+    font-size: 1.25em;
+    font-weight: 700;
+    transition: .5s;
+}
+
+.following-username:hover {
+    text-decoration: none;
+    color: #BB371A;
+    transition: .5s;
+}
+
+.unfollow {
+    padding: 10px 15px;
+    background-color: #BB371A;
+    color: #FFFFFF;
+    border-radius: 25px;
+    display: block;
+    transition: .5s;
+}
+.unfollow:hover {
+    color: #FFFFFF;
+    background-color: #EBA83A;
+    transition: .5s;
+    text-decoration: none;
+}
+
+#update-choice button {
+    padding: 15px 30px;
+    width: 60%;
+    background-color: #EBA83A;
+    color: #FFFFFF;
+    border-radius: 40px;
+    border: none;
+    display: block;
+    font-size: 1.2em;
+    transition: .5s;
+}
+#update-choice button:hover {
+    color: #FFFFFF;
+    background-color: #BB371A;
+    transition: .5s;
+    text-decoration: none;
+}
+#update-profile{
+    padding: 15px 30px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #EBA83A;
+    color: #FFFFFF;
+    border-radius: 40px;
+    border: none;
+    display: block;
+    font-size: 1.2em;
+    transition: .5s;
+}
+#update-profile:hover{
+    color: #FFFFFF;
+    background-color: #BB371A;
+    transition: .5s;
+    text-decoration: none;
+}
+#update-password{
+    padding: 15px 30px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    background-color: #BB371A;
+    color: #FFFFFF;
+    border-radius: 40px;
+    border: none;
+    display: block;
+    font-size: 1.2em;
+    transition: .5s;
+}
+#update-password:hover{
+    color: #FFFFFF;
+    background-color: #EBA83A;
+    transition: .5s;
+    text-decoration: none;
+}
+
+
+.data,
+.update-informations {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.update-informations {
+    overflow: hidden;
+    padding: 40px 30px 5px;
+    width: 80%;
+    margin: 4vh auto 5vh;
+}
+
+.data>.data-input {
+    background: white;
+    box-shadow: 0 0 10px #e6e9f9;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-radius: 20px;
+    color: #454545;
+    transition: .8s;
+}
+
+.data>.data-input:hover {
+    box-shadow: 0 0 10px rgba(187, 55, 26, 0.3);
+    transition: .8s;
+}
+
+.data-input .input-icon input {
+    outline: none;
+    border: none;
+    width: 90%;
+    margin-top: 5px;
+}
+
+.input-icon i {
+    margin-right: 5px;
+}
+
+.input-icon input::placeholder {
+    color: rgba(69, 69, 69, 0.5);
+}
+
+.data>button {
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    width: 40%;
+    border: none;
+    padding: 10px 0;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+    background-color: #BB371A;
+    transition: 0.3s;
+}
+
+.data>button:hover {
+    background-color: #EBA83A;
+}
+
+@media screen and (max-width: 1200px) {
+    .update-informations {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .card {
     width: 350px;
     background-color: #efefef;

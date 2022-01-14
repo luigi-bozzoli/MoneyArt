@@ -28,7 +28,7 @@ public class ServletUserPage extends HttpServlet {
     Utente utente = (Utente) request.getSession().getAttribute("utente");
     int id = utente.getId();
     utente = utenteService.getUserInformation(id);
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/userPage.jsp");
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/profiloUtente.jsp");
     request.setAttribute("utente", utente);
     dispatcher.forward(request, response);
 

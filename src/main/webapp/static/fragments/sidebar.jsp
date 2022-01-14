@@ -47,6 +47,9 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-minus-square"></i></a>
                 </li>
+                <li>
+                    <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/home.jsp"><i class="fas fa-home"></i></a>
+                </li>
             </ul>
         </nav>
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
