@@ -13,10 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -161,7 +159,7 @@ public class RivenditaDaoImplUnitTest {
     when(connection.prepareStatement(anyString())).thenThrow(ex);
 
     List<Rivendita> rivendite = rivenditaDao.doRetrieveAll(null);
-    Assertions.assertEquals(0, rivendite.size());
+    Assertions.assertNull(rivendite);
   }
 
   @Test
@@ -235,16 +233,86 @@ public class RivenditaDaoImplUnitTest {
     when(resultSet.getObject("prezzo", Double.class)).thenReturn(resell2.getPrezzo());
 
     List<Rivendita> rivenditeRetrieve = rivenditaDao.doRetrieveByStato(Rivendita.Stato.TERMINATA);
-    assertEquals(0, rivenditeRetrieve.size());
+    assertNull(rivenditeRetrieve);
   }
 
   @Test
   void doUpdate() throws SQLException {
 
+    Opera opera = new Opera();
+    opera.setId(1);
+
+    Rivendita resell = new Rivendita(
+      opera,
+      Rivendita.Stato.IN_CORSO,
+      0d
+    );
+
+    resell.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    rivenditaDao.doUpdate(resell);
+    verify(preparedStatement, times(4)).setObject(anyInt(), any(), anyInt());
+    verify(preparedStatement, times(1)).executeUpdate();
+  }
+
+  @Test
+  void doUpdateCatch() throws SQLException {
+
+    Opera opera = new Opera();
+    opera.setId(1);
+
+    Rivendita resell = new Rivendita(
+      opera,
+      Rivendita.Stato.IN_CORSO,
+      0d
+    );
+
+    resell.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenThrow(new SQLException());
+    rivenditaDao.doUpdate(resell);
+    verify(preparedStatement, times(0)).setObject(anyInt(), any(), anyInt());
+    verify(preparedStatement, times(0)).executeUpdate();
   }
 
   @Test
   void doDelete() throws SQLException {
 
+    Opera opera = new Opera();
+    opera.setId(1);
+
+    Rivendita resell = new Rivendita(
+      opera,
+      Rivendita.Stato.IN_CORSO,
+      0d
+    );
+
+    resell.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    rivenditaDao.doDelete(resell);
+    verify(preparedStatement, times(1)).setObject(anyInt(), any(), anyInt());
+    verify(preparedStatement, times(1)).executeUpdate();
+  }
+
+  @Test
+  void doDeleteCatch() throws SQLException {
+
+    Opera opera = new Opera();
+    opera.setId(1);
+
+    Rivendita resell = new Rivendita(
+      opera,
+      Rivendita.Stato.IN_CORSO,
+      0d
+    );
+
+    resell.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenThrow(new SQLException());
+    rivenditaDao.doDelete(resell);
+    verify(preparedStatement, times(0)).setObject(anyInt(), any(), anyInt());
+    verify(preparedStatement, times(0)).executeUpdate();
   }
 }

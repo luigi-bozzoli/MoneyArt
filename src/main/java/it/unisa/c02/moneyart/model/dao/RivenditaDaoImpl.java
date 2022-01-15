@@ -51,7 +51,7 @@ public class RivenditaDaoImpl implements RivenditaDao {
              PreparedStatement.RETURN_GENERATED_KEYS)) {
       preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getPrezzo(), Types.DOUBLE);
-      preparedStatement.setObject(3, item.getStato().toString().toLowerCase());
+      preparedStatement.setObject(3, item.getStato().toString().toLowerCase(), Types.VARCHAR);
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
@@ -141,7 +141,7 @@ public class RivenditaDaoImpl implements RivenditaDao {
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getPrezzo(), Types.DOUBLE);
-      preparedStatement.setObject(3, item.getStato().toString().toLowerCase());
+      preparedStatement.setObject(3, item.getStato().toString().toLowerCase(), Types.VARCHAR);
       preparedStatement.setObject(4, item.getId(), Types.INTEGER);
       preparedStatement.executeUpdate();
 
