@@ -3,7 +3,6 @@ package it.unisa.c02.moneyart.model.dao;
 
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 /**
@@ -19,8 +19,9 @@ import javax.sql.DataSource;
  */
 public class UtenteDaoImpl implements UtenteDao {
 
+
   public UtenteDaoImpl() {
-    this.ds = Retriever.getInstance(DataSource.class);
+
   }
 
   public UtenteDaoImpl(DataSource ds) {
@@ -356,7 +357,9 @@ public class UtenteDaoImpl implements UtenteDao {
     return utenti;
   }
 
+  @Inject
   private DataSource ds;
+
 
   private static final String TABLE_NAME = "utente";
 }

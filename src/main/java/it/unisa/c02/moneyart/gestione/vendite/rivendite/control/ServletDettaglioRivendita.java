@@ -1,8 +1,8 @@
 package it.unisa.c02.moneyart.gestione.vendite.rivendite.control;
 
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +14,6 @@ import java.io.IOException;
 @WebServlet(name = "ServletDettaglioRivendita", value = "/resellDetails")
 public class ServletDettaglioRivendita extends HttpServlet {
 
-  private RivenditaService rivenditaService;
-
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    this.rivenditaService = Retriever.getInstance(RivenditaService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,4 +30,7 @@ public class ServletDettaglioRivendita extends HttpServlet {
 
     doGet(request, response);
   }
+
+  @Inject
+  private RivenditaService rivenditaService;
 }

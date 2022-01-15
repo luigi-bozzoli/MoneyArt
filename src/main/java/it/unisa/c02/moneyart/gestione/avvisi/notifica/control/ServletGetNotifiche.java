@@ -4,6 +4,7 @@ import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaService;
 import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Utente;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,6 +36,7 @@ public class ServletGetNotifiche extends HttpServlet {
     doGet(request, response);
   }
 
+  @Inject
   private NotificaService notificaService;
 
 }

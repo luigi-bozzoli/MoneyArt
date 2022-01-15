@@ -4,8 +4,8 @@ import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,17 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "ServletRivendita", value = "/resell")
 public class ServletRivendita extends HttpServlet {
-
-  private RivenditaService rivenditaService;
-
-  private OperaService operaService;
-
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    this.rivenditaService = Retriever.getInstance(RivenditaService.class);
-    this.operaService = Retriever.getInstance(OperaService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,4 +42,9 @@ public class ServletRivendita extends HttpServlet {
 
     doGet(request, response);
   }
+
+  @Inject
+  private RivenditaService rivenditaService;
+  @Inject
+  private OperaService operaService;
 }

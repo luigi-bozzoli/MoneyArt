@@ -2,8 +2,8 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,13 +15,6 @@ import java.io.IOException;
 
 @WebServlet(name = "ServletSignup", value = "/signup")
 public class ServletSignup extends HttpServlet {
-  private UtenteService utenteService;
-
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    utenteService = Retriever.getInstance(UtenteService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -57,4 +50,7 @@ public class ServletSignup extends HttpServlet {
       dispatcher.forward(request, response);
     }
   }
+
+  @Inject
+  private UtenteService utenteService;
 }

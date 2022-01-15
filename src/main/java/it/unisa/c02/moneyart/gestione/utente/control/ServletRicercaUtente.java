@@ -2,8 +2,8 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.util.List;
+import javax.inject.Inject;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -11,11 +11,7 @@ import java.io.IOException;
 
 @WebServlet(name = "ServletRicercaUtente", value = "/serchUsers")
 public class ServletRicercaUtente extends HttpServlet {
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    this.utenteService = Retriever.getInstance(UtenteService.class);
-  }
+
 
 
   @Override
@@ -34,5 +30,6 @@ public class ServletRicercaUtente extends HttpServlet {
 
   }
 
+  @Inject
   private UtenteService utenteService;
 }

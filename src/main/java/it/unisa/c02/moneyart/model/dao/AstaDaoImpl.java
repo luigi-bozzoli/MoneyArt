@@ -3,7 +3,6 @@ package it.unisa.c02.moneyart.model.dao;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
 import java.util.Date;
 import java.sql.PreparedStatement;
@@ -13,6 +12,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 /**
@@ -21,8 +21,9 @@ import javax.sql.DataSource;
  */
 public class AstaDaoImpl implements AstaDao {
 
+
   public AstaDaoImpl() {
-    this.ds = Retriever.getInstance(DataSource.class);
+
   }
 
   /**
@@ -43,12 +44,12 @@ public class AstaDaoImpl implements AstaDao {
   public boolean doCreate(Asta item) {
 
     String sql = "INSERT INTO " + TABLE_NAME
-            + "(id_opera, data_inizio, data_fine, stato) "
-            + "VALUES(?, ?, ?, ?)";
+        + "(id_opera, data_inizio, data_fine, stato) "
+        + "VALUES(?, ?, ?, ?)";
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql,
-            PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement.RETURN_GENERATED_KEYS)) {
       preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getDataInizio(), Types.DATE);
       preparedStatement.setObject(3, item.getDataFine(), Types.DATE);
@@ -63,7 +64,8 @@ public class AstaDaoImpl implements AstaDao {
     } catch (SQLException e) {
       e.printStackTrace();
 
-    }return false;
+    }
+    return false;
   }
 
   /**
@@ -75,12 +77,12 @@ public class AstaDaoImpl implements AstaDao {
   @Override
   public Asta doRetrieveById(int id) {
     String sql = "SELECT * FROM " + TABLE_NAME
-            + " WHERE id = ?";
+        + " WHERE id = ?";
 
     Asta asta = null;
 
     try (Connection connection = ds.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
       preparedStatement.setInt(1, id);
 
@@ -156,7 +158,7 @@ public class AstaDaoImpl implements AstaDao {
   @Override
   public void doUpdate(Asta item) {
     String sql = "UPDATE " + TABLE_NAME
-            + " SET id_opera = ?, data_inizio = ?, data_fine = ?, stato = ? WHERE id = ?";
+        + " SET id_opera = ?, data_inizio = ?, data_fine = ?, stato = ? WHERE id = ?";
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -181,7 +183,7 @@ public class AstaDaoImpl implements AstaDao {
   @Override
   public void doDelete(Asta item) {
     String sql = "DELETE FROM " + TABLE_NAME
-            + " WHERE id = ?";
+        + " WHERE id = ?";
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -203,7 +205,7 @@ public class AstaDaoImpl implements AstaDao {
   @Override
   public List<Asta> doRetrieveByStato(Asta.Stato s) {
     String sql = "SELECT * FROM " + TABLE_NAME
-            + " WHERE stato = ?";
+        + " WHERE stato = ?";
 
     List<Asta> aste = new ArrayList<>();
 
@@ -244,7 +246,7 @@ public class AstaDaoImpl implements AstaDao {
   @Override
   public List<Asta> doRetrieveByOperaId(int id) {
     String sql = "SELECT * FROM " + TABLE_NAME
-            + " WHERE id_opera = ?";
+        + " WHERE id_opera = ?";
 
     List<Asta> aste = new ArrayList<>();
 
@@ -277,6 +279,8 @@ public class AstaDaoImpl implements AstaDao {
     return aste;
   }
 
+  @Inject
   private DataSource ds;
+
   private static final String TABLE_NAME = "asta";
 }

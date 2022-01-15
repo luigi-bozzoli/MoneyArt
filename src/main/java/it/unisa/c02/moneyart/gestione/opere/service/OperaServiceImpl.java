@@ -3,9 +3,9 @@ package it.unisa.c02.moneyart.gestione.opere.service;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.blockchain.MoneyArtNft;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
-import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
+import it.unisa.c02.moneyart.utils.production.Sing;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Questa classe implementa i metodi dell'interfaccia OperaService.
@@ -16,20 +16,15 @@ public class OperaServiceImpl implements OperaService {
    * Costruttore senza paramentri.
    */
   public OperaServiceImpl() {
-    this.operaDao = Retriever.getInstance(OperaDao.class);
-    this.utenteDao = Retriever.getInstance(UtenteDao.class);
-    this.moneyArtNft = Retriever.getInstance(MoneyArtNft.class);
   }
 
   /**
    * Costruttore della classe.
    *
    * @param opera  dao di un'opera
-   * @param utente dao di un utente
    */
-  public OperaServiceImpl(OperaDao opera, UtenteDao utente, MoneyArtNft moneyArtNft) {
+  public OperaServiceImpl(OperaDao opera, MoneyArtNft moneyArtNft) {
     this.operaDao = opera;
-    this.utenteDao = utente;
     this.moneyArtNft = moneyArtNft;
   }
 
@@ -125,7 +120,8 @@ public class OperaServiceImpl implements OperaService {
   /**
    * Variabili d'istanza.
    */
+  @Inject
   private OperaDao operaDao;
-  private UtenteDao utenteDao;
+  @Inject @Sing
   private MoneyArtNft moneyArtNft;
 }

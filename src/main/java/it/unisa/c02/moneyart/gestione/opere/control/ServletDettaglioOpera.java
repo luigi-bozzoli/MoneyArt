@@ -2,8 +2,8 @@ package it.unisa.c02.moneyart.gestione.opere.control;
 
 import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.model.beans.Opera;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,17 +16,12 @@ import java.io.IOException;
 @WebServlet(name = "ServletDettaglioOpera", value = "/artwork")
 public class ServletDettaglioOpera extends HttpServlet {
 
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    operaService = Retriever.getInstance(OperaService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
 
-    int id = Integer.valueOf(request.getParameter("idOpera"));
+    int id = Integer.parseInt(request.getParameter("idOpera"));
 
     Opera opera = operaService.getArtwork(id);
     request.setAttribute("opera", opera);
@@ -38,10 +33,11 @@ public class ServletDettaglioOpera extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
     doGet(request, response);
   }
 
+  @Inject
   private OperaService operaService;
 
 }

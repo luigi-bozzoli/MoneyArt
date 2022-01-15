@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,18 +18,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 @WebServlet(name = "ServletLogin", value = "/login")
 public class ServletLogin extends HttpServlet {
 
-  @Inject
-  private UtenteService utenteService;
 
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    //utenteService = Retriever.getInstance(UtenteService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,4 +65,7 @@ public class ServletLogin extends HttpServlet {
       dispatcher.forward(request, response);
     }
   }
+
+  @Inject
+  private UtenteService utenteService;
 }

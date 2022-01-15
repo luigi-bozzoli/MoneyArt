@@ -1,6 +1,5 @@
 package it.unisa.c02.moneyart.utils.timers;
 
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +7,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.inject.Inject;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 /**
  * classe singleton, permette di settare dei timer dopo i quali vengono attivati
@@ -25,7 +29,17 @@ public class TimerScheduler {
 
 
   private TimerScheduler() {
-    timedObjectDao = Retriever.getInstance(TimedObjectDao.class);
+    DataSource dataSource = null;
+    Context initCtx = null;
+    try {
+      initCtx = new InitialContext();
+      Context envCtx = (Context) initCtx.lookup("java:comp/env");
+      dataSource = (DataSource) envCtx.lookup("jdbc/timer");
+    } catch (NamingException e) {
+      e.printStackTrace();
+    }
+
+    timedObjectDao = new TimedObjecDaoImpl(dataSource);
     services = new HashMap<>();
     timerSet = new HashSet<>();
   }

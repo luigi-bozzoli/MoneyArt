@@ -3,7 +3,6 @@ package it.unisa.c02.moneyart.model.dao;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Segnalazione;
 import it.unisa.c02.moneyart.model.dao.interfaces.SegnalazioneDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 /**
@@ -19,11 +19,9 @@ import javax.sql.DataSource;
  */
 public class SegnalazioneDaoImpl implements SegnalazioneDao {
 
-  /**
-   * Costruttore, utilizza un datasource istanziato esternamente.
-   */
+
   public SegnalazioneDaoImpl() {
-    this.ds = Retriever.getInstance(DataSource.class);
+
   }
 
   /**
@@ -49,7 +47,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql,
-            PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement.RETURN_GENERATED_KEYS)) {
       preparedStatement.setObject(1, item.getAsta().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getCommento(), Types.VARCHAR);
       preparedStatement.setObject(3, item.isLetta(), Types.BOOLEAN);
@@ -76,7 +74,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
   public Segnalazione doRetrieveById(int id) {
     String sql =
         "select * from " + TABLE_NAME
-          + " where id = ? ";
+            + " where id = ? ";
 
     Segnalazione segnalazione = null;
 
@@ -114,7 +112,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
 
 
     try (Connection connection = ds.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
       ResultSet rs = preparedStatement.executeQuery();
       segnalazioni = getMultipleResultFromResultSet(rs);
@@ -135,8 +133,8 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
   public void doUpdate(Segnalazione item) {
     String sql =
         "UPDATE " + TABLE_NAME
-        + " set id_asta = ?, commento = ?, letta = ? "
-        + " where id = ?";
+            + " set id_asta = ?, commento = ?, letta = ? "
+            + " where id = ?";
 
 
     try (Connection connection = ds.getConnection();
@@ -153,7 +151,6 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
   }
 
 
-
   /**
    * Elimina l'item dal database.
    *
@@ -163,7 +160,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
   public void doDelete(Segnalazione item) {
     String sql =
         "delete from " + TABLE_NAME
-        + " where id = ? ";
+            + " where id = ? ";
 
 
     try (Connection connection = ds.getConnection();
@@ -188,12 +185,12 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
   public List<Segnalazione> doRetrieveByAuctionId(int id) {
     String sql =
         "select * from " + TABLE_NAME
-        + " where id_asta = ? ";
+            + " where id_asta = ? ";
 
     List<Segnalazione> segnalazioni = null;
 
     try (Connection connection = ds.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
       preparedStatement.setObject(1, id, Types.INTEGER);
 
@@ -260,7 +257,8 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
     return segnalazioni;
   }
 
-  private static DataSource ds;
+  @Inject
+  private DataSource ds;
 
   private static final String TABLE_NAME = "segnalazione";
 }

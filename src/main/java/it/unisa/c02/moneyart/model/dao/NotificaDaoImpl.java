@@ -5,7 +5,6 @@ import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 /**
@@ -23,7 +23,7 @@ public class NotificaDaoImpl implements NotificaDao {
 
 
   public NotificaDaoImpl() {
-    this.ds = Retriever.getInstance(DataSource.class);
+
   }
 
   /**
@@ -323,6 +323,7 @@ public class NotificaDaoImpl implements NotificaDao {
   }
 
 
+  @Inject
   private DataSource ds;
 
 

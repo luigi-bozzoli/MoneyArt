@@ -12,7 +12,7 @@ import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
-import it.unisa.c02.moneyart.utils.production.Retriever;
+import it.unisa.c02.moneyart.utils.production.Sing;
 import it.unisa.c02.moneyart.utils.timers.TimedObject;
 import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
 
@@ -23,6 +23,7 @@ import it.unisa.c02.moneyart.utils.timers.TimerService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 
 
 public class AstaServiceImpl implements AstaService, TimerService {
@@ -31,13 +32,6 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * Costruttore senza paramentri.
    */
   public AstaServiceImpl() {
-    this.astaDao = Retriever.getInstance(AstaDao.class);
-    this.operaDao = Retriever.getInstance(OperaDao.class);
-    this.utenteDao = Retriever.getInstance(UtenteDao.class);
-    this.notificaDao = Retriever.getInstance(NotificaDao.class);
-    this.partecipazioneDao = Retriever.getInstance(PartecipazioneDao.class);
-    this.astaLockingSingleton = Retriever.getInstance(AstaLockingSingleton.class);
-    this.timerScheduler = Retriever.getInstance(TimerScheduler.class);
   }
 
   /**
@@ -465,13 +459,20 @@ public class AstaServiceImpl implements AstaService, TimerService {
   }
 
 
+  @Inject
   private AstaDao astaDao;
+  @Inject
   private OperaDao operaDao;
+  @Inject
   private UtenteDao utenteDao;
+  @Inject
   private PartecipazioneDao partecipazioneDao;
+  @Inject
   private NotificaDao notificaDao;
 
+  @Inject @Sing
   private TimerScheduler timerScheduler;
+  @Inject @Sing
   private AstaLockingSingleton astaLockingSingleton;
 
 }

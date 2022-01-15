@@ -20,7 +20,7 @@ public class ServletLogout extends HttpServlet {
 
     HttpSession session = request.getSession();
 
-    session.removeAttribute("utente");
+    session.invalidate();
 
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
     dispatcher.forward(request, response);

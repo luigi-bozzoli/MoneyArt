@@ -5,13 +5,13 @@ import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.inject.Inject;
 
 /**
  * Questa classe implementa i metodi dell'interfaccia utenteService.
@@ -22,10 +22,7 @@ public class UtenteServiceImpl implements UtenteService {
    * Costruttore senza paramentri.
    */
   public UtenteServiceImpl() {
-    this.utenteDao = Retriever.getInstance(UtenteDao.class);
-    this.operaDao = Retriever.getInstance(OperaDao.class);
-    this.notificaDao = Retriever.getInstance(NotificaDao.class);
-    this.partecipazioneDao = Retriever.getInstance(PartecipazioneDao.class);
+
   }
 
   /**
@@ -345,12 +342,16 @@ public class UtenteServiceImpl implements UtenteService {
     return matcher.find();
   }
 
+  @Inject
   private UtenteDao utenteDao;
 
+  @Inject
   private OperaDao operaDao;
 
+  @Inject
   private NotificaDao notificaDao;
 
+  @Inject
   private PartecipazioneDao partecipazioneDao;
 
   private static final Pattern VALID_EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-"

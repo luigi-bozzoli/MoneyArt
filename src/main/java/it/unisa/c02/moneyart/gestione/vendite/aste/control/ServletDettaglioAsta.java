@@ -2,8 +2,8 @@ package it.unisa.c02.moneyart.gestione.vendite.aste.control;
 
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,11 +16,6 @@ import java.io.IOException;
 @WebServlet(name = "ServletDettaglioAste", value = "/getAuctionDetails")
 public class ServletDettaglioAsta extends HttpServlet {
 
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    astaService = Retriever.getInstance(AstaService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,6 +37,7 @@ public class ServletDettaglioAsta extends HttpServlet {
     doGet(request, response);
   }
 
+  @Inject
   private AstaService astaService;
 
 }

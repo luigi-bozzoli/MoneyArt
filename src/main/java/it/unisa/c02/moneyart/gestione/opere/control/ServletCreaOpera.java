@@ -3,7 +3,7 @@ package it.unisa.c02.moneyart.gestione.opere.control;
 import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.utils.production.Retriever;
+import javax.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -20,11 +20,6 @@ import javax.sql.rowset.serial.SerialBlob;
 @MultipartConfig
 public class ServletCreaOpera extends HttpServlet {
 
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    operaService = Retriever.getInstance(OperaService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -74,5 +69,6 @@ public class ServletCreaOpera extends HttpServlet {
   }
 
 
+  @Inject
   private OperaService operaService;
 }

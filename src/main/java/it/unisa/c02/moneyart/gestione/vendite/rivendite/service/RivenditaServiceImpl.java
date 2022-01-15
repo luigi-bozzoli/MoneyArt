@@ -8,9 +8,8 @@ import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
-
 import java.util.List;
+import javax.inject.Inject;
 
 
 public class RivenditaServiceImpl implements RivenditaService {
@@ -19,10 +18,6 @@ public class RivenditaServiceImpl implements RivenditaService {
    * Costruttore senza paramentri.
    */
   public RivenditaServiceImpl() {
-    this.utenteDao = Retriever.getInstance(UtenteDao.class);
-    this.operaDao = Retriever.getInstance(OperaDao.class);
-    this.rivenditaDao = Retriever.getInstance(RivenditaDao.class);
-    this.notificaDao = Retriever.getInstance(NotificaDao.class);
 
   }
 
@@ -144,8 +139,12 @@ public class RivenditaServiceImpl implements RivenditaService {
     return rivenditaDao.doRetrieveByStato(stato);
   }
 
+  @Inject
   private UtenteDao utenteDao;
+  @Inject
   private RivenditaDao rivenditaDao;
+  @Inject
   private OperaDao operaDao;
+  @Inject
   private NotificaDao notificaDao;
 }

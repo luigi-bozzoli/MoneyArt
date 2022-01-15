@@ -2,9 +2,7 @@ package it.unisa.c02.moneyart.model.dao;
 
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
-import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 /**
@@ -20,8 +19,9 @@ import javax.sql.DataSource;
  */
 public class RivenditaDaoImpl implements RivenditaDao {
 
+
   public RivenditaDaoImpl() {
-    this.ds = (DataSource) Retriever.getInstance(DataSource.class);
+
   }
 
   /**
@@ -42,13 +42,13 @@ public class RivenditaDaoImpl implements RivenditaDao {
   public boolean doCreate(Rivendita item) {
     String sql =
         "INSERT INTO " + TABLE_NAME
-        + "(id_opera, prezzo, stato) "
-        + " VALUES(?, ? , ?) ";
+            + "(id_opera, prezzo, stato) "
+            + " VALUES(?, ? , ?) ";
 
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql,
-            PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement.RETURN_GENERATED_KEYS)) {
       preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getPrezzo(), Types.DOUBLE);
       preparedStatement.setObject(3, item.getStato().toString().toLowerCase());
@@ -76,7 +76,7 @@ public class RivenditaDaoImpl implements RivenditaDao {
   public Rivendita doRetrieveById(int id) {
     String sql =
         "select * from " + TABLE_NAME
-        + " where id = ? ";
+            + " where id = ? ";
     Rivendita rivendita;
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -135,8 +135,8 @@ public class RivenditaDaoImpl implements RivenditaDao {
   public void doUpdate(Rivendita item) {
     String sql =
         "UPDATE " + TABLE_NAME
-        + " set id_opera = ?,prezzo = ?, stato = ?"
-        + " where id = ?";
+            + " set id_opera = ?,prezzo = ?, stato = ?"
+            + " where id = ?";
 
 
     try (Connection connection = ds.getConnection();
@@ -162,7 +162,7 @@ public class RivenditaDaoImpl implements RivenditaDao {
   public void doDelete(Rivendita item) {
     String sql =
         "delete from " + TABLE_NAME
-        + " where id = ? ";
+            + " where id = ? ";
 
 
     try (Connection connection = ds.getConnection();
@@ -189,7 +189,7 @@ public class RivenditaDaoImpl implements RivenditaDao {
   public List<Rivendita> doRetrieveByStato(String s) {
     String sql =
         "select * from " + TABLE_NAME
-        + " where stato = ? ";
+            + " where stato = ? ";
 
     List<Rivendita> rivendite = null;
 
@@ -267,6 +267,8 @@ public class RivenditaDaoImpl implements RivenditaDao {
     return rivendite;
   }
 
-  private static DataSource ds;
+  @Inject
+  private DataSource ds;
+
   private static final String TABLE_NAME = "rivendita";
 }

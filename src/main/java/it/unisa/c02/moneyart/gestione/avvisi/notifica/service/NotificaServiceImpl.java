@@ -3,30 +3,30 @@ package it.unisa.c02.moneyart.gestione.avvisi.notifica.service;
 import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Questa classe implementa i metodi dell'interfaccia NotificaService.
  */
 public class NotificaServiceImpl implements NotificaService {
+
+  public NotificaServiceImpl() {
+
+  }
+
   /**
    * Costruttore che istanzia tramite il Retriver i dao.
    */
-  public NotificaServiceImpl() {
-    this.utenteDao = Retriever.getInstance(UtenteDao.class);
-    this.notificaDao = Retriever.getInstance(NotificaDao.class);
-  }
+
 
   /**
    * Costruttore con parametri.
    *
-   * @param utenteDao   dao di utente
    * @param notificaDao dao di notifica
    */
-  public NotificaServiceImpl(UtenteDao utenteDao, NotificaDao notificaDao) {
+  public NotificaServiceImpl( NotificaDao notificaDao) {
     this.notificaDao = notificaDao;
-    this.utenteDao = utenteDao;
   }
 
   /**
@@ -101,8 +101,10 @@ public class NotificaServiceImpl implements NotificaService {
     notificaDao.doCreate(notifica);
   }
 
+  @Inject
   private UtenteDao utenteDao;
 
+  @Inject
   private NotificaDao notificaDao;
 
 }

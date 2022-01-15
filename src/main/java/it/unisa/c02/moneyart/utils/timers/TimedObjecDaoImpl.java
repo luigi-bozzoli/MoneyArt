@@ -1,6 +1,5 @@
 package it.unisa.c02.moneyart.utils.timers;
 
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,9 +27,6 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
     this.ds = ds;
   }
 
-  public TimedObjecDaoImpl() {
-    this.ds = Retriever.getInstance(DataSource.class, "Timer");
-  }
 
   /**
    * Inserisce un item nel database.
@@ -184,6 +180,7 @@ public class TimedObjecDaoImpl implements TimedObjectDao {
   }
 
   private DataSource ds;
-  private static String TABLE_NAME = "timer";
+
+  private static final String TABLE_NAME = "timer";
 
 }

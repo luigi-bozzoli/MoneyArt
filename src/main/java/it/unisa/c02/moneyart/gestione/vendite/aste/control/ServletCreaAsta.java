@@ -5,10 +5,10 @@ import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,12 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ServletCreaAsta", value = "/newAuction")
 public class ServletCreaAsta extends HttpServlet {
 
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    astaService = Retriever.getInstance(AstaService.class);
-    operaService = Retriever.getInstance(OperaService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -56,34 +50,38 @@ public class ServletCreaAsta extends HttpServlet {
 
     } catch (Exception e) {
       request.setAttribute("error",
-        "Formato date non corrette!");
-      response.sendRedirect("/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
+          "Formato date non corrette!");
+      response.sendRedirect(
+          "/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
       return;
 
     }
     Opera opera = operaService.getArtwork(idOpera);
     if (opera == null || !utente.getId().equals(opera.getArtista().getId())) {
       request.setAttribute("error",
-        "Non sei il creatore di quest'opera!");
-      response.sendRedirect("/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
+          "Non sei il creatore di quest'opera!");
+      response.sendRedirect(
+          "/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
       return;
     }
     Asta asta = new Asta(opera, dataInizio, dataFine, Asta.Stato.CREATA);
     if (!astaService.addAsta(asta)) {
       request.setAttribute("error",
-        "Errore creazione asta!");
-      response.sendRedirect("/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
+          "Errore creazione asta!");
+      response.sendRedirect(
+          "/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
       return;
     }
 
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/dettaglio-asta?id="
-      + asta.getId() + ".jsp"); // TODO: aggiungere il link alla pagina dell'asta
+        + asta.getId() + ".jsp"); // TODO: aggiungere il link alla pagina dell'asta
     dispatcher.forward(request, response);
   }
 
+  @Inject
   private OperaService operaService;
+  @Inject
   private AstaService astaService;
 
-  private static final String[] PARAMETRI_NECESSARI = {"id", "inizio", "fine"};
 
 }

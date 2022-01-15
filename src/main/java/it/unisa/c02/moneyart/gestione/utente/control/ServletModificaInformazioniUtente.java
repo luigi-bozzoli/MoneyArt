@@ -3,7 +3,7 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.utils.production.Retriever;
+import javax.inject.Inject;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.*;
@@ -18,11 +18,6 @@ import java.sql.SQLException;
 @MultipartConfig
 public class ServletModificaInformazioniUtente extends HttpServlet {
 
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    utenteService = Retriever.getInstance(UtenteService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -101,6 +96,7 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
 
 
   }
+  @Inject
   private UtenteService utenteService;
 
 

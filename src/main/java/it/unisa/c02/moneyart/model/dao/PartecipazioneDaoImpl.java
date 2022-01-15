@@ -4,7 +4,6 @@ import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 /**
@@ -21,11 +21,8 @@ import javax.sql.DataSource;
 
 public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
-  /**
-   * Costruttore, utilizza un datasource istanziato esternamente.
-   */
   public PartecipazioneDaoImpl() {
-    this.ds = Retriever.getInstance(DataSource.class);
+
   }
 
   /**
@@ -67,7 +64,8 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
     } catch (SQLException e) {
       e.printStackTrace();
 
-    }return false;
+    }
+    return false;
   }
 
   /**
@@ -80,7 +78,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
   public Partecipazione doRetrieveById(int id) {
     String sql =
         "select * from " + TABLE_NAME
-          + " where id = ? ";
+            + " where id = ? ";
 
     Partecipazione partecipazione = null;
 
@@ -294,11 +292,13 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
     return partecipanti;
   }
-  
+
   /**
    * Variabili d'istanza.
    */
+  @Inject
   private DataSource ds;
+
   private static final String TABLE_NAME = "partecipazione";
 
 }

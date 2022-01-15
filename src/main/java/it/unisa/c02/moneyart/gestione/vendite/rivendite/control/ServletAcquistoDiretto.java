@@ -2,8 +2,8 @@ package it.unisa.c02.moneyart.gestione.vendite.rivendite.control;
 
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.io.IOException;
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,14 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "ServletAcquistoDiretto", value = "/buyArtwork")
 public class ServletAcquistoDiretto extends HttpServlet {
-
-  private RivenditaService rivenditaService;
-
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    this.rivenditaService = Retriever.getInstance(RivenditaService.class);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,5 +34,9 @@ public class ServletAcquistoDiretto extends HttpServlet {
 
     doGet(request, response);
   }
+
+  @Inject
+  private RivenditaService rivenditaService;
+
 
 }

@@ -3,7 +3,6 @@ package it.unisa.c02.moneyart.model.dao;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 /**
@@ -18,6 +18,11 @@ import javax.sql.DataSource;
  * definiti nell'intefaccia OperaDao.
  */
 public class OperaDaoImpl implements OperaDao {
+
+
+  public OperaDaoImpl() {
+
+  }
 
   /**
    * Costruttore di OperaDaoImpl, permette di specificare il datasource utilizzato.
@@ -28,12 +33,6 @@ public class OperaDaoImpl implements OperaDao {
     this.ds = ds;
   }
 
-  /**
-   * Costruttore vuoto.
-   */
-  public OperaDaoImpl() {
-    this.ds = Retriever.getInstance(DataSource.class);
-  }
 
   /**
    * Inserisce un item del database.
@@ -324,6 +323,8 @@ public class OperaDaoImpl implements OperaDao {
   }
 
 
+  @Inject
   private DataSource ds;
+
   private static final String TABLE_NAME = "opera";
 }

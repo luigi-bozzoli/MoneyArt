@@ -2,8 +2,8 @@ package it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service;
 
 import it.unisa.c02.moneyart.model.beans.Segnalazione;
 import it.unisa.c02.moneyart.model.dao.interfaces.SegnalazioneDao;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Questa classe implementa i metodi dell'interfaccia SegnalazioneService.
@@ -14,7 +14,7 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
    * Costruttore che istanzia tramite il Retriver i dao.
    */
   public SegnalazioneServiceImpl() {
-    this.segnalazioneDao = Retriever.getInstance(SegnalazioneDao.class);
+
   }
 
   /**
@@ -69,6 +69,7 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
     segnalazioneDao.doUpdate(segnalazione);
   }
 
+  @Inject
   private SegnalazioneDao segnalazioneDao;
 
 }

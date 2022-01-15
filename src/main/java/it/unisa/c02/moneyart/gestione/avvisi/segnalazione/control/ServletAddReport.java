@@ -3,8 +3,8 @@ package it.unisa.c02.moneyart.gestione.avvisi.segnalazione.control;
 import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.*;
-import it.unisa.c02.moneyart.utils.production.Retriever;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,13 +15,7 @@ import java.io.IOException;
 
 @WebServlet(name = "ServletAddReport", value = "/addReport")
 public class ServletAddReport extends HttpServlet {
-  
-  @Override
-  public void init() throws ServletException {
-    super.init();
-    segnalazioneService = Retriever.getInstance(SegnalazioneService.class);
-    astaService = Retriever.getInstance(AstaService.class);
-  }
+
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,7 +41,8 @@ public class ServletAddReport extends HttpServlet {
     dispatcher.forward(request, response);
   }
 
+  @Inject
   private SegnalazioneService segnalazioneService;
-  private AstaService astaService;
+
 
 }
