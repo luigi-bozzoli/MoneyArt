@@ -1,18 +1,13 @@
 package unit.model.dao;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.sql.*;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.AfterAll;
@@ -41,6 +36,8 @@ public class OperaDaoImplUnitTest {
 
   @Mock
   private static Opera opera; /*l'opera ha id 100*/
+
+
   @Mock
   private static Utente possessore; /*il possessore ha id 100*/
   @Mock
@@ -50,68 +47,21 @@ public class OperaDaoImplUnitTest {
     ALL_ASTA, IN_VENDITA, IN_POSSESSO, PREVENDITA
   }
 
-  //__________________________immagine opera___________________________
-  Blob image = new Blob() {
-    @Override
-    public long length() throws SQLException {
-      return 0;
-    }
-  //____________________________________________________________________
-
-    @Override
-    public byte[] getBytes(long pos, int length) throws SQLException {
-      return new byte[0];
-    }
-
-    @Override
-    public InputStream getBinaryStream() throws SQLException {
-      return null;
-    }
-
-    @Override
-    public long position(byte[] pattern, long start) throws SQLException {
-      return 0;
-    }
-
-    @Override
-    public long position(Blob pattern, long start) throws SQLException {
-      return 0;
-    }
-
-    @Override
-    public int setBytes(long pos, byte[] bytes) throws SQLException {
-      return 0;
-    }
-
-    @Override
-    public int setBytes(long pos, byte[] bytes, int offset, int len) throws SQLException {
-      return 0;
-    }
-
-    @Override
-    public OutputStream setBinaryStream(long pos) throws SQLException {
-      return null;
-    }
-
-    @Override
-    public void truncate(long len) throws SQLException {
-
-    }
-
-    @Override
-    public void free() throws SQLException {
-
-    }
-
-    @Override
-    public InputStream getBinaryStream(long pos, long length) throws SQLException {
-      return null;
-    }
-  }
-
 
   @BeforeAll
   public static void setUpClass() {
+    when(opera.getId()).thenReturn(100);  //opera ha id 100
+    when(opera.getPossessore()).thenReturn(possessore);
+    when(possessore.getId()).thenReturn(100); //il possessore ha id 100
+    when(opera.getArtista()).thenReturn(artista);
+    when(artista.getId()).thenReturn(90); //l'artista ha id 90
+    when(opera.getNome()).thenReturn("Mario");
+    when(opera.getDescrizione()).thenReturn("descrizioneDellOperaDiMario");
+    Blob image = mock(Blob.class); //mocco un Blob per trattare l'immagine
+    when(opera.getImmagine()).thenReturn(image); // fault possibile
+    when(opera.getCertificato()).thenReturn("certificatoDellOperaDiMario");
+    when(opera.getStato()).thenReturn(Opera.Stato.IN_POSSESSO);  //fault certo
+
   }
 
   @AfterAll
@@ -121,20 +71,7 @@ public class OperaDaoImplUnitTest {
   @BeforeEach
   public void setUp() throws SQLException {
 
-    /*istruisco l'opera moccata
-    when(opera.getId()).thenReturn(100);
-    when(opera.getPossessore()).thenReturn(possessore);
-    when(possessore.getId()).thenReturn(100); //il possessore ha id 100
-    when(opera.getArtista()).thenReturn(artista);
-    when(artista.getId()).thenReturn(90); //l'artista ha id 90
-    when(opera.getNome()).thenReturn("Mario");
-    when(opera.getDescrizione()).thenReturn("descrizioneDellOperaDiMario");
-    doNothing().when(opera).getImmagine(); //fault possibile
-    when(opera.getCertificato()).thenReturn("certificatoDellOperaDiMario");
-    when(opera.getStato()).thenReturn(stato);
-    when(stato.toString()).thenReturn("IN_POSSESSO");
 
-    __________________________*/
     when(dataSource.getConnection()).thenReturn(connection);
     when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
     doNothing().when(connection).commit();
@@ -144,7 +81,8 @@ public class OperaDaoImplUnitTest {
     when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
     when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
     when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
-    when(resultSet.getInt(anyInt())).thenReturn(opera.getId());
+    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
+    when(resultSet.getInt(anyInt())).thenReturn(100);
     System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
   }
 
@@ -155,17 +93,6 @@ public class OperaDaoImplUnitTest {
 
   @Test
   public void doCreate() {
-
-    when(opera.getId()).thenReturn(100);
-    when(opera.getPossessore()).thenReturn(possessore);
-    when(possessore.getId()).thenReturn(100); /*il possessore ha id 100*/
-    when(opera.getArtista()).thenReturn(artista);
-    when(artista.getId()).thenReturn(90); /*l'artista ha id 90*/
-    when(opera.getNome()).thenReturn("Mario");
-    when(opera.getDescrizione()).thenReturn("descrizioneDellOperaDiMario");
-    when(opera.getImmagine()).thenReturn(image); /* fault possibile*/
-    when(opera.getCertificato()).thenReturn("certificatoDellOperaDiMario");
-    when(opera.getStato()).thenReturn(any());  /*fault certo*/
 
     assertTrue(new OperaDaoImpl(dataSource).doCreate(opera));
   }
