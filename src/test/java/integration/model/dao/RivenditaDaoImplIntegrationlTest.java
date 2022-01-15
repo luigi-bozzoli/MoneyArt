@@ -172,7 +172,7 @@ class RivenditaDaoImplIntegrationTest {
       for(Rivendita r: rivendite) {
         rivenditaDao.doCreate(r);
       }
-      List<Rivendita> result = rivenditaDao.doRetrieveByStato("TERMINATA");
+      List<Rivendita> result = rivenditaDao.doRetrieveByStato(Rivendita.Stato.TERMINATA);
       Assertions.assertNotNull(result);
 
       Assertions.assertArrayEquals(rivendite.toArray(), result.toArray());

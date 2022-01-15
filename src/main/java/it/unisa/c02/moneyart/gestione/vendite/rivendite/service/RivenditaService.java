@@ -13,7 +13,7 @@ public interface RivenditaService {
 
   boolean buy(Integer idRivendita, Integer idUtente);
 
-  List<Rivendita> getResells(String stato);
+  List<Rivendita> getResells(Rivendita.Stato stato);
 
   Rivendita getResell(Integer id);
 }

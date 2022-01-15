@@ -134,7 +134,7 @@ public class RivenditaServiceImpl implements RivenditaService {
    * @return rivendite con stato uguale a quello ricercato
    */
   @Override
-  public List<Rivendita> getResells(String stato) {
+  public List<Rivendita> getResells(Rivendita.Stato stato) {
 
     return rivenditaDao.doRetrieveByStato(stato);
   }
