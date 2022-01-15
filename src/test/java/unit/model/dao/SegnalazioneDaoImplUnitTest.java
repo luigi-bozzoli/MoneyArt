@@ -23,6 +23,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -74,11 +76,85 @@ class SegnalazioneDaoImplUnitTest {
   }
 
   @Test
-  void doRetrieveById() {
+  void doCreateCatch() throws SQLException {
+    SQLException ex = new SQLException();
+    when(connection.prepareStatement(anyString(), anyInt())).thenThrow(ex);
+
+    Asta asta = new Asta();
+    asta.setId(1);
+    Segnalazione segnalazione = new Segnalazione(asta, "prova", false);
+
+    segnalazioneDao.doCreate(segnalazione);
+
+    Assertions.assertNull(segnalazione.getId());
   }
 
   @Test
-  void doRetrieveAll() {
+  void doRetrieveById() throws SQLException {
+    Asta asta = new Asta();
+
+    asta.setId(1);
+
+    Segnalazione segnalazione = new Segnalazione(asta, "prova", false);
+    segnalazione.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setInt(anyInt(), anyInt());
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(resultSet.getObject("id", Integer.class)).thenReturn(segnalazione.getId());
+    when(resultSet.getObject("id_asta", Integer.class)).thenReturn(segnalazione.getAsta().getId());
+    when(resultSet.getObject("commento", String.class)).thenReturn(segnalazione.getCommento());
+    when(resultSet.getObject("letta", Boolean.class)).thenReturn(segnalazione.isLetta());
+
+    Segnalazione segnalazioneRetrieve = segnalazioneDao.doRetrieveById(1);
+
+    Assertions.assertEquals(segnalazione, segnalazioneRetrieve);
+  }
+
+  @Test
+  void doRetrieveByIdCatch() throws SQLException {
+
+    SQLException ex = new SQLException();
+    when(connection.prepareStatement(anyString())).thenThrow(ex);
+
+    Segnalazione segnalazione = segnalazioneDao.doRetrieveById(1);
+
+    Assertions.assertNull(segnalazione);
+
+  }
+
+  @Test
+  void doRetrieveAll() throws SQLException {
+    Asta asta = new Asta();
+
+    asta.setId(1);
+
+    Segnalazione segnalazione = new Segnalazione(asta, "prova", false);
+    segnalazione.setId(1);
+
+    Asta asta2 = new Asta();
+
+    asta2.setId(2);
+
+    Segnalazione segnalazione2 = new Segnalazione(asta2, "prova", false);
+    segnalazione.setId(2);
+
+    List<Segnalazione> segnalazioneOracolo = Arrays.asList(segnalazione, segnalazione2);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setInt(anyInt(), anyInt());
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(resultSet.getObject("id", Integer.class)).thenReturn(segnalazione.getId(), segnalazione2.getId());
+    when(resultSet.getObject("id_asta", Integer.class)).thenReturn(segnalazione.getAsta().getId(), segnalazione2.getAsta().getId());
+    when(resultSet.getObject("commento", String.class)).thenReturn(segnalazione.getCommento(), segnalazione2.getCommento());
+    when(resultSet.getObject("letta", Boolean.class)).thenReturn(segnalazione.isLetta(), segnalazione2.isLetta());
+
+    List<Segnalazione> segnalazioneRetrieve = segnalazioneDao.doRetrieveAll("id");
+
+    Assertions.assertArrayEquals(segnalazioneRetrieve.toArray(), segnalazioneOracolo.toArray());
+
   }
 
   @Test
