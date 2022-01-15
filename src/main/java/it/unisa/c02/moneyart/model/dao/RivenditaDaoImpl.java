@@ -60,8 +60,8 @@ public class RivenditaDaoImpl implements RivenditaDao {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+
     return false;
 
   }
@@ -77,7 +77,8 @@ public class RivenditaDaoImpl implements RivenditaDao {
     String sql =
         "select * from " + TABLE_NAME
             + " where id = ? ";
-    Rivendita rivendita;
+    Rivendita rivendita = null;
+
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       preparedStatement.setInt(1, id);
@@ -88,7 +89,6 @@ public class RivenditaDaoImpl implements RivenditaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
 
     return rivendita;
@@ -113,17 +113,15 @@ public class RivenditaDaoImpl implements RivenditaDao {
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      rivendite = new ArrayList<>();
 
       ResultSet rs = preparedStatement.executeQuery();
       rivendite = getMultipleResultFromResultSet(rs);
 
-      return rivendite;
-
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
+
+    return rivendite;
   }
 
   /**
@@ -149,7 +147,6 @@ public class RivenditaDaoImpl implements RivenditaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
   }
 
@@ -174,7 +171,6 @@ public class RivenditaDaoImpl implements RivenditaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
   }
 
@@ -186,22 +182,17 @@ public class RivenditaDaoImpl implements RivenditaDao {
    * @return lista di item trovata nel database
    */
   @Override
-  public List<Rivendita> doRetrieveByStato(String s) {
+  public List<Rivendita> doRetrieveByStato(Rivendita.Stato s) {
     String sql =
         "select * from " + TABLE_NAME
             + " where stato = ? ";
 
     List<Rivendita> rivendite = null;
 
-    if (s.isEmpty()) {
-      return null;
-    }
-
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      rivendite = new ArrayList<>();
 
-      preparedStatement.setObject(1, s);
+      preparedStatement.setObject(1, s.toString().toUpperCase(), Types.VARCHAR);
       ResultSet rs = preparedStatement.executeQuery();
       rivendite = getMultipleResultFromResultSet(rs);
 
@@ -209,9 +200,9 @@ public class RivenditaDaoImpl implements RivenditaDao {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new IllegalArgumentException(e.getMessage());
     }
 
+    return  rivendite;
   }
 
   /**
@@ -261,7 +252,6 @@ public class RivenditaDaoImpl implements RivenditaDao {
       rivendita.setStato(Rivendita.Stato.valueOf(rs.getObject("stato", String.class)
           .toUpperCase()));
       rivendite.add(rivendita);
-
 
     }
     return rivendite;
