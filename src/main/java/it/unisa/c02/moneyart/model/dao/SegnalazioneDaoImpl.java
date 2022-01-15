@@ -55,7 +55,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
-        item.setId(resultSet.getObject(1, Integer.class));
+        item.setId(resultSet.getInt(1));
         return true;
       }
     } catch (SQLException e) {
@@ -81,7 +81,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-      preparedStatement.setObject(1, id, Types.INTEGER);
+      preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
       segnalazione = getSingleResultFromResultSet(rs);
@@ -192,7 +192,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-      preparedStatement.setObject(1, id, Types.INTEGER);
+      preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
       segnalazioni = getMultipleResultFromResultSet(rs);

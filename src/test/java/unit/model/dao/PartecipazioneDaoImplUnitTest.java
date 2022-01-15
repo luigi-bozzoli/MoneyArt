@@ -111,7 +111,7 @@ class PartecipazioneDaoImplUnitTest {
     when(resultSet.getObject("id_asta", Integer.class)).thenReturn(partecipazione.getAsta().getId());
     when(resultSet.getObject("offerta", Double.class)).thenReturn(partecipazione.getOfferta());
 
-    Partecipazione partecipazioneRetrieve = partecipazioneDao.doRetrieveById(asta.getId());
+    Partecipazione partecipazioneRetrieve = partecipazioneDao.doRetrieveById(1);
 
     Assertions.assertEquals(partecipazione, partecipazioneRetrieve);
   }
