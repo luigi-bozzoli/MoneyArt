@@ -57,6 +57,7 @@ public class OperaDaoImplUnitTest {
 
   @BeforeEach
   public void setUp() throws SQLException {
+
     /*istruisco l'opera moccata
     when(opera.getId()).thenReturn(100);
     when(opera.getPossessore()).thenReturn(possessore);
@@ -69,6 +70,7 @@ public class OperaDaoImplUnitTest {
     when(opera.getCertificato()).thenReturn("certificatoDellOperaDiMario");
     when(opera.getStato()).thenReturn(stato);
     when(stato.toString()).thenReturn("IN_POSSESSO");
+
     __________________________*/
     when(dataSource.getConnection()).thenReturn(connection);
     when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);

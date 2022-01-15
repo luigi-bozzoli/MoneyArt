@@ -60,6 +60,7 @@ public class OperaDaoImpl implements OperaDao {
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
         item.setId(resultSet.getInt(1));
+
         return true;
       }
     } catch (SQLException e) {
