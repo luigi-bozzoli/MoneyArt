@@ -55,7 +55,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet != null && resultSet.next()) {
-        item.setId(resultSet.getObject(1, Integer.class));
+        item.setId(resultSet.getInt(1));
         return true;
       }
     } catch (SQLException e) {
