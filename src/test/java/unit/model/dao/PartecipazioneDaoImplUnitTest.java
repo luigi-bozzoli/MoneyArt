@@ -28,6 +28,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static com.google.inject.internal.util.ImmutableList.of;
 import static org.junit.jupiter.api.Assertions.*;
@@ -98,7 +103,28 @@ class PartecipazioneDaoImplUnitTest {
   }
 
   @Test
-  void doRetrieveById() {
+  void doRetrieveById() throws SQLException {
+    Utente utente = new Utente();
+    Asta asta = new Asta();
+
+    utente.setId(1);
+    asta.setId(1);
+
+    Partecipazione partecipazione = new Partecipazione(asta, utente, 999d);
+    partecipazione.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setInt(anyInt(), anyInt());
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(resultSet.getObject("id", Integer.class)).thenReturn(partecipazione.getId());
+    when(resultSet.getObject("id_utente", Integer.class)).thenReturn(partecipazione.getUtente().getId());
+    when(resultSet.getObject("id_asta", Integer.class)).thenReturn(partecipazione.getAsta().getId());
+    when(resultSet.getObject("offerta", Double.class)).thenReturn(partecipazione.getOfferta());
+
+    Partecipazione partecipazioneRetrieve = partecipazioneDao.doRetrieveById(asta.getId());
+
+    Assertions.assertEquals(partecipazione, partecipazioneRetrieve);
   }
 
   @Test
@@ -114,7 +140,42 @@ class PartecipazioneDaoImplUnitTest {
   }
 
   @Test
-  void doRetrieveAll() {
+  void doRetrieveAll() throws SQLException {
+    Utente utente = new Utente();
+    Asta asta = new Asta();
+
+    utente.setId(1);
+    asta.setId(1);
+
+    Partecipazione partecipazione = new Partecipazione(asta, utente, 999d);
+    partecipazione.setId(1);
+
+    Utente utente2 = new Utente();
+    Asta asta2 = new Asta();
+
+    utente2.setId(2);
+    asta2.setId(2);
+
+    Partecipazione partecipazione2 = new Partecipazione(asta2, utente2, 999d);
+    partecipazione2.setId(2);
+
+    List<Partecipazione> partecipazioneOracolo = Arrays.asList(partecipazione, partecipazione2);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+    when(resultSet.getObject("id", Integer.class)).thenReturn(partecipazione.getId(),
+            partecipazione2.getId());
+    when(resultSet.getObject("id_utente", Integer.class)).thenReturn(partecipazione.getUtente().getId(),
+            partecipazione2.getUtente().getId());
+    when(resultSet.getObject("id_asta", Integer.class)).thenReturn(partecipazione.getAsta().getId(),
+            partecipazione2.getAsta().getId());
+    when(resultSet.getObject("offerta", Double.class)).thenReturn(partecipazione.getOfferta(),
+            partecipazione2.getOfferta());
+
+    List<Partecipazione> partecipazioneRetrieve = partecipazioneDao.doRetrieveAll("id");
+
+    Assertions.assertArrayEquals(partecipazioneRetrieve.toArray(), partecipazioneOracolo.toArray());
   }
 
   @Test
@@ -175,8 +236,44 @@ class PartecipazioneDaoImplUnitTest {
     Assertions.assertNull(partecipazioneRetrieve);
   }
 
-  @Test
-  void doRetrieveAllByUserId() {
+  @ParameterizedTest
+  @ValueSource(ints = {0})
+  void doRetrieveAllByUserId(int idUtente) throws SQLException {
+    Utente utente = new Utente();
+    Asta asta = new Asta();
+
+    utente.setId(1);
+    asta.setId(1);
+
+    Partecipazione partecipazione = new Partecipazione(asta, utente, 999d);
+    partecipazione.setId(1);
+
+    Utente utente2 = new Utente();
+    Asta asta2 = new Asta();
+
+    utente2.setId(2);
+    asta2.setId(1);
+
+    Partecipazione partecipazione2 = new Partecipazione(asta2, utente2, 999d);
+    partecipazione2.setId(2);
+
+    List<Partecipazione> partecipazioneOracolo = Arrays.asList(partecipazione, partecipazione2);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+    when(resultSet.getObject("id", Integer.class)).thenReturn(partecipazione.getId(),
+            partecipazione2.getId());
+    when(resultSet.getObject("id_utente", Integer.class)).thenReturn(partecipazione.getUtente().getId(),
+            partecipazione2.getUtente().getId());
+    when(resultSet.getObject("id_asta", Integer.class)).thenReturn(partecipazione.getAsta().getId(),
+            partecipazione2.getAsta().getId());
+    when(resultSet.getObject("offerta", Double.class)).thenReturn(partecipazione.getOfferta(),
+            partecipazione2.getOfferta());
+
+    List<Partecipazione> partecipazioneRetrieve = partecipazioneDao.doRetrieveAllByAuctionId(idUtente);
+
+    Assertions.assertArrayEquals(partecipazioneRetrieve.toArray(), partecipazioneOracolo.toArray());
   }
 
   @Test
@@ -191,9 +288,11 @@ class PartecipazioneDaoImplUnitTest {
   /*
   @Test
   void doUpdate() {
+
   }
 
   @Test
   void doDelete() {
   }
+   */
 }
