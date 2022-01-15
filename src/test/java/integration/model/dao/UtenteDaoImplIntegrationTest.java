@@ -45,17 +45,25 @@ class UtenteDaoImplIntegrationTest {
 
   @BeforeAll
   public static void generalSetUp() {
-    TomcatJNDI tomcatJNDI = new TomcatJNDI();
-    tomcatJNDI.processContextXml(new File("src/main/webapp/META-INF/context.xml"));
-    //tomcatJNDI.start();
-    try {
-      Context initCtx = new InitialContext();
-      Context envCtx = (Context) initCtx.lookup("java:comp/env");
-
+    Context initCtx = null;
+    Context envCtx = null;
+    try{
+      initCtx = new InitialContext();
+      envCtx = (Context) initCtx.lookup("java:comp/env");
       dataSource = (DataSource) envCtx.lookup("jdbc/storage");
-
     } catch (NamingException e) {
-      e.printStackTrace();
+      TomcatJNDI tomcatJNDI = new TomcatJNDI();
+      tomcatJNDI.processContextXml(new File("src/main/webapp/META-INF/context.xml"));
+      tomcatJNDI.start();
+    }
+    if(envCtx == null){
+      try{
+        initCtx = new InitialContext();
+        envCtx = (Context) initCtx.lookup("java:comp/env");
+        dataSource = (DataSource) envCtx.lookup("jdbc/storage");
+      } catch (NamingException e) {
+        e.printStackTrace();
+      }
     }
   }
 
