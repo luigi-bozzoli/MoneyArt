@@ -6,6 +6,7 @@ import it.unisa.c02.moneyart.model.beans.Segnalazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.SegnalazioneDaoImpl;
 import it.unisa.c02.moneyart.model.dao.interfaces.SegnalazioneDao;
+import org.apache.ibatis.jdbc.SQL;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -158,14 +159,64 @@ class SegnalazioneDaoImplUnitTest {
   }
 
   @Test
+  void doRetrieveAllCatch() throws SQLException {
+    SQLException ex = new SQLException();
+    when(connection.prepareStatement(anyString())).thenThrow(ex);
+
+    List<Segnalazione> segnalazioni = segnalazioneDao.doRetrieveAll(null);
+
+    Assertions.assertNull(segnalazioni);
+  }
+
+  @Test
+  void doRetrieveByAuctionId() throws SQLException {
+    Asta asta = new Asta();
+
+    asta.setId(1);
+
+    Segnalazione segnalazione = new Segnalazione(asta, "prova", false);
+    segnalazione.setId(1);
+
+    Asta asta2 = new Asta();
+
+    asta2.setId(1);
+
+    Segnalazione segnalazione2 = new Segnalazione(asta2, "prova", false);
+    segnalazione.setId(2);
+
+    List<Segnalazione> segnalazioneOracolo = Arrays.asList(segnalazione, segnalazione2);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setInt(anyInt(), anyInt());
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(resultSet.getObject("id", Integer.class)).thenReturn(segnalazione.getId(), segnalazione2.getId());
+    when(resultSet.getObject("id_asta", Integer.class)).thenReturn(segnalazione.getAsta().getId(), segnalazione2.getAsta().getId());
+    when(resultSet.getObject("commento", String.class)).thenReturn(segnalazione.getCommento(), segnalazione2.getCommento());
+    when(resultSet.getObject("letta", Boolean.class)).thenReturn(segnalazione.isLetta(), segnalazione2.isLetta());
+
+    List<Segnalazione> segnalazioneRetrieve = segnalazioneDao.doRetrieveByAuctionId(1);
+
+    Assertions.assertArrayEquals(segnalazioneRetrieve.toArray(), segnalazioneOracolo.toArray());
+  }
+
+  @Test
+  void doRetrieveByAuctionIdCatch() throws SQLException {
+    SQLException ex = new SQLException();
+    when(connection.prepareStatement(anyString())).thenThrow(ex);
+
+    List<Segnalazione> segnalazioni = segnalazioneDao.doRetrieveByAuctionId(1);
+
+    Assertions.assertNull(segnalazioni);
+  }
+
+  /*
+  @Test
   void doUpdate() {
   }
 
   @Test
   void doDelete() {
   }
-
-  @Test
-  void doRetrieveByAuctionId() {
-  }
+  */
 }
