@@ -50,6 +50,15 @@ public class OperaDaoImplUnitTest {
 
   @BeforeAll
   public static void setUpClass() {
+
+  }
+
+  @AfterAll
+  public static void tearDownClass() {
+  }
+
+  @BeforeEach
+  public void setUp() throws SQLException {
     when(opera.getId()).thenReturn(100);  //opera ha id 100
     when(opera.getPossessore()).thenReturn(possessore);
     when(possessore.getId()).thenReturn(100); //il possessore ha id 100
@@ -62,15 +71,6 @@ public class OperaDaoImplUnitTest {
     when(opera.getCertificato()).thenReturn("certificatoDellOperaDiMario");
     when(opera.getStato()).thenReturn(Opera.Stato.IN_POSSESSO);  //fault certo
 
-  }
-
-  @AfterAll
-  public static void tearDownClass() {
-  }
-
-  @BeforeEach
-  public void setUp() throws SQLException {
-
 
     when(dataSource.getConnection()).thenReturn(connection);
     when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
@@ -82,7 +82,8 @@ public class OperaDaoImplUnitTest {
     when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
     when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
     System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
-    when(resultSet.getInt(anyInt())).thenReturn(100);
+    int operaId = opera.getId();
+    when(resultSet.getInt(anyInt())).thenReturn(operaId);
     System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
   }
 
