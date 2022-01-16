@@ -117,7 +117,7 @@ VALUES((SELECT id FROM utente WHERE username = "AntonioMartucci"), (SELECT id FR
 # Notifiche: The Shibosis di alfcan
 INSERT INTO notifica(id_utente, id_rivendita, id_asta, letta, tipo, contenuto)
 VALUES((SELECT id FROM utente WHERE username = "shoyll"), NULL, (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "The Shibosis" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), FALSE, "SUPERATO", "Contenuto della notifica."),
-      ((SELECT id FROM utente WHERE username = "XJustUnluckyX"), NULL, (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "The Shibosis" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), TRUE, "VITTORIA", "Contenuto della notifica.")
+      ((SELECT id FROM utente WHERE username = "XJustUnluckyX"), NULL, (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "The Shibosis" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), TRUE, "VITTORIA", "Contenuto della notifica.");
 
 # Notifiche: Bears Deluxe #3742 di alfcan
 INSERT INTO notifica(id_utente, id_rivendita, id_asta, letta, tipo, contenuto)
