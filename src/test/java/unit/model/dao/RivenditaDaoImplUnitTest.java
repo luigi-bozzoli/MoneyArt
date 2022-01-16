@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,9 +35,6 @@ public class RivenditaDaoImplUnitTest {
   private ResultSet resultSet;
 
   private RivenditaDao rivenditaDao;
-
-  //Costruttore vuoto
-  public RivenditaDaoImplUnitTest () { }
 
   @BeforeEach
   public void setUpClass() throws SQLException {
