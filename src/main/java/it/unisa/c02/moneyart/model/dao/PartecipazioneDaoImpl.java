@@ -131,12 +131,13 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    * Ricerca nel database tutte le partecipazioni relative ad un'asta.
    *
    * @param id identificativo di un'asta
-   * @return la collezione di partecipazioni trovata nel database
+   * @return la collezione di partecipazioni trovata nel database ordinata
+   * in base al prezzo in maniera crescente
    */
   @Override
   public List<Partecipazione> doRetrieveAllByAuctionId(int id) {
     String sql = "select * from " + TABLE_NAME
-        + " where id_asta = ? ";
+        + " where id_asta = ? ORDER BY offerta ASC";
 
     List<Partecipazione> partecipazioni = null;
 

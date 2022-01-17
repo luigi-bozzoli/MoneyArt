@@ -15,7 +15,9 @@ public interface UtenteService {
 
   void updateUser(Utente utente);
 
-  List<Utente> getAllUsers(String Filter);
+  List<Utente> getAllUsers();
+
+  List<Utente> getUsersSortedByFollowers(String order);
 
   List<Utente> searchUsers(String txt);
 

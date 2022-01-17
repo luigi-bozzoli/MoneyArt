@@ -16,13 +16,10 @@ import it.unisa.c02.moneyart.utils.production.Sing;
 import it.unisa.c02.moneyart.utils.timers.TimedObject;
 import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
+
 import it.unisa.c02.moneyart.utils.timers.TimerService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 
 
@@ -79,6 +76,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
       return null;
     }
     asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+    asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
+    asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
+    asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
     return asta;
   }
 
@@ -89,13 +89,102 @@ public class AstaServiceImpl implements AstaService, TimerService {
    */
   @Override
   public List<Asta> getAllAuctions() {
-    List<Asta> aste = astaDao.doRetrieveAll("id");
+    List<Asta> aste = astaDao.doRetrieveAll("");
     if (aste == null) {
       return null;
     }
     for (Asta asta : aste) {
       asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+      asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
+      asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
+      asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
     }
+    return aste;
+  }
+
+  /**
+   * Restituisce tutte le aste ordinate in base al prezzo.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @return la lista ordinata
+   */
+  @Override
+  public List<Asta> getAuctionsSortedByPrice(String order) {
+
+    List<Asta> aste = getAuctionsByState(Asta.Stato.IN_CORSO);
+
+    Collections.sort(aste, new Comparator<Asta>() {
+      @Override
+      public int compare(Asta a1, Asta a2) {
+        Double maxA1 = a1.getPartecipazioni().get(a1.getPartecipazioni().size()-1).getOfferta();
+        Double maxA2 = a2.getPartecipazioni().get(a2.getPartecipazioni().size()-1).getOfferta();
+        return Double.compare(maxA1, maxA2);
+      }
+    });
+
+    if(order.equalsIgnoreCase("DESC")) {
+      Collections.reverse(aste);
+    }
+
+    return aste;
+
+  }
+
+  /**
+   * Restituisce tutte le aste ordinate in base ai follower dell'artista.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @return la lista ordinata
+   */
+  @Override
+  public List<Asta> getAuctionsSortedByArtistFollowers(String order) {
+    List<Asta> aste = getAuctionsByState(Asta.Stato.IN_CORSO);
+
+    Collections.sort(aste, new Comparator<Asta>() {
+      @Override
+      public int compare(Asta a1, Asta a2) {
+        int f1 = a1.getOpera().getArtista().getnFollowers();
+        int f2 = a2.getOpera().getArtista().getnFollowers();
+        return Integer.compare(f1, f2);
+      }
+    });
+
+    if(order.equalsIgnoreCase("DESC")) {
+      Collections.reverse(aste);
+    }
+
+    return aste;
+  }
+
+  /**
+   * Restituisce tutte le aste ordinate in base alla scadenza.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @return la lista ordinata
+   */
+  @Override
+  public List<Asta> getAuctionsSortedByExpirationTime(String order) {
+    List<Asta> aste = getAuctionsByState(Asta.Stato.IN_CORSO);
+
+    Collections.sort(aste, new Comparator<Asta>() {
+      @Override
+      public int compare(Asta a1, Asta a2) {
+        Date d1 = a1.getDataFine();
+        Date d2 = a2.getDataFine();
+        if(d1.before(d2)) {
+          return -1;
+        } else if(d1.after(d2)) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
+
+    if(order.equalsIgnoreCase("DESC")) {
+      Collections.reverse(aste);
+    }
+
     return aste;
   }
 
@@ -112,6 +201,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
     }
     for (Asta asta : aste) {
       asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+      asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
+      asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
+      asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
     }
     return aste;
   }
@@ -298,13 +390,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
     if (partecipazioni == null || partecipazioni.isEmpty()) {
       return null;
     }
-    Partecipazione bestOffer = partecipazioni.get(0);
-    for (Partecipazione partecipazione : partecipazioni) {
-      if (partecipazione.getOfferta() > bestOffer.getOfferta()) {
-        bestOffer = partecipazione;
-      }
-    }
-    return bestOffer;
+    return partecipazioni.get(partecipazioni.size()-1);
   }
 
   private List<Partecipazione> bestAuctionOfferByUser(Utente utente) {
@@ -456,6 +542,19 @@ public class AstaServiceImpl implements AstaService, TimerService {
       terminaAsta(asta);
     }
 
+  }
+
+  /**
+   * Restituisce il numero di followers di un determinato utente.
+   *
+   * @param utente l'utente interessato a conoscere il numero dei propri followers
+   * @return il numero di followers dell'utente
+   */
+
+  private int getNumberOfFollowers(Utente utente) {
+    List<Utente> followers = utenteDao.doRetrieveFollowersByUserId(utente.getId());
+
+    return followers.size();
   }
 
 

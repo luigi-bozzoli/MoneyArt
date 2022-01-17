@@ -1,5 +1,6 @@
 package it.unisa.c02.moneyart.gestione.utente.service;
 
+import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
@@ -8,6 +9,8 @@ import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -146,9 +149,15 @@ public class UtenteServiceImpl implements UtenteService {
     utenteDao.doUpdate(utente);
   }
 
+
+  /**
+   * Restituisce tutti gli utenti presenti nel database.
+   *
+   * @return la lista di utenti
+   */
   @Override
-  public List<Utente> getAllUsers(String filter) {
-    List<Utente> utenti = utenteDao.doRetrieveAll(filter);
+  public List<Utente> getAllUsers() {
+    List<Utente> utenti = utenteDao.doRetrieveAll("");
 
     for (Utente utente : utenti) {
       if (utente.getSeguito().getId() != null) {
@@ -160,6 +169,30 @@ public class UtenteServiceImpl implements UtenteService {
       utente.setPartecipazioni(partecipazioneDao.doRetrieveAllByUserId(utente.getId()));
 
       utente.setnFollowers(getNumberOfFollowers(utente));
+    }
+
+    return utenti;
+  }
+
+  /**
+   * Restituisce tutte gli utenti ordinati in base ai follower.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @return la lista ordinata
+   */
+  @Override
+  public List<Utente> getUsersSortedByFollowers(String order) {
+    List<Utente> utenti = getAllUsers();
+
+    Collections.sort(utenti, new Comparator<Utente>() {
+      @Override
+      public int compare(Utente u1, Utente u2) {
+        return Integer.compare(u1.getnFollowers(), u2.getnFollowers());
+      }
+    });
+
+    if(order.equalsIgnoreCase("DESC")) {
+      Collections.reverse(utenti);
     }
 
     return utenti;

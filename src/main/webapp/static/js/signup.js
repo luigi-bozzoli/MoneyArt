@@ -60,40 +60,52 @@ function checkUsername(usr) {
 
 $(document).ready(function () {
 
-    $(".signup").submit(function () {
-        let name = onlyLetters($(".signup input[name = name]"));
-        let surname = onlyLetters($(".signup input[name = surname]"));
-        let email = checkEmail($(".signup input[name = email]"));
+    if (document.URL.includes("signup.jsp") ) {
+        $(".signup").submit(function () {
+            let name = onlyLetters($(".signup input[name = name]"));
+            let surname = onlyLetters($(".signup input[name = surname]"));
+            let email = checkEmail($(".signup input[name = email]"));
+            let pw = checkPassword($(".signup input[name = password]"));
+            let usr = checkUsername($(".signup input[name = username]"));
+            let repeatPw = checkRepeatPw();
+
+            if ((!name || !surname || !email || !usr) && pw) {
+                $(".error").html('<p class="text-center">Dati inseriti non validi<i class="fas fa-exclamation-triangle ml-2"></i></p>');
+                $("html, body").animate({scrollTop: 0}, 500);
+                $(".error").delay(550).effect("shake");
+                return false;
+            } else if (!repeatPw) {
+                $(".error").html('<p class="text-center">Le password non corrispondono<i class="fas fa-exclamation-triangle ml-2"></i></p>');
+                $("html, body").animate({scrollTop: 0}, 500);
+                $(".error").delay(550).effect("shake");
+                return false;
+            } else if (!pw) {
+                $(".error").html('<p class="text-center">La password non è abbastanza complessa<i class="fas fa-exclamation-triangle ml-2"></i></p>');
+                $("html, body").animate({scrollTop: 0}, 500);
+                $(".error").delay(550).effect("shake");
+                return false;
+            }
+
+        });
+
+        $("#password, #repeat-password").on('keyup', function () {
+            if (checkRepeatPw()) {
+                $(".signup-input.pw").css("border", "none");
+            } else {
+                $(".signup-input.pw").css("border", "1px solid red");
+            }
+        });
+    } else if (document.URL.includes("login.jsp")) {
         let pw = checkPassword($(".signup input[name = password]"));
         let usr = checkUsername($(".signup input[name = username]"));
-        let repeatPw = checkRepeatPw();
 
-        if ((!name || !surname || !email || !usr) && pw) {
-            $(".error").html('<p class="text-center">Dati inseriti non validi<i class="fas fa-exclamation-triangle ml-2"></i></p>');
-            $("html, body").animate({scrollTop: 0}, 500);
-            $(".error").delay(550).effect("shake");
-            return false;
-        } else if (!repeatPw) {
-            $(".error").html('<p class="text-center">Le password non corrispondono<i class="fas fa-exclamation-triangle ml-2"></i></p>');
-            $("html, body").animate({scrollTop: 0}, 500);
-            $(".error").delay(550).effect("shake");
-            return false;
-        } else if (!pw) {
-            $(".error").html('<p class="text-center">La password non è abbastanza complessa<i class="fas fa-exclamation-triangle ml-2"></i></p>');
-            $("html, body").animate({scrollTop: 0}, 500);
+        if(isEmpty(pw.val()) || isEmpty(usr.val())) {
+            $(".error").html('<p class="text-center">Non hai inserito le credenziali!<i class="fas fa-exclamation-triangle ml-2"></i></p>');
             $(".error").delay(550).effect("shake");
             return false;
         }
+    }
 
-    });
-
-    $("#password, #repeat-password").on('keyup', function () {
-        if (checkRepeatPw()) {
-            $(".signup-input.pw").css("border", "none");
-        } else {
-            $(".signup-input.pw").css("border", "1px solid red");
-        }
-    });
 
 });
 

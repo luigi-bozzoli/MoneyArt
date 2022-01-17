@@ -117,4 +117,28 @@ public interface AstaService {
    * @return lo storico di tutte le offerte
    */
   List<Partecipazione> getAllOffers();
+
+  /**
+   * Restituisce tutte le aste ordinate in base al prezzo.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @return la lista ordinata
+   */
+  List<Asta> getAuctionsSortedByPrice(String order);
+
+  /**
+   * Restituisce tutte le aste ordinate in base ai follower dell'artista.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @return la lista ordinata
+   */
+  List<Asta> getAuctionsSortedByArtistFollowers(String order);
+
+  /**
+   * Restituisce tutte le aste ordinate in base alla scadenza.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @return la lista ordinata
+   */
+  List<Asta> getAuctionsSortedByExpirationTime(String order);
 }

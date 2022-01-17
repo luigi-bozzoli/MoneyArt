@@ -57,10 +57,11 @@ public class RivenditaServiceImpl implements RivenditaService {
 
     double prezzo = 0;
     Utente artista = opera.getArtista();
-    Integer followers = utenteDao.doRetrieveFollowersByUserId(artista.getId()).size();
+    Integer followers = getNumberOfFollowers(artista);
     prezzo = followers * prezzo;
     return prezzo;
   }
+
 
   /**
    * Pone un'opera posseduta dall'utente in rivendita.
@@ -137,6 +138,20 @@ public class RivenditaServiceImpl implements RivenditaService {
   public List<Rivendita> getResells(Rivendita.Stato stato) {
 
     return rivenditaDao.doRetrieveByStato(stato);
+  }
+
+
+  /**
+   * Restituisce il numero di followers di un determinato utente.
+   *
+   * @param utente l'utente interessato a conoscere il numero dei propri followers
+   * @return il numero di followers dell'utente
+   */
+
+  private int getNumberOfFollowers(Utente utente) {
+    List<Utente> followers = utenteDao.doRetrieveFollowersByUserId(utente.getId());
+
+    return followers.size();
   }
 
   @Inject
