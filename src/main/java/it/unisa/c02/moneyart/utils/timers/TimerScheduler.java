@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -39,7 +38,7 @@ public class TimerScheduler {
       e.printStackTrace();
     }
 
-    timedObjectDao = new TimedObjecDaoImpl(dataSource);
+    timedObjectDao = new TimedObjectDaoImpl(dataSource);
     services = new HashMap<>();
     timerSet = new HashSet<>();
   }

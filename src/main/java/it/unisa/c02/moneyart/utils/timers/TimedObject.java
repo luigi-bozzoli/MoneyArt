@@ -2,6 +2,7 @@ package it.unisa.c02.moneyart.utils.timers;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Contiene le informazioni necessarie per rappresentare un timer attivo.
@@ -108,13 +109,33 @@ public class TimedObject {
         +
         "id=" + id
         +
-        ", beanId=" + attribute
+        ", attribute=" + attribute
         +
         ", taskType='" + taskType + '\''
         +
         ", taskDate=" + taskDate
         +
         '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof TimedObject)) {
+      return false;
+    }
+    TimedObject that = (TimedObject) o;
+    return Objects.equals(getId(), that.getId()) &&
+        Objects.equals(getAttribute(), that.getAttribute()) &&
+        Objects.equals(getTaskType(), that.getTaskType()) &&
+        Objects.equals(getTaskDate(), that.getTaskDate());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getAttribute(), getTaskType(), getTaskDate());
   }
 
   private Integer id;
