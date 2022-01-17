@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 @WebFilter(filterName = "FilterLogin", urlPatterns = {"/userPage", "/newOffer", "/newArtwork",
     "/cancelAuction", "/newAuction", "/newProfilePicture", "/wallet", "/notifies",
     "/getUserArtworks", "/follow", "/logout", "/changeUserInformation", "/userAuctions",
-    "/buyArtwork", "/resell"})
+    "/buyArtwork", "/resell", "/pay", "/recivePayment"})
 public class FilterLogin implements Filter {
   public void init(FilterConfig config) throws ServletException {
   }
