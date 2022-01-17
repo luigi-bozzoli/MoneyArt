@@ -18,6 +18,19 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>20.95.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.micromata.paypal</groupId>
+            <artifactId>paypal-core</artifactId>
+            <version>0.2</version>
+        </dependency>
+
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
