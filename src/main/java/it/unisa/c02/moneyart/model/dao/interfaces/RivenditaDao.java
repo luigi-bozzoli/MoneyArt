@@ -15,5 +15,5 @@ public interface RivenditaDao extends GenericDao<Rivendita> {
    * @param s stato della rivendita
    * @return la collezione di partecipazioni trovata nel database
    */
-  List<Rivendita> doRetrieveByStato(String s);
+  List<Rivendita> doRetrieveByStato(Rivendita.Stato s);
 }

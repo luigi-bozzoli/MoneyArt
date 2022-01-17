@@ -10,13 +10,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-
 import javax.sql.DataSource;
 import java.sql.*;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,13 +25,13 @@ import org.mockito.quality.Strictness;
 public class UtenteDaoImplUnitTest {
 
   @Mock
-  private DataSource dataSource;
+  private static DataSource dataSource;
   @Mock
-  private Connection connection;
+  private static Connection connection;
   @Mock
-  private PreparedStatement preparedStatement;
+  private static PreparedStatement preparedStatement;
   @Mock
-  private ResultSet resultSet;
+  private static ResultSet resultSet;
 
   /*Va bene anche così, ma vorrei moccare anche gli utenti*/
   private static Utente user;
@@ -44,7 +41,7 @@ public class UtenteDaoImplUnitTest {
   //costruttore vuoto
   public UtenteDaoImplUnitTest () { }
 
-  @BeforeEach
+  @BeforeAll
   public static void setUpClass() {
     userFollowed = new Utente("MarioVip", "RossiVip", null, "mariorossivip@unisa.it",
             "m_red", null, new byte[10], 2000000.2);
@@ -55,10 +52,11 @@ public class UtenteDaoImplUnitTest {
     user.setId(100);
   }
 
+  @AfterAll
   public static void tearDownClass() {
   }
 
-  @BeforeAll
+  @BeforeEach
   public void setUp() throws SQLException { //istruisco gli oggetti mock
     when(dataSource.getConnection()).thenReturn(connection);
     when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
@@ -72,10 +70,9 @@ public class UtenteDaoImplUnitTest {
     when(resultSet.getInt(anyInt())).thenReturn(user.getId());
   }
 
-  @AfterAll
+  @AfterEach
   public void tearDown() {
   }
-
 
   @Test
   public void testDoCreate() throws SQLException {

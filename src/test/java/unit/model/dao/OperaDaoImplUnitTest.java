@@ -1,19 +1,14 @@
 package unit.model.dao;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -41,14 +36,21 @@ public class OperaDaoImplUnitTest {
 
   @Mock
   private static Opera opera; /*l'opera ha id 100*/
+
+
   @Mock
   private static Utente possessore; /*il possessore ha id 100*/
   @Mock
   private static Utente artista; /*l'artista dell'opera*/
 
+  public enum StatoOpera {
+    ALL_ASTA, IN_VENDITA, IN_POSSESSO, PREVENDITA
+  }
+
 
   @BeforeAll
   public static void setUpClass() {
+
   }
 
   @AfterAll
@@ -57,19 +59,19 @@ public class OperaDaoImplUnitTest {
 
   @BeforeEach
   public void setUp() throws SQLException {
-    /*istruisco l'opera moccata
-    when(opera.getId()).thenReturn(100);
+    when(opera.getId()).thenReturn(100);  //opera ha id 100
     when(opera.getPossessore()).thenReturn(possessore);
     when(possessore.getId()).thenReturn(100); //il possessore ha id 100
     when(opera.getArtista()).thenReturn(artista);
     when(artista.getId()).thenReturn(90); //l'artista ha id 90
     when(opera.getNome()).thenReturn("Mario");
     when(opera.getDescrizione()).thenReturn("descrizioneDellOperaDiMario");
-    doNothing().when(opera).getImmagine(); //fault possibile
+    Blob image = mock(Blob.class); //mocco un Blob per trattare l'immagine
+    when(opera.getImmagine()).thenReturn(image); // fault possibile
     when(opera.getCertificato()).thenReturn("certificatoDellOperaDiMario");
-    when(opera.getStato()).thenReturn(stato);
-    when(stato.toString()).thenReturn("IN_POSSESSO");
-    __________________________*/
+    when(opera.getStato()).thenReturn(Opera.Stato.IN_POSSESSO);  //fault certo
+
+
     when(dataSource.getConnection()).thenReturn(connection);
     when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
     doNothing().when(connection).commit();
@@ -79,7 +81,9 @@ public class OperaDaoImplUnitTest {
     when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
     when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
     when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
-    when(resultSet.getInt(anyInt())).thenReturn(1);
+    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
+    int operaId = opera.getId();
+    when(resultSet.getInt(anyInt())).thenReturn(operaId);
     System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
   }
 
@@ -90,17 +94,6 @@ public class OperaDaoImplUnitTest {
 
   @Test
   public void doCreate() {
-
-    when(opera.getId()).thenReturn(100);
-    when(opera.getPossessore()).thenReturn(possessore);
-    when(possessore.getId()).thenReturn(100); /*il possessore ha id 100*/
-    when(opera.getArtista()).thenReturn(artista);
-    when(artista.getId()).thenReturn(90); /*l'artista ha id 90*/
-    when(opera.getNome()).thenReturn("Mario");
-    when(opera.getDescrizione()).thenReturn("descrizioneDellOperaDiMario");
-    doNothing().when(opera).getImmagine(); /* fault possibile*/
-    when(opera.getCertificato()).thenReturn("certificatoDellOperaDiMario");
-    when(opera.getStato()).thenReturn(any());  /*fault certo*/
 
     assertTrue(new OperaDaoImpl(dataSource).doCreate(opera));
   }

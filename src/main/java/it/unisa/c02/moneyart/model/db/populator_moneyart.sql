@@ -22,6 +22,16 @@ DELETE FROM asta WHERE id > 0;
 DELETE FROM opera WHERE id > 0;
 DELETE FROM utente WHERE id > 0;
 
+ALTER TABLE segnalazione AUTO_INCREMENT = 1;
+ALTER TABLE notifica AUTO_INCREMENT = 1;
+ALTER TABLE partecipazione AUTO_INCREMENT = 1;
+ALTER TABLE rivendita AUTO_INCREMENT = 1;
+ALTER TABLE asta AUTO_INCREMENT = 1;
+ALTER TABLE opera AUTO_INCREMENT = 1;
+ALTER TABLE utente AUTO_INCREMENT = 1;
+
+
+
 
 /****************************** UTENTI ******************************/
 
@@ -65,14 +75,14 @@ INSERT INTO asta(id_opera, data_inizio, data_fine, stato)
 VALUES((SELECT id FROM opera WHERE nome = "The Shibosis" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan")), CURRENT_DATE() - 8, CURRENT_DATE() - 1, "TERMINATA"),
       ((SELECT id FROM opera WHERE nome = "Bears Deluxe #3742" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan")), CURRENT_DATE() - 1, CURRENT_DATE + 6, "IN_CORSO"),
       ((SELECT id FROM opera WHERE nome = "Bears Deluxe #3742" AND id_artista = (SELECT id FROM utente WHERE username = "MarioPeluso")), CURRENT_DATE(), CURRENT_DATE() + 7, "IN_CORSO"),
-      ((SELECT id FROM opera WHERE nome = "Kumo Resident") AND id_artista = (SELECT id FROM utente WHERE username = "AurySepe"), CURRENT_DATE(), CURRENT_DATE() + 7, "IN_CORSO");
+      ((SELECT id FROM opera WHERE nome = "Kumo Resident" AND id_artista = (SELECT id FROM utente WHERE username = "AurySepe")), CURRENT_DATE(), CURRENT_DATE() + 7, "IN_CORSO");
 
 
 
 
 /****************************** RIVENDITE ******************************/
 INSERT INTO rivendita(id_opera, prezzo, stato)
-VALUES(1, 999.99, "IN_CORSO");
+VALUES((SELECT id FROM opera WHERE nome = "The Shibosis" AND id_utente = (SELECT id FROM utente WHERE username = "XJustUnluckyX")), 999.99, "IN_CORSO");
 
 
 
@@ -80,14 +90,14 @@ VALUES(1, 999.99, "IN_CORSO");
 
 # Partecipazioni asta: The Shibosis di alfcan
 INSERT INTO partecipazione(id_utente, id_asta, offerta)
-VALUES((SELECT id FROM utente WHERE username = "shoyll"), 1, 1000),
-      ((SELECT id FROM utente WHERE username = "XJustUnluckyX"), 1, 1500);
+VALUES((SELECT id FROM utente WHERE username = "shoyll"), (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "The Shibosis" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), 1000),
+      ((SELECT id FROM utente WHERE username = "XJustUnluckyX"), (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "The Shibosis" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), 1500);
 
 # Partecipazioni asta: Bears Deluxe #3742 di alfcan
 INSERT INTO partecipazione(id_utente, id_asta, offerta)
-VALUES((SELECT id FROM utente WHERE username = "DG266"), 2, 485.99),
-      ((SELECT id FROM utente WHERE username = "xDaryamo"), 2, 486),
-      ((SELECT id FROM utente WHERE username = "MarioPeluso"), 2, 499.99);
+VALUES((SELECT id FROM utente WHERE username = "DG266"), (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Bears Deluxe #3742" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), 485.99),
+      ((SELECT id FROM utente WHERE username = "xDaryamo"), (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Bears Deluxe #3742" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), 486),
+      ((SELECT id FROM utente WHERE username = "MarioPeluso"), (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Bears Deluxe #3742" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), 499.99);
 
 # Partecipazioni asta: Bears Deluxe #3742 di MarioPeluso
 # ASTA ILLECITA
@@ -95,9 +105,9 @@ VALUES((SELECT id FROM utente WHERE username = "DG266"), 2, 485.99),
 
 # Partecipazioni asta: Kumo Resident di AurySepe
 INSERT INTO partecipazione(id_utente, id_asta, offerta)
-VALUES((SELECT id FROM utente WHERE username = "AntonioMartucci"), 4, 15),
-      ((SELECT id FROM utente WHERE username = "luigi-bozzoli"), 4, 15.01),
-      ((SELECT id FROM utente WHERE username = "stepzar"), 4, 100);
+VALUES((SELECT id FROM utente WHERE username = "AntonioMartucci"), (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Kumo Resident" AND id_artista = (SELECT id FROM utente WHERE username = "AurySepe"))), 15),
+      ((SELECT id FROM utente WHERE username = "luigi-bozzoli"), (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Kumo Resident" AND id_artista = (SELECT id FROM utente WHERE username = "AurySepe"))), 15.01),
+      ((SELECT id FROM utente WHERE username = "stepzar"), (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Kumo Resident" AND id_artista = (SELECT id FROM utente WHERE username = "AurySepe"))), 100);
 
 
 
@@ -106,13 +116,13 @@ VALUES((SELECT id FROM utente WHERE username = "AntonioMartucci"), 4, 15),
 
 # Notifiche: The Shibosis di alfcan
 INSERT INTO notifica(id_utente, id_rivendita, id_asta, letta, tipo, contenuto)
-VALUES((SELECT id FROM utente WHERE username = "shoyll"), NULL, 1, FALSE, "SUPERATO", "Contenuto della notifica."),
-      ((SELECT id FROM utente WHERE username = "XJustUnluckyX"), NULL, 2, TRUE, "VITTORIA", "Contenuto della notifica.")
+VALUES((SELECT id FROM utente WHERE username = "shoyll"), NULL, (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "The Shibosis" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), FALSE, "SUPERATO", "Contenuto della notifica."),
+      ((SELECT id FROM utente WHERE username = "XJustUnluckyX"), NULL, (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "The Shibosis" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), TRUE, "VITTORIA", "Contenuto della notifica.");
 
 # Notifiche: Bears Deluxe #3742 di alfcan
 INSERT INTO notifica(id_utente, id_rivendita, id_asta, letta, tipo, contenuto)
-VALUES((SELECT id FROM utente WHERE username = "DG266"), NULL, 2, FALSE, "SUPERATO", "Contenuto della notifica."),
-      ((SELECT id FROM utente WHERE username = "xDaryamo"), NULL, 2, TRUE, "SUPERATO", "Contenuto della notifica.");
+VALUES((SELECT id FROM utente WHERE username = "DG266"), NULL, (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Bears Deluxe #3742" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), FALSE, "SUPERATO", "Contenuto della notifica."),
+      ((SELECT id FROM utente WHERE username = "xDaryamo"), NULL, (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Bears Deluxe #3742" AND id_artista = (SELECT id FROM utente WHERE username = "alfcan"))), TRUE, "SUPERATO", "Contenuto della notifica.");
 
 # Notifiche: Bears Deluxe #3742 di MarioPeluso
 # ASTA ILLECITA
@@ -120,12 +130,11 @@ VALUES((SELECT id FROM utente WHERE username = "DG266"), NULL, 2, FALSE, "SUPERA
 
 # Notifiche: Kumo Resident di AurySepe
 INSERT INTO notifica(id_utente, id_rivendita, id_asta, letta, tipo, contenuto)
-VALUES((SELECT id FROM utente WHERE username = "AntonioMartucci"), NULL, 4, FALSE, "SUPERATO", "Contenuto della notifica."),
-      ((SELECT id FROM utente WHERE username = "luigi-bozzoli"), NULL, 4, TRUE, "SUPERATO", "Contenuto della notifica.");
+VALUES((SELECT id FROM utente WHERE username = "AntonioMartucci"), NULL, (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Kumo Resident" AND id_artista = (SELECT id FROM utente WHERE username = "AurySepe"))), FALSE, "SUPERATO", "Contenuto della notifica."),
+      ((SELECT id FROM utente WHERE username = "luigi-bozzoli"), NULL, (SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Kumo Resident" AND id_artista = (SELECT id FROM utente WHERE username = "AurySepe"))), TRUE, "SUPERATO", "Contenuto della notifica.");
 
 
 /****************************** SEGNALAZIONI ******************************/
 
 INSERT INTO segnalazione(id_asta, commento, letta)
-VALUES(2, "MarioPeluso ha copiato l'opera di alfcan attualmente all'asta.", FALSE);
-       
+VALUES((SELECT id FROM asta WHERE id_opera = (SELECT id FROM opera WHERE nome = "Bears Deluxe #3742" AND id_artista = (SELECT id FROM utente WHERE username = "MarioPeluso"))), "MarioPeluso ha copiato l'opera di alfcan attualmente all'asta.", FALSE);

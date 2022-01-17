@@ -1,40 +1,27 @@
 package integration.model.dao;
 
 import hthurow.tomcatjndi.TomcatJNDI;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.dao.RivenditaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
+import org.apache.ibatis.jdbc.ScriptRunner;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.ArgumentsProvider;
+import org.junit.jupiter.params.provider.ArgumentsSource;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-import it.unisa.c02.moneyart.model.beans.Opera;
-import it.unisa.c02.moneyart.model.beans.Rivendita;
-import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
-import it.unisa.c02.moneyart.model.dao.RivenditaDaoImpl;
-import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
-import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
-import org.apache.ibatis.jdbc.ScriptRunner;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.ArgumentsProvider;
-import org.junit.jupiter.params.provider.ArgumentsSource;
 
 
 @DisplayName("RivenditaDao")
@@ -43,11 +30,10 @@ class RivenditaDaoImplIntegrationTest {
   private static DataSource dataSource;
 
   private RivenditaDao rivenditaDao;
-  private OperaDao operaDao;
 
   @BeforeAll
   static void generalSetUp(){
-    Context initCtx = null;
+    Context initCtx;
     Context envCtx = null;
     try{
       initCtx = new InitialContext();
@@ -74,7 +60,6 @@ class RivenditaDaoImplIntegrationTest {
   void setUp() throws SQLException, FileNotFoundException {
     Connection connection = dataSource.getConnection();
     rivenditaDao = new RivenditaDaoImpl(dataSource);
-    operaDao = new OperaDaoImpl(dataSource);
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
     Reader reader = new BufferedReader(new FileReader("./src/test/database/populate_all.sql"));
@@ -96,8 +81,7 @@ class RivenditaDaoImplIntegrationTest {
   static class RivenditaProvider implements ArgumentsProvider {
 
     @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext)
-      throws Exception {
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
 
       Opera opera = new Opera();
       opera.setId(1);
@@ -114,8 +98,7 @@ class RivenditaDaoImplIntegrationTest {
   static class ListRivenditaProvider implements ArgumentsProvider {
 
     @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext)
-      throws Exception {
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
 
       Opera opera1 = new Opera();
       opera1.setId(3);
@@ -172,7 +155,7 @@ class RivenditaDaoImplIntegrationTest {
       for(Rivendita r: rivendite) {
         rivenditaDao.doCreate(r);
       }
-      List<Rivendita> result = rivenditaDao.doRetrieveByStato("TERMINATA");
+      List<Rivendita> result = rivenditaDao.doRetrieveByStato(Rivendita.Stato.TERMINATA);
       Assertions.assertNotNull(result);
 
       Assertions.assertArrayEquals(rivendite.toArray(), result.toArray());
@@ -220,7 +203,7 @@ class RivenditaDaoImplIntegrationTest {
     @ParameterizedTest
     @DisplayName("Retrieve NonExisting Resell")
     @ArgumentsSource(RivenditaProvider.class)
-    void doRetrieveNonExistingResell(Rivendita rivendita){
+    void doRetrieveNonExistingResell(){
 
       Rivendita result = rivenditaDao.doRetrieveById(-1);
       Assertions.assertNull(result);
@@ -246,7 +229,7 @@ class RivenditaDaoImplIntegrationTest {
   }
 
   @ParameterizedTest
-  @DisplayName("Update")
+  @DisplayName("Delete")
   @ArgumentsSource(RivenditaProvider.class)
   void doDelete(Rivendita rivendita) {
 
