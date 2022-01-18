@@ -132,7 +132,7 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
    *
    * @param id identificativo di un'asta
    * @return la collezione di partecipazioni trovata nel database ordinata
-   * in base al prezzo in maniera crescente
+   *         in base al prezzo in maniera crescente
    */
   @Override
   public List<Partecipazione> doRetrieveAllByAuctionId(int id) {

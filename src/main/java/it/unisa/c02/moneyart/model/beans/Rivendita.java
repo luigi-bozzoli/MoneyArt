@@ -151,11 +151,11 @@ public class Rivendita {
       return false;
     }
     Rivendita rivendita = (Rivendita) o;
-    return Double.compare(rivendita.getPrezzo(), getPrezzo()) == 0 &&
-        Objects.equals(getId(), rivendita.getId()) &&
-        Objects.equals(getOpera(), rivendita.getOpera()) &&
-        getStato() == rivendita.getStato() &&
-        Objects.equals(getNotifiche(), rivendita.getNotifiche());
+    return Double.compare(rivendita.getPrezzo(), getPrezzo()) == 0
+      && Objects.equals(getId(), rivendita.getId())
+      && Objects.equals(getOpera(), rivendita.getOpera())
+      && getStato() == rivendita.getStato()
+      && Objects.equals(getNotifiche(), rivendita.getNotifiche());
   }
 
   @Override
