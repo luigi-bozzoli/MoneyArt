@@ -1,16 +1,8 @@
 package it.unisa.c02.moneyart.gestione.utente.control;
 
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.Price;
-import com.stripe.model.PriceCollection;
-import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
-import it.unisa.c02.moneyart.utils.payment.PayPalPayer;
-import it.unisa.c02.moneyart.utils.payment.PayerAdapter;
-import it.unisa.c02.moneyart.utils.payment.StripePayer;
-import java.util.HashMap;
-import java.util.Map;
+import it.unisa.c02.moneyart.utils.payment.PayPalPayment;
+import it.unisa.c02.moneyart.utils.payment.PaymentAdapter;
+import it.unisa.c02.moneyart.utils.payment.StripePayment;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -24,11 +16,11 @@ public class ServletExternalPayment extends HttpServlet {
 
     double amount = Double.parseDouble(request.getParameter("amount"));
     String paymentMethod = request.getParameter("method");
-    PayerAdapter payerAdapter;
+    PaymentAdapter payerAdapter;
     if (paymentMethod.equals("PayPal")) {
-      payerAdapter = new PayPalPayer();
+      payerAdapter = new PayPalPayment();
     } else {
-      payerAdapter = new StripePayer();
+      payerAdapter = new StripePayment();
     }
 
     try {

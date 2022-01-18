@@ -7,7 +7,7 @@ import com.stripe.param.checkout.SessionCreateParams;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StripePayer implements PayerAdapter {
+public class StripePayment implements PaymentAdapter {
   @Override
   public String makePayment(double amount) throws Exception {
     Map<String, Object> paramsPrice = new HashMap<>();
@@ -29,6 +29,11 @@ public class StripePayer implements PayerAdapter {
     Session session = Session.create(params);
     return session.getUrl();
 
+  }
+
+  @Override
+  public double recievePayment(String paymentId) throws Exception {
+    return Session.retrieve(paymentId).getAmountTotal() / 100.0;
   }
 
   private static final String YOUR_DOMAIN = "http://localhost:8080/MoneyArt_war";
