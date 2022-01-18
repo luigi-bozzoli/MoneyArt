@@ -1,6 +1,5 @@
 package integration.model.dao;
 
-import com.mysql.cj.jdbc.Blob;
 import hthurow.tomcatjndi.TomcatJNDI;
 import it.unisa.c02.moneyart.model.beans.*;
 import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
@@ -24,9 +23,12 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -280,7 +282,8 @@ public class PartecipazioneDaoImplIntegrationTest {
     utenteDao.doCreate(u2);
     utenteDao.doCreate(u3);
 
-    Blob blob = (Blob) dataSource.getConnection().createBlob();
+    String s = "image blob";
+    Blob blob = new SerialBlob(s.getBytes(StandardCharsets.UTF_8));;
     Opera opera = new Opera("PIXELARTFOREVER","La pixel art", Opera.Stato.ALL_ASTA,
             blob, u3, u3, "ccccc");
 
