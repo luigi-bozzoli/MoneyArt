@@ -1,20 +1,20 @@
 package unit.model.dao;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Segnalazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
 
 import java.sql.*;
 import javax.sql.DataSource;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -36,8 +36,6 @@ public class OperaDaoImplUnitTest {
 
   @Mock
   private static Opera opera; /*l'opera ha id 100*/
-
-
   @Mock
   private static Utente possessore; /*il possessore ha id 100*/
   @Mock
@@ -46,6 +44,7 @@ public class OperaDaoImplUnitTest {
   public enum StatoOpera {
     ALL_ASTA, IN_VENDITA, IN_POSSESSO, PREVENDITA
   }
+
 
 
   @BeforeAll
@@ -59,6 +58,8 @@ public class OperaDaoImplUnitTest {
 
   @BeforeEach
   public void setUp() throws SQLException {
+
+    //*********************mock settings di opera + mock delle dipendenze di opera*********************************
     when(opera.getId()).thenReturn(100);  //opera ha id 100
     when(opera.getPossessore()).thenReturn(possessore);
     when(possessore.getId()).thenReturn(100); //il possessore ha id 100
@@ -71,20 +72,10 @@ public class OperaDaoImplUnitTest {
     when(opera.getCertificato()).thenReturn("certificatoDellOperaDiMario");
     when(opera.getStato()).thenReturn(Opera.Stato.IN_POSSESSO);  //fault certo
 
-
+   //*********************mock settings di datasource e connection *********************************
     when(dataSource.getConnection()).thenReturn(connection);
     when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
     doNothing().when(connection).commit();
-    when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
-    doNothing().when(preparedStatement).setObject(anyInt(), anyString(), any());
-    when(preparedStatement.executeUpdate()).thenReturn(1);
-    when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
-    when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
-    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
-    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
-    int operaId = opera.getId();
-    when(resultSet.getInt(anyInt())).thenReturn(operaId);
-    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
   }
 
   @AfterEach
@@ -93,11 +84,31 @@ public class OperaDaoImplUnitTest {
 
 
   @Test
-  public void doCreate() {
+  @DisplayName("doCreate")
+  public void doCreate() throws SQLException {
+
+    when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setObject(anyInt(), anyString(), any());
+    when(preparedStatement.executeUpdate()).thenReturn(1);
+    when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
+    when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
+    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); //debug
+    int operaId = opera.getId();
+    when(resultSet.getInt(anyInt())).thenReturn(operaId);
+    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); //debug
 
     assertTrue(new OperaDaoImpl(dataSource).doCreate(opera));
   }
 
+  @Test
+  @DisplayName("doCreateCatch")
+  public void doCreateCatch() throws SQLException {
+
+    when(connection.prepareStatement(anyString(), anyInt())).thenThrow(SQLException.class);
+
+    assertTrue(!(new OperaDaoImpl(dataSource).doCreate(opera)));
+  }
 
   /*
 
