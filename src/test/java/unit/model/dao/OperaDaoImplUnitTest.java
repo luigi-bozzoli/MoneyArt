@@ -36,8 +36,6 @@ public class OperaDaoImplUnitTest {
 
   @Mock
   private static Opera opera; /*l'opera ha id 100*/
-
-
   @Mock
   private static Utente possessore; /*il possessore ha id 100*/
   @Mock
@@ -46,6 +44,7 @@ public class OperaDaoImplUnitTest {
   public enum StatoOpera {
     ALL_ASTA, IN_VENDITA, IN_POSSESSO, PREVENDITA
   }
+
 
 
   @BeforeAll
@@ -59,6 +58,18 @@ public class OperaDaoImplUnitTest {
 
   @BeforeEach
   public void setUp() throws SQLException {
+    when(dataSource.getConnection()).thenReturn(connection);
+    when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
+    doNothing().when(connection).commit();
+  }
+
+  @AfterEach
+  public void tearDown() {
+  }
+
+
+  @Test
+  public void doCreate() throws SQLException {
     when(opera.getId()).thenReturn(100);  //opera ha id 100
     when(opera.getPossessore()).thenReturn(possessore);
     when(possessore.getId()).thenReturn(100); //il possessore ha id 100
@@ -71,29 +82,17 @@ public class OperaDaoImplUnitTest {
     when(opera.getCertificato()).thenReturn("certificatoDellOperaDiMario");
     when(opera.getStato()).thenReturn(Opera.Stato.IN_POSSESSO);  //fault certo
 
-
-    when(dataSource.getConnection()).thenReturn(connection);
-    when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
-    doNothing().when(connection).commit();
     when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
     doNothing().when(preparedStatement).setObject(anyInt(), anyString(), any());
     when(preparedStatement.executeUpdate()).thenReturn(1);
     when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
     when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
     when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
-    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
+    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); //debug
     int operaId = opera.getId();
     when(resultSet.getInt(anyInt())).thenReturn(operaId);
-    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); /*debug*/
-  }
+    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); //debug
 
-  @AfterEach
-  public void tearDown() {
-  }
-
-
-  @Test
-  public void doCreate() {
 
     assertTrue(new OperaDaoImpl(dataSource).doCreate(opera));
   }
