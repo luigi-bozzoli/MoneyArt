@@ -11,7 +11,6 @@ import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import org.apache.ibatis.jdbc.ScriptRunner;
-import org.junit.Ignore;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -157,7 +156,6 @@ public class PartecipazioneDaoImplIntegrationTest {
 
   }
 
-  @Ignore
   @DisplayName("Create Partecipazione")
   @ParameterizedTest
   @ArgumentsSource(PartecipazioneProvider.class)
