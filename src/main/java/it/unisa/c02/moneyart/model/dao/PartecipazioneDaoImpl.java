@@ -287,8 +287,6 @@ public class PartecipazioneDaoImpl implements PartecipazioneDao {
 
       partecipazione.setOfferta(rs.getObject("offerta", Double.class));
       partecipanti.add(partecipazione);
-
-
     }
 
     return partecipanti;

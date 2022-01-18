@@ -46,7 +46,7 @@ public class PartecipazioneDaoImplIntegrationTest {
   private PartecipazioneDao partecipazioneDao;
 
   @BeforeAll
-  public static void generalSetUp() {
+  public static void generalSetUp() throws SQLException, FileNotFoundException {
     Context initCtx = null;
     Context envCtx = null;
     try{
@@ -67,6 +67,13 @@ public class PartecipazioneDaoImplIntegrationTest {
         e.printStackTrace();
       }
     }
+    // Creazione database
+    Connection connection = dataSource.getConnection();
+    ScriptRunner runner = new ScriptRunner(connection);
+    runner.setLogWriter(null);
+    Reader reader = new BufferedReader(new FileReader("./src/main/java/it/unisa/c02/moneyart/model/db/ddl_moneyart.sql"));
+    runner.runScript(reader);
+    connection.close();
   }
 
   @BeforeEach
@@ -75,15 +82,17 @@ public class PartecipazioneDaoImplIntegrationTest {
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
-    Reader reader = new BufferedReader(new FileReader("./src/main/java/it/unisa/c02/moneyart/model/db/ddl_moneyart.sql"));
+    Reader reader = new BufferedReader(new FileReader("./src/test/database/test_rivendita.sql"));
     runner.runScript(reader);
     connection.close();
 
+    /*
     try {
       populateDBTest();
     } catch (NoSuchAlgorithmException | SQLException e) {
       e.printStackTrace();
     }
+    */
   }
 
   @AfterEach
@@ -91,7 +100,7 @@ public class PartecipazioneDaoImplIntegrationTest {
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
-    Reader reader = new BufferedReader(new FileReader("./src/test/database/clean_all.sql"));
+    Reader reader = new BufferedReader(new FileReader("./src/test/database/clean_database.sql"));
     runner.runScript(reader);
     connection.close();
   }
