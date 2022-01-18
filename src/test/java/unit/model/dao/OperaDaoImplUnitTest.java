@@ -1,6 +1,5 @@
 package unit.model.dao;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -91,10 +90,8 @@ public class OperaDaoImplUnitTest {
     when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
     when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
     when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
-    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); //debug
     int operaId = opera.getId();
     when(resultSet.getInt(anyInt())).thenReturn(operaId);
-    System.out.println("\naooooooooooo"+opera.getDescrizione()+" "+opera.getId()); //debug
 
     assertTrue(new OperaDaoImpl(dataSource).doCreate(opera));
   }
@@ -112,35 +109,47 @@ public class OperaDaoImplUnitTest {
   @DisplayName("doRetrieveById")
   void doRetrieveById() throws SQLException {
 
+    //Dipendenze bean
+    Utente userFollowed = new Utente("MarioVip", "RossiVip", opera.getImmagine(), "mariorossivip@unisa.it",
+            "m_red_vip", null, new byte[10], 2000000.2);
+    userFollowed.setId(99);
+
+    Utente user = new Utente("Mario", "Rossi", opera.getImmagine(), "mariorossi@unisa.it",
+            "m_red", userFollowed, new byte[10], 2.2);
+    user.setId(possessore.getId());
+
+    Utente artist = new Utente("Nick", "Arte", opera.getImmagine(), "nickarte@unisa.it",
+            "n_art", userFollowed, new byte[10], 5000.2);
+    artist.setId(artista.getId());
+
+    //*********************************************************************************
+
     //oggetto tipo della test suite
     Opera op = new Opera(opera.getNome(), opera.getDescrizione(), opera.getStato(),
-    opera.getImmagine(), opera.getPossessore(), opera.getArtista(), opera.getCertificato());
+    opera.getImmagine(), user, artist, opera.getCertificato());
+    op.setId(opera.getId());
 
-    Utente artista; //impl
-
-    Utente possessore; //impl
-
-    //creazione nel db dell'oggetto
-    new OperaDaoImpl(dataSource).doCreate(opera);
-
-
-    //istruisco i mock di connessione per questo metodo
+    /*Istruisco i mock di connessione per questo metodo +
+    Istruisco il finto comportamento di prelevazione dell'opera dal db
+    */
     when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-    doNothing().when(preparedStatement).setObject(anyInt(), anyString(), any());
-    doNothing().when(preparedStatement).setInt(anyInt(), any());
-    doNothing().when(preparedStatement.executeQuery());
+    doNothing().when(preparedStatement).setInt(anyInt(), anyInt());
+    when(resultSet.next()).thenReturn(Boolean.TRUE);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(resultSet.getObject("id", Integer.class)).thenReturn(op.getId());
+    when(resultSet.getObject("id_utente", Integer.class)).thenReturn(op.getPossessore().getId());
+    when(resultSet.getObject("id_artista", Integer.class)).thenReturn(op.getArtista().getId());
+    when(resultSet.getObject("nome", String.class)).thenReturn(op.getNome());
+    when(resultSet.getObject("descrizione", String.class)).thenReturn(op.getDescrizione());
+    when(resultSet.getObject("immagine", Blob.class)).thenReturn(op.getImmagine());
+    when(resultSet.getObject("certificato", String.class)).thenReturn(op.getCertificato());
+    when(resultSet.getObject("stato", String.class)).thenReturn(op.getStato().toString());
+
 
     Opera opResult = new OperaDaoImpl(dataSource).doRetrieveById(op.getId());
 
-    assertEquals(op, opResult);
-    /*
-    when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
-    when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
-    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna
-    assertTrue(opera.getId() == new OperaDaoImpl(dataSource).doRetrieveById(opera.getId()).getId());
-    */
 
-
+    assertTrue(op.getId() == opResult.getId());
   }
 
   /*

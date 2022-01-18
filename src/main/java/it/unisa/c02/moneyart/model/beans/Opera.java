@@ -1,5 +1,7 @@
 package it.unisa.c02.moneyart.model.beans;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Blob;
 import java.util.List;
 import java.util.Objects;
@@ -232,6 +234,7 @@ public class Opera {
         + " Nome: " + this.nome + " Descrizione: " + this.descrizione + " Stato: " + this.stato;
   }
 
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -253,20 +256,23 @@ public class Opera {
         Objects.equals(getRivendite(), opera.getRivendite());
   }
 
+
+
   @Override
   public int hashCode() {
     return Objects.hash(getId(), getNome(), getDescrizione(), getStato(), getImmagine(),
         getPossessore(), getArtista(), getCertificato(), getAste(), getRivendite());
   }
 
+
   private Integer id;
-  private String nome;
+  private String nome; //
   private String descrizione;
   private Stato stato;
-  private Blob immagine;
+  private Blob immagine; //
   private Utente possessore;
   private Utente artista;
-  private String certificato;
+  private String certificato; //
 
   private List<Asta> aste;
   private List<Rivendita> rivendite;
