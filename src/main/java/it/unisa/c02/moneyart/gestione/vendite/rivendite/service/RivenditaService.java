@@ -19,7 +19,7 @@ public interface RivenditaService {
 
   List<Rivendita> getResellsSortedByPrice(String order, Rivendita.Stato s);
 
-  List<Rivendita> getReserllsSortedByArtistFollowers(String order, Rivendita.Stato s);
+  List<Rivendita> getResellsSortedByArtistFollowers(String order, Rivendita.Stato s);
 
   Rivendita getResell(Integer id);
 
