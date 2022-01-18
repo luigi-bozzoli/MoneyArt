@@ -1,13 +1,11 @@
 package unit.model.dao;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Opera;
-import it.unisa.c02.moneyart.model.beans.Segnalazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
 
@@ -110,11 +108,42 @@ public class OperaDaoImplUnitTest {
     assertTrue(!(new OperaDaoImpl(dataSource).doCreate(opera)));
   }
 
-  /*
-
   @Test
-  void doRetrieveById() {
+  @DisplayName("doRetrieveById")
+  void doRetrieveById() throws SQLException {
+
+    //oggetto tipo della test suite
+    Opera op = new Opera(opera.getNome(), opera.getDescrizione(), opera.getStato(),
+    opera.getImmagine(), opera.getPossessore(), opera.getArtista(), opera.getCertificato());
+
+    Utente artista; //impl
+
+    Utente possessore; //impl
+
+    //creazione nel db dell'oggetto
+    new OperaDaoImpl(dataSource).doCreate(opera);
+
+
+    //istruisco i mock di connessione per questo metodo
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setObject(anyInt(), anyString(), any());
+    doNothing().when(preparedStatement).setInt(anyInt(), any());
+    doNothing().when(preparedStatement.executeQuery());
+
+    Opera opResult = new OperaDaoImpl(dataSource).doRetrieveById(op.getId());
+
+    assertEquals(op, opResult);
+    /*
+    when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
+    when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna
+    assertTrue(opera.getId() == new OperaDaoImpl(dataSource).doRetrieveById(opera.getId()).getId());
+    */
+
+
   }
+
+  /*
 
   @Test
   void doRetrieveAll() {

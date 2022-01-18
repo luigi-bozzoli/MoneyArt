@@ -82,7 +82,7 @@ public class OperaDaoImpl implements OperaDao {
     Opera opera = null;
 
     try (Connection connection = ds.getConnection();
-         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+      PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
