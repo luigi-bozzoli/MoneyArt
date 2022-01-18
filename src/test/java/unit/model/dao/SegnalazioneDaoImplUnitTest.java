@@ -1,9 +1,6 @@
 package unit.model.dao;
 
-import it.unisa.c02.moneyart.model.beans.Asta;
-import it.unisa.c02.moneyart.model.beans.Partecipazione;
-import it.unisa.c02.moneyart.model.beans.Segnalazione;
-import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.beans.*;
 import it.unisa.c02.moneyart.model.dao.SegnalazioneDaoImpl;
 import it.unisa.c02.moneyart.model.dao.interfaces.SegnalazioneDao;
 import org.apache.ibatis.jdbc.SQL;
@@ -29,8 +26,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -210,13 +207,75 @@ class SegnalazioneDaoImplUnitTest {
     Assertions.assertNull(segnalazioni);
   }
 
-  /*
   @Test
-  void doUpdate() {
+  void doUpdate() throws SQLException {
+    Asta asta = new Asta();
+    asta.setId(1);
+
+    Segnalazione s = new Segnalazione(
+            asta,
+            "Commento",
+            true
+    );
+    s.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    segnalazioneDao.doUpdate(s);
+    verify(preparedStatement, times(4)).setObject(anyInt(), any(), anyInt());
+    verify(preparedStatement, times(1)).executeUpdate();
   }
 
   @Test
-  void doDelete() {
+  void doUpdateCatch() throws SQLException {
+    Asta asta = new Asta();
+    asta.setId(1);
+
+    Segnalazione s = new Segnalazione(
+            asta,
+            "Commento",
+            true
+    );
+    s.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenThrow(new SQLException());
+    segnalazioneDao.doUpdate(s);
+    verify(preparedStatement, times(0)).setObject(anyInt(), any(), anyInt());
+    verify(preparedStatement, times(0)).executeUpdate();
   }
-  */
+
+  @Test
+  void doDelete() throws SQLException {
+    Asta asta = new Asta();
+    asta.setId(1);
+
+    Segnalazione s = new Segnalazione(
+            asta,
+            "Commento",
+            true
+    );
+    s.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    segnalazioneDao.doDelete(s);
+    verify(preparedStatement, times(1)).setObject(anyInt(), any(), anyInt());
+    verify(preparedStatement, times(1)).executeUpdate();
+  }
+
+  @Test
+  void doDeleteCatch() throws SQLException {
+    Asta asta = new Asta();
+    asta.setId(1);
+
+    Segnalazione s = new Segnalazione(
+            asta,
+            "Commento",
+            true
+    );
+    s.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenThrow(new SQLException());
+    segnalazioneDao.doDelete(s);
+    verify(preparedStatement, times(0)).setObject(anyInt(), any(), anyInt());
+    verify(preparedStatement, times(0)).executeUpdate();
+  }
 }
