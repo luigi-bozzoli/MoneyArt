@@ -6,9 +6,19 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+/**
+ * Classe che modella un Data Source.
+ *
+ */
 public class DataSourceProducer {
 
 
+  /**
+   * Inizializzazione di un Data Source.
+   *
+   * @return di un data source
+   * @throws NamingException lancia un'eccezione
+   */
   @Produces
   public DataSource produce() throws NamingException {
     DataSource dataSource;

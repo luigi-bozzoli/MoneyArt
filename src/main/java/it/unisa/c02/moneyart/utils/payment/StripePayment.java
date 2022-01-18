@@ -7,6 +7,11 @@ import com.stripe.param.checkout.SessionCreateParams;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe che implementa i metodi dell'interfaccia di PaymentAdapter.
+ *
+ */
+
 public class StripePayment implements PaymentAdapter {
   @Override
   public String makePayment(double amount) throws Exception {
@@ -43,7 +48,8 @@ public class StripePayment implements PaymentAdapter {
   private static final String PRODUCT_ID = "prod_KytYHpYu4DKRYm";
 
   static {
-    Stripe.apiKey = "sk_test_51KIvhUCoLwbVSLTbCtzTitzSKsdaV1jYWFfaeErOok1bIDuFAhxMWRwGq6dOu6IjoqWxVkutsXdIA8LU0KHPXkE800GBM7FiJD";
+    Stripe.apiKey = "sk_test_51KIvhUCoLwbVSLTbCtzTitzSKsdaV1jYWFfae"
+      + "ErOok1bIDuFAhxMWRwGq6dOu6IjoqWxVkutsXdIA8LU0KHPXkE800GBM7FiJD";
   }
 
 

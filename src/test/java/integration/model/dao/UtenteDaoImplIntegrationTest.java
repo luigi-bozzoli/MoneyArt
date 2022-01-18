@@ -25,11 +25,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import org.apache.ibatis.jdbc.ScriptRunner;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -44,7 +40,7 @@ class UtenteDaoImplIntegrationTest {
   private UtenteDao utenteDao;
 
   @BeforeAll
-  public static void generalSetUp() {
+  public static void generalSetUp() throws SQLException, FileNotFoundException {
     Context initCtx = null;
     Context envCtx = null;
     try{
@@ -65,11 +61,7 @@ class UtenteDaoImplIntegrationTest {
         e.printStackTrace();
       }
     }
-  }
-
-  @BeforeEach
-  public void setUp() throws SQLException, FileNotFoundException {
-    utenteDao = new UtenteDaoImpl(dataSource);
+    // Creazione database
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
@@ -78,6 +70,20 @@ class UtenteDaoImplIntegrationTest {
     connection.close();
   }
 
+  @BeforeEach
+  public void setUp() {
+    utenteDao = new UtenteDaoImpl(dataSource);
+  }
+
+  @AfterEach
+  public void tearDown() throws SQLException, FileNotFoundException {
+    Connection connection = dataSource.getConnection();
+    ScriptRunner runner = new ScriptRunner(connection);
+    runner.setLogWriter(null);
+    Reader reader = new BufferedReader(new FileReader("./src/test/database/clean_database.sql"));
+    runner.runScript(reader);
+    connection.close();
+  }
 
   static class UtenteProvider implements ArgumentsProvider {
 
@@ -622,6 +628,4 @@ class UtenteDaoImplIntegrationTest {
     Assertions.assertEquals(oracolo.size(), ricercati.size());
     Assertions.assertTrue(ricercati.containsAll(oracolo));
   }
-
-
 }
