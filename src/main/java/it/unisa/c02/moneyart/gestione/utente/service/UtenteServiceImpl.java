@@ -71,11 +71,10 @@ public class UtenteServiceImpl implements UtenteService {
   }
 
   /**
-   * Restituisce un bean utente creato interrogando il database.
-   *
-   * @param id id dell'utente
-   * @return il bean utente se sono state trovate le credenziali nel database,
-   * null altrimenti
+    * Restituisce un bean utente creato interrogando il database.
+     *
+     * @param id id dell'utente
+     * @return il bean utente se sono state trovate le credenziali nel database, null altrimenti
    */
   @Override
   public Utente getUserInformation(int id) {
@@ -100,9 +99,9 @@ public class UtenteServiceImpl implements UtenteService {
    * Restituisce un bean utente creato interrogando il database.
    *
    * @param username l'username dell'utente
-   * @return il bean utente se sono state trovate le credenziali nel database,
-   * null altrimenti
+   * @return il bean utente se sono state trovate le credenziali nel database null altrimenti
    */
+
   @Override
   public Utente getUserInformation(String username) {
     Utente utente = utenteDao.doRetrieveByUsername(username);
@@ -191,7 +190,7 @@ public class UtenteServiceImpl implements UtenteService {
       }
     });
 
-    if(order.equalsIgnoreCase("DESC")) {
+    if (order.equalsIgnoreCase("DESC")) {
       Collections.reverse(utenti);
     }
 
@@ -214,8 +213,7 @@ public class UtenteServiceImpl implements UtenteService {
    * Verifica se esiste un utente nel database con uno username specifico.
    *
    * @param username l'username da ricercare nel database
-   * @return true se è stato trovato un altro utente con lo stesso username,
-   * false altrimenti
+   * @return true se è stato trovato un altro utente con lo stesso username false altrimenti
    */
   @Override
   public boolean checkUsername(String username) {
@@ -227,8 +225,7 @@ public class UtenteServiceImpl implements UtenteService {
    * Verifica se esiste un utente nel database con una email specifica.
    *
    * @param email l'email da ricercare nel database
-   * @return true se è stato trovato un altro utente con la stessa email,
-   * false altrimenti
+   * @return true se è stato trovato un altro utente con la stessa email false altrimenti
    */
   @Override
   public boolean checkEmail(String email) {
@@ -241,8 +238,8 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param follower l'utente che intende seguire un artista
    * @param followed l'artista da seguire
-   * @return true se l'utente segue con successo l'artista, false se
-   * l'utente segue già un altro artista
+   * @return true se l'utente segue con successo l'artista
+   *         false se l'utente segue già un altro artista
    */
   @Override
   public boolean follow(Utente follower, Utente followed) {
@@ -261,9 +258,10 @@ public class UtenteServiceImpl implements UtenteService {
    * Permette ad un utente di cancellare il follow da un artista.
    *
    * @param follower l'utente che vuole smettere di seguire un artista.
-   * @return true se l'utente smette di seguire con successo un artista,
-   * false se l'utente già non seguiva nessuno
+   * @return true se l'utente smette di seguire con successo un artista
+   *         false se l'utente già non seguiva nessuno
    */
+
   @Override
   public boolean unfollow(Utente follower) {
     if (follower.getSeguito() == null) {
@@ -294,8 +292,8 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param utente l'utente interessato a depositare
    * @param amount l'importo da depositare (da aggiungere al saldo)
-   * @return true se il deposito è avvenuto con successo
-   * e false se l'amount è inferiore o uguale a zero
+   * @return true se il deposito è avvenuto con successo e
+   *         false se l'amount è inferiore o uguale a zero
    */
   @Override
   public boolean deposit(Utente utente, double amount) {
@@ -314,9 +312,9 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param utente l'utente interessato a prelevare
    * @param amount l'importo da prelevare (da sottrarre al saldo)
-   * @return true se il prelievo è avvenuto con successo
-   * e false se l'amount è inferiore o uguale a zero
-   * e se il saldo dell'utente è minore dell'amount
+   * @return true se il prelievo è avvenuto con successo e
+   *         false se l'amount è inferiore o uguale a zero e
+   *         se il saldo dell'utente è minore dell'amount
    */
   @Override
   public boolean withdraw(Utente utente, double amount) {

@@ -10,6 +10,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
+/**
+ * Classe qualifier.
+ *
+ */
 @Qualifier
 
 @Target({TYPE, METHOD, PARAMETER, FIELD})

@@ -3,6 +3,10 @@ package it.unisa.c02.moneyart.gestione.utente.service;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import java.util.List;
 
+/**
+ * Classe che espone i servizi di logica di buisness di un oggetto Utente.
+ *
+ */
 public interface UtenteService {
 
   Utente checkUser(String username, String password);

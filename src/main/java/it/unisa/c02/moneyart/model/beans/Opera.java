@@ -241,16 +241,16 @@ public class Opera {
       return false;
     }
     Opera opera = (Opera) o;
-    return Objects.equals(getId(), opera.getId()) &&
-        Objects.equals(getNome(), opera.getNome()) &&
-        Objects.equals(getDescrizione(), opera.getDescrizione()) &&
-        getStato() == opera.getStato() &&
-        Objects.equals(getImmagine(), opera.getImmagine()) &&
-        Objects.equals(getPossessore(), opera.getPossessore()) &&
-        Objects.equals(getArtista(), opera.getArtista()) &&
-        Objects.equals(getCertificato(), opera.getCertificato()) &&
-        Objects.equals(getAste(), opera.getAste()) &&
-        Objects.equals(getRivendite(), opera.getRivendite());
+    return Objects.equals(getId(), opera.getId())
+      && Objects.equals(getNome(), opera.getNome())
+      && Objects.equals(getDescrizione(), opera.getDescrizione())
+      && getStato() == opera.getStato()
+      && Objects.equals(getImmagine(), opera.getImmagine())
+      && Objects.equals(getPossessore(), opera.getPossessore())
+      && Objects.equals(getArtista(), opera.getArtista())
+      && Objects.equals(getCertificato(), opera.getCertificato())
+      && Objects.equals(getAste(), opera.getAste())
+      && Objects.equals(getRivendite(), opera.getRivendite());
   }
 
   @Override

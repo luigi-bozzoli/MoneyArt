@@ -30,8 +30,10 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 
 /**
- * <p>Auto generated code.
+ * Auto generated code.
+ *
  * <p><strong>Do not modify!</strong>
+ *
  * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
@@ -87,6 +89,7 @@ public class MoneyArtNft extends Contract {
       }, new TypeReference<Address>(true) {
       }, new TypeReference<Uint256>(true) {
       }));
+
   ;
 
   public static final Event APPROVALFORALL_EVENT = new Event("ApprovalForAll",
@@ -94,12 +97,14 @@ public class MoneyArtNft extends Contract {
       }, new TypeReference<Address>(true) {
       }, new TypeReference<Bool>() {
       }));
+
   ;
 
   public static final Event OWNERSHIPTRANSFERRED_EVENT = new Event("OwnershipTransferred",
       Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
       }, new TypeReference<Address>(true) {
       }));
+
   ;
 
   public static final Event TRANSFER_EVENT = new Event("Transfer",
@@ -107,6 +112,7 @@ public class MoneyArtNft extends Contract {
       }, new TypeReference<Address>(true) {
       }, new TypeReference<Uint256>(true) {
       }));
+
   ;
 
   protected static final HashMap<String, String> _addresses;

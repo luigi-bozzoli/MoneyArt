@@ -2,8 +2,12 @@ package it.unisa.c02.moneyart.gestione.vendite.rivendite.service;
 
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
-
 import java.util.List;
+
+/**
+ * Classe che espone i servizi di logica di buisness per un oggetto Rivendita.
+ *
+ */
 
 public interface RivenditaService {
 

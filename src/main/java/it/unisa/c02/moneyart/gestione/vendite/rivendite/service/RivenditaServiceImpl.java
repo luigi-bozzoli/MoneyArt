@@ -1,16 +1,23 @@
 package it.unisa.c02.moneyart.gestione.vendite.rivendite.service;
 
-import it.unisa.c02.moneyart.model.beans.*;
+
+import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 
+/**
+ * Classe che implementa i metodi dell'interfaccia RivenditaService.
+ *
+ */
 
 public class RivenditaServiceImpl implements RivenditaService {
 
@@ -117,9 +124,9 @@ public class RivenditaServiceImpl implements RivenditaService {
     Rivendita rivendita = rivenditaDao.doRetrieveById(idRivendita);
     Utente utente = utenteDao.doRetrieveById(idUtente);
 
-    if (rivendita == null || utente == null ||
-        !rivendita.getStato().equals(Rivendita.Stato.IN_CORSO) ||
-        utente.getSaldo() < rivendita.getPrezzo()) {
+    if (rivendita == null || utente == null
+        || !rivendita.getStato().equals(Rivendita.Stato.IN_CORSO)
+        || utente.getSaldo() < rivendita.getPrezzo()) {
       return false;
     }
     Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
@@ -132,11 +139,11 @@ public class RivenditaServiceImpl implements RivenditaService {
     rivendita.setStato(Rivendita.Stato.TERMINATA);
     Notifica notifica = new Notifica(owner, null, rivendita, Notifica.Tipo.TERMINATA, "", false);
 
+    notificaDao.doCreate(notifica);
     utenteDao.doUpdate(utente);
     utenteDao.doUpdate(owner);
     operaDao.doUpdate(opera);
     rivenditaDao.doUpdate(rivendita);
-    notificaDao.doCreate(notifica);
 
     return true;
   }
@@ -150,7 +157,7 @@ public class RivenditaServiceImpl implements RivenditaService {
   public List<Rivendita> getResells() {
     List<Rivendita> rivendite = rivenditaDao.doRetrieveAll("");
 
-    for(Rivendita rivendita : rivendite) {
+    for (Rivendita rivendita : rivendite) {
       Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
       opera.setArtista(utenteDao.doRetrieveById((opera.getArtista().getId())));
       opera.getArtista().setnFollowers(getNumberOfFollowers(opera.getArtista()));
@@ -171,7 +178,7 @@ public class RivenditaServiceImpl implements RivenditaService {
 
     List<Rivendita> rivendite = rivenditaDao.doRetrieveByStato(stato);
 
-    for(Rivendita rivendita : rivendite) {
+    for (Rivendita rivendita : rivendite) {
       Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
       opera.setArtista(utenteDao.doRetrieveById((opera.getArtista().getId())));
       opera.getArtista().setnFollowers(getNumberOfFollowers(opera.getArtista()));
@@ -202,7 +209,7 @@ public class RivenditaServiceImpl implements RivenditaService {
       }
     });
 
-    if(order.equalsIgnoreCase("DESC")) {
+    if (order.equalsIgnoreCase("DESC")) {
       Collections.reverse(rivendite);
     }
 
@@ -231,7 +238,7 @@ public class RivenditaServiceImpl implements RivenditaService {
       }
     });
 
-    if(order.equalsIgnoreCase("DESC")) {
+    if (order.equalsIgnoreCase("DESC")) {
       Collections.reverse(rivendite);
     }
 
