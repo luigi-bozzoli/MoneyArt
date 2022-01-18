@@ -35,7 +35,7 @@ public class Utente {
     this.password = password;
     this.seguito = seguito;
     this.saldo = saldo;
-    this.nFollowers = 0;
+    this.numFollowers = 0;
   }
 
   /**
@@ -268,16 +268,16 @@ public class Utente {
    * @return il numero di followers dell'utente
    */
   public int getnFollowers() {
-    return nFollowers;
+    return numFollowers;
   }
 
   /**
    * Modifica il numero di followers dell'utente.
    *
-   * @param nFollowers il numero di followers dell'utente
+   * @param numFollowers il numero di followers dell'utente
    */
-  public void setnFollowers(int nFollowers) {
-    this.nFollowers = nFollowers;
+  public void setnFollowers(int numFollowers) {
+    this.numFollowers = numFollowers;
   }
 
   /**
@@ -319,20 +319,20 @@ public class Utente {
       return false;
     }
     Utente utente = (Utente) o;
-    return getnFollowers() == utente.getnFollowers() &&
-        Objects.equals(getId(), utente.getId()) &&
-        Objects.equals(getNome(), utente.getNome()) &&
-        Objects.equals(getCognome(), utente.getCognome()) &&
-        Objects.equals(getFotoProfilo(), utente.getFotoProfilo()) &&
-        Objects.equals(getEmail(), utente.getEmail()) &&
-        Objects.equals(getUsername(), utente.getUsername()) &&
-        Arrays.equals(getPassword(), utente.getPassword()) &&
-        Objects.equals(getSeguito(), utente.getSeguito()) &&
-        Objects.equals(getSaldo(), utente.getSaldo()) &&
-        Objects.equals(getOpereCreate(), utente.getOpereCreate()) &&
-        Objects.equals(getOpereInPossesso(), utente.getOpereInPossesso()) &&
-        Objects.equals(getNotifiche(), utente.getNotifiche()) &&
-        Objects.equals(getPartecipazioni(), utente.getPartecipazioni());
+    return getnFollowers() == utente.getnFollowers()
+      && Objects.equals(getId(), utente.getId())
+      && Objects.equals(getNome(), utente.getNome())
+      && Objects.equals(getCognome(), utente.getCognome())
+      && Objects.equals(getFotoProfilo(), utente.getFotoProfilo())
+      && Objects.equals(getEmail(), utente.getEmail())
+      && Objects.equals(getUsername(), utente.getUsername())
+      && Arrays.equals(getPassword(), utente.getPassword())
+      && Objects.equals(getSeguito(), utente.getSeguito())
+      && Objects.equals(getSaldo(), utente.getSaldo())
+      && Objects.equals(getOpereCreate(), utente.getOpereCreate())
+      && Objects.equals(getOpereInPossesso(), utente.getOpereInPossesso())
+      && Objects.equals(getNotifiche(), utente.getNotifiche())
+      && Objects.equals(getPartecipazioni(), utente.getPartecipazioni());
   }
 
   @Override
@@ -354,7 +354,7 @@ public class Utente {
   private byte[] password;
   private Utente seguito;
   private Double saldo;
-  private int nFollowers;
+  private int numFollowers;
 
   /* Liste utili */
   private List<Opera> opereCreate;

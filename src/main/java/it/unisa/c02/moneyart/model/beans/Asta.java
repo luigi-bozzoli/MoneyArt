@@ -193,14 +193,14 @@ public class Asta {
       return false;
     }
     Asta asta = (Asta) o;
-    return Objects.equals(getId(), asta.getId()) &&
-        Objects.equals(getOpera(), asta.getOpera()) &&
-        Objects.equals(getDataInizio(), asta.getDataInizio()) &&
-        Objects.equals(getDataFine(), asta.getDataFine()) &&
-        getStato() == asta.getStato() &&
-        Objects.equals(getSegnalazioni(), asta.getSegnalazioni()) &&
-        Objects.equals(getNotifiche(), asta.getNotifiche()) &&
-        Objects.equals(getPartecipazioni(), asta.getPartecipazioni());
+    return Objects.equals(getId(), asta.getId())
+      && Objects.equals(getOpera(), asta.getOpera())
+      && Objects.equals(getDataInizio(), asta.getDataInizio())
+      && Objects.equals(getDataFine(), asta.getDataFine())
+      && getStato() == asta.getStato()
+      && Objects.equals(getSegnalazioni(), asta.getSegnalazioni())
+      && Objects.equals(getNotifiche(), asta.getNotifiche())
+      && Objects.equals(getPartecipazioni(), asta.getPartecipazioni());
   }
 
   @Override

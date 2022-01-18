@@ -22,7 +22,7 @@ public class ServletGetRivendite extends HttpServlet {
       throws ServletException, IOException {
 
     String statoRivendita = (String) request.getParameter("statoRivendita");
-    rivenditaService.getResells(Rivendita.Stato.valueOf(statoRivendita));
+    rivenditaService.getResellsByState(Rivendita.Stato.valueOf(statoRivendita));
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/catalogo.jsp");
     dispatcher.forward(request, response);
   }

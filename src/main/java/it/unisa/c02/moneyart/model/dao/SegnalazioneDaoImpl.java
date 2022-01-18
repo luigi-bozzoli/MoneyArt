@@ -139,7 +139,7 @@ public class SegnalazioneDaoImpl implements SegnalazioneDao {
 
     try (Connection connection = ds.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setObject(1, item.getAsta(), Types.INTEGER);
+      preparedStatement.setObject(1, item.getAsta().getId(), Types.INTEGER);
       preparedStatement.setObject(2, item.getCommento(), Types.VARCHAR);
       preparedStatement.setObject(3, item.isLetta(), Types.BOOLEAN);
       preparedStatement.setObject(4, item.getId(), Types.INTEGER);

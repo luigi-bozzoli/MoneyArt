@@ -16,16 +16,11 @@ public class NotificaServiceImpl implements NotificaService {
   }
 
   /**
-   * Costruttore che istanzia tramite il Retriver i dao.
-   */
-
-
-  /**
    * Costruttore con parametri.
    *
    * @param notificaDao dao di notifica
    */
-  public NotificaServiceImpl( NotificaDao notificaDao) {
+  public NotificaServiceImpl(NotificaDao notificaDao) {
     this.notificaDao = notificaDao;
   }
 
