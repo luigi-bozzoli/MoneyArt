@@ -176,6 +176,17 @@ class OperaServiceImplUnitTest {
       Assertions.assertFalse(operaService.addArtwork(opera));
     }
 
+    @DisplayName("Add Artwork False whit checkArtwork")
+    @ParameterizedTest
+    @ArgumentsSource(ListOpereProvider.class)
+    void addArtworkFalseCheckArtwork(List<Opera> opere) {
+      Opera opera = opere.get(0);
+
+      when(operaDao.doRetrieveAllByArtistId(opera.getArtista().getId())).thenReturn(opere);
+
+      Assertions.assertFalse(operaService.addArtwork(opera));
+    }
+
   }
 
   @Nested
