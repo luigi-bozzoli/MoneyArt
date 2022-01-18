@@ -13,7 +13,14 @@ public interface RivenditaService {
 
   boolean buy(Integer idRivendita, Integer idUtente);
 
-  List<Rivendita> getResells(Rivendita.Stato stato);
+  List<Rivendita> getResells();
+
+  List<Rivendita> getResellsByState(Rivendita.Stato stato);
+
+  List<Rivendita> getResellsSortedByPrice(String order, Rivendita.Stato s);
+
+  List<Rivendita> getReserllsSortedByArtistFollowers(String order, Rivendita.Stato s);
 
   Rivendita getResell(Integer id);
+
 }

@@ -16,7 +16,99 @@
 
         <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="auctions" role="tabpanel" aria-labelledby="aste-tab">
-                        ASTEEEEEEE
+                        <div class="container-fluid d-flex flex-wrap ">
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                        <div class="thumb-wrapper">
+                                                <div class="img-box">
+                                                        <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/cupcat.jpg" class="img-responsive">
+                                                </div>
+                                                <div class="thumb-content">
+                                                        <h4>CupCat</h4>
+                                                        <div class="expiration-timer">
+                                                                <span class="timer">12:29:59</span>
+                                                        </div>
+                                                        <p class="item-price">€3024,33</p>
+                                                        <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                                </div>
+                                        </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                        <div class="thumb-wrapper">
+                                                <div class="img-box">
+                                                        <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/cupcat.jpg" class="img-responsive">
+                                                </div>
+                                                <div class="thumb-content">
+                                                        <h4>CupCat</h4>
+                                                        <div class="expiration-timer">
+                                                                <span class="timer">12:29:59</span>
+                                                        </div>
+                                                        <p class="item-price">€3024,33</p>
+                                                        <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                                </div>
+                                        </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                        <div class="thumb-wrapper">
+                                                <div class="img-box">
+                                                        <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/cupcat.jpg" class="img-responsive">
+                                                </div>
+                                                <div class="thumb-content">
+                                                        <h4>CupCat</h4>
+                                                        <div class="expiration-timer">
+                                                                <span class="timer">12:29:59</span>
+                                                        </div>
+                                                        <p class="item-price">€3024,33</p>
+                                                        <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                                </div>
+                                        </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                        <div class="thumb-wrapper">
+                                                <div class="img-box">
+                                                        <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/cupcat.jpg" class="img-responsive">
+                                                </div>
+                                                <div class="thumb-content">
+                                                        <h4>CupCat</h4>
+                                                        <div class="expiration-timer">
+                                                                <span class="timer">12:29:59</span>
+                                                        </div>
+                                                        <p class="item-price">€3024,33</p>
+                                                        <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                                </div>
+                                        </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                        <div class="thumb-wrapper">
+                                                <div class="img-box">
+                                                        <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/cupcat.jpg" class="img-responsive">
+                                                </div>
+                                                <div class="thumb-content">
+                                                        <h4>CupCat</h4>
+                                                        <div class="expiration-timer">
+                                                                <span class="timer">12:29:59</span>
+                                                        </div>
+                                                        <p class="item-price">€3024,33</p>
+                                                        <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                                </div>
+                                        </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                        <div class="thumb-wrapper">
+                                                <div class="img-box">
+                                                        <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/cupcat.jpg" class="img-responsive">
+                                                </div>
+                                                <div class="thumb-content">
+                                                        <h4>CupCat</h4>
+                                                        <div class="expiration-timer">
+                                                                <span class="timer">12:29:59</span>
+                                                        </div>
+                                                        <p class="item-price">€3024,33</p>
+                                                        <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                                </div>
+                                        </div>
+                                </div>
+
+                        </div>
                 </div>
                 <div class="tab-pane fade" id="artists" role="tabpanel" aria-labelledby="artisti-tab">
                         ARTISTIIIII

@@ -1,5 +1,8 @@
+/* Tab Menu */
 .nav-tabs {
     border: none !important;
+    margin-bottom: 8vh !important;
+    margin-top: 3vh;
 }
 .nav-tabs .nav-item {
     margin-bottom: -1px;
@@ -23,9 +26,63 @@
     font-size: 1.25em;
 }
 
-.nav-link:focus, .nav-link:hover {
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
     color: #BB371A !important;
     border: none transparent !important;
     border-bottom: 1px solid #BB371A !important;
     transition: .5s !important;
+}
+
+
+
+/*Catalogo*/
+
+.thumb-wrapper {
+    padding: 25px 15px;
+    margin-bottom: 20px;
+    background: rgba(255, 248, 217, 0.5);
+    border-radius: 6px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}
+.img-box {
+    margin-bottom: 20px;
+}
+.thumb-content h4 {
+    font-size: 18px;
+}
+.thumb-content h4, .thumb-content p {
+    margin-bottom: 5px;
+}
+.expiration-timer .timer {
+    font-size: 16px;
+    letter-spacing: 5px;
+    color: #747d89;
+}
+.thumb-content .btn {
+    color: #BB371A;
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: bold;
+    background: none;
+    border: 1px solid #BB371A;
+    padding: 6px 14px;
+    margin-top: 5px;
+    line-height: 16px;
+    border-radius: 20px;
+    transition: .8s;
+}
+.thumb-content .btn:hover, .thumb-content .btn:focus {
+    color: #fff;
+    background: #BB371A;
+    box-shadow: none;
+    transition: .8s;
+}
+
+.item-price {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 2px 0;
+
 }
