@@ -85,7 +85,6 @@ class UtenteDaoImplIntegrationTest {
     connection.close();
   }
 
-
   static class UtenteProvider implements ArgumentsProvider {
 
     @Override
@@ -629,6 +628,4 @@ class UtenteDaoImplIntegrationTest {
     Assertions.assertEquals(oracolo.size(), ricercati.size());
     Assertions.assertTrue(ricercati.containsAll(oracolo));
   }
-
-
 }
