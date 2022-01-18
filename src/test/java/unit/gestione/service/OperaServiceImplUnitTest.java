@@ -35,7 +35,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class OperaServiceImplTest {
+class OperaServiceImplUnitTest {
 
   @Mock
   private OperaDao operaDao;
@@ -115,7 +115,7 @@ class OperaServiceImplTest {
     Utente u2 = new Utente();
     u2.setId(2);
     Opera o2 = new Opera("The Shibosis 2", "Descrizione", Opera.Stato.PREVENDITA,
-            b2, u2, u2, "yyyyyyyyy");
+            b2, u2, u1, "yyyyyyyyy");
     o2.setId(2);
 
     String s3 = "image blob 3";
@@ -123,7 +123,7 @@ class OperaServiceImplTest {
     Utente u3 = new Utente();
     u3.setId(3);
     Opera o3 = new Opera("PIXELARTARTARTA", "Descrizione", Opera.Stato.PREVENDITA,
-            b3, u3, u3, "zzzzzz");
+            b3, u3, u1, "zzzzzz");
     o3.setId(3);
 
     List<Opera> opere = new ArrayList<>();
@@ -230,12 +230,25 @@ class OperaServiceImplTest {
     assertEquals(o, operaService.getArtwork(o.getId()));
   }
 
-  /*@Test
-  void searchOpera() {
+  @DisplayName("Test Search Opera")
+  @ParameterizedTest
+  @ArgumentsSource(OperaProvider.class)
+  void searchOpera(Opera opera) {
+    List<Opera> opere = new ArrayList<>();
+    opere.add(opera);
+
+    when(operaDao.doRetrieveAllByName(opera.getNome())).thenReturn(opere);
+
+    Assertions.assertEquals(opere, operaService.searchOpera(opera.getNome()));
   }
 
-  @Test
-  void getArtworkByUser() {
-  }*/
+  @DisplayName("Test Search Opera")
+  @ParameterizedTest
+  @ArgumentsSource(ListOpereProvider.class)
+  void getArtworkByUser(List<Opera> opere) {
+    when(operaDao.doRetrieveAllByArtistId(anyInt())).thenReturn(opere);
+
+    Assertions.assertEquals(opere, operaService.getArtworkByUser(1));
+  }
 
 }
