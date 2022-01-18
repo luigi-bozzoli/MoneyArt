@@ -7,7 +7,7 @@ import de.micromata.paypal.data.Payment;
 import de.micromata.paypal.data.ShippingPreference;
 import de.micromata.paypal.data.Transaction;
 
-public class PayPalPayer implements PayerAdapter {
+public class PayPalPayment implements PaymentAdapter {
 
 
 
@@ -19,6 +19,13 @@ public class PayPalPayer implements PayerAdapter {
     payment.setShipping(ShippingPreference.NO_SHIPPING);
     Payment paymentCreated = PayPalConnector.createPayment(config, payment);
     return paymentCreated.getPayPalApprovalUrl();
+  }
+
+  @Override
+  public double recievePayment(String paymentId) throws Exception {
+    Payment payment = PayPalConnector.getPaymentDetails(config, paymentId);
+    Transaction t = payment.getTransactions().get(0);
+    return t.getAmount().getDetails().getSubtotal().doubleValue();
   }
 
   private static PayPalConfig config = new PayPalConfig()
