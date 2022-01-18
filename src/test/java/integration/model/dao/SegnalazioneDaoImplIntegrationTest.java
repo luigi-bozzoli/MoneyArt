@@ -152,7 +152,6 @@ public class SegnalazioneDaoImplIntegrationTest {
   @ArgumentsSource(SegnalazioneProvider.class)
   void doCreate(Segnalazione s) {
     Boolean bool = segnalazioneDao.doCreate(s);
-    System.out.println(s.getId());
     Segnalazione s2 = segnalazioneDao.doRetrieveById(s.getId());
 
     Assertions.assertEquals(s, s2);
