@@ -37,6 +37,34 @@ public interface AstaService {
    */
   List<Asta> getAuctionsByState(Asta.Stato s);
 
+
+  /**
+   * Restituisce tutte le aste con un determinato stato ordinate in base al prezzo.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s lo stato della rivendita
+   * @return la lista ordinata
+   */
+  List<Asta> getAuctionsSortedByPrice(String order, Asta.Stato s);
+
+  /**
+   * Restituisce tutte le aste con un determinato stato ordinate in base ai follower dell'artista.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s lo stato della rivendita
+   * @return la lista ordinata
+   */
+  List<Asta> getAuctionsSortedByArtistFollowers(String order, Asta.Stato s);
+
+  /**
+   * Restituisce tutte le aste con un determinato stato ordinate in base alla scadenza.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s lo stato della rivendita
+   * @return la lista ordinata
+   */
+  List<Asta> getAuctionsSortedByExpirationTime(String order, Asta.Stato s);
+
   /**
    * Permette ad un utente di partecipare ad un asta.
    * Precondizine: L'Asta non deve essere terminata,
@@ -118,27 +146,4 @@ public interface AstaService {
    */
   List<Partecipazione> getAllOffers();
 
-  /**
-   * Restituisce tutte le aste ordinate in base al prezzo.
-   *
-   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
-   * @return la lista ordinata
-   */
-  List<Asta> getAuctionsSortedByPrice(String order);
-
-  /**
-   * Restituisce tutte le aste ordinate in base ai follower dell'artista.
-   *
-   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
-   * @return la lista ordinata
-   */
-  List<Asta> getAuctionsSortedByArtistFollowers(String order);
-
-  /**
-   * Restituisce tutte le aste ordinate in base alla scadenza.
-   *
-   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
-   * @return la lista ordinata
-   */
-  List<Asta> getAuctionsSortedByExpirationTime(String order);
 }

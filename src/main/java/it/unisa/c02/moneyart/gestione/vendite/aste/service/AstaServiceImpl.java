@@ -103,15 +103,16 @@ public class AstaServiceImpl implements AstaService, TimerService {
   }
 
   /**
-   * Restituisce tutte le aste ordinate in base al prezzo.
+   * Restituisce tutte le aste con un determinato stato ordinate in base al prezzo.
    *
    * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s lo stato della rivendita
    * @return la lista ordinata
    */
   @Override
-  public List<Asta> getAuctionsSortedByPrice(String order) {
+  public List<Asta> getAuctionsSortedByPrice(String order, Asta.Stato s) {
 
-    List<Asta> aste = getAuctionsByState(Asta.Stato.IN_CORSO);
+    List<Asta> aste = getAuctionsByState(s);
 
     Collections.sort(aste, new Comparator<Asta>() {
       @Override
@@ -131,14 +132,15 @@ public class AstaServiceImpl implements AstaService, TimerService {
   }
 
   /**
-   * Restituisce tutte le aste ordinate in base ai follower dell'artista.
+   * Restituisce tutte le aste con un determinato stato ordinate in base ai follower dell'artista.
    *
    * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s lo stato della rivendita
    * @return la lista ordinata
    */
   @Override
-  public List<Asta> getAuctionsSortedByArtistFollowers(String order) {
-    List<Asta> aste = getAuctionsByState(Asta.Stato.IN_CORSO);
+  public List<Asta> getAuctionsSortedByArtistFollowers(String order, Asta.Stato s) {
+    List<Asta> aste = getAuctionsByState(s);
 
     Collections.sort(aste, new Comparator<Asta>() {
       @Override
@@ -157,14 +159,15 @@ public class AstaServiceImpl implements AstaService, TimerService {
   }
 
   /**
-   * Restituisce tutte le aste ordinate in base alla scadenza.
+   * Restituisce tutte le aste con un determinato stato ordinate in base alla scadenza.
    *
    * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s lo stato della rivendita
    * @return la lista ordinata
    */
   @Override
-  public List<Asta> getAuctionsSortedByExpirationTime(String order) {
-    List<Asta> aste = getAuctionsByState(Asta.Stato.IN_CORSO);
+  public List<Asta> getAuctionsSortedByExpirationTime(String order, Asta.Stato s) {
+    List<Asta> aste = getAuctionsByState(s);
 
     Collections.sort(aste, new Comparator<Asta>() {
       @Override

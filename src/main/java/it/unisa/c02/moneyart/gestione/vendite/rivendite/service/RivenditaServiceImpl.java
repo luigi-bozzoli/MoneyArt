@@ -1,13 +1,13 @@
 package it.unisa.c02.moneyart.gestione.vendite.rivendite.service;
 
-import it.unisa.c02.moneyart.model.beans.Notifica;
-import it.unisa.c02.moneyart.model.beans.Opera;
-import it.unisa.c02.moneyart.model.beans.Rivendita;
-import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.beans.*;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -37,9 +37,22 @@ public class RivenditaServiceImpl implements RivenditaService {
 
   }
 
+  /**
+   * Restituisce tutte le informazioni relative ad una rivendita.
+   *
+   * @param id l'identificativo della rivendita
+   * @return la rivendita identificata dall'id
+   */
   @Override
   public Rivendita getResell(Integer id) {
-    return rivenditaDao.doRetrieveById(id);
+    Rivendita rivendita = rivenditaDao.doRetrieveById(id);
+
+    Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
+    opera.setArtista(utenteDao.doRetrieveById((opera.getArtista().getId())));
+    opera.getArtista().setnFollowers(getNumberOfFollowers(opera.getArtista()));
+    rivendita.setOpera(opera);
+
+    return rivendita;
   }
 
   /**
@@ -129,17 +142,101 @@ public class RivenditaServiceImpl implements RivenditaService {
   }
 
   /**
+   * Restituisce tutte le rivendite.
+   *
+   * @return tutte le rivendite
+   */
+  @Override
+  public List<Rivendita> getResells() {
+    List<Rivendita> rivendite = rivenditaDao.doRetrieveAll("");
+
+    for(Rivendita rivendita : rivendite) {
+      Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
+      opera.setArtista(utenteDao.doRetrieveById((opera.getArtista().getId())));
+      opera.getArtista().setnFollowers(getNumberOfFollowers(opera.getArtista()));
+      rivendita.setOpera(opera);
+    }
+
+    return rivendite;
+  }
+
+  /**
    * Restituisce tutte le rivendite in un determinato stato.
    *
    * @param stato stato ricercato dall'utente
    * @return rivendite con stato uguale a quello ricercato
    */
   @Override
-  public List<Rivendita> getResells(Rivendita.Stato stato) {
+  public List<Rivendita> getResellsByState(Rivendita.Stato stato) {
 
-    return rivenditaDao.doRetrieveByStato(stato);
+    List<Rivendita> rivendite = rivenditaDao.doRetrieveByStato(stato);
+
+    for(Rivendita rivendita : rivendite) {
+      Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
+      opera.setArtista(utenteDao.doRetrieveById((opera.getArtista().getId())));
+      opera.getArtista().setnFollowers(getNumberOfFollowers(opera.getArtista()));
+      rivendita.setOpera(opera);
+    }
+
+    return rivendite;
   }
 
+  /**
+   * Restituisce tutte le rivendite con un determinato stato ordinate in base al prezzo.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s lo stato della rivendita
+   * @return la lista ordinata
+   */
+  @Override
+  public List<Rivendita> getResellsSortedByPrice(String order, Rivendita.Stato s) {
+    List<Rivendita> rivendite = getResellsByState(s);
+
+
+    Collections.sort(rivendite, new Comparator<Rivendita>() {
+      @Override
+      public int compare(Rivendita r1, Rivendita r2) {
+        Double price1 = r1.getPrezzo();
+        Double price2 = r2.getPrezzo();
+        return Double.compare(price1, price2);
+      }
+    });
+
+    if(order.equalsIgnoreCase("DESC")) {
+      Collections.reverse(rivendite);
+    }
+
+    return rivendite;
+  }
+
+  /**
+   * Restituisce tutte le rivendite con un determinato stato ordinate in base
+   * alla popolarità dell'artista.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s lo stato della rivendita
+   * @return la lista ordinata
+   */
+  @Override
+  public List<Rivendita> getReserllsSortedByArtistFollowers(String order, Rivendita.Stato s) {
+    List<Rivendita> rivendite = getResellsByState(s);
+
+
+    Collections.sort(rivendite, new Comparator<Rivendita>() {
+      @Override
+      public int compare(Rivendita r1, Rivendita r2) {
+        int f1 = r1.getOpera().getArtista().getnFollowers();
+        int f2 = r1.getOpera().getArtista().getnFollowers();
+        return Integer.compare(f1, f2);
+      }
+    });
+
+    if(order.equalsIgnoreCase("DESC")) {
+      Collections.reverse(rivendite);
+    }
+
+    return rivendite;
+  }
 
   /**
    * Restituisce il numero di followers di un determinato utente.
