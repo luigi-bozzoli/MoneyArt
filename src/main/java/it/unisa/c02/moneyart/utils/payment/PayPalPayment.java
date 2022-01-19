@@ -8,11 +8,19 @@ import de.micromata.paypal.data.ShippingPreference;
 import de.micromata.paypal.data.Transaction;
 
 /**
- * Classe che implementa i metodi dell'interfaccia di PaymentAdapter.
+ * Classe che implementa i metodi dell'interfaccia di PaymentAdapter per interfacciarsi con Paypal.
  *
  */
 public class PayPalPayment implements PaymentAdapter {
 
+  /**
+   * Richiede un pagamento e restituisce
+   * l'url dover reindirizzare l'utente per completare il pagamento.
+   *
+   * @param amount l'ammontare da pagare
+   * @return l'url dover reindirizzare l'utente per completare il pagamento
+   * @throws Exception in caso Paypal da un errore
+   */
   @Override
   public String makePayment(double amount) throws  Exception {
     Transaction transaction = new Transaction(Currency.EUR);
@@ -23,6 +31,13 @@ public class PayPalPayment implements PaymentAdapter {
     return paymentCreated.getPayPalApprovalUrl();
   }
 
+  /**
+   * Restituisce l'ammontare pagato dato l'id di un pagamento.
+   *
+   * @param paymentId l'id del pagamento
+   * @return l'ammontare speso nel pagamento
+   * @throws Exception nel caso Paypal da errore
+   */
   @Override
   public double recievePayment(String paymentId) throws Exception {
     Payment payment = PayPalConnector.getPaymentDetails(config, paymentId);
@@ -30,7 +45,7 @@ public class PayPalPayment implements PaymentAdapter {
     return t.getAmount().getDetails().getSubtotal().doubleValue();
   }
 
-  private static PayPalConfig config = new PayPalConfig()
+  private static final PayPalConfig config = new PayPalConfig()
         .setClientId("AdQKkY9nhdWjnFSQFMIRi-"
           + "yvpdq194KTkZxtkwD72P6H2rVwiteSMvacjAxPd61laDSWBWU7N6y1_ZG9")
         .setClientSecret("EEh8AzYy9IRpDCgF33qOI3n7R8Bc"

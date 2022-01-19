@@ -5,7 +5,7 @@ import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
 import javax.enterprise.inject.Produces;
 
 /**
- * Classe che modella un oggetto singleton.
+ * Classe che restituisce un oggetto singleton, usato per CDI.
  *
  */
 
