@@ -1,7 +1,7 @@
 package unit.gestione.service;
 
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
-import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaServiceImpl;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
@@ -26,7 +26,6 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,11 +46,12 @@ public class RivenditaServiceImplUnitTest {
   private NotificaDao notificaDao;
   @Mock
   private UtenteDao utenteDao;
-  @Mock
+
   private RivenditaService service;
 
   @BeforeEach
   void setUp() {
+    service = new RivenditaServiceImpl(utenteDao, operaDao, rivenditaDao, notificaDao);
   }
 
   @AfterEach
@@ -187,19 +187,7 @@ public class RivenditaServiceImplUnitTest {
   void getResellPrice(Opera opera) {
 
     when(operaDao.doRetrieveById(anyInt())).thenReturn(opera);
-    Opera artwork = operaDao.doRetrieveById(opera.getId());
-    assertNotNull(artwork);
-
-    double price = 0;
-
-    when(utenteDao.doRetrieveById(anyInt())).thenReturn(artwork.getArtista());
-    Utente artist = utenteDao.doRetrieveById(artwork.getArtista().getId());
-    assertNotNull(artist);
-
-    int n_followers = artist.getnFollowers();
-    price = 0.25 * n_followers;
-
-    assertEquals(0, price);
+    assertEquals(0, service.getResellPrice(opera));
   }
 
   @ParameterizedTest
@@ -208,25 +196,7 @@ public class RivenditaServiceImplUnitTest {
   void resell(Opera opera) {
 
     when(operaDao.doRetrieveById(anyInt())).thenReturn(opera);
-
-    Opera artwork = operaDao.doRetrieveById(opera.getId());
-    assertNotNull(artwork);
-
-    assertEquals(Opera.Stato.IN_POSSESSO, artwork.getStato());
-
-    Rivendita resell = new Rivendita();
-    resell.setOpera(artwork);
-    resell.setStato(Rivendita.Stato.IN_CORSO);
-    resell.setPrezzo(0d);
-
-    when(rivenditaDao.doCreate(any())).thenReturn(true);
-    boolean result = rivenditaDao.doCreate(resell);
-    assertEquals(true, result);
-
-    doNothing().when(operaDao).doUpdate(any());
-    artwork.setStato(Opera.Stato.IN_VENDITA);
-    operaDao.doUpdate(artwork);
-    assertEquals(Opera.Stato.IN_VENDITA, artwork.getStato());
+    assertEquals(true, service.resell(opera.getId()));
   }
 
 
@@ -240,47 +210,15 @@ public class RivenditaServiceImplUnitTest {
     utente.setId(3);
 
     when(rivenditaDao.doRetrieveById(anyInt())).thenReturn(rivendita);
-    Rivendita retrieve = rivenditaDao.doRetrieveById(rivendita.getId());
-    assertNotNull(retrieve);
-
     when(utenteDao.doRetrieveById(anyInt())).thenReturn(utente);
-    Utente buyer = utenteDao.doRetrieveById(utente.getId());
-    assertNotNull(buyer);
-
-    assertEquals(Rivendita.Stato.IN_CORSO, rivendita.getStato());
-    assertTrue(true, String.valueOf((buyer.getSaldo() > rivendita.getPrezzo())));
-
     when(operaDao.doRetrieveById(anyInt())).thenReturn(rivendita.getOpera());
-    Opera artwork = operaDao.doRetrieveById(rivendita.getOpera().getId());
-
-    artwork.setPossessore(utente);
-    artwork.setStato(Opera.Stato.IN_POSSESSO);
-
-    when(utenteDao.doRetrieveById(anyInt())).thenReturn(artwork.getArtista());
-    Utente owner = utenteDao.doRetrieveById(artwork.getArtista().getId());
-    owner.setSaldo(0d);
-
-    buyer.setSaldo(utente.getSaldo() - rivendita.getPrezzo());
-    owner.setSaldo(owner.getSaldo() + rivendita.getPrezzo());
-
-    rivendita.setStato(Rivendita.Stato.TERMINATA);
-    Notifica notifica = new Notifica(owner, null, rivendita, Notifica.Tipo.TERMINATA, "", false);
-
+    when(utenteDao.doRetrieveById(anyInt())).thenReturn(rivendita.getOpera().getPossessore());
+    when(utenteDao.doRetrieveById(anyInt())).thenReturn(rivendita.getOpera().getArtista());
     doNothing().when(utenteDao).doUpdate(any());
-    utenteDao.doUpdate(buyer);
-    utenteDao.doUpdate(owner);
-    assertEquals(0, buyer.getSaldo());
-    assertEquals(0,owner.getSaldo());
-
     doNothing().when(operaDao).doUpdate(any());
-    operaDao.doUpdate(artwork);
-
     doNothing().when(rivenditaDao).doUpdate(any());
-    rivenditaDao.doUpdate(rivendita);
 
-    when(notificaDao.doCreate(any())).thenReturn(true);
-    boolean result = notificaDao.doCreate(notifica);
-    assertEquals(true, result);
+    assertEquals(true, service.buy(rivendita.getId(), utente.getId()));
   }
 
   @ParameterizedTest
@@ -288,77 +226,32 @@ public class RivenditaServiceImplUnitTest {
   @ArgumentsSource(ListRivenditeProvider.class)
   void getResells(List<Rivendita> rivendite) {
 
-      List<Rivendita> result = new ArrayList<>();
       when(rivenditaDao.doRetrieveAll("")).thenReturn(rivendite);
 
       for(Rivendita r : rivendite) {
 
         when(operaDao.doRetrieveById(anyInt())).thenReturn(r.getOpera());
-        Opera opera = operaDao.doRetrieveById(r.getOpera().getId());
-
         when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getPossessore());
-        Utente owner = utenteDao.doRetrieveById(r.getOpera().getPossessore().getId());
-
         when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getArtista());
-        Utente artist = utenteDao.doRetrieveById(r.getOpera().getArtista().getId());
-        artist.setnFollowers(opera.getArtista().getnFollowers());
-
-        opera.setPossessore(owner);
-        opera.setArtista(artist);
-
-        double prezzo = r.getPrezzo();
-        Rivendita.Stato stato = r.getStato();
-
-        Rivendita rAdd = new Rivendita(
-          opera,
-          stato,
-          prezzo
-        );
-        rAdd.setId(r.getId());
-
-        result.add(rAdd);
       }
 
-      assertArrayEquals(rivendite.toArray(), result.toArray());
+      assertEquals(rivendite, service.getResells());
   }
 
   @ParameterizedTest
-  @DisplayName("Get Resells By State Test")
+  @DisplayName("Get Resells Test By State")
   @ArgumentsSource(ListRivenditeProvider.class)
   void getResellsByState(List<Rivendita> rivendite) {
 
-    List<Rivendita> result = new ArrayList<>();
     when(rivenditaDao.doRetrieveByStato(any())).thenReturn(rivendite);
 
     for(Rivendita r : rivendite) {
 
       when(operaDao.doRetrieveById(anyInt())).thenReturn(r.getOpera());
-      Opera opera = operaDao.doRetrieveById(r.getOpera().getId());
-
       when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getPossessore());
-      Utente owner = utenteDao.doRetrieveById(r.getOpera().getPossessore().getId());
-
       when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getArtista());
-      Utente artist = utenteDao.doRetrieveById(r.getOpera().getArtista().getId());
-      artist.setnFollowers(opera.getArtista().getnFollowers());
-
-      opera.setPossessore(owner);
-      opera.setArtista(artist);
-
-      double prezzo = r.getPrezzo();
-      Rivendita.Stato stato = r.getStato();
-
-      Rivendita rAdd = new Rivendita(
-        opera,
-        stato,
-        prezzo
-      );
-      rAdd.setId(r.getId());
-
-      result.add(rAdd);
     }
-
-    assertArrayEquals(rivendite.toArray(), result.toArray());
+    assertEquals(rivendite, service.getResellsByState(Rivendita.Stato.IN_CORSO));
 
   }
 
@@ -368,22 +261,16 @@ public class RivenditaServiceImplUnitTest {
   void getResellsSortedByPrice(List<Rivendita> rivendite) {
 
     String order = "";
+    when(rivenditaDao.doRetrieveByStato(any())).thenReturn(rivendite);
 
-    when(service.getResellsByState(any())).thenReturn(rivendite);
-    List<Rivendita> result = service.getResellsByState(Rivendita.Stato.IN_CORSO);
+    for(Rivendita r : rivendite) {
 
-    Collections.sort(result, new Comparator<Rivendita>() {
-      @Override
-      public int compare(Rivendita r1, Rivendita r2) {
-        Double price1 = r1.getPrezzo();
-        Double price2 = r2.getPrezzo();
-        return Double.compare(price1, price2);
-      }
-    });
+      when(operaDao.doRetrieveById(anyInt())).thenReturn(r.getOpera());
+      when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getPossessore());
+      when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getArtista());
+    }
 
-    assertNotEquals("DESC", order);
-
-    assertEquals(rivendite, result);
+    assertEquals(rivendite, service.getResellsSortedByPrice(order, Rivendita.Stato.IN_CORSO));
   }
 
   @ParameterizedTest
@@ -393,23 +280,18 @@ public class RivenditaServiceImplUnitTest {
 
     String order = "DESC";
 
-    when(service.getResellsByState(any())).thenReturn(rivendite);
-    List<Rivendita> result = service.getResellsByState(Rivendita.Stato.IN_CORSO);
+    when(rivenditaDao.doRetrieveByStato(any())).thenReturn(rivendite);
 
-    Collections.sort(result, new Comparator<Rivendita>() {
-      @Override
-      public int compare(Rivendita r1, Rivendita r2) {
-        Double price1 = r1.getPrezzo();
-        Double price2 = r2.getPrezzo();
-        return Double.compare(price1, price2);
-      }
-    });
+    for(Rivendita r : rivendite) {
 
-    assertEquals("DESC", order);
-    Collections.reverse(result);
+      when(operaDao.doRetrieveById(anyInt())).thenReturn(r.getOpera());
+      when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getPossessore());
+      when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getArtista());
+    }
+
     Collections.reverse(rivendite);
 
-    assertEquals(rivendite, result);
+    assertEquals(rivendite, service.getResellsSortedByPrice(order, Rivendita.Stato.IN_CORSO));
   }
 
   @ParameterizedTest
@@ -420,20 +302,15 @@ public class RivenditaServiceImplUnitTest {
     String order = "";
 
     when(service.getResellsByState(any())).thenReturn(rivendite);
-    List<Rivendita> result = service.getResellsByState(Rivendita.Stato.IN_CORSO);
 
-    Collections.sort(result, new Comparator<Rivendita>() {
-      @Override
-      public int compare(Rivendita r1, Rivendita r2) {
-        int f1 = r1.getOpera().getArtista().getnFollowers();
-        int f2 = r2.getOpera().getArtista().getnFollowers();
-        return Integer.compare(f1, f2);
-      }
-    });
+    for(Rivendita r : rivendite) {
 
-    assertNotEquals("DESC", order);
+      when(operaDao.doRetrieveById(anyInt())).thenReturn(r.getOpera());
+      when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getPossessore());
+      when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getArtista());
+    }
 
-    assertEquals(rivendite, result);
+    assertEquals(rivendite, service.getResellsSortedByArtistFollowers(order, Rivendita.Stato.IN_CORSO));
 
   }
 
@@ -445,22 +322,17 @@ public class RivenditaServiceImplUnitTest {
     String order = "DESC";
 
     when(service.getResellsByState(any())).thenReturn(rivendite);
-    List<Rivendita> result = service.getResellsByState(Rivendita.Stato.IN_CORSO);
 
-    Collections.sort(result, new Comparator<Rivendita>() {
-      @Override
-      public int compare(Rivendita r1, Rivendita r2) {
-        int f1 = r1.getOpera().getArtista().getnFollowers();
-        int f2 = r2.getOpera().getArtista().getnFollowers();
-        return Integer.compare(f1, f2);
-      }
-    });
+    for(Rivendita r : rivendite) {
 
-    assertEquals("DESC", order);
-    Collections.reverse(result);
+      when(operaDao.doRetrieveById(anyInt())).thenReturn(r.getOpera());
+      when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getPossessore());
+      when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getArtista());
+    }
+
     Collections.reverse(rivendite);
 
-    assertEquals(rivendite, result);
+    assertEquals(rivendite, service.getResellsSortedByArtistFollowers(order, Rivendita.Stato.IN_CORSO));
 
   }
 
@@ -469,23 +341,11 @@ public class RivenditaServiceImplUnitTest {
   @ArgumentsSource(RivenditaProvider.class)
   void getResell(Rivendita rivendita) {
 
-    Integer id = rivendita.getId();
     when(rivenditaDao.doRetrieveById(anyInt())).thenReturn(rivendita);
-    Rivendita retrieve = rivenditaDao.doRetrieveById(id);
-
     when(operaDao.doRetrieveById(anyInt())).thenReturn(rivendita.getOpera());
-    Opera artwork = operaDao.doRetrieveById(retrieve.getOpera().getId());
-
     when(utenteDao.doRetrieveById(anyInt())).thenReturn(rivendita.getOpera().getPossessore());
-    Utente owner = utenteDao.doRetrieveById(retrieve.getOpera().getPossessore().getId());
-
     when(utenteDao.doRetrieveById(anyInt())).thenReturn(rivendita.getOpera().getArtista());
-    Utente artist = utenteDao.doRetrieveById(retrieve.getOpera().getArtista().getId());
 
-    artwork.setArtista(artist);
-    artwork.setPossessore(owner);
-    retrieve.setOpera(artwork);
-
-    assertEquals(rivendita, retrieve);
+    assertEquals(rivendita, service.getResell(rivendita.getId()));
   }
 }
