@@ -45,7 +45,8 @@ public class UtenteDaoImplUnitTest {
 
 
   //costruttore vuoto
-  public UtenteDaoImplUnitTest () { }
+  public UtenteDaoImplUnitTest() {
+  }
 
   @BeforeAll
   public static void setUpClass() {
@@ -144,7 +145,7 @@ public class UtenteDaoImplUnitTest {
     Utente us1 = user;
     Utente us2 = new Utente("Stefano", "Zarro", null, "stefanus@unisa.it",
             "s_ano", user, new byte[10], 0.002);
-    user.setId(user.getId()+50);
+    user.setId(user.getId() + 50);
 
     List<Utente> utentiOracolo = Arrays.asList(us1, us2);
 
@@ -236,7 +237,7 @@ public class UtenteDaoImplUnitTest {
     Utente follow1 = user;
     Utente follow2 = new Utente("Stefano", "Zarro", null, "stefanus@unisa.it",
             "s_ano", userFollowed, new byte[10], 0.002);
-    user.setId(user.getId()+50);
+    user.setId(user.getId() + 50);
 
     List<Utente> followersOracolo = Arrays.asList(follow1, follow2);
 
@@ -271,19 +272,47 @@ public class UtenteDaoImplUnitTest {
 
   @Test
   @DisplayName("doRetrieveFollowersByUserIdCatch")
-  void doRetrieveFollowersByUserIdCatch() {
+  void doRetrieveFollowersByUserIdCatch() throws SQLException {
+    when(connection.prepareStatement(anyString())).thenThrow(SQLException.class);
+
+    UtenteDaoImpl userDao = new UtenteDaoImpl(dataSource);
+    List<Utente> users = userDao.doRetrieveFollowersByUserId(userFollowed.getId());
+    assertNull(users);
+
   }
 
-
-/*
   @Test
-  void researchUser() {
+  @DisplayName("doRetrieveByEmail")
+  void doRetrieveByEmail() throws SQLException {
+        /*Istruisco i mock di connessione per questo metodo +
+    Istruisco il finto comportamento di prelevazione dell'opera dal db
+    */
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setInt(anyInt(), anyInt());
+    when(resultSet.next()).thenReturn(Boolean.TRUE);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(resultSet.getObject("id", Integer.class)).thenReturn(user.getId());
+    when(resultSet.getObject("id_seguito", Integer.class)).thenReturn(user.getSeguito().getId());
+    when(resultSet.getObject("email", String.class)).thenReturn(user.getEmail());
+    when(resultSet.getObject("pwd", String.class)).thenReturn(user.getPassword().toString());
+    when(resultSet.getObject("username", String.class)).thenReturn(user.getUsername());
+    when(resultSet.getObject("nome", String.class)).thenReturn(user.getNome());
+    when(resultSet.getObject("cognome", String.class)).thenReturn(user.getCognome());
+    when(resultSet.getObject("foto", Blob.class)).thenReturn(user.getFotoProfilo());
+    when(resultSet.getObject("saldo", Double.class)).thenReturn(user.getSaldo());
+
+
+    Utente result = new UtenteDaoImpl(dataSource).doRetrieveByUsername(user.getEmail());
+
+    assertTrue(user.getId() == result.getId());
   }
+
 
   @Test
-  void doRetrieveByEmail() {
-  }
+  @DisplayName("doRetrieveByEmailCatch")
+  void doRetrieveByEmailCatch() {
 
- */
+
+  }
 
 }
