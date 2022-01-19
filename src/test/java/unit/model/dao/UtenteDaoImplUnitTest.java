@@ -1,9 +1,12 @@
 package unit.model.dao;
 
+import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -93,11 +96,36 @@ public class UtenteDaoImplUnitTest {
 
   }
 
-/*
+
   @Test
-  void doRetrieveById() {
+  @DisplayName("doRetrieveById")
+  void doRetrieveById() throws SQLException {
+
+    /*Istruisco i mock di connessione per questo metodo +
+    Istruisco il finto comportamento di prelevazione dell'opera dal db
+    */
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setInt(anyInt(), anyInt());
+    when(resultSet.next()).thenReturn(Boolean.TRUE);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(resultSet.getObject("id", Integer.class)).thenReturn(user.getId());
+    when(resultSet.getObject("id_seguito", Integer.class)).thenReturn(user.getSeguito().getId());
+    when(resultSet.getObject("email", String.class)).thenReturn(user.getEmail());
+    when(resultSet.getObject("pwd", String.class)).thenReturn(user.getPassword().toString());
+    when(resultSet.getObject("username", String.class)).thenReturn(user.getUsername());
+    when(resultSet.getObject("nome", String.class)).thenReturn(user.getNome());
+    when(resultSet.getObject("cognome", String.class)).thenReturn(user.getCognome());
+    when(resultSet.getObject("foto", Blob.class)).thenReturn(user.getFotoProfilo());
+    when(resultSet.getObject("saldo", Double.class)).thenReturn(user.getSaldo());
+
+
+    Utente result = new UtenteDaoImpl(dataSource).doRetrieveById(user.getId());
+
+    assertTrue(user.getId() == result.getId());
   }
 
+
+/*
   @Test
   void doRetrieveAll() {
   }
