@@ -16,9 +16,11 @@ import it.unisa.c02.moneyart.utils.timers.TimedObject;
 import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
 import it.unisa.c02.moneyart.utils.timers.TimerService;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +28,6 @@ import javax.inject.Inject;
 
 /**
  * Classe che implementa i metodi dell'interfaccia AstaService.
- *
  */
 
 public class AstaServiceImpl implements AstaService, TimerService {
@@ -104,7 +105,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
       asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
       asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
       asta.getOpera().getArtista()
-        .setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
+          .setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
     }
     return aste;
   }
@@ -113,7 +114,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * Restituisce tutte le aste con un determinato stato ordinate in base al prezzo.
    *
    * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
-   * @param s lo stato della rivendita
+   * @param s     lo stato della rivendita
    * @return la lista ordinata
    */
   @Override
@@ -142,7 +143,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * Restituisce tutte le aste con un determinato stato ordinate in base ai follower dell'artista.
    *
    * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
-   * @param s lo stato della rivendita
+   * @param s     lo stato della rivendita
    * @return la lista ordinata
    */
   @Override
@@ -169,7 +170,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * Restituisce tutte le aste con un determinato stato ordinate in base alla scadenza.
    *
    * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
-   * @param s lo stato della rivendita
+   * @param s     lo stato della rivendita
    * @return la lista ordinata
    */
   @Override
@@ -214,22 +215,26 @@ public class AstaServiceImpl implements AstaService, TimerService {
       asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
       asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
       asta.getOpera().getArtista()
-        .setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
+          .setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
     }
     return aste;
   }
 
   /**
-   * Permette ad un utente di partecipare ad un asta.
-   * Precondizine: L'Asta non deve essere terminata,
-   * l'utente deve avere un saldo sufficente per effettuare l'offerta e
-   * L'offerta è superiore a quella attuale dell'asta
-   * Postcondizione: l'offerta viene registrata
+   * Permette di partecipare ad un asta facendo un offerta
+   * , crea una notifica per informare il vecchio migliore offerte, se esiste.
    *
    * @param utente  l'utente che vuole effettuare l'offerta
    * @param asta    l'asta per cui si vuole effetuare l'offerta
    * @param offerta l'offerta fatta dall'utente
    * @return vero se l'offerta va a buon fine, falso altrimenti
+   * @pre asta.getStato() = IN_CORSO and utente.getSaldo() >= offerta
+   *      and (bestOffer(asta) = null or offerta >= bestOffer(asta).getOfferta() )
+   * @post bestOffer(asta).getOfferta() = offerta
+   *       and bestOffer(asta).getUtente() = utente
+   *       and (@pre.bestOffer(asta).getUtente() = null
+   *       or notifica.allIstances() -> exists(n:notifica | notifica.getAsta(asta)
+   *       and notifica.getUtente() = @pre.bestOffer(asta).getUtente() ) )
    */
 
   @Override
@@ -283,7 +288,8 @@ public class AstaServiceImpl implements AstaService, TimerService {
 
   private boolean checkDate(Date startDate, Date endDate) {
     long millis = System.currentTimeMillis();
-    Date today = new Date(millis);
+    Date today = setMidnightTime(new Date(millis));
+
 
     return (startDate.after(today) || startDate.equals(today)) && endDate.after(startDate);
 
@@ -295,17 +301,25 @@ public class AstaServiceImpl implements AstaService, TimerService {
    *
    * @param asta l'asta da aggiungere
    * @return vero se l'aggiunta è andata a buon fine, falso altrimenti
+   * @pre day(asta.getDataInizio()) >= day(new Date())
+   *      and day(asta.getDataFine()) > day(asta.getDataInizio())
+   *      and asta.getOpera().getStato() = PREVENDITA
+   * @post aste.allIstances() -> includes(asta) and asta.getOpera().getStato() = ALL_ASTA
    */
   @Override
   public boolean addAsta(Asta asta) {
+    asta.setDataInizio(setMidnightTime(asta.getDataInizio()));
+    asta.setDataFine(setMidnightTime(asta.getDataFine()));
+    Opera opera = operaDao.doRetrieveById(asta.getOpera().getId());
 
-    if (!checkDate(asta.getDataInizio(), asta.getDataFine())) {
+    if (!checkDate(asta.getDataInizio(), asta.getDataFine()) ||
+        !opera.getStato().equals(Opera.Stato.PREVENDITA)) {
       return false;
     }
+    opera.setStato(Opera.Stato.ALL_ASTA);
     asta.setStato(Asta.Stato.CREATA);
-    asta.setDataInizio(setMidnightTime(
-        asta.getDataInizio())); //Il giorno di inizio di un'asta parte sempre da mezzanotte
     astaDao.doCreate(asta);
+    operaDao.doUpdate(opera);
     TimedObject timedObject = new TimedObject(asta.getId(), "avviaAsta", asta.getDataInizio());
     timerScheduler.scheduleTimedService(timedObject);
     return true;
@@ -317,12 +331,16 @@ public class AstaServiceImpl implements AstaService, TimerService {
       return null;
     }
 
+    Calendar calendar = new GregorianCalendar();
+    calendar.setTime(date);
 
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
+    calendar.set(Calendar.HOUR_OF_DAY, 0);
+    calendar.set(Calendar.MINUTE, 0);
+    calendar.set(Calendar.SECOND, 0);
+    calendar.set(Calendar.MILLISECOND, 0);
 
-    return date;
+
+    return calendar.getTime();
   }
 
   /**
@@ -330,6 +348,13 @@ public class AstaServiceImpl implements AstaService, TimerService {
    *
    * @param asta l'asta da rimuovere
    * @return vero se la rimozione è andata a buon fine, falso altrimenti
+   * @pre asta.getStato() = IN_CORSO or asta.getStato() = CREATA
+   * @post asta.allIstances()  -> not includes(asta)
+   *       and asta.getOpera().getStato() = PREVENDITA
+   *       and ( pre.bestOffer(asta) = null
+   *       or notifica.allIstances().doRetrieveAll() ->
+   *       Exists(n:notifica | n.getAsta() = asta and n.getUtente = pre.bestOffer(asta).getUtente()
+   *       and n.tipo = ANNULLAMENTO))
    */
   @Override
   public boolean removeAsta(Asta asta) {
@@ -350,6 +375,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
    *
    * @param asta l'asta da annullare
    * @return vero se l'annullamento è andata a buon fine, falso altrimenti
+   * @pre asta.getStato() = IN_CORSO or asta.getStato() = CREATA
+   * @post asta.allIstances()  -> not includes(asta)
+   *       and asta.getOpera().getStato() = PREVENDITA
    */
   @Override
   public boolean annullaAsta(Asta asta) {
@@ -509,6 +537,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
 
   }
 
+
   private void terminaAsta(Asta asta) {
 
     astaLockingSingleton.lockAsta(asta);
@@ -545,6 +574,20 @@ public class AstaServiceImpl implements AstaService, TimerService {
 
   }
 
+  /**
+   * attiva un evento allo scadere del timer,
+   * l'evento può attivare un asta o concluderla.
+   *
+   * @param item dati riguardanti il timer che si è attivato
+   *
+   * @pre (item.getTaskType = "avviaAsta"
+   *      and(asta.allIstances() -> any(a:asta | asta.getId() = item.attribute())).stato = CREATO
+   *      )
+   *      or
+   *      (item.getTaskType = "terminaAsta"
+   *      and (bestOffer(asta) = null || asta.Stato = Prevendita)
+   *      )
+   */
   @Override
   public void executeTimedTask(TimedObject item) {
     Asta asta = astaDao.doRetrieveById((Integer) item.getAttribute());
@@ -581,9 +624,11 @@ public class AstaServiceImpl implements AstaService, TimerService {
   @Inject
   private NotificaDao notificaDao;
 
-  @Inject @Sing
+  @Inject
+  @Sing
   private TimerScheduler timerScheduler;
-  @Inject @Sing
+  @Inject
+  @Sing
   private AstaLockingSingleton astaLockingSingleton;
 
 }
