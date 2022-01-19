@@ -33,7 +33,7 @@ public class UtenteDaoImplUnitTest {
   @Mock
   private static ResultSet resultSet;
 
-  /*Va bene anche così, ma vorrei moccare anche gli utenti*/
+
   private static Utente user;
   private static Utente userFollowed;
 
@@ -57,17 +57,10 @@ public class UtenteDaoImplUnitTest {
   }
 
   @BeforeEach
-  public void setUp() throws SQLException { //istruisco gli oggetti mock
+  public void setUp() throws SQLException {
     when(dataSource.getConnection()).thenReturn(connection);
     when(dataSource.getConnection(anyString(), anyString())).thenReturn(connection);
     doNothing().when(connection).commit();
-    when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
-    doNothing().when(preparedStatement).setObject(anyInt(), anyString(), any());
-    when(preparedStatement.executeUpdate()).thenReturn(1);
-    when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
-    when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
-    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
-    when(resultSet.getInt(anyInt())).thenReturn(user.getId());
   }
 
   @AfterEach
@@ -75,12 +68,27 @@ public class UtenteDaoImplUnitTest {
   }
 
   @Test
-  public void testDoCreate() throws SQLException {
-   UtenteDaoImpl userDao = new UtenteDaoImpl(dataSource);
+  @DisplayName("doCreate")
+  public void doCreate() throws SQLException {
+    when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setObject(anyInt(), anyString(), any());
+    when(preparedStatement.executeUpdate()).thenReturn(1);
+    when(preparedStatement.execute()).thenReturn(Boolean.TRUE);
+    when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE); //al primo ciclo ritorna true, al secondo false giustamente perché stiamo facendo una doCreate
+    when(resultSet.getInt(anyInt())).thenReturn(user.getId());
 
-   boolean result = userDao.doCreate(user);
+    UtenteDaoImpl userDao = new UtenteDaoImpl(dataSource);
+    boolean result = userDao.doCreate(user);
 
     assertTrue(result);
+  }
+
+  @Test
+  @DisplayName("doCreateCatch")
+  public void doCreateCatch() throws SQLException {
+
+
   }
 
 /*
