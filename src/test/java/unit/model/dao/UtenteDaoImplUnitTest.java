@@ -1,11 +1,8 @@
 package unit.model.dao;
 
-import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
 
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -302,7 +299,7 @@ public class UtenteDaoImplUnitTest {
     when(resultSet.getObject("saldo", Double.class)).thenReturn(user.getSaldo());
 
 
-    Utente result = new UtenteDaoImpl(dataSource).doRetrieveByUsername(user.getEmail());
+    Utente result = new UtenteDaoImpl(dataSource).doRetrieveByEmail(user.getEmail());
 
     assertTrue(user.getId() == result.getId());
   }
@@ -310,8 +307,11 @@ public class UtenteDaoImplUnitTest {
 
   @Test
   @DisplayName("doRetrieveByEmailCatch")
-  void doRetrieveByEmailCatch() {
+  void doRetrieveByEmailCatch() throws SQLException {
+    when(connection.prepareStatement(anyString())).thenThrow(SQLException.class);
 
+    Utente userResult = new UtenteDaoImpl(dataSource).doRetrieveByEmail(user.getEmail());
+    assertNull(userResult);
 
   }
 
