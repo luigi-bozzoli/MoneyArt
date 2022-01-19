@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface OperaService {
 
-  boolean addArtwork(Opera opera);
+  boolean addArtwork(Opera opera) throws Exception;
 
   boolean checkArtwork(int id, String name);
 
