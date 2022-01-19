@@ -40,6 +40,8 @@ class OperaServiceImplIntegrationTest {
 
   private OperaService operaService;
 
+  private OperaDao operaDao;
+
   @BeforeAll
   public static void generalSetUp() {
     Context initCtx = null;
@@ -75,7 +77,7 @@ class OperaServiceImplIntegrationTest {
     connection.close();
 
     ContractProducer cp = new ContractProducer();
-    OperaDao operaDao = new OperaDaoImpl(dataSource);
+    operaDao = new OperaDaoImpl(dataSource);
     MoneyArtNft moneyArtNft = cp.contractInizializer();
 
     operaService = new OperaServiceImpl(operaDao, moneyArtNft);
@@ -133,14 +135,16 @@ class OperaServiceImplIntegrationTest {
     @DisplayName("Add Artwork")
     @ParameterizedTest
     @ArgumentsSource(OperaProvider.class)
-    void addArtwork(Opera opera) {
+    void addArtwork(Opera opera) throws Exception {
       Assertions.assertTrue(operaService.addArtwork(opera));
+      Opera result = operaDao.doRetrieveById(opera.getId());
+      Assertions.assertEquals(opera,result);
     }
 
     @DisplayName("Add Artwork with name null")
     @ParameterizedTest
     @ArgumentsSource(OperaProvider.class)
-    void addArtworkNameNull(Opera opera) {
+    void addArtworkNameNull(Opera opera) throws Exception {
       opera.setNome(null);
 
       Assertions.assertFalse(operaService.addArtwork(opera));
@@ -149,7 +153,7 @@ class OperaServiceImplIntegrationTest {
     @DisplayName("Add Artwork with image null")
     @ParameterizedTest
     @ArgumentsSource(OperaProvider.class)
-    void addArtworkImgNull(Opera opera) {
+    void addArtworkImgNull(Opera opera) throws Exception {
       opera.setImmagine(null);
 
       Assertions.assertFalse(operaService.addArtwork(opera));
@@ -158,7 +162,7 @@ class OperaServiceImplIntegrationTest {
     @DisplayName("Add Artwork with name exsiting")
     @ParameterizedTest
     @ArgumentsSource(OperaProvider.class)
-    void addArtworkFalseCheckArtwork(Opera opera) {
+    void addArtworkFalseCheckArtwork(Opera opera) throws Exception {
       operaService.addArtwork(opera);
 
       Assertions.assertFalse(operaService.addArtwork(opera));
@@ -168,7 +172,7 @@ class OperaServiceImplIntegrationTest {
 
   @Test
   void checkArtwork() {
-    Assertions.assertTrue();
+
   }
 
   @Test

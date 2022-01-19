@@ -1,5 +1,8 @@
 package it.unisa.c02.moneyart.model.beans;
 
+import java.sql.Array;
+import java.sql.SQLException;
+import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Blob;
@@ -245,22 +248,20 @@ public class Opera {
     }
     Opera opera = (Opera) o;
     return Objects.equals(getId(), opera.getId())
-      && Objects.equals(getNome(), opera.getNome())
-      && Objects.equals(getDescrizione(), opera.getDescrizione())
-      && getStato() == opera.getStato()
-      && Objects.equals(getImmagine(), opera.getImmagine())
-      && Objects.equals(getPossessore(), opera.getPossessore())
-      && Objects.equals(getArtista(), opera.getArtista())
-      && Objects.equals(getCertificato(), opera.getCertificato())
-      && Objects.equals(getAste(), opera.getAste())
-      && Objects.equals(getRivendite(), opera.getRivendite());
+        && Objects.equals(getNome(), opera.getNome())
+        && Objects.equals(getDescrizione(), opera.getDescrizione())
+        && getStato() == opera.getStato()
+        && Objects.equals(getPossessore(), opera.getPossessore())
+        && Objects.equals(getArtista(), opera.getArtista())
+        && Objects.equals(getCertificato(), opera.getCertificato())
+        && Objects.equals(getAste(), opera.getAste())
+        && Objects.equals(getRivendite(), opera.getRivendite());
   }
-
 
 
   @Override
   public int hashCode() {
-    return Objects.hash(getId(), getNome(), getDescrizione(), getStato(), getImmagine(),
+    return Objects.hash(getId(), getNome(), getDescrizione(), getStato(),
         getPossessore(), getArtista(), getCertificato(), getAste(), getRivendite());
   }
 
@@ -287,5 +288,6 @@ public class Opera {
   public enum Stato {
     ALL_ASTA, IN_VENDITA, IN_POSSESSO, PREVENDITA
   }
+
 
 }
