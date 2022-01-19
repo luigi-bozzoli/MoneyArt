@@ -125,8 +125,19 @@ public class AstaServiceImpl implements AstaService, TimerService {
     Collections.sort(aste, new Comparator<Asta>() {
       @Override
       public int compare(Asta a1, Asta a2) {
-        Double maxA1 = a1.getPartecipazioni().get(a1.getPartecipazioni().size() - 1).getOfferta();
-        Double maxA2 = a2.getPartecipazioni().get(a2.getPartecipazioni().size() - 1).getOfferta();
+        Double maxA1;
+        Double maxA2;
+        if(a1.getPartecipazioni().isEmpty() || a1.getPartecipazioni() == null) {
+          maxA1 = 0D;
+        } else {
+          maxA1 = a1.getPartecipazioni().get(a1.getPartecipazioni().size()-1).getOfferta();
+        }
+
+        if(a2.getPartecipazioni().isEmpty() || a2.getPartecipazioni() == null) {
+          maxA2 = 0D;
+        } else {
+          maxA2 = a2.getPartecipazioni().get(a2.getPartecipazioni().size()-1).getOfferta();
+        }
         return Double.compare(maxA1, maxA2);
       }
     });
