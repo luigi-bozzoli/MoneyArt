@@ -190,15 +190,92 @@ public class UtenteDaoImplUnitTest {
     assertNull(users);
   }
 
+
+  @Test
+  @DisplayName("doRetrieveByUsername")
+  void doRetrieveByUsername() throws SQLException {
+    /*Istruisco i mock di connessione per questo metodo +
+    Istruisco il finto comportamento di prelevazione dell'opera dal db
+    */
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setInt(anyInt(), anyInt());
+    when(resultSet.next()).thenReturn(Boolean.TRUE);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(resultSet.getObject("id", Integer.class)).thenReturn(user.getId());
+    when(resultSet.getObject("id_seguito", Integer.class)).thenReturn(user.getSeguito().getId());
+    when(resultSet.getObject("email", String.class)).thenReturn(user.getEmail());
+    when(resultSet.getObject("pwd", String.class)).thenReturn(user.getPassword().toString());
+    when(resultSet.getObject("username", String.class)).thenReturn(user.getUsername());
+    when(resultSet.getObject("nome", String.class)).thenReturn(user.getNome());
+    when(resultSet.getObject("cognome", String.class)).thenReturn(user.getCognome());
+    when(resultSet.getObject("foto", Blob.class)).thenReturn(user.getFotoProfilo());
+    when(resultSet.getObject("saldo", Double.class)).thenReturn(user.getSaldo());
+
+
+    Utente result = new UtenteDaoImpl(dataSource).doRetrieveByUsername(user.getUsername());
+
+    assertTrue(user.getId() == result.getId());
+
+  }
+
+  @Test
+  @DisplayName("doRetrieveByUsernameCatch")
+  void doRetrieveByUsernameCatch() throws SQLException {
+    when(connection.prepareStatement(anyString())).thenThrow(SQLException.class);
+
+    Utente userResult = new UtenteDaoImpl(dataSource).doRetrieveByUsername(user.getUsername());
+    assertNull(userResult);
+  }
+
+
+  @Test
+  @DisplayName("doRetrieveFollowersByUserId")
+  void doRetrieveFollowersByUserId() throws SQLException {
+
+    //costruisco la lista oracolo del nostro test unit --> composta dai follower di un'utente (userFollowed)
+    Utente follow1 = user;
+    Utente follow2 = new Utente("Stefano", "Zarro", null, "stefanus@unisa.it",
+            "s_ano", userFollowed, new byte[10], 0.002);
+    user.setId(user.getId()+50);
+
+    List<Utente> followersOracolo = Arrays.asList(follow1, follow2);
+
+    /*Istruisco i mock di connessione per questo metodo +
+    Istruisco il finto comportamento di prelevazione dell'opera dal db
+    */
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    doNothing().when(preparedStatement).setInt(anyInt(), anyInt());
+    when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+    when(preparedStatement.executeQuery(anyString())).thenReturn(resultSet);
+
+    when(resultSet.getObject("id", Integer.class)).thenReturn(follow1.getId(), follow2.getId());
+    when(resultSet.getObject("id_seguito", Integer.class)).thenReturn(follow1.getSeguito().getId(), follow2.getSeguito().getId());
+    when(resultSet.getObject("email", String.class)).thenReturn(follow1.getEmail(), follow2.getEmail());
+    when(resultSet.getObject("pwd", String.class)).thenReturn(follow1.getPassword().toString(), follow2.getPassword().toString());
+    when(resultSet.getObject("username", String.class)).thenReturn(follow1.getUsername(), follow2.getUsername());
+    when(resultSet.getObject("nome", String.class)).thenReturn(follow1.getNome(), follow2.getNome());
+    when(resultSet.getObject("cognome", String.class)).thenReturn(follow1.getCognome(), follow2.getCognome());
+    when(resultSet.getObject("foto", Blob.class)).thenReturn(follow1.getFotoProfilo(), follow2.getFotoProfilo());
+    when(resultSet.getObject("saldo", Double.class)).thenReturn(follow1.getSaldo(), follow2.getSaldo());
+
+
+    List<Utente> followersRetrieve = new UtenteDaoImpl(dataSource).doRetrieveFollowersByUserId(userFollowed.getId());
+
+    System.out.println(followersOracolo);
+    System.out.println(followersRetrieve);
+
+    assertTrue(followersOracolo.get(0).getId() == followersRetrieve.get(0).getId() && followersOracolo.get(1).getId() == followersRetrieve.get(1).getId());
+
+  }
+
+  @Test
+  @DisplayName("doRetrieveFollowersByUserIdCatch")
+  void doRetrieveFollowersByUserIdCatch() {
+  }
+
+
 /*
-  @Test
-  void doRetrieveByUsername() {
-  }
-
-  @Test
-  void doRetrieveFollowersByUserId() {
-  }
-
   @Test
   void researchUser() {
   }
