@@ -180,7 +180,7 @@ public class Asta {
    * @return la stringa che rappresenta l'asta
    */
   public String toString() {
-    return "id: " + this.id + " id opera: " + opera.getId() + " Data inizio: " + this.dataInizio
+    return "id: " + this.id + " opera: " + this.opera.toString() + " Data inizio: " + this.dataInizio
         + " Data fine: " + this.dataFine + " Stato: " + this.stato;
   }
 
