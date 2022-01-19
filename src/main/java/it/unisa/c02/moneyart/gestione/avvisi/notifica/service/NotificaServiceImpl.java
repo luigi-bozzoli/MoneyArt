@@ -53,6 +53,8 @@ public class NotificaServiceImpl implements NotificaService {
    * Imposta il parametro "letta" a true.
    *
    * @param notifica notifica da impostare come letta
+   * @pre Notifica.allIstances() -> exists(n:Notifica | n = notifica)
+   * @post notifica.setLetta(true)
    */
   @Override
   public void readNotification(Notifica notifica) {
@@ -66,6 +68,8 @@ public class NotificaServiceImpl implements NotificaService {
    * Imposta il parametro "letta" a false.
    *
    * @param notifica notifica da impostare come non letta
+   * @pre Notifica.allIstances() -> exists(n:Notifica | n = notifica)
+   * @post notifica.setLetta(true)
    */
   @Override
   public void unreadNotification(Notifica notifica) {
@@ -79,6 +83,8 @@ public class NotificaServiceImpl implements NotificaService {
    * Elimina una notifca.
    *
    * @param notifica notifica da eliminare
+   * @pre Notifica.allIstances() -> exists(n:Notifica | n = notifica)
+   * @post Notifica.allIstances() -> not exists(n:Notifica | n = notifica)
    */
   @Override
   public void deleteNotification(Notifica notifica) {
@@ -90,6 +96,8 @@ public class NotificaServiceImpl implements NotificaService {
    * Aggiunge una nuova notifica.
    *
    * @param notifica notifica da aggiungere
+   * @pre Notifica.allIstances() -> not exists(n:Notifica | n = notifica)
+   * @post Notifica.allIstances() -> exists(n:Notifica | n = notifica)
    */
   @Override
   public void addNotification(Notifica notifica) {
