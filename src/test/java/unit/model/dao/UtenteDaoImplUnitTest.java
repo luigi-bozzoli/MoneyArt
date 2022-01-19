@@ -87,7 +87,9 @@ public class UtenteDaoImplUnitTest {
   @Test
   @DisplayName("doCreateCatch")
   public void doCreateCatch() throws SQLException {
+    when(connection.prepareStatement(anyString(), anyInt())).thenThrow(SQLException.class);
 
+    assertTrue(!(new UtenteDaoImpl(dataSource).doCreate(user)));
 
   }
 
