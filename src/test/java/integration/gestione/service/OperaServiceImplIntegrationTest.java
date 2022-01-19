@@ -7,11 +7,7 @@ import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.blockchain.MoneyArtNft;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
-import it.unisa.c02.moneyart.model.dao.PartecipazioneDaoImpl;
-import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
-import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
-import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import it.unisa.c02.moneyart.utils.production.ContractProducer;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.*;
@@ -31,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.stream.Stream;
 
 
@@ -128,6 +125,30 @@ class OperaServiceImplIntegrationTest {
     }
   }
 
+  static class InputCheckArtworkProvider implements ArgumentsProvider {
+
+    @Override
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
+      return Stream.of(
+              Arguments.of(2,"The TestCaseBast"),
+              Arguments.of(3, "BASTA TESTING"),
+              Arguments.of(4, "ZizzoDonnarumma")
+              );
+    }
+  }
+
+  static class InputCheckArtworkExistingProvider implements ArgumentsProvider {
+
+    @Override
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
+      return Stream.of(
+              Arguments.of(2,"The Shibosis"),
+              Arguments.of(2, "Bears Deluxe #3742"),
+              Arguments.of(5, "CupCat")
+      );
+    }
+  }
+
   @Nested
   @DisplayName("Test Suite addArtwork")
   class TestAddArtwork{
@@ -148,6 +169,7 @@ class OperaServiceImplIntegrationTest {
       opera.setNome(null);
 
       Assertions.assertFalse(operaService.addArtwork(opera));
+      Assertions.assertNull(operaDao.doRetrieveAllByName(opera.getNome()));
     }
 
     @DisplayName("Add Artwork with image null")
@@ -157,33 +179,85 @@ class OperaServiceImplIntegrationTest {
       opera.setImmagine(null);
 
       Assertions.assertFalse(operaService.addArtwork(opera));
+      Assertions.assertNull(operaDao.doRetrieveAllByName(opera.getNome()));
     }
 
+    @Test
     @DisplayName("Add Artwork with name exsiting")
-    @ParameterizedTest
-    @ArgumentsSource(OperaProvider.class)
-    void addArtworkFalseCheckArtwork(Opera opera) throws Exception {
-      operaService.addArtwork(opera);
+    void addArtworkFalseCheckArtwork() throws Exception {
+      //OPERA GIA' PRESENTE NEL DB (PRESA DAL POPULATOR)
+      String s = "image blob 1";
+      Blob b = new SerialBlob(s.getBytes(StandardCharsets.UTF_8));
+      Utente u1 = new Utente();
+      u1.setId(3);
+      Utente u2 = new Utente();
+      u2.setId(2);
+      Opera o = new Opera("The Shibosis", "Descrizione", Opera.Stato.IN_VENDITA,
+              b, u1, u2, "xxxxx");
 
-      Assertions.assertFalse(operaService.addArtwork(opera));
+      Assertions.assertFalse(operaService.addArtwork(o));
     }
 
   }
 
-  @Test
-  void checkArtwork() {
+  @Nested
+  @DisplayName("Test Suite checkArtwork")
+  class TestCheckArtwork {
+
+    @DisplayName("Check Artwork false")
+    @ParameterizedTest
+    @ArgumentsSource(InputCheckArtworkProvider.class)
+    void checkArtwork(int id, String name){
+      Assertions.assertFalse(operaService.checkArtwork(id, name));
+    }
+
+    @DisplayName("Check Artwork with name null")
+    @ParameterizedTest
+    @ArgumentsSource(InputCheckArtworkProvider.class)
+    void checkArtworkNameNull(int id){
+      Assertions.assertThrows(Exception.class, () -> operaService.checkArtwork(id,null));
+    }
+
+    @DisplayName("Check Artwork name existing")
+    @ParameterizedTest
+    @ArgumentsSource(InputCheckArtworkExistingProvider.class)
+    void checkArtworkNameNull(int id, String name){
+      Assertions.assertTrue(operaService.checkArtwork(id, name));
+    }
 
   }
 
-  @Test
-  void getArtwork() {
+  @DisplayName("Get Artwork")
+  @ParameterizedTest
+  @ArgumentsSource(InputCheckArtworkProvider.class)
+  void getArtwork(int id) {
+    Opera result = operaDao.doRetrieveById(id);
+
+    Assertions.assertEquals(result, operaService.getArtwork(id));
   }
 
   @Test
+  @DisplayName("Search name")
   void searchOpera() {
+    List<Opera> result = operaDao.doRetrieveAllByName("Bears");
+
+    Assertions.assertEquals(result, operaService.searchOpera("Bears"));
   }
 
   @Test
-  void getArtworkByUser() {
+  @DisplayName("Search name null")
+  void searchOperaNameNull() {
+    List<Opera> result = operaDao.doRetrieveAllByName(null);
+
+    Assertions.assertEquals(result, operaService.searchOpera(null));
+  }
+
+  @DisplayName("Get Artwork By User")
+  @ParameterizedTest
+  @ArgumentsSource(InputCheckArtworkProvider.class)
+  void getArtworkByUser(int id) {
+    List<Opera> result = operaDao.doRetrieveAllByArtistId(id);
+
+    Assertions.assertEquals(result, operaService.getArtworkByUser(id));
   }
 }
