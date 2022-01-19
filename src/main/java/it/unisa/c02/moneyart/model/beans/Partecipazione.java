@@ -114,9 +114,9 @@ public class Partecipazione {
         +
         "id=" + id
         +
-        ", asta=" + asta
+        ", asta=" + asta.getId()
         +
-        ", utente=" + utente
+        ", utente=" + utente.getId()
         +
         ", offerta=" + offerta
         +
