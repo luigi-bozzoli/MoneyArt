@@ -107,7 +107,7 @@
                                         <p class="item-price"><c:out value="Nessuna offerta"/></p>
                                     </c:when>
                                     <c:otherwise>
-                                        <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency"/></p>
+                                        <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
                                     </c:otherwise>
                                 </c:choose>
 
