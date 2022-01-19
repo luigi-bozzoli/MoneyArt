@@ -63,7 +63,7 @@ public class MainContext implements ServletContextListener {
   public void contextInitialized(ServletContextEvent sce) {
     System.out.println("Startup web application");
     DataSource ds = null;
-    ServletContext context = sce.getServletContext();
+
     try {
       Context initCtx = new InitialContext();
       Context envCtx = (Context) initCtx.lookup("java:comp/env");
@@ -78,12 +78,13 @@ public class MainContext implements ServletContextListener {
     int timerRipristinati = initializeTimerService();
     System.out.println("-- " + timerRipristinati + " timer sono stati ripristinati --");
 
+    ServletContext context = sce.getServletContext();
     context.setAttribute("DataSource", ds);
+
     System.out.println("DataSource creation: " + ds.toString());
 
-
     try {
-      populateDatabase(sce.getServletContext().getRealPath(""),ds);
+      populateDatabase(sce.getServletContext().getRealPath(""), ds);
     } catch (NoSuchAlgorithmException | IOException | SQLException e) {
       e.printStackTrace();
     }
@@ -118,19 +119,12 @@ public class MainContext implements ServletContextListener {
     return timerService.retrivePersistentTimers();
   }
 
-  private void populateDatabase(String filePath,DataSource dataSource)
+  private void populateDatabase(String filePath, DataSource dataSource)
       throws NoSuchAlgorithmException, IOException, SQLException {
     // Necessario per salvare le password crittografate
     MessageDigest md = MessageDigest.getInstance("SHA-256");
 
-    // Recupero Dao necessari per il popolamento del database
-    UtenteDao utenteDao = new UtenteDaoImpl(dataSource);
-    OperaDao operaDao = new OperaDaoImpl(dataSource);
-    AstaDao astaDao = new AstaDaoImpl(dataSource);
-    RivenditaDao rivenditaDao = new RivenditaDaoImpl(dataSource);
-    PartecipazioneDao partecipazioneDao = new PartecipazioneDaoImpl(dataSource);
-    NotificaDao notificaDao = new NotificaDaoImpl(dataSource);
-    SegnalazioneDao segnalazioneDao = new SegnalazioneDaoImpl(dataSource);
+
 
     logger.info("-- Inizio popolamento database --");
     logger.info("-- Path immagini profilo utente: "
@@ -258,6 +252,8 @@ public class MainContext implements ServletContextListener {
         10d
     );
 
+    UtenteDao utenteDao = new UtenteDaoImpl(dataSource);
+
     if (utenteDao.doRetrieveByUsername("admin") == null) {
       utenteDao.doCreate(admin);
     }
@@ -362,6 +358,8 @@ public class MainContext implements ServletContextListener {
         null
     );
 
+    OperaDao operaDao = new OperaDaoImpl(dataSource);
+
     if (operaDao.doRetrieveById(1) == null) {
       operaDao.doCreate(opera0);
     }
@@ -407,6 +405,8 @@ public class MainContext implements ServletContextListener {
         Asta.Stato.IN_CORSO
     );
 
+    AstaDao astaDao = new AstaDaoImpl(dataSource);
+
     if (astaDao.doRetrieveById(1) == null) {
       astaDao.doCreate(asta0);
     }
@@ -426,6 +426,8 @@ public class MainContext implements ServletContextListener {
         Rivendita.Stato.IN_CORSO,
         999.99d
     );
+
+    RivenditaDao rivenditaDao = new RivenditaDaoImpl(dataSource);
 
     if (rivenditaDao.doRetrieveById(1) == null) {
       rivenditaDao.doCreate(rivendita0);
@@ -453,6 +455,8 @@ public class MainContext implements ServletContextListener {
         utente5,
         499.99d
     );
+
+    PartecipazioneDao partecipazioneDao = new PartecipazioneDaoImpl(dataSource);
 
     if (partecipazioneDao.doRetrieveById(1) == null) {
       partecipazioneDao.doCreate(partecipazione0);
@@ -493,6 +497,8 @@ public class MainContext implements ServletContextListener {
         true
     );
 
+    NotificaDao notificaDao = new NotificaDaoImpl(dataSource);
+
     if (notificaDao.doRetrieveById(1) == null) {
       notificaDao.doCreate(notifica0);
     }
@@ -513,6 +519,8 @@ public class MainContext implements ServletContextListener {
             + utente0.getUsername() + "attualmente all'asta.",
         false
     );
+
+    SegnalazioneDao segnalazioneDao = new SegnalazioneDaoImpl(dataSource);
 
     if (segnalazioneDao.doRetrieveById(1) == null) {
       segnalazioneDao.doCreate(segnalazione0);

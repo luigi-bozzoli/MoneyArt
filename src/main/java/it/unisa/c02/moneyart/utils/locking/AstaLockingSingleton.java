@@ -17,7 +17,7 @@ public class AstaLockingSingleton {
    * permette di inizializzare l'istanza del singleton in maniera semplice e ThreadSafe.
    */
   private static class SingletonHelper {
-    private static AstaLockingSingleton ISTANCE = new AstaLockingSingleton();
+    private static final AstaLockingSingleton ISTANCE = new AstaLockingSingleton();
   }
 
   /**
@@ -96,10 +96,6 @@ public class AstaLockingSingleton {
 
     public Lock getLock() {
       return lock;
-    }
-
-    public void setLock(Lock lock) {
-      this.lock = lock;
     }
 
     public int getNumberOfLocks() {

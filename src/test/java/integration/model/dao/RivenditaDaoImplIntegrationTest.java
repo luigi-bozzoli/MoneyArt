@@ -32,7 +32,7 @@ class RivenditaDaoImplIntegrationTest {
   private RivenditaDao rivenditaDao;
 
   @BeforeAll
-  static void generalSetUp(){
+  static void generalSetUp() throws SQLException, FileNotFoundException {
     Context initCtx;
     Context envCtx = null;
     try{
@@ -53,16 +53,22 @@ class RivenditaDaoImplIntegrationTest {
         e.printStackTrace();
       }
     }
-
+    // Creazione database
+    Connection connection = dataSource.getConnection();
+    ScriptRunner runner = new ScriptRunner(connection);
+    runner.setLogWriter(null);
+    Reader reader = new BufferedReader(new FileReader("./src/main/java/it/unisa/c02/moneyart/model/db/ddl_moneyart.sql"));
+    runner.runScript(reader);
+    connection.close();
   }
 
   @BeforeEach
   void setUp() throws SQLException, FileNotFoundException {
-    Connection connection = dataSource.getConnection();
     rivenditaDao = new RivenditaDaoImpl(dataSource);
+    Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
-    Reader reader = new BufferedReader(new FileReader("./src/test/database/populate_all.sql"));
+    Reader reader = new BufferedReader(new FileReader("./src/test/database/test_rivendita.sql"));
     runner.runScript(reader);
     connection.close();
   }
@@ -72,7 +78,7 @@ class RivenditaDaoImplIntegrationTest {
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
-    Reader reader = new BufferedReader(new FileReader("./src/test/database/clean_all.sql"));
+    Reader reader = new BufferedReader(new FileReader("./src/test/database/clean_database.sql"));
     runner.runScript(reader);
     connection.close();
 
@@ -176,8 +182,6 @@ class RivenditaDaoImplIntegrationTest {
       }
 
       List<Rivendita> result = rivenditaDao.doRetrieveAll("id");
-
-      rivendite.add(0, rivenditaDao.doRetrieveById(1));
 
       Assertions.assertNotNull(result);
 

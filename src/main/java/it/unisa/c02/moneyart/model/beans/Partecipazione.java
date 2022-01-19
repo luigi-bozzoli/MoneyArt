@@ -132,10 +132,10 @@ public class Partecipazione {
       return false;
     }
     Partecipazione that = (Partecipazione) o;
-    return Double.compare(that.getOfferta(), getOfferta()) == 0 &&
-        Objects.equals(getId(), that.getId()) &&
-        Objects.equals(getAsta(), that.getAsta()) &&
-        Objects.equals(getUtente(), that.getUtente());
+    return Double.compare(that.getOfferta(), getOfferta()) == 0
+      && Objects.equals(getId(), that.getId())
+      && Objects.equals(getAsta(), that.getAsta())
+      && Objects.equals(getUtente(), that.getUtente());
   }
 
   @Override

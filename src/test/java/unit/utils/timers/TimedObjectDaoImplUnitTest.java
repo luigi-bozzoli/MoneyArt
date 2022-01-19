@@ -9,7 +9,12 @@ import static org.mockito.Mockito.when;
 import it.unisa.c02.moneyart.utils.timers.TimedObject;
 import it.unisa.c02.moneyart.utils.timers.TimedObjectDao;
 import it.unisa.c02.moneyart.utils.timers.TimedObjectDaoImpl;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +24,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
+import javax.sql.rowset.serial.SerialBlob;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,7 +93,7 @@ class TimedObjectDaoImplUnitTest {
   }
 
   @Test
-  void doRetrieveById() throws SQLException {
+  void doRetrieveById() throws SQLException, IOException {
 
     TimedObject timedObject = new TimedObject("prova","task",new Date());
     timedObject.setId(1);
@@ -96,7 +102,8 @@ class TimedObjectDaoImplUnitTest {
     when(resultSet.next()).thenReturn(Boolean.TRUE);
     when(preparedStatement.executeQuery()).thenReturn(resultSet);
     when(resultSet.getObject("id", Integer.class)).thenReturn(timedObject.getId());
-    when(resultSet.getObject("attribute", Serializable.class)).thenReturn(timedObject.getAttribute());
+
+    when(resultSet.getBlob("attribute")).thenReturn(createBlob(timedObject.getAttribute()));
     when(resultSet.getObject("task_type", String.class)).thenReturn(timedObject.getTaskType());
     when(resultSet.getObject("task_date", Date.class)).thenReturn(timedObject.getTaskDate());
 
@@ -120,17 +127,18 @@ class TimedObjectDaoImplUnitTest {
 
 
     @Test
-  void doRetrieveAll() throws SQLException {
+  void doRetrieveAll() throws SQLException, IOException {
 
       TimedObject timedObject1 = new TimedObject("prova","task",new Date());
       TimedObject timedObject2 = new TimedObject("prova2","task2",new Date());
       List<TimedObject> oracolo = Arrays.asList(timedObject1, timedObject2);
       when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
       when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+
       when(preparedStatement.executeQuery()).thenReturn(resultSet);
+
+      when(resultSet.getBlob("attribute")).thenReturn(createBlob(timedObject1.getAttribute()),createBlob(timedObject2.getAttribute()));
       when(resultSet.getObject("id", Integer.class)).thenReturn(timedObject1.getId(), timedObject2.getId());
-      when(resultSet.getObject("attribute", Serializable.class)).thenReturn(timedObject1.getAttribute(),
-          timedObject2.getAttribute());
       when(resultSet.getObject("task_type", String.class)).thenReturn(timedObject1.getTaskType(),
           timedObject2.getTaskType());
       when(resultSet.getObject("task_date", Date.class)).thenReturn(timedObject1.getTaskDate(),
@@ -148,5 +156,19 @@ class TimedObjectDaoImplUnitTest {
 
     List<TimedObject> timedObjects = timedObjectDao.doRetrieveAll("id");
     Assertions.assertNull(timedObjects);
+  }
+
+  private Blob createBlob(Serializable s) throws IOException, SQLException {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    ObjectOutput out = null;
+
+    out = new ObjectOutputStream(bos);
+    out.writeObject(s);
+
+    byte[] yourBytes = bos.toByteArray();
+    out.close();
+
+    Blob blob = new SerialBlob(yourBytes);
+    return blob;
   }
 }

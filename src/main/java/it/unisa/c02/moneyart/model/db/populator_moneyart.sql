@@ -14,6 +14,8 @@
 #
 
 /****************************** ELIMINAZIONE DATI PRECEDENTI ******************************/
+UPDATE moneyart.utente SET id_seguito = NULL WHERE id > 0;
+
 DELETE FROM segnalazione WHERE id > 0;
 DELETE FROM notifica WHERE id > 0;
 DELETE FROM partecipazione WHERE id > 0;

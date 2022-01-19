@@ -133,9 +133,9 @@ public class Segnalazione {
       return false;
     }
     Segnalazione that = (Segnalazione) o;
-    return isLetta() == that.isLetta() && Objects.equals(getId(), that.getId()) &&
-        Objects.equals(getAsta(), that.getAsta()) &&
-        Objects.equals(getCommento(), that.getCommento());
+    return isLetta() == that.isLetta() && Objects.equals(getId(), that.getId())
+      && Objects.equals(getAsta(), that.getAsta())
+      && Objects.equals(getCommento(), that.getCommento());
   }
 
   @Override

@@ -207,13 +207,13 @@ public class Notifica {
       return false;
     }
     Notifica notifica = (Notifica) o;
-    return Objects.equals(getId(), notifica.getId()) &&
-        Objects.equals(getUtente(), notifica.getUtente()) &&
-        Objects.equals(getAsta(), notifica.getAsta()) &&
-        Objects.equals(getRivendita(), notifica.getRivendita()) &&
-        getTipo() == notifica.getTipo() &&
-        Objects.equals(getContenuto(), notifica.getContenuto()) &&
-        Objects.equals(letta, notifica.letta);
+    return Objects.equals(getId(), notifica.getId())
+      && Objects.equals(getUtente(), notifica.getUtente())
+      && Objects.equals(getAsta(), notifica.getAsta())
+      && Objects.equals(getRivendita(), notifica.getRivendita())
+      && getTipo() == notifica.getTipo()
+      && Objects.equals(getContenuto(), notifica.getContenuto())
+      && Objects.equals(letta, notifica.letta);
   }
 
   @Override
