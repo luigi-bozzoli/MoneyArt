@@ -52,17 +52,21 @@ public class ServletCreaOpera extends HttpServlet {
     Opera nuovaOpera =
         new Opera(nome, descrizione, Opera.Stato.PREVENDITA, blob, artista, artista, null);
     nuovaOpera.setImmagine(blob);
-    if (!operaService.addArtwork(nuovaOpera)) {
-      request.setAttribute("error",
-          "L'opera è già presente nella piattaforma!");
-      RequestDispatcher dispatcher = request
-          .getRequestDispatcher(
-              "/pages/aggiungi-opera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
-      dispatcher.forward(request, response);
-    } else {
-      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/dettaglio-opera?id="
-          + nuovaOpera.getId() + ".jsp"); // TODO: aggiungere il link alla pagina del wallet
-      dispatcher.forward(request, response);
+    try {
+      if (!operaService.addArtwork(nuovaOpera)) {
+        request.setAttribute("error",
+            "L'opera è già presente nella piattaforma!");
+        RequestDispatcher dispatcher = request
+            .getRequestDispatcher(
+                "/pages/aggiungi-opera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
+        dispatcher.forward(request, response);
+      } else {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/dettaglio-opera?id="
+            + nuovaOpera.getId() + ".jsp"); // TODO: aggiungere il link alla pagina del wallet
+        dispatcher.forward(request, response);
+      }
+    } catch (Exception e) {
+
     }
 
 

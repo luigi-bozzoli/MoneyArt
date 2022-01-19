@@ -21,7 +21,7 @@ public class OperaServiceImpl implements OperaService {
   /**
    * Costruttore della classe.
    *
-   * @param opera  dao di un'opera
+   * @param opera dao di un'opera
    */
   public OperaServiceImpl(OperaDao opera, MoneyArtNft moneyArtNft) {
     this.operaDao = opera;
@@ -32,19 +32,19 @@ public class OperaServiceImpl implements OperaService {
    * Inserisce una nuova opera nel database.
    *
    * @param opera bean dell'opera da inserire
-   * @return true se l'inserimento va a buon fine, false altrimenti
+   * @return true se l'inserimento va a buon fine,
+   *         false altrimenti
+   * @pre opera.getNome() <> null AND opera.getImmagine() <> null AND
+   *      utente.carica -> forAll(o:Opera | o.getNome() <> opera.getNome())
+   * @post utente.carica -> includes(opera)
    */
   @Override
-  public boolean addArtwork(Opera opera) {
+  public boolean addArtwork(Opera opera) throws Exception {
     if (checkOpera(opera)
         && !checkArtwork(opera.getArtista().getId(), opera.getNome())) {
-      try {
-        moneyArtNft.create(opera.getId() + "").send();
-        operaDao.doCreate(opera);
-      } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-      }
+      moneyArtNft.create(opera.getId() + "").send();
+      operaDao.doCreate(opera);
+
       return true;
     } else {
       return false;
@@ -53,14 +53,19 @@ public class OperaServiceImpl implements OperaService {
   }
 
   /**
-   * Controlla l'univocità del nome di un'opera presente nel db.
+   * Controlla l'univocità del nome di un'opera, per un determinato artista, presente nel db.
    *
-   * @param id   dell'utente creatore
+   * @param id   dell'utente artista
    * @param name titolo dell'opera
-   * @return true se esiste un'opera con quel nome, false altrimenti
+   * @return true se esiste un'opera con quel nome,
+   *         false altrimenti
+   * @pre Utente.allIstances() -> exists(u:Utente | id = u.getId()) AND name <> null
    */
   @Override
   public boolean checkArtwork(int id, String name) {
+    if(name == null){
+      throw new IllegalArgumentException("Name is null");
+    }
     List<Opera> opere = operaDao.doRetrieveAllByArtistId(id);
 
     if (opere != null) {
@@ -70,6 +75,7 @@ public class OperaServiceImpl implements OperaService {
         }
       }
     }
+
     return false;
   }
 
@@ -81,9 +87,7 @@ public class OperaServiceImpl implements OperaService {
    */
   @Override
   public Opera getArtwork(int id) {
-    Opera opera = operaDao.doRetrieveById(id);
-
-    return opera;
+    return operaDao.doRetrieveById(id);
   }
 
   /**
@@ -94,10 +98,7 @@ public class OperaServiceImpl implements OperaService {
    */
   @Override
   public List<Opera> searchOpera(String name) {
-
-    List<Opera> opere = operaDao.doRetrieveAllByName(name);
-
-    return opere;
+    return operaDao.doRetrieveAllByName(name);
   }
 
   /**
@@ -108,9 +109,7 @@ public class OperaServiceImpl implements OperaService {
    */
   @Override
   public List<Opera> getArtworkByUser(int id) {
-    List<Opera> opere = operaDao.doRetrieveAllByArtistId(id);
-
-    return opere;
+    return operaDao.doRetrieveAllByArtistId(id);
   }
 
   private boolean checkOpera(Opera opera) {
@@ -122,6 +121,7 @@ public class OperaServiceImpl implements OperaService {
    */
   @Inject
   private OperaDao operaDao;
-  @Inject @Sing
+  @Inject
+  @Sing
   private MoneyArtNft moneyArtNft;
 }

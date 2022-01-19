@@ -4,12 +4,12 @@ import it.unisa.c02.moneyart.model.beans.Opera;
 import java.util.List;
 
 /**
- * Interfaccia dei metodi per il service di opera.
+ *Classe che espone i servizi di logica di buisness di un oggetto Opera.
  *
  */
 public interface OperaService {
 
-  boolean addArtwork(Opera opera);
+  boolean addArtwork(Opera opera) throws Exception;
 
   boolean checkArtwork(int id, String name);
 

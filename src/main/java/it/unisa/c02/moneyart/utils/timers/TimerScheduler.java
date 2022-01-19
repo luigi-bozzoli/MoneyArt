@@ -34,11 +34,11 @@ public class TimerScheduler {
       initCtx = new InitialContext();
       Context envCtx = (Context) initCtx.lookup("java:comp/env");
       dataSource = (DataSource) envCtx.lookup("jdbc/timer");
+      timedObjectDao = new TimedObjectDaoImpl(dataSource);
     } catch (NamingException e) {
-      e.printStackTrace();
+      timedObjectDao = null;
     }
 
-    timedObjectDao = new TimedObjectDaoImpl(dataSource);
     services = new HashMap<>();
     timerSet = new HashSet<>();
   }
@@ -53,13 +53,13 @@ public class TimerScheduler {
   }
 
   /**
-   * permette di registrare un nuovo servizio attivabile tramite un timer.
+   * permette di registrare o sostituire un servizio attivabile tramite un timer.
    *
    * @param serviceName il nome del servizio da registrare
    * @param service     l'esecutore del servizio
+   * @post services -> include(serviceName)
    */
   public void registerTimedService(String serviceName, TimerService service) {
-
     services.put(serviceName, service);
   }
 
@@ -67,6 +67,8 @@ public class TimerScheduler {
    * Setta un timer per uno dei servizi registrati e lo salva nella memoria persistente.
    *
    * @param timedObject contiene le informazioni necessarie per la creazione del timer
+   * @pre services -> includes(timedObject.taskType)
+   * @throw IllegalArgumentException
    */
   public void scheduleTimedService(TimedObject timedObject) {
     TimerService task = services.get(timedObject.getTaskType());
@@ -105,6 +107,25 @@ public class TimerScheduler {
     }
     return timedObjects.size();
   }
+
+  /**
+   * Setta il dao da utilizzare per la persistenza dei timer.
+   *
+   * @param timedObjectDao il dao per la persistenza dei timer
+   */
+  public void setTimedObjectDao(TimedObjectDao timedObjectDao) {
+    this.timedObjectDao = timedObjectDao;
+  }
+
+  /**
+   * Restituisce l'insieme dei servizi registrati.
+   *
+   * @return l'insieme dei servizi registrati
+   */
+  public Set<String> getServices() {
+    return services.keySet();
+  }
+
 
   /**
    * rappresenta la struttura di una qualsiasi esecuzione di un servizio allo scadere del timer.

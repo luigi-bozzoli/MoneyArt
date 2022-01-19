@@ -1,18 +1,15 @@
 package it.unisa.c02.moneyart.gestione.vendite.aste.service;
 
 import it.unisa.c02.moneyart.model.beans.Asta;
-import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
-
-import java.util.Date;
 import java.util.List;
 
+/**
+ * Classe che espone i servizi di logica di buisness di un oggetto Asta.
+ *
+ */
 public interface AstaService {
-
-//_______________________________Creazione ed eliminazione asta________________________________
-
-  //vanno aggiunti i vincoli come documentazione qui.
 
   /**
    * Restituisce tutte le informazioni relative ad un asta.
@@ -36,7 +33,6 @@ public interface AstaService {
    * @return la lista di tutte le aste presenti sulla piattaforma in un determinato stato.
    */
   List<Asta> getAuctionsByState(Asta.Stato s);
-
 
   /**
    * Restituisce tutte le aste con un determinato stato ordinate in base al prezzo.
@@ -66,16 +62,20 @@ public interface AstaService {
   List<Asta> getAuctionsSortedByExpirationTime(String order, Asta.Stato s);
 
   /**
-   * Permette ad un utente di partecipare ad un asta.
-   * Precondizine: L'Asta non deve essere terminata,
-   * l'utente deve avere un saldo sufficente per effettuare l'offerta e
-   * L'offerta è superiore a quella attuale dell'asta
-   * Postcondizione: l'offerta viene registrata
+   * Permette di partecipare ad un asta facendo un offerta
+   * , crea una notifica per informare il vecchio migliore offerte, se esiste.
    *
    * @param utente  l'utente che vuole effettuare l'offerta
    * @param asta    l'asta per cui si vuole effetuare l'offerta
    * @param offerta l'offerta fatta dall'utente
    * @return vero se l'offerta va a buon fine, falso altrimenti
+   * @pre asta.getStato() = IN_CORSO and utente.getSaldo() >= offerta
+   *      and (bestOffer(asta) = null or offerta >= bestOffer(asta).getOfferta() )
+   * @post bestOffer(asta).getOfferta() = offerta
+   *       and bestOffer(asta).getUtente() = utente
+   *       and (@pre.bestOffer(asta).getUtente() = null
+   *       or notifica.allIstances() -> exists(n:notifica | notifica.getAsta(asta)
+   *       and notifica.getUtente() = @pre.bestOffer(asta).getUtente() ) )
    */
   boolean partecipateAuction(Utente utente, Asta asta, double offerta);
 
@@ -84,6 +84,10 @@ public interface AstaService {
    *
    * @param asta l'asta da aggiungere
    * @return vero se l'aggiunta è andata a buon fine, falso altrimenti
+   * @pre day(asta.getDataInizio()) >= day(new Date())
+   *      and day(asta.getDataFine()) > day(asta.getDataInizio())
+   *      and asta.getOpera().getStato() = PREVENDITA
+   * @post aste.allIstances() -> includes(asta) and asta.getOpera().getStato() = ALL_ASTA
    */
   boolean addAsta(Asta asta);
 
@@ -92,6 +96,13 @@ public interface AstaService {
    *
    * @param asta l'asta da rimuovere
    * @return vero se la rimozione è andata a buon fine, falso altrimenti
+   * @pre asta.getStato() = IN_CORSO or asta.getStato() = CREATA
+   * @post asta.allIstances()  -> not includes(asta)
+   *       and asta.getOpera().getStato() = PREVENDITA
+   *       and ( pre.bestOffer(asta) = null
+   *       or notifica.allIstances().doRetrieveAll() ->
+   *       Exists(n:notifica | n.getAsta() = asta and n.getUtente = pre.bestOffer(asta).getUtente()
+   *       and n.tipo = ANNULLAMENTO))
    */
   boolean removeAsta(Asta asta);
 
@@ -100,11 +111,11 @@ public interface AstaService {
    *
    * @param asta l'asta da annullare
    * @return vero se l'annullamento è andata a buon fine, falso altrimenti
+   * @pre asta.getStato() = IN_CORSO or asta.getStato() = CREATA
+   * @post asta.allIstances()  -> not includes(asta)
+   *       and asta.getOpera().getStato() = PREVENDITA
    */
   boolean annullaAsta(Asta asta);
-
-
-//_______________________________Gestione e terminazione asta________________________________
 
   /**
    * Restituisce la migliore offerta fatta all'asta.
@@ -137,7 +148,6 @@ public interface AstaService {
    * @return le aste in corso dell'utente
    */
   List<Asta> getCurrentAuctions(Utente utente);
-
 
   /**
    * Restituisce lo storico di tutte le offerte.

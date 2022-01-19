@@ -1,3 +1,6 @@
+# Elimina i follow (per evitare che la DELETE successiva possa fallire)
+UPDATE moneyart.utente SET id_seguito = NULL WHERE id > 0;
+
 DELETE FROM moneyart.segnalazione WHERE id > 0;
 DELETE FROM moneyart.notifica WHERE id > 0;
 DELETE FROM moneyart.partecipazione WHERE id > 0;

@@ -6,9 +6,19 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+/**
+ * Classe che produce un dataSource, usato per CDI (Dependency Injection).
+ *
+ */
 public class DataSourceProducer {
 
 
+  /**
+   * restituisce un datasource.
+   *
+   * @return di un data source
+   * @throws NamingException lancia un'eccezione in caso la lookup del datasource dovesse fallire
+   */
   @Produces
   public DataSource produce() throws NamingException {
     DataSource dataSource;

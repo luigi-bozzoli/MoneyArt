@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 /**
  * Questa classe implementa i metodi dell'interfaccia SegnalazioneService.
+ *
  */
 public class SegnalazioneServiceImpl implements SegnalazioneService {
 

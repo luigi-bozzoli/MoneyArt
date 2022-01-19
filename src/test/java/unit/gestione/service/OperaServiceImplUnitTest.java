@@ -157,13 +157,13 @@ class OperaServiceImplUnitTest {
       when(moneyArtNft.create(anyString())).thenReturn(transaction);
       when(transaction.send()).thenThrow(new Exception());
 
-      Assertions.assertFalse(operaService.addArtwork(opera));
+      Assertions.assertThrows(Exception.class,() -> operaService.addArtwork(opera));
     }
 
     @DisplayName("Add Artwork Name Null")
     @ParameterizedTest
     @ArgumentsSource(OperaProvider.class)
-    void addArtworkNomeNull(Opera opera){
+    void addArtworkNomeNull(Opera opera) throws Exception {
       opera.setNome(null);
       Assertions.assertFalse(operaService.addArtwork(opera));
     }
@@ -171,7 +171,7 @@ class OperaServiceImplUnitTest {
     @DisplayName("Add Artwork Image Null")
     @ParameterizedTest
     @ArgumentsSource(OperaProvider.class)
-    void addArtworkImgNull(Opera opera){
+    void addArtworkImgNull(Opera opera) throws Exception {
       opera.setImmagine(null);
       Assertions.assertFalse(operaService.addArtwork(opera));
     }
@@ -179,7 +179,7 @@ class OperaServiceImplUnitTest {
     @DisplayName("Add Artwork False whit checkArtwork")
     @ParameterizedTest
     @ArgumentsSource(ListOpereProvider.class)
-    void addArtworkFalseCheckArtwork(List<Opera> opere) {
+    void addArtworkFalseCheckArtwork(List<Opera> opere) throws Exception {
       Opera opera = opere.get(0);
 
       when(operaDao.doRetrieveAllByArtistId(opera.getArtista().getId())).thenReturn(opere);
@@ -228,6 +228,23 @@ class OperaServiceImplUnitTest {
       when(operaDao.doRetrieveAllByArtistId(o.getArtista().getId())).thenReturn(opere);
 
       Assertions.assertFalse(operaService.checkArtwork(o.getArtista().getId(), opera.getNome()));
+    }
+
+    @Test
+    @DisplayName("Check Artwork with name null")
+    void checkArtworkNameNull() throws SQLException {
+      List<Opera> opere = getListOpere();
+
+      Utente u1 = new Utente();
+      u1.setId(1);
+
+      for(Opera o : opere){
+        o.setArtista(u1);
+        o.setStato(Opera.Stato.IN_POSSESSO);
+      }
+      when(operaDao.doRetrieveAllByArtistId(u1.getId())).thenReturn(opere);
+
+      Assertions.assertThrows(Exception.class, () -> operaService.checkArtwork(1,null));
     }
 
   }

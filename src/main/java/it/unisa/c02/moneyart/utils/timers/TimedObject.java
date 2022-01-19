@@ -127,10 +127,10 @@ public class TimedObject {
       return false;
     }
     TimedObject that = (TimedObject) o;
-    return Objects.equals(getId(), that.getId()) &&
-        Objects.equals(getAttribute(), that.getAttribute()) &&
-        Objects.equals(getTaskType(), that.getTaskType()) &&
-        Objects.equals(getTaskDate(), that.getTaskDate());
+    return Objects.equals(getId(), that.getId())
+      && Objects.equals(getAttribute(), that.getAttribute())
+      && Objects.equals(getTaskType(), that.getTaskType())
+      && Objects.equals(getTaskDate(), that.getTaskDate());
   }
 
   @Override
