@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
@@ -288,6 +289,8 @@ public class RivenditaServiceImplUnitTest {
       when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getArtista());
     }
 
+    Collections.reverse(rivendite);
+
     assertEquals(rivendite, service.getResellsSortedByPrice(order, Rivendita.Stato.IN_CORSO));
   }
 
@@ -326,6 +329,8 @@ public class RivenditaServiceImplUnitTest {
       when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getPossessore());
       when(utenteDao.doRetrieveById(anyInt())).thenReturn(r.getOpera().getArtista());
     }
+
+    Collections.reverse(rivendite);
 
     assertEquals(rivendite, service.getResellsSortedByArtistFollowers(order, Rivendita.Stato.IN_CORSO));
 
