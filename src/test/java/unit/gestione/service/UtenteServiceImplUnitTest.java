@@ -29,10 +29,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -88,6 +86,298 @@ class UtenteServiceImplUnitTest {
         }
     }
 
+    static List<Utente> getUtenti () {
+
+        Utente u1 = new Utente("Mario Seguito", "Peluso", null, "marioseguitopeluso@unisa.it",
+                "mpelGYUgugyugYUG", null, new byte[10], 2000000.2);
+        u1.setId(1);
+
+        Utente u2 = new Utente("Luigi", "Bros", null, "luigibros@unisa.it",
+                "vuivuovuuGYUGIY", u1, new byte[10], 2.2);
+        u2.setId(2);
+
+        Utente u3 = new Utente("Stefano", "Zarro", null, "stefanus@unisa.it",
+                "vghuivuiVGHUIVUI", u1, new byte[10], 0.002);
+        u3.setId(3);
+
+        List<Utente> utenti = Arrays.asList(u1, u2, u3);
+
+        return utenti;
+    }
+
+    //ritorna una lista casuale di 2 utenti che seguono l'utente passato in input
+    List<Utente> casualFollowers (Utente followed){
+        Utente foll1 = new Utente("Giacomo", "Lancuso", null, "giacom34@unisa.it",
+                "gLancus", null, new byte[10], 0.2);
+        Utente foll2 = new Utente("Massie", "Wood", null, "m.wood23@unisa.it",
+                "massieWoooo", null, new byte[10], 22.34);
+
+        foll1.setSeguito(followed);
+        foll2.setSeguito(followed);
+
+        List<Utente> followers = Arrays.asList(foll1, foll2);
+        return followers;
+    }
+
+    @Nested
+    @DisplayName("Test Suite checkUser")
+    class testCheckUser {
+
+        @DisplayName("Check User")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void checkUser(Utente utente) {
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(utente);
+
+            Utente result = utenteService.checkUser(utente.getUsername(), utente.getPassword().toString());
+            //...impl
+            System.out.println(result);
+            System.out.println(utente);
+            assertTrue(result.getId() == utente.getId());
+        }
+
+        @DisplayName("checkUserUsernameNull")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void checkUserUsernameNull(Utente utente) {
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(null);
+            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(null);
+
+            Utente result = utenteService.checkUser(utente.getUsername(), utente.getPassword().toString());
+
+            System.out.println(result);
+            System.out.println(utente);
+            assertNull(result);
+        }
+
+        @DisplayName("checkUserPasswordNull")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void checkUserPasswordNull(Utente utente) {
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(utente);
+
+            Utente result = utenteService.checkUser(utente.getUsername(), null);
+
+            System.out.println(result);
+            System.out.println(utente);
+            assertNull(result);
+        }
+
+    }
+
+
+    @Nested
+    @DisplayName("Test Suite GetUserInformation")
+    class testGetUserInformation {
+
+        @DisplayName("getUserInformationByUsername")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void getUserInformationByUsername(Utente utente) {
+
+            utente.setSeguito(null);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            if (utente.getSeguito()!=null){
+                if (utente.getSeguito().getId() != null){
+                    when(utenteDao.doRetrieveById(anyInt())).thenReturn(null);
+                }
+            }
+
+            when(operaDao.doRetrieveAllByOwnerId(anyInt())).thenReturn(null);
+            when(operaDao.doRetrieveAllByArtistId(anyInt())).thenReturn(null);
+            when(notificaDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
+            when(partecipazioneDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
+
+            when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(casualFollowers(utente));
+
+            System.out.println(utente+"\nfollowers:\n"+casualFollowers(utente));
+
+            assertTrue(utenteService.getUserInformation(utente.getUsername()).getId()==utente.getId());
+
+        }
+
+        @DisplayName("getUserInformationByUsernameErr")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void getUserInformationByUsernameErr(Utente utente) {
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(null);
+            assertNull(utenteService.getUserInformation(utente.getUsername()));
+        }
+
+
+
+        @DisplayName("getUserInformationById")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void getUserInformationById(Utente utente) {
+
+            utente.setSeguito(null);
+
+            when(utenteDao.doRetrieveById(anyInt())).thenReturn(utente);
+            if (utente.getSeguito()!=null){
+                if (utente.getSeguito().getId() != null){
+                    when(utenteDao.doRetrieveById(anyInt())).thenReturn(null);
+                }
+            }
+
+            when(operaDao.doRetrieveAllByOwnerId(anyInt())).thenReturn(null);
+            when(operaDao.doRetrieveAllByArtistId(anyInt())).thenReturn(null);
+            when(notificaDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
+            when(partecipazioneDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
+
+            when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(casualFollowers(utente));
+
+            System.out.println(utente+"\nfollowers:\n"+casualFollowers(utente));
+
+            assertTrue(utenteService.getUserInformation(utente.getId()).getId()==utente.getId());
+
+        }
+
+        @DisplayName("getUserInformationByIdErr")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void getUserInformationByIdErr(Utente utente) {
+            when(utenteDao.doRetrieveById(anyInt())).thenReturn(null);
+            assertNull(utenteService.getUserInformation(utente.getId()));
+        }
+
+    }
+
+    @Nested
+    @DisplayName("Test Suite SignUpUser")
+    class testSignUpUser {
+
+        @DisplayName("signUpUser")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void signUpUser(Utente utente) {
+            when(utenteDao.doCreate(any())).thenReturn(true);
+
+            assertTrue(utenteService.signUpUser(utente));
+        }
+
+        @DisplayName("signUpUserErr")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void signUpUserErr(Utente utente) {
+            when(utenteDao.doCreate(any())).thenReturn(false);
+            assertTrue(!(utenteService.signUpUser(utente)));
+        }
+    }
+
+
+    @Nested
+    @DisplayName("Test Suite getAllUsers")
+    class testGetAllUsers {
+
+        @DisplayName("getAllUsers")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void getAllUsers() {
+            List<Utente> utenti = UtenteServiceImplUnitTest.getUtenti();
+
+            when(utenteDao.doRetrieveAll(anyString())).thenReturn(utenti);
+
+            when(operaDao.doRetrieveAllByOwnerId(anyInt())).thenReturn(null);
+            when(operaDao.doRetrieveAllByArtistId(anyInt())).thenReturn(null);
+            when(notificaDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
+            when(partecipazioneDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
+
+           when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(casualFollowers(utenti.get(0)));
+
+           assertEquals(utenti, utenteService.getAllUsers());
+        }
+
+        @DisplayName("getAllUsersErr")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void getAllUsersErr() {
+            List<Utente> utenti = null;
+
+            when(utenteDao.doRetrieveAll(anyString())).thenReturn(utenti);
+
+            when(operaDao.doRetrieveAllByOwnerId(anyInt())).thenReturn(null);
+            when(operaDao.doRetrieveAllByArtistId(anyInt())).thenReturn(null);
+            when(notificaDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
+            when(partecipazioneDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
+
+            when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(null);
+
+            assertNull(utenteService.getAllUsers());
+        }
+
+    }
+
+    @Nested
+    @DisplayName("Test Suite searchUsers")
+    class testSearchUsers{
+
+        @DisplayName("searchUsers")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void searchUsers() {
+
+
+
+
+        }
+
+
+
+
+
+    }
+
+
+
+
+
+}
+
+
+/*
+
+    @Test
+    void searchUsers() {
+    }
+
+    @Test
+    void checkUsername() {
+    }
+
+    @Test
+    void checkEmail() {
+    }
+
+    @Test
+    void follow() {
+    }
+
+    @Test
+    void unfollow() {
+    }
+
+    @Test
+    void deposit() {
+    }
+
+    @Test
+    void withdraw() {
+    }
+
+    @Test
+    void getBalance() {
+    }
+
+    */
+
+
+
+/*
     static class OperaProvider implements ArgumentsProvider {
 
         @Override
@@ -174,197 +464,4 @@ class UtenteServiceImplUnitTest {
     }
 
 
-
-
-    @Nested
-    @DisplayName("Test Suite checkUser")
-    class testCheckUser {
-
-        @DisplayName("Check User")
-        @ParameterizedTest
-        @ArgumentsSource(UtenteProvider.class)
-        void checkUser(Utente utente) {
-
-            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
-            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(utente);
-
-            Utente result = utenteService.checkUser(utente.getUsername(), utente.getPassword().toString());
-            //...impl
-            System.out.println(result);
-            System.out.println(utente);
-            assertTrue(result.getId() == utente.getId());
-        }
-
-        @DisplayName("checkUserUsernameNull")
-        @ParameterizedTest
-        @ArgumentsSource(UtenteProvider.class)
-        void checkUserUsernameNull(Utente utente) {
-            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(null);
-            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(null);
-
-            Utente result = utenteService.checkUser(utente.getUsername(), utente.getPassword().toString());
-
-            System.out.println(result);
-            System.out.println(utente);
-            assertNull(result);
-        }
-
-        @DisplayName("checkUserPasswordNull")
-        @ParameterizedTest
-        @ArgumentsSource(UtenteProvider.class)
-        void checkUserPasswordNull(Utente utente) {
-            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
-            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(utente);
-
-            Utente result = utenteService.checkUser(utente.getUsername(), null);
-
-            System.out.println(result);
-            System.out.println(utente);
-            assertNull(result);
-        }
-
-    }
-
-
-    @Nested
-    @DisplayName("Test Suite GetUserInformation")
-    class testGetUserInformation {
-
-        @DisplayName("getUserInformationByUsername")
-        @ParameterizedTest
-        @ArgumentsSource(UtenteProvider.class)
-        void getUserInformationByUsername(Utente utente) {
-
-            utente.setSeguito(null);
-
-            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
-            if (utente.getSeguito()!=null){
-                if (utente.getSeguito().getId() != null){
-                    when(utenteDao.doRetrieveById(anyInt())).thenReturn(null);
-                }
-            }
-
-            when(operaDao.doRetrieveAllByOwnerId(anyInt())).thenReturn(null);
-            when(operaDao.doRetrieveAllByArtistId(anyInt())).thenReturn(null);
-            when(notificaDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
-            when(partecipazioneDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
-
-            when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(casualFollowers(utente));
-
-            System.out.println(utente+"\nfollowers:\n"+casualFollowers(utente));
-
-            assertTrue(utenteService.getUserInformation(utente.getUsername()).getId()==utente.getId());
-
-        }
-
-        //ritorna una lista casuale di 2 utenti che seguono l'utente passato in input
-        List<Utente> casualFollowers (Utente followed){
-            Utente foll1 = new Utente("Giacomo", "Lancuso", null, "giacom34@unisa.it",
-                    "gLancus", null, new byte[10], 0.2);
-            Utente foll2 = new Utente("Massie", "Wood", null, "m.wood23@unisa.it",
-                    "massieWoooo", null, new byte[10], 22.34);
-
-            foll1.setSeguito(followed);
-            foll2.setSeguito(followed);
-
-            List<Utente> followers = Arrays.asList(foll1, foll2);
-            return followers;
-        }
-
-        @DisplayName("getUserInformationById")
-        @ParameterizedTest
-        @ArgumentsSource(UtenteProvider.class)
-        void getUserInformationById(Utente utente) {
-
-            utente.setSeguito(null);
-
-            when(utenteDao.doRetrieveById(anyInt())).thenReturn(utente);
-            if (utente.getSeguito()!=null){
-                if (utente.getSeguito().getId() != null){
-                    when(utenteDao.doRetrieveById(anyInt())).thenReturn(null);
-                }
-            }
-
-            when(operaDao.doRetrieveAllByOwnerId(anyInt())).thenReturn(null);
-            when(operaDao.doRetrieveAllByArtistId(anyInt())).thenReturn(null);
-            when(notificaDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
-            when(partecipazioneDao.doRetrieveAllByUserId(anyInt())).thenReturn(null);
-
-            when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(casualFollowers(utente));
-
-            System.out.println(utente+"\nfollowers:\n"+casualFollowers(utente));
-
-            assertTrue(utenteService.getUserInformation(utente.getId()).getId()==utente.getId());
-
-        }
-
-
-    }
-
-
-}
-
-
-
-/*
-    @Test
-    void getUserInformation() {
-    }
-
-    @Test
-    void testGetUserInformation() {
-    }
-
-    @Test
-    void signUpUser() {
-    }
-
-    @Test
-    void updateUser() {
-    }
-
-    @Test
-    void getAllUsers() {
-    }
-
-    @Test
-    void getUsersSortedByFollowers() {
-    }
-
-    @Test
-    void searchUsers() {
-    }
-
-    @Test
-    void checkUsername() {
-    }
-
-    @Test
-    void checkEmail() {
-    }
-
-    @Test
-    void follow() {
-    }
-
-    @Test
-    void unfollow() {
-    }
-
-    @Test
-    void deposit() {
-    }
-
-    @Test
-    void withdraw() {
-    }
-
-    @Test
-    void getBalance() {
-    }
-
-    @Test
-    void encryptPassword() {
-    }
-
-    */
+*/

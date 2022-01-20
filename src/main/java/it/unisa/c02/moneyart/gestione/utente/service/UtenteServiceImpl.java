@@ -141,8 +141,7 @@ public class UtenteServiceImpl implements UtenteService {
     if (checkEmail(utente.getEmail()) || checkUsername(utente.getUsername())) {
       return false;
     } else {
-      utenteDao.doCreate(utente);
-      return true;
+      return (utenteDao.doCreate(utente));
     }
   }
 
@@ -167,10 +166,13 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public List<Utente> getAllUsers() {
     List<Utente> utenti = utenteDao.doRetrieveAll("");
+    if (utenti==null) return null;
 
     for (Utente utente : utenti) {
-      if (utente.getSeguito().getId() != null) {
-        utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+      if (utente.getSeguito()!=null) {
+        if (utente.getSeguito().getId() != null) {
+          utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+        }
       }
       utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
       utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
