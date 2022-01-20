@@ -39,7 +39,7 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
   }
 
   /**
-   * Restituisce una segnalazione attraverso il suo id
+   * Restituisce una segnalazione attraverso il suo id.
    *
    * @param id della segnalazione
    * @return segnalazione
@@ -52,19 +52,24 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
   /**
    * Aggiunge una nuova segnalazione.
    *
-   * @param segnalazione
+   * @param segnalazione segnalazione da aggiungere
    * @pre Segnalazione.allIstances() -> not exists(s:Segnalazione | s = segnalazione)
    * @post Segnalazione.allIstances() -> exists(s:Segnalazione | s = segnalazione)
    */
   @Override
-  public void addReport(Segnalazione segnalazione) {
-    segnalazioneDao.doCreate(segnalazione);
+  public boolean addReport(Segnalazione segnalazione) {
+    Boolean bool = segnalazioneDao.doCreate(segnalazione);
+    if (bool == true) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
    * Rimuove una segnalazione.
    *
-   * @param segnalazione
+   * @param segnalazione da rimuovere
    * @pre Segnalazione.allIstances() -> exists(s:Segnalazione | s = segnalazione)
    * @post Segnalazione.allIstances() -> not exists(s:Segnalazione | s = segnalazione)
    */
@@ -77,7 +82,7 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
   /**
    * Imposta il parametro "letta" a true.
    *
-   * @param segnalazione
+   * @param segnalazione da impostare come "letta"
    * @pre Segnalazione.allIstances() -> exists(s:Segnalazione | s = segnalazione)
    * @post segnalazione.setLetta(true)
    */
@@ -92,7 +97,7 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
   /**
    * Imposta il parametro "letta" a false.
    *
-   * @param segnalazione
+   * @param segnalazione da impostare come "non letta"
    * @pre Segnalazione.allIstances() -> exists(s:Segnalazione | s = segnalazione)
    * @post segnalazione.setLetta(false)
    */
