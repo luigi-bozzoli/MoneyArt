@@ -320,9 +320,29 @@ class UtenteServiceImplUnitTest {
         @ParameterizedTest
         @ArgumentsSource(UtenteProvider.class)
         void searchUsers() {
+            List<Utente> utenti = getUtenti();
+            when(utenteDao.researchUser(anyString())).thenReturn(getUtenti());
+            assertEquals(utenti, utenteService.searchUsers("users"));
 
+        }
 
+        @DisplayName("searchUsersErr")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void searchUsersErr() {
+            List<Utente> utenti = getUtenti();
+            when(utenteDao.researchUser(anyString())).thenReturn(null);
+            assertTrue(!(utenti.equals(utenteService.searchUsers("users"))));
 
+        }
+
+        @DisplayName("searchUsersErrCatch")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void searchUsersCatch() {
+            when(utenteDao.researchUser(anyString())).thenReturn(getUtenti());
+
+            assertThrows(IllegalArgumentException.class, () -> utenteService.searchUsers(null));
 
         }
 
