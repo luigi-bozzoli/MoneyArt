@@ -69,7 +69,7 @@ public class NotificaServiceImpl implements NotificaService {
    *
    * @param notifica notifica da impostare come non letta
    * @pre Notifica.allIstances() -> exists(n:Notifica | n = notifica)
-   * @post notifica.setLetta(true)
+   * @post notifica.setLetta(false)
    */
   @Override
   public void unreadNotification(Notifica notifica) {

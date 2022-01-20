@@ -25,6 +25,7 @@ import org.web3j.abi.datatypes.Bool;
 import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,18 +50,63 @@ class SegnalazioneServiceImplUnitTest {
   }
 
   static class SegnalazioneProvider implements ArgumentsProvider {
+    @Override
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
+      Asta asta = new Asta();
+      asta.setId(1);
+      String commento = "MarioPeluso ha copiato l'opera di alfcan attualmente all'asta.";
+      Segnalazione s = new Segnalazione(asta, commento, false);
+      s.setId(1);
+
+      Asta asta2 = new Asta();
+      asta2.setId(2);
+      String commento2 = "Asta illecita";
+      Segnalazione s2 = new Segnalazione(asta2, commento2, false);
+      s2.setId(2);
+
+      Asta asta3 = new Asta();
+      asta3.setId(3);
+      String commento3 = "Altra Asta illecita";
+      Segnalazione s3 = new Segnalazione(asta3, commento3, false);
+      s3.setId(3);
+
+      return Stream.of(
+              Arguments.of(s),
+              Arguments.of(s2),
+              Arguments.of(s3)
+      );
+    }
+  }
+
+  static class ListSegnalazioneProvider implements ArgumentsProvider {
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
       Asta asta = new Asta();
-      asta.setId(3);
+      asta.setId(1);
       String commento = "MarioPeluso ha copiato l'opera di alfcan attualmente all'asta.";
-
       Segnalazione s = new Segnalazione(asta, commento, false);
       s.setId(1);
 
+      Asta asta2 = new Asta();
+      asta2.setId(2);
+      String commento2 = "Asta illecita";
+      Segnalazione s2 = new Segnalazione(asta2, commento2, false);
+      s2.setId(2);
+
+      Asta asta3 = new Asta();
+      asta3.setId(3);
+      String commento3 = "Altra Asta illecita";
+      Segnalazione s3 = new Segnalazione(asta3, commento3, false);
+      s3.setId(3);
+
+      ArrayList<Segnalazione> segnalazioni = new ArrayList<Segnalazione>();
+      segnalazioni.add(s);
+      segnalazioni.add(s2);
+      segnalazioni.add(s3);
+
       return Stream.of(
-              Arguments.of(s)
+              Arguments.of(segnalazioni)
       );
     }
   }
