@@ -24,7 +24,6 @@ import javax.sql.DataSource;
 public class ServletLogin extends HttpServlet {
 
 
-
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
@@ -41,20 +40,13 @@ public class ServletLogin extends HttpServlet {
 
     Utente utente = utenteService.checkUser(username, password);
     if (utente != null) {
-      session.setAttribute("utente", utente);
-      Set<Integer> idAmministratori;
-      Type tipo = new TypeToken<Set<Integer>>() {
-      }.getType();
-      Gson gson = new Gson();
-      String filename = "/amministratori.json";
-      InputStream in = getServletContext().getResourceAsStream(filename);
-      InputStreamReader inR = new InputStreamReader(in);
-      JsonReader reader = new JsonReader(inR);
-      idAmministratori = gson.fromJson(reader, tipo);
-      System.out.println(idAmministratori);
+
+      Set<Integer> idAmministratori = getAdminIds();
+
       if (idAmministratori.contains(utente.getId())) {
         session.setAttribute("admin", true);
-        System.out.println("sessione aggiornata");
+      } else {
+        session.setAttribute("utente", utente);
       }
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
 
@@ -64,6 +56,18 @@ public class ServletLogin extends HttpServlet {
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/login.jsp");
       dispatcher.forward(request, response);
     }
+  }
+
+  private Set<Integer> getAdminIds() {
+    Type tipo = new TypeToken<Set<Integer>>() {
+    }.getType();
+    Gson gson = new Gson();
+    String filename = "/amministratori.json";
+    InputStream in = getServletContext().getResourceAsStream(filename);
+    InputStreamReader inR = new InputStreamReader(in);
+    JsonReader reader = new JsonReader(inR);
+    return gson.fromJson(reader, tipo);
+
   }
 
   @Inject
