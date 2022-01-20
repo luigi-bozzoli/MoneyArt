@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -158,24 +158,55 @@ class NotificaServiceImplUnitTest {
   @ArgumentsSource(NotificaProvider.class)
   @DisplayName("Test getNotification")
   void getNotification(Notifica n) {
-      when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
 
+      when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
       Assertions.assertEquals(n, notificaService.getNotification(n.getId()));
   }
 
+  @ParameterizedTest
+  @ArgumentsSource(NotificaProvider.class)
   @DisplayName("Test readNotification")
-  void readNotification() {
+  void readNotification(Notifica n) {
+    n.setLetta(false);
+
+    when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
+    doNothing().when(notificaDao).doUpdate(n);
+    notificaService.readNotification(n);
+
+    Assertions.assertTrue(n.isLetta());
   }
 
+  @ParameterizedTest
+  @ArgumentsSource(NotificaProvider.class)
   @DisplayName("unreadNotification")
-  void unreadNotification() {
-  }
+  void unreadNotification(Notifica n) {
 
+    when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
+    doNothing().when(notificaDao).doUpdate(n);
+    notificaService.unreadNotification(n);
+
+    Assertions.assertFalse(n.isLetta());
+  }
+  @ParameterizedTest
+  @ArgumentsSource(NotificaProvider.class)
   @DisplayName("deleteNotification")
-  void deleteNotification() {
+  void deleteNotification(Notifica n) {
+
+    when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
+    doNothing().when(notificaDao).doDelete(n);
+
+    verify(notificaDao, times(1)).doDelete(n);
   }
 
+  @ParameterizedTest
+  @ArgumentsSource(NotificaProvider.class)
   @DisplayName("addNotification")
-  void addNotification() {
+  void addNotification(Notifica n) {
+
+    when(notificaDao.doCreate(n)).thenReturn(Boolean.TRUE);
+
+    boolean b = notificaService.addNotification(n);
+
+    Assertions.assertTrue(b);
   }
 }
