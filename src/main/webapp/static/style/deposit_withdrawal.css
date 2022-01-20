@@ -1,16 +1,10 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    list-style: none;
-    font-family: 'Montserrat', sans-serif
-}
+
 
 body {
-    background-color: #FFF8D9;
+    background-color: white;
 }
 
-.container {
+.container-wallet {
     margin: 20px auto;
     width: 800px;
     padding: 30px
@@ -96,7 +90,7 @@ body {
     border-bottom: 2px solid #EBA83A
 }
 
-.form-control {
+.form-control-wallet {
     border: none;
     border-bottom: 1px solid #ddd;
     box-shadow: none;
@@ -110,12 +104,6 @@ body {
 
 .inputWithIcon {
     position: relative
-}
-
-img {
-    width: 50px;
-    height: 20px;
-    object-fit: cover
 }
 
 .inputWithIcon span {
