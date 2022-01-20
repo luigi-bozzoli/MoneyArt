@@ -23,12 +23,12 @@ VALUES (NULL, "moneyart@gmail.com", 0x8C6976E5B5410415BDE908BD4DEE15DFB167A9C873
 /****************************** OPERE ******************************/
 
 INSERT INTO opera(id_utente, id_artista, nome, descrizione, immagine, certificato, stato)
-VALUES ((SELECT id FROM utente WHERE username = "XJustUnluckyX"), (SELECT id FROM utente WHERE username = "alfcan"), "The Shibosis", "Descrizione", 0xFFFF, NULL, "IN_VENDITA"),
+VALUES ((SELECT id FROM utente WHERE username = "XJustUnluckyX"), (SELECT id FROM utente WHERE username = "alfcan"), "The Shibosis", "Descrizione", 0xFFFF, NULL, "IN_POSSESSO"),
        ((SELECT id FROM utente WHERE username = "alfcan"), (SELECT id FROM utente WHERE username = "alfcan"), "Bears Deluxe #3742", "Descrizione", 0xFFFF, NULL, "ALL_ASTA"),
        ((SELECT id FROM utente WHERE username = "DG266"), (SELECT id FROM utente WHERE username = "DG266"), "CupCat", "Descrizione", 0xFFFF, NULL, "PREVENDITA"),
        ((SELECT id FROM utente WHERE username = "xDaryamo"), (SELECT id FROM utente WHERE username = "xDaryamo"), "TIGXR", "Descrizione", 0xFFFF, NULL, "PREVENDITA"),
        ((SELECT id FROM utente WHERE username = "MarioPeluso"), (SELECT id FROM utente WHERE username = "MarioPeluso"), "Bears Deluxe #3742", "Descrizione", 0xFFFF, NULL, "ALL_ASTA"),
-       ((SELECT id FROM utente WHERE username = "shoyll"), (SELECT id FROM utente WHERE username = "shoyll"), "Capsule House", "Descrizione", 0xFFFF, NULL, "PREVENDITA"),
+       ((SELECT id FROM utente WHERE username = "shoyll"), (SELECT id FROM utente WHERE username = "xDaryamo"), "Capsule House", "Descrizione", 0xFFFF, NULL, "IN_POSSESSO"),
        ((SELECT id FROM utente WHERE username = "AurySepe"), (SELECT id FROM utente WHERE username = "AurySepe"), "Kumo Resident", "Descrizione", 0xFFFF, null, "ALL_ASTA");
 
 
