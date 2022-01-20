@@ -230,6 +230,23 @@ class OperaServiceImplUnitTest {
       Assertions.assertFalse(operaService.checkArtwork(o.getArtista().getId(), opera.getNome()));
     }
 
+    @Test
+    @DisplayName("Check Artwork with name null")
+    void checkArtworkNameNull() throws SQLException {
+      List<Opera> opere = getListOpere();
+
+      Utente u1 = new Utente();
+      u1.setId(1);
+
+      for(Opera o : opere){
+        o.setArtista(u1);
+        o.setStato(Opera.Stato.IN_POSSESSO);
+      }
+      when(operaDao.doRetrieveAllByArtistId(u1.getId())).thenReturn(opere);
+
+      Assertions.assertThrows(Exception.class, () -> operaService.checkArtwork(1,null));
+    }
+
   }
 
   @DisplayName("Test Get Artwork")

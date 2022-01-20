@@ -17,7 +17,14 @@
         <junit.version>5.8.2</junit.version>
     </properties>
 
+
     <dependencies>
+
+        <dependency>
+            <groupId>com.github.livesense</groupId>
+            <artifactId>org.liveSense.scripting.jsp.taglib.jsonatg</artifactId>
+            <version>1.0.5</version>
+        </dependency>
 
         <dependency>
             <groupId>com.stripe</groupId>
