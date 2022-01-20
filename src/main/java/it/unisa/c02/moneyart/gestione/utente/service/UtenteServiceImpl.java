@@ -110,6 +110,10 @@ public class UtenteServiceImpl implements UtenteService {
    */
   @Override
   public Utente getUserInformation(String username) {
+    if (username == null) {
+      throw new IllegalArgumentException("Username is null");
+    }
+
     Utente utente = utenteDao.doRetrieveByUsername(username);
     if (utente == null) {
       return null;
@@ -154,6 +158,9 @@ public class UtenteServiceImpl implements UtenteService {
    */
   @Override
   public void updateUser(Utente utente) {
+    if (utente == null) {
+      throw new IllegalArgumentException("Utente is null");
+    }
     utenteDao.doUpdate(utente);
   }
 
