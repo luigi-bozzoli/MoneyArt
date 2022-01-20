@@ -19,8 +19,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -31,9 +29,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class NotificaServiceImplUnitTest {
-
-  @Mock
-  private UtenteDao utenteDao;
 
   @Mock
   private NotificaDao notificaDao;
@@ -152,6 +147,7 @@ class NotificaServiceImplUnitTest {
 
     when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
     doNothing().when(notificaDao).doDelete(n);
+    notificaService.deleteNotification(n);
 
     verify(notificaDao, times(1)).doDelete(n);
   }
