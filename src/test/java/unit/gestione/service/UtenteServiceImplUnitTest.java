@@ -346,12 +346,176 @@ class UtenteServiceImplUnitTest {
 
         }
 
+    }
 
+    @Nested
+    @DisplayName("Test Suite testCheckUsername")
+    class testCheckUsername{
 
+        @DisplayName("checkUsername")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void checkUsername(Utente utente) {
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            assertTrue(utenteService.checkUsername(utente.getUsername()));
 
+        }
+
+        @DisplayName("checkUsernameCatch")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void checkUsernameCatch(Utente utente) {
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            assertThrows(IllegalArgumentException.class, () -> utenteService.checkUsername(null));
+
+        }
+
+        @DisplayName("checkUsernameErr")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void checkUsernameErr(Utente utente) {
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(null);
+            assertTrue(!(utenteService.checkUsername(utente.getUsername())));
+
+        }
 
     }
 
+    @Nested
+    @DisplayName("Test Suite testCheckEmail")
+    class testCheckEmail{
+
+        @DisplayName("checkEmail")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void checkEmail(Utente utente) {
+            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(utente);
+            assertTrue(utenteService.checkEmail(utente.getEmail()));
+
+        }
+
+        @DisplayName("checkEmailCatch")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void checkEmailCatch(Utente utente) {
+            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(utente);
+            assertThrows(IllegalArgumentException.class, () -> utenteService.checkEmail(null));
+
+        }
+
+        @DisplayName("checkEmailErr")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void checkEmailErr(Utente utente) {
+            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(null);
+            assertTrue(!(utenteService.checkEmail(utente.getEmail())));
+
+        }
+
+    }
+
+
+    @Nested
+    @DisplayName("Test Suite testFollow")
+    class testFollow{
+
+        @Test
+        @DisplayName("follow")
+        void follow() {
+
+            Utente followed = new Utente("Mario Seguito", "Peluso", null, "marioseguitopeluso@unisa.it",
+                    "mpelGYUgugyugYUG", null, new byte[10], 2000000.2);
+            followed.setId(1);
+
+            Utente follower = new Utente("Luigi", "Bros", null, "luigibros@unisa.it",
+                    "vuivuovuuGYUGIY", null, new byte[10], 2.2);
+            follower.setId(2);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(followed);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertTrue(utenteService.follow(follower, followed));
+
+        }
+
+        @Test
+        @DisplayName("followCatch1")
+        void followCatch1() {
+
+            Utente followed = new Utente("Mario Seguito", "Peluso", null, "marioseguitopeluso@unisa.it",
+                    "mpelGYUgugyugYUG", null, new byte[10], 2000000.2);
+            followed.setId(1);
+
+            Utente follower = new Utente("Luigi", "Bros", null, "luigibros@unisa.it",
+                    "vuivuovuuGYUGIY", null, new byte[10], 2.2);
+            follower.setId(2);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(followed);
+            doNothing().when(utenteDao).doUpdate(any());
+
+           assertThrows(IllegalArgumentException.class, () -> utenteService.follow(null, followed));
+
+        }
+
+        @Test
+        @DisplayName("followCatch2")
+        void followCatch2() {
+
+            Utente followed = new Utente("Mario Seguito", "Peluso", null, "marioseguitopeluso@unisa.it",
+                    "mpelGYUgugyugYUG", null, new byte[10], 2000000.2);
+            followed.setId(1);
+
+            Utente follower = new Utente("Luigi", "Bros", null, "luigibros@unisa.it",
+                    "vuivuovuuGYUGIY", null, new byte[10], 2.2);
+            follower.setId(2);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(followed);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertThrows(IllegalArgumentException.class, () -> utenteService.follow(follower, null));
+
+        }
+
+        @Test
+        @DisplayName("followCatch3")
+        void followCatch3() {
+
+            Utente followed = new Utente("Mario Seguito", "Peluso", null, "marioseguitopeluso@unisa.it",
+                    "mpelGYUgugyugYUG", null, new byte[10], 2000000.2);
+            followed.setId(1);
+
+            Utente follower = new Utente("Luigi", "Bros", null, "luigibros@unisa.it",
+                    "vuivuovuuGYUGIY", null, new byte[10], 2.2);
+            follower.setId(2);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(null);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertThrows(IllegalArgumentException.class, () -> utenteService.follow(follower, followed));
+
+        }
+
+        @Test
+        @DisplayName("followCatchErr")
+        void followCatchErr() {
+
+            Utente followed = new Utente("Mario Seguito", "Peluso", null, "marioseguitopeluso@unisa.it",
+                    "mpelGYUgugyugYUG", null, new byte[10], 2000000.2);
+            followed.setId(1);
+
+            Utente follower = new Utente("Luigi", "Bros", null, "luigibros@unisa.it",
+                    "vuivuovuuGYUGIY", null, new byte[10], 2.2);
+            follower.setId(2);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(followed);
+            follower.setSeguito(getUtenti().get(0)); //il follower segue già un'altro artista
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertTrue(!(utenteService.follow(follower, followed)));
+
+        }
+
+    }
 
 
 
@@ -362,23 +526,7 @@ class UtenteServiceImplUnitTest {
 /*
 
     @Test
-    void searchUsers() {
-    }
-
-    @Test
-    void checkUsername() {
-    }
-
-    @Test
-    void checkEmail() {
-    }
-
-    @Test
     void follow() {
-    }
-
-    @Test
-    void unfollow() {
     }
 
     @Test
@@ -387,10 +535,6 @@ class UtenteServiceImplUnitTest {
 
     @Test
     void withdraw() {
-    }
-
-    @Test
-    void getBalance() {
     }
 
     */
