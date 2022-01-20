@@ -13,7 +13,7 @@ public interface SegnalazioneService {
 
   Segnalazione getReport(int id);
 
-  void addReport(Segnalazione segnalazione);
+  boolean addReport(Segnalazione segnalazione);
 
   void removeReport(Segnalazione segnalazione);
 
