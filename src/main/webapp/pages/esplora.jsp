@@ -9,6 +9,9 @@
 
     <jsp:include page="/getAuctions?action=inCorso"/>
     <c:set var="aste" value="${requestScope.aste}"/>
+    <jsp:include page="/getUsers"/>
+    <c:set var="utenti" value="${requestScope.utenti}"/>
+
 
     <!-- Nav Tab -->
     <ul class="nav nav-tabs d-flex justify-content-between" role="tablist">
@@ -24,24 +27,25 @@
     <!-- /Nav Tab -->
 
     <div class="tab-content" id="myTabContent">
+        <!-- ASTE TAB-->
         <div class="tab-pane fade show active" id="auctions" role="tabpanel" aria-labelledby="aste-tab">
 
-                    <div class="container filtro d-flex justify-content-center align-items-center">
+            <div class="container filtro d-flex justify-content-center align-items-center">
                         <h5 class="mr-3 mb-0">Ordina per: </h5>
                         <div class="dropdown">
-                            <button class="dropdown-toggle btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="dropdown-toggle btn" type="button" id="dropdownAuctions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="sort-option d-flex align-items-center">
-                                    <p class="mb-0" id="sort-text"></p>
-                                    <i id="sort-icon" class="fas fa-sort"></i>
+                                    <p class="mb-0 sort-text"></p>
+                                    <i class="fas fa-sort sort-icon"></i>
                                 </div>
                             </button>
 
-                            <span id="close-drop" class="ml-2 invisible" style="cursor: pointer">
+                            <span class="ml-2 invisible close-drop" style="cursor: pointer">
                                 <i class="fas fa-times"></i>
                             </span>
 
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="dropdown-menu" aria-labelledby="dropdownAuctions">
                                 <a class="dropdown-item" href="#">
                                     <div class="sort-option d-flex align-items-cente justify-content-between">
                                         <p class="mb-0">Prezzo</p>
@@ -84,10 +88,6 @@
                         </div>
                     </div>
 
-
-
-
-
             <div class="container-fluid d-flex flex-wrap" id="container-aste">
 
                 <c:forEach var="asta" items="${aste}">
@@ -118,10 +118,68 @@
                 </c:forEach>
             </div>
         </div>
+        <!-- /ASTE TAB-->
 
+
+        <!-- ARTISTI TAB-->
         <div class="tab-pane fade" id="artists" role="tabpanel" aria-labelledby="artisti-tab">
-            ARTISTIIIII
+
+            <div class="container filtro d-flex justify-content-center align-items-center">
+                <h5 class="mr-3 mb-0">Ordina per: </h5>
+                <div class="dropdown">
+                    <button class="dropdown-toggle btn" type="button" id="dropdownArtists" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="sort-option d-flex align-items-center">
+                            <p class="mb-0 sort-text"></p>
+                            <i class="fas fa-sort sort-icon"></i>
+                        </div>
+                    </button>
+
+                    <span class="ml-2 invisible close-drop" style="cursor: pointer">
+                                <i class="fas fa-times"></i>
+                            </span>
+
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownArtists">
+                        <a class="dropdown-item" href="#">
+                            <div class="sort-option d-flex align-items-center justify-content-between">
+                                <p class="mb-0 mr-3">Popolarità artista</p>
+                                <i class="fas fa-sort-amount-up"></i>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="sort-option d-flex align-items-center justify-content-between">
+                                <p class="mb-0">Popolarità artista</p>
+                                <i class="fas fa-sort-amount-down"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid d-flex flex-wrap" id="container-artisti">
+                <c:forEach var="utente" items="${utenti}">
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="thumb-wrapper">
+                            <div class="img-box">
+                                <div class="ratio img-responsive img-circle" style="background-image: url(../userPicture?id=${utente.id})">
+                                </div>
+                            </div>
+                            <div class="thumb-content">
+                                <h4><c:out value="${utente.username}"/></h4>
+                                <div class="followers" id="${utente.id}">
+                                    <h6 class="mb-0">Followers:</h6>
+                                    <p><c:out value="${utente.nFollowers}"/></p>
+                                </div>
+                                <a href="#" class="btn btn-primary">Visualizza profilo</a>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+
+
         </div>
+        <!-- /ARTISTI TAB-->
 
         <div class="modal"><!-- Place at bottom of page --></div>
     </div>

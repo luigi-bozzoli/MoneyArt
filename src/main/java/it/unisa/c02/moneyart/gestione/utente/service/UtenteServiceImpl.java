@@ -85,9 +85,11 @@ public class UtenteServiceImpl implements UtenteService {
     if (utente == null) {
       return null;
     }
-    if (utente.getSeguito().getId() != null) {
+    if (utente.getSeguito()!=null) {
+      if (utente.getSeguito().getId() != null) {
 
-      utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+        utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+      }
     }
     utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
     utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
@@ -112,9 +114,11 @@ public class UtenteServiceImpl implements UtenteService {
     if (utente == null) {
       return null;
     }
-    if (utente.getSeguito().getId() != null) {
+    if (utente.getSeguito()!=null) {
+      if (utente.getSeguito().getId() != null) {
 
-      utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+        utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
+      }
     }
     utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
     utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
