@@ -518,114 +518,143 @@ class UtenteServiceImplUnitTest {
     }
 
 
+    @Nested
+    @DisplayName("Test Suite testDeposit")
+    class testDeposit{
+
+        @DisplayName("deposit")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void deposit(Utente utente) {
+            double amount = 1689.85;
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertTrue(utenteService.deposit(utente, amount));
+
+        }
+
+        @DisplayName("depositCatch1")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void depositCatch1(Utente utente) {
+            double amount = 1689.85;
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertThrows(IllegalArgumentException.class, () -> utenteService.deposit(null, amount));
+
+        }
+
+        @DisplayName("depositCatch2")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void depositCatch2(Utente utente) {
+            double amount = -1689.85;
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertThrows(IllegalArgumentException.class, () -> utenteService.deposit(utente, amount));
+
+        }
+
+        @DisplayName("depositCatchErr")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void depositCatchErr(Utente utente) {
+            double amount = 1689.85;
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(null);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertTrue(!(utenteService.deposit(utente, amount)));
+
+        }
+
+    }
+
+
+    @Nested
+    @DisplayName("Test Suite testWithdraw")
+    class testWithdraw{
+
+
+        @DisplayName("withdraw")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void withdraw(Utente utente) {
+            Double amount = utente.getSaldo() - (utente.getSaldo()-1) ;
+            utente.setSaldo(amount);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertTrue(utenteService.withdraw(utente, amount));
+
+        }
+
+        @DisplayName("withdrawCatch")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void withdrawCatch(Utente utente) {
+            Double amount = utente.getSaldo() - (utente.getSaldo()-1) ;
+            utente.setSaldo(amount);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertThrows(IllegalArgumentException.class, () -> utenteService.withdraw(null, amount));
+
+        }
+
+        @DisplayName("withdrawErr1")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void withdrawErr1(Utente utente) {
+            Double amount = utente.getSaldo() - (utente.getSaldo()-1) ;
+            utente.setSaldo(amount);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(null);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertTrue(!(utenteService.withdraw(utente, amount)));
+
+        }
+
+        @DisplayName("withdrawErr2")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void withdrawErr2(Utente utente) {
+            Double amount = -11.01 ;
+            utente.setSaldo(amount);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertTrue(!(utenteService.withdraw(utente, amount)));
+
+        }
+
+        @DisplayName("withdrawErr3")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void withdrawErr3(Utente utente) {
+            Double amount = utente.getSaldo() - (utente.getSaldo()+1) ; //amount > saldo
+            utente.setSaldo(amount);
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            doNothing().when(utenteDao).doUpdate(any());
+
+            assertTrue(!(utenteService.withdraw(utente, amount)));
+
+        }
+
+
+    }
 
 
 }
 
-
-/*
-
-    @Test
-    void follow() {
-    }
-
-    @Test
-    void deposit() {
-    }
-
-    @Test
-    void withdraw() {
-    }
-
-    */
-
-
-
-/*
-    static class OperaProvider implements ArgumentsProvider {
-
-        @Override
-        public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
-
-            String s1 = "image blob 1";
-            Blob b1 = new SerialBlob(s1.getBytes(StandardCharsets.UTF_8));
-            Utente u1 = new Utente();
-            u1.setId(1);
-            Opera o1 = new Opera("The Shibosis", "Descrizione", Opera.Stato.PREVENDITA,
-                    b1, u1, u1, "xxxxx");
-            o1.setId(1);
-
-            String s2 = "image blob 2";
-            Blob b2 = new SerialBlob(s2.getBytes(StandardCharsets.UTF_8));
-            Utente u2 = new Utente();
-            u2.setId(2);
-            Opera o2 = new Opera("The Shibosis 2", "Descrizione", Opera.Stato.PREVENDITA,
-                    b2, u2, u2, "yyyyyyyyy");
-            o2.setId(2);
-
-            String s3 = "image blob 3";
-            Blob b3 = new SerialBlob(s3.getBytes(StandardCharsets.UTF_8));
-            Utente u3 = new Utente();
-            u3.setId(3);
-            Opera o3 = new Opera("PIXELARTARTARTA", "Descrizione", Opera.Stato.PREVENDITA,
-                    b3, u3, u3, "zzzzzz");
-            o3.setId(3);
-
-            return Stream.of(
-                    Arguments.of(o1), //ognuno di questi rappresenta un input istanziato per un metodo di test
-                    Arguments.of(o2),
-                    Arguments.of(o3)
-            );
-
-        }
-    }
-
-
-
-    //ritorna una lista di opere (può servire per esempio per le opere di un utente)
-    static class ListOpereProvider implements ArgumentsProvider {
-
-        @Override
-        public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
-            List<Opera> opere = getListOpere();
-
-            return Stream.of(Arguments.of(opere));
-        }
-
-        static List<Opera> getListOpere() throws SQLException {
-            String s1 = "image blob 1";
-            Blob b1 = new SerialBlob(s1.getBytes(StandardCharsets.UTF_8));
-            Utente u1 = new Utente();
-            u1.setId(1);
-            Opera o1 = new Opera("The Shibosis", "Descrizione", Opera.Stato.PREVENDITA,
-                    b1, u1, u1, "xxxxx");
-            o1.setId(1);
-
-            String s2 = "image blob 2";
-            Blob b2 = new SerialBlob(s2.getBytes(StandardCharsets.UTF_8));
-            Utente u2 = new Utente();
-            u2.setId(2);
-            Opera o2 = new Opera("The Shibosis 2", "Descrizione", Opera.Stato.PREVENDITA,
-                    b2, u2, u1, "yyyyyyyyy");
-            o2.setId(2);
-
-            String s3 = "image blob 3";
-            Blob b3 = new SerialBlob(s3.getBytes(StandardCharsets.UTF_8));
-            Utente u3 = new Utente();
-            u3.setId(3);
-            Opera o3 = new Opera("PIXELARTARTARTA", "Descrizione", Opera.Stato.PREVENDITA,
-                    b3, u3, u1, "zzzzzz");
-            o3.setId(3);
-
-            List<Opera> opere = new ArrayList<>();
-            opere.add(o1);
-            opere.add(o2);
-            opere.add(o3);
-
-            return opere;
-        }
-
-    }
-
-
-*/
