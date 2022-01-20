@@ -1,6 +1,8 @@
-package it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service;
+package integration.gestione.service;
 
 import hthurow.tomcatjndi.TomcatJNDI;
+import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneService;
+import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneServiceImpl;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Segnalazione;
 import it.unisa.c02.moneyart.model.dao.SegnalazioneDaoImpl;
@@ -56,7 +58,7 @@ class SegnalazioneServiceImplIntegrationTest {
         e.printStackTrace();
       }
     }
-    // Creazione database
+
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);

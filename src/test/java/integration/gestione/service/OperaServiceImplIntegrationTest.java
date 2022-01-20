@@ -40,7 +40,7 @@ class OperaServiceImplIntegrationTest {
   private OperaDao operaDao;
 
   @BeforeAll
-  public static void generalSetUp() {
+  public static void generalSetUp() throws SQLException, FileNotFoundException {
     Context initCtx = null;
     Context envCtx = null;
     try{
@@ -61,6 +61,13 @@ class OperaServiceImplIntegrationTest {
         e.printStackTrace();
       }
     }
+
+    Connection connection = dataSource.getConnection();
+    ScriptRunner runner = new ScriptRunner(connection);
+    runner.setLogWriter(null);
+    Reader reader = new BufferedReader(new FileReader("./src/main/java/it/unisa/c02/moneyart/model/db/ddl_moneyart.sql"));
+    runner.runScript(reader);
+    connection.close();
   }
 
   @BeforeEach
