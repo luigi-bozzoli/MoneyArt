@@ -46,13 +46,13 @@ $(document).ready(function (){
         });
     });
 
-    $('.dropdown-item').click(function () {
+    $('#auctions .dropdown-item').click(function () {
         let text = $(this).find('p').text();
         let icon = $(this).find('i').attr('class')
 
-        $('#sort-text').html(text);
-        $('#sort-icon').attr('class', icon);
-        $('#close-drop').removeClass('invisible');
+        $('#auctions .sort-text').html(text);
+        $('#auctions .sort-icon').attr('class', icon + ' sort-icon');
+        $('#auctions .close-drop').removeClass('invisible');
 
         if(text == 'Popolarità artista') {
             text = 'Followers'
@@ -111,10 +111,10 @@ $(document).ready(function (){
         });
     });
 
-    $('#close-drop').click(function (){
-        $('#sort-text').html('');
-        $('#sort-icon').attr('class', 'fas fa-sort');
-        $('#close-drop').addClass('invisible');
+    $('#auctions .close-drop').click(function (){
+        $('#auctions .sort-text').html('');
+        $('#auctions .sort-icon').attr('class', 'fas fa-sort');
+        $('#auctions .close-drop').addClass('invisible');
 
         $.get(ctx + '/getAuctions', $.param({action : 'inCorso'}), function(response) {
             $('#container-aste').html('');
@@ -155,6 +155,91 @@ $(document).ready(function (){
             });
         });
     });
+
+    $('#artists .dropdown-item').click(function () {
+        let text = $(this).find('p').text();
+        let icon = $(this).find('i').attr('class')
+
+        $('#artists .sort-text').html(text);
+        $('#artists .sort-icon').attr('class', icon + ' sort-icon');
+        $('#artists .close-drop').removeClass('invisible');
+
+
+
+        if(icon.includes('up')) {
+            icon = 'ASC'
+        } else {
+            icon = 'DESC'
+        }
+
+        let parameters = {
+            criteria : 'Followers',
+            order : icon
+        }
+
+        $.get(ctx + '/getUsers', $.param(parameters), function(response) {
+            $('#container-artisti').html('');
+            $.each(response, function (index, utente) {
+                $('#myTabContent').addClass("loading");
+                setTimeout(function() {
+                    $('#myTabContent').removeClass("loading");
+                }, 500);
+
+                $('#container-artisti').append(
+                    `<div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">` +
+                        `<div class="thumb-wrapper">` +
+                            `<div class="img-box">` +
+                                `<div class="ratio img-responsive img-circle" style="background-image: url(../userPicture?id=` + utente.id + `)"></div>` +
+                            `</div>` +
+                            `<div class="thumb-content">` +
+                                `<h4>` + utente.username + `</h4>` +
+                                `<div class="followers" id="` + utente.id + `">` +
+                                    `<h6 class="mb-0">Followers:</h6>` +
+                                    `<p>` + utente.numFollowers + `</p>` +
+                                `</div>` +
+                                `<a href="#" class="btn btn-primary">Visualizza profilo</a>` +
+                            `</div>` +
+                        `</div>` +
+                    `</div>`
+                );
+            });
+        });
+    });
+
+    $('#artists .close-drop').click(function (){
+        $('#artists .sort-text').html('');
+        $('#artists .sort-icon').attr('class', 'fas fa-sort');
+        $('#artists .close-drop').addClass('invisible');
+
+        $.get(ctx + '/getUsers', function(response) {
+            $('#container-artisti').html('');
+            $.each(response, function (index, utente) {
+                $('#myTabContent').addClass("loading");
+                setTimeout(function() {
+                    $('#myTabContent').removeClass("loading");
+                }, 500);
+
+                $('#container-artisti').append(
+                    `<div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">` +
+                    `<div class="thumb-wrapper">` +
+                    `<div class="img-box">` +
+                    `<div class="ratio img-responsive img-circle" style="background-image: url(../userPicture?id=` + utente.id + `)"></div>` +
+                    `</div>` +
+                    `<div class="thumb-content">` +
+                    `<h4>` + utente.username + `</h4>` +
+                    `<div class="followers" id="` + utente.id + `">` +
+                    `<h6 class="mb-0">Followers:</h6>` +
+                    `<p>` + utente.numFollowers + `</p>` +
+                    `</div>` +
+                    `<a href="#" class="btn btn-primary">Visualizza profilo</a>` +
+                    `</div>` +
+                    `</div>` +
+                    `</div>`
+                );
+            });
+        });
+    });
+
 });
 
 
