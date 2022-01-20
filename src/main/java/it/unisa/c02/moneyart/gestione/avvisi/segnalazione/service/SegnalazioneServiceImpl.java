@@ -38,22 +38,54 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
     return segnalazioneDao.doRetrieveAll(filter);
   }
 
+  /**
+   * Restituisce una segnalazione attraverso il suo id.
+   *
+   * @param id della segnalazione
+   * @return segnalazione
+   */
   @Override
   public Segnalazione getReport(int id) {
     return segnalazioneDao.doRetrieveById(id);
   }
 
+  /**
+   * Aggiunge una nuova segnalazione.
+   *
+   * @param segnalazione segnalazione da aggiungere
+   * @pre Segnalazione.allIstances() -> not exists(s:Segnalazione | s = segnalazione)
+   * @post Segnalazione.allIstances() -> exists(s:Segnalazione | s = segnalazione)
+   */
   @Override
-  public void addReport(Segnalazione segnalazione) {
-    segnalazioneDao.doCreate(segnalazione);
+  public boolean addReport(Segnalazione segnalazione) {
+    Boolean bool = segnalazioneDao.doCreate(segnalazione);
+    if (bool == true) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
+  /**
+   * Rimuove una segnalazione.
+   *
+   * @param segnalazione da rimuovere
+   * @pre Segnalazione.allIstances() -> exists(s:Segnalazione | s = segnalazione)
+   * @post Segnalazione.allIstances() -> not exists(s:Segnalazione | s = segnalazione)
+   */
   @Override
   public void removeReport(Segnalazione segnalazione) {
     segnalazione = segnalazioneDao.doRetrieveById(segnalazione.getId());
     segnalazioneDao.doDelete(segnalazione);
   }
 
+  /**
+   * Imposta il parametro "letta" a true.
+   *
+   * @param segnalazione da impostare come "letta"
+   * @pre Segnalazione.allIstances() -> exists(s:Segnalazione | s = segnalazione)
+   * @post segnalazione.setLetta(true)
+   */
   @Override
   public void readReport(Segnalazione segnalazione) {
     segnalazione = segnalazioneDao.doRetrieveById(segnalazione.getId());
@@ -62,6 +94,13 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
     segnalazioneDao.doUpdate(segnalazione);
   }
 
+  /**
+   * Imposta il parametro "letta" a false.
+   *
+   * @param segnalazione da impostare come "non letta"
+   * @pre Segnalazione.allIstances() -> exists(s:Segnalazione | s = segnalazione)
+   * @post segnalazione.setLetta(false)
+   */
   @Override
   public void unreadReport(Segnalazione segnalazione) {
     segnalazione = segnalazioneDao.doRetrieveById(segnalazione.getId());

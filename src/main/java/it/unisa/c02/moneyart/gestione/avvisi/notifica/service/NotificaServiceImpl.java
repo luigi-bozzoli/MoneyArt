@@ -69,7 +69,7 @@ public class NotificaServiceImpl implements NotificaService {
    *
    * @param notifica notifica da impostare come non letta
    * @pre Notifica.allIstances() -> exists(n:Notifica | n = notifica)
-   * @post notifica.setLetta(true)
+   * @post notifica.setLetta(false)
    */
   @Override
   public void unreadNotification(Notifica notifica) {
@@ -98,10 +98,16 @@ public class NotificaServiceImpl implements NotificaService {
    * @param notifica notifica da aggiungere
    * @pre Notifica.allIstances() -> not exists(n:Notifica | n = notifica)
    * @post Notifica.allIstances() -> exists(n:Notifica | n = notifica)
+   * @return
    */
   @Override
-  public void addNotification(Notifica notifica) {
-    notificaDao.doCreate(notifica);
+  public boolean addNotification(Notifica notifica) {
+
+    if(notificaDao.doCreate(notifica)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @Inject

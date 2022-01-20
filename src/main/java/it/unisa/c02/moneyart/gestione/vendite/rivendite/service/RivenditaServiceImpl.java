@@ -1,10 +1,10 @@
 package it.unisa.c02.moneyart.gestione.vendite.rivendite.service;
 
-
-import it.unisa.c02.moneyart.model.beans.Notifica;
-import it.unisa.c02.moneyart.model.beans.Opera;
-import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
@@ -137,7 +137,7 @@ public class RivenditaServiceImpl implements RivenditaService {
     owner.setSaldo(owner.getSaldo() + rivendita.getPrezzo());
 
     rivendita.setStato(Rivendita.Stato.TERMINATA);
-    Notifica notifica = new Notifica(owner, null, rivendita, Notifica.Tipo.TERMINATA, "", false);
+    Notifica notifica = new Notifica(owner, new Asta(),rivendita, Notifica.Tipo.TERMINATA, "", false);
 
     notificaDao.doCreate(notifica);
     utenteDao.doUpdate(utente);

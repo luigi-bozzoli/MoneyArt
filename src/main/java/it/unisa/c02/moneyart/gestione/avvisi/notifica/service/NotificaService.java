@@ -19,6 +19,6 @@ public interface NotificaService {
 
   void deleteNotification(Notifica notifica);
 
-  void addNotification(Notifica notifica);
+  boolean addNotification(Notifica notifica);
 
 }

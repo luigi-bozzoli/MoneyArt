@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -85,49 +85,7 @@ class NotificaServiceImplUnitTest {
 
   }
 
-  static class ListaNotificheProvider implements ArgumentsProvider {
 
-    @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
-      List<Notifica> notifche = getListNotifiche();
-
-      return Stream.of(Arguments.of(notifche));
-    }
-
-    static List<Notifica> getListNotifiche() throws SQLException {
-
-      Utente u1 = new Utente();
-      u1.setId(1);
-      Rivendita r1 = new Rivendita();
-      r1.setId(1);
-      Asta a1 = new Asta();
-      a1.setId(1);
-      Notifica n1 = new Notifica(u1, a1, r1, Notifica.Tipo.SUPERATO, null, true);
-
-      Utente u2 = new Utente();
-      u2.setId(2);
-      Rivendita r2 = new Rivendita();
-      r2.setId(2);
-      Asta a2 = new Asta();
-      a2.setId(2);
-      Notifica n2 = new Notifica(u2, a2, r2, Notifica.Tipo.VITTORIA, null, false);
-
-      Utente u3 = new Utente();
-      u3.setId(3);
-      Rivendita r3 = new Rivendita();
-      r3.setId(3);
-      Asta a3 = new Asta();
-      a3.setId(3);
-      Notifica n3 = new Notifica(u3, a3, r3, Notifica.Tipo.TERMINATA, null, true);
-
-      List<Notifica> notifche = new ArrayList<Notifica>();
-      notifche.add(n1);
-      notifche.add(n2);
-      notifche.add(n3);
-
-      return notifche;
-    }
-  }
 
   @Test
   @DisplayName("Test getNotificationByUser")
@@ -158,24 +116,55 @@ class NotificaServiceImplUnitTest {
   @ArgumentsSource(NotificaProvider.class)
   @DisplayName("Test getNotification")
   void getNotification(Notifica n) {
-      when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
 
+      when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
       Assertions.assertEquals(n, notificaService.getNotification(n.getId()));
   }
 
+  @ParameterizedTest
+  @ArgumentsSource(NotificaProvider.class)
   @DisplayName("Test readNotification")
-  void readNotification() {
+  void readNotification(Notifica n) {
+    n.setLetta(false);
+
+    when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
+    doNothing().when(notificaDao).doUpdate(n);
+    notificaService.readNotification(n);
+
+    Assertions.assertTrue(n.isLetta());
   }
 
+  @ParameterizedTest
+  @ArgumentsSource(NotificaProvider.class)
   @DisplayName("unreadNotification")
-  void unreadNotification() {
-  }
+  void unreadNotification(Notifica n) {
 
+    when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
+    doNothing().when(notificaDao).doUpdate(n);
+    notificaService.unreadNotification(n);
+
+    Assertions.assertFalse(n.isLetta());
+  }
+  @ParameterizedTest
+  @ArgumentsSource(NotificaProvider.class)
   @DisplayName("deleteNotification")
-  void deleteNotification() {
+  void deleteNotification(Notifica n) {
+
+    when(notificaDao.doRetrieveById(n.getId())).thenReturn(n);
+    doNothing().when(notificaDao).doDelete(n);
+
+    verify(notificaDao, times(1)).doDelete(n);
   }
 
+  @ParameterizedTest
+  @ArgumentsSource(NotificaProvider.class)
   @DisplayName("addNotification")
-  void addNotification() {
+  void addNotification(Notifica n) {
+
+    when(notificaDao.doCreate(n)).thenReturn(Boolean.TRUE);
+
+    boolean b = notificaService.addNotification(n);
+
+    Assertions.assertTrue(b);
   }
 }

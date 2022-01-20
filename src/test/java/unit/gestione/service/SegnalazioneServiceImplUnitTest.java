@@ -25,10 +25,15 @@ import org.web3j.abi.datatypes.Bool;
 import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -49,25 +54,74 @@ class SegnalazioneServiceImplUnitTest {
   }
 
   static class SegnalazioneProvider implements ArgumentsProvider {
-
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
       Asta asta = new Asta();
-      asta.setId(3);
+      asta.setId(1);
       String commento = "MarioPeluso ha copiato l'opera di alfcan attualmente all'asta.";
-
       Segnalazione s = new Segnalazione(asta, commento, false);
       s.setId(1);
 
+      Asta asta2 = new Asta();
+      asta2.setId(2);
+      String commento2 = "Asta illecita";
+      Segnalazione s2 = new Segnalazione(asta2, commento2, false);
+      s2.setId(2);
+
+      Asta asta3 = new Asta();
+      asta3.setId(3);
+      String commento3 = "Altra Asta illecita";
+      Segnalazione s3 = new Segnalazione(asta3, commento3, false);
+      s3.setId(3);
+
       return Stream.of(
-              Arguments.of(s)
+              Arguments.of(s),
+              Arguments.of(s2),
+              Arguments.of(s3)
       );
     }
   }
 
-  @DisplayName("Test Get Reports")
-  void getReports(String filter) {
+  static class ListSegnalazioneProvider implements ArgumentsProvider {
 
+    @Override
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
+      Asta asta = new Asta();
+      asta.setId(1);
+      String commento = "MarioPeluso ha copiato l'opera di alfcan attualmente all'asta.";
+      Segnalazione s = new Segnalazione(asta, commento, false);
+      s.setId(1);
+
+      Asta asta2 = new Asta();
+      asta2.setId(2);
+      String commento2 = "Asta illecita";
+      Segnalazione s2 = new Segnalazione(asta2, commento2, false);
+      s2.setId(2);
+
+      Asta asta3 = new Asta();
+      asta3.setId(3);
+      String commento3 = "Altra Asta illecita";
+      Segnalazione s3 = new Segnalazione(asta3, commento3, false);
+      s3.setId(3);
+
+      ArrayList<Segnalazione> segnalazioni = new ArrayList<Segnalazione>();
+      segnalazioni.add(s);
+      segnalazioni.add(s2);
+      segnalazioni.add(s3);
+
+      return Stream.of(
+              Arguments.of(segnalazioni)
+      );
+    }
+  }
+
+  @DisplayName("Test Get Report")
+  @ParameterizedTest
+  @ArgumentsSource(ListSegnalazioneProvider.class)
+  void getReports(List<Segnalazione> segnalazioni) {
+    when(segnalazioneDao.doRetrieveAll(null)).thenReturn(segnalazioni);
+    List<Segnalazione> segnalazioni1 = segnalazioneService.getReports(null);
+    assertArrayEquals(segnalazioni1.toArray(), segnalazioni.toArray());
   }
 
   @DisplayName("Test Get Report")
@@ -84,17 +138,41 @@ class SegnalazioneServiceImplUnitTest {
   @ArgumentsSource(SegnalazioneProvider.class)
   void addReport(Segnalazione s) {
     when(segnalazioneDao.doCreate(s)).thenReturn(Boolean.TRUE);
+    Boolean bool = segnalazioneService.addReport(s);
+
+    assertTrue(bool);
   }
 
-  @Test
-  void removeReport() {
+  @DisplayName("Test Delete Report")
+  @ParameterizedTest
+  @ArgumentsSource(SegnalazioneProvider.class)
+  void removeReport(Segnalazione s) {
+    when(segnalazioneDao.doRetrieveById(s.getId())).thenReturn(s);
+    doNothing().when(segnalazioneDao).doDelete(s);
+    segnalazioneService.removeReport(s);
+
+    verify(segnalazioneDao, times(1)).doDelete(s);
   }
 
-  @Test
-  void readReport() {
+  @DisplayName("Test Read Report")
+  @ParameterizedTest
+  @ArgumentsSource(SegnalazioneProvider.class)
+  void readReport(Segnalazione s) {
+    when(segnalazioneDao.doRetrieveById(s.getId())).thenReturn(s);
+    doNothing().when(segnalazioneDao).doUpdate(s);
+    segnalazioneService.readReport(s);
+
+    assertTrue(s.isLetta());
   }
 
-  @Test
-  void unreadReport() {
+  @DisplayName("Test Unread Report")
+  @ParameterizedTest
+  @ArgumentsSource(SegnalazioneProvider.class)
+  void unreadReport(Segnalazione s) {
+    when(segnalazioneDao.doRetrieveById(s.getId())).thenReturn(s);
+    doNothing().when(segnalazioneDao).doUpdate(s);
+    segnalazioneService.unreadReport(s);
+
+    assertFalse(s.isLetta());
   }
 }
