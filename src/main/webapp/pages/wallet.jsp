@@ -4,7 +4,7 @@
         <%@include file="../static/fragments/header.jsp"%>
 
             <body>
-                <div class="container d-md-flex align-items-center">
+                <div class="container-wallet d-md-flex align-items-center">
                     <div class="card box1 shadow-sm p-md-5 p-md-5 p-4">
                         <div class="fw-bolder mb-4">
                             </span><span class="ps-1">€1000.00</span></div>
@@ -28,22 +28,22 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>N. Carta di Credito/Debito</span>
-                                        <div class="inputWithIcon"> <input class="form-control" type="text" value="5136 1845 5468 3894"> </div>
+                                        <div class="inputWithIcon"> <input class="form-control form-control-wallet" type="text" value="5136 1845 5468 3894"> </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Scadenza<span class="ps-1">Data</span></span>
-                                        <div class="inputWithIcon"> <input type="text" class="form-control" value="05/20"> <span class="fas fa-calendar-alt"></span> </div>
+                                        <div class="inputWithIcon"> <input type="text" class="form-control form-control-wallet" value="05/20"> <span class="fas fa-calendar-alt"></span> </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="d-flex flex-column pe-md-5 px-md-0 px-4 mb-4"> <span>CVV</span>
-                                        <div class="inputWithIcon"> <input type="password" class="form-control" value="123"> <span class="fas fa-lock"></span> </div>
+                                        <div class="inputWithIcon"> <input type="password" class="form-control form-control-wallet" value="123"> <span class="fas fa-lock"></span> </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Nome e Cognome</span>
-                                        <div class="inputWithIcon"> <input class="form-control text-uppercase" type="text" value="valdimir berezovkiy"> <span class="far fa-user"></span> </div>
+                                        <div class="inputWithIcon"> <input class="form-control form-control-wallet text-uppercase" type="text" value="valdimir berezovkiy"> <span class="far fa-user"></span> </div>
                                     </div>
                                 </div>
                                 <div class="col-12 px-md-5 px-4 mt-3">
