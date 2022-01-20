@@ -101,25 +101,23 @@ class NotificaServiceImplIntegrationTest {
       r1.setId(1);
       Asta a1 = new Asta();
       a1.setId(1);
-      Notifica n1 = new Notifica(u1, a1, r1, Notifica.Tipo.SUPERATO, null, true);
+      Notifica n1 = new Notifica(u1, a1, r1, Notifica.Tipo.SUPERATO, "ciao", true);
       n1.setId(1);
 
       Utente u2 = new Utente();
       u2.setId(2);
       Rivendita r2 = new Rivendita();
-      r2.setId(2);
       Asta a2 = new Asta();
       a2.setId(2);
-      Notifica n2 = new Notifica(u2, a2, r2, Notifica.Tipo.VITTORIA, null, false);
+      Notifica n2 = new Notifica(u2, a2, r2, Notifica.Tipo.VITTORIA, "ciao mamma", false);
       n2.setId(2);
 
       Utente u3 = new Utente();
       u3.setId(3);
       Rivendita r3 = new Rivendita();
-      r3.setId(3);
       Asta a3 = new Asta();
       a3.setId(3);
-      Notifica n3 = new Notifica(u3, a3, r3, Notifica.Tipo.TERMINATA, null, true);
+      Notifica n3 = new Notifica(u3, a3, r3, Notifica.Tipo.TERMINATA, "ciao papa", true);
       n3.setId(3);
 
       return Stream.of(
@@ -165,7 +163,7 @@ class NotificaServiceImplIntegrationTest {
   }
 
   @ParameterizedTest
-  @ArgumentsSource((NotificaProvider.class))
+  @ArgumentsSource(NotificaProvider.class)
   void readNotification(Notifica n) {
     notificaDao.doCreate(n);
     notifcaService.readNotification(n);
@@ -189,7 +187,7 @@ class NotificaServiceImplIntegrationTest {
     notifcaService.deleteNotification(n);
     Notifica notifica = notificaDao.doRetrieveById(n.getId());
 
-    assertNull(n);
+    assertNull(notifica);
   }
 
   @ParameterizedTest
@@ -197,6 +195,6 @@ class NotificaServiceImplIntegrationTest {
   void addNotification(Notifica n) {
     assertTrue(notifcaService.addNotification(n));
     Notifica notifica = notificaDao.doRetrieveById(n.getId());
-    assertEquals(notifica, n);
+    assertEquals(n, notifica);
   }
 }
