@@ -53,6 +53,9 @@ public class UtenteServiceImpl implements UtenteService {
    */
   @Override
   public Utente checkUser(String username, String password) {
+    if (username == null || password == null) {
+      throw new IllegalArgumentException("username o password sono null");
+    }
     byte[] pswC = encryptPassword(password);
 
     Utente utente;
@@ -209,6 +212,9 @@ public class UtenteServiceImpl implements UtenteService {
    */
   @Override
   public List<Utente> searchUsers(String txt) {
+    if (txt == null) {
+      throw new IllegalArgumentException("txt is null");
+    }
     List<Utente> utenti = utenteDao.researchUser(txt);
     return utenti;
   }
@@ -222,6 +228,9 @@ public class UtenteServiceImpl implements UtenteService {
    */
   @Override
   public boolean checkUsername(String username) {
+    if (username == null) {
+      throw new IllegalArgumentException("username is null");
+    }
     Utente utente = utenteDao.doRetrieveByUsername(username);
     return utente != null;
   }
@@ -235,6 +244,9 @@ public class UtenteServiceImpl implements UtenteService {
    */
   @Override
   public boolean checkEmail(String email) {
+    if (email == null) {
+      throw new IllegalArgumentException("email is null");
+    }
     Utente utente = utenteDao.doRetrieveByEmail(email);
     return utente != null;
   }
@@ -245,10 +257,10 @@ public class UtenteServiceImpl implements UtenteService {
    * @param follower l'utente che intende seguire un artista
    * @param followed l'artista da seguire
    * @return true se l'utente segue con successo l'artista
-   *         false se l'utente segue già un altro artista
+   * false se l'utente segue già un altro artista
    * @pre followed <> null AND follower <> null AND
-   *      Utente.allInstance() -> exists(u:Utente | u = followed) AND
-   *      Utente.allInstance() -> exists(u:Utente | u = follower)
+   * Utente.allInstance() -> exists(u:Utente | u = followed) AND
+   * Utente.allInstance() -> exists(u:Utente | u = follower)
    * @post Utente.allInstance() -> exists(u:Utente | u = follower AND u.getSeguito() = followed)
    */
   @Override
@@ -277,9 +289,9 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param follower l'utente che vuole smettere di seguire un artista.
    * @return true se l'utente smette di seguire con successo un artista
-   *         false se l'utente già non seguiva nessuno
+   * false se l'utente già non seguiva nessuno
    * @pre follower <> null AND
-   *      Utente.allInstance() -> exists(u:Utente | u = follower)
+   * Utente.allInstance() -> exists(u:Utente | u = follower)
    * @post Utente.allInstance() -> exists(u:Utente | u = follower AND u.getSeguito() = new Utente())
    */
   @Override
@@ -320,9 +332,9 @@ public class UtenteServiceImpl implements UtenteService {
    * @param utente l'utente interessato a depositare
    * @param amount l'importo da depositare (da aggiungere al saldo)
    * @return true se il deposito è avvenuto con successo e
-   *         false se l'amount è inferiore o uguale a zero
+   * false se l'amount è inferiore o uguale a zero
    * @pre utente <> null AND amount > 0 AND
-   *      Utente.allInstance() -> exists(u:Utente | u = utente)
+   * Utente.allInstance() -> exists(u:Utente | u = utente)
    * @post utente.getSaldo() = @pre.utente.getSaldo() + amount
    */
   @Override
@@ -347,11 +359,11 @@ public class UtenteServiceImpl implements UtenteService {
    * @param utente l'utente interessato a prelevare
    * @param amount l'importo da prelevare (da sottrarre al saldo)
    * @return true se il prelievo è avvenuto con successo e
-   *         false se l'amount è inferiore o uguale a zero e
-   *         se il saldo dell'utente è minore dell'amount
+   * false se l'amount è inferiore o uguale a zero e
+   * se il saldo dell'utente è minore dell'amount
    * @pre utente <> null AND
-   *      Utente.allInstance() -> exists(u:Utente | u = utente) AND
-   *      amount > 0 AND amount <= utente.getSaldo()
+   * Utente.allInstance() -> exists(u:Utente | u = utente) AND
+   * amount > 0 AND amount <= utente.getSaldo()
    * @post utente.getSaldo() = @pre.utente.getSaldo() - amount
    */
   @Override
