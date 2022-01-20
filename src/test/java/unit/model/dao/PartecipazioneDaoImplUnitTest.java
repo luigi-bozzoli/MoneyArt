@@ -26,8 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -274,14 +273,80 @@ class PartecipazioneDaoImplUnitTest {
     Assertions.assertNull(partecipazioneRetrieve);
   }
 
-  /*
   @Test
-  void doUpdate() {
+  void doUpdate() throws SQLException {
+    Utente utente = new Utente();
+    Asta asta = new Asta();
 
+    utente.setId(1);
+    asta.setId(1);
+
+    Partecipazione partecipazione = new Partecipazione(asta, utente, 999d);
+    partecipazione.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+
+    partecipazioneDao.doUpdate(partecipazione);
+
+    verify(preparedStatement, times(4)).setObject(anyInt(), any(), anyInt());
+    verify(preparedStatement, times(1)).executeUpdate();
   }
 
   @Test
-  void doDelete() {
+  void doUpdateCatch() throws SQLException {
+    Utente utente = new Utente();
+    Asta asta = new Asta();
+
+    utente.setId(1);
+    asta.setId(1);
+
+    Partecipazione partecipazione = new Partecipazione(asta, utente, 999d);
+    partecipazione.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenThrow(new SQLException());
+
+    partecipazioneDao.doUpdate(partecipazione);
+
+    verify(preparedStatement, times(0)).setObject(anyInt(), any(), anyInt());
+    verify(preparedStatement, times(0)).executeUpdate();
   }
-   */
+
+  @Test
+  void doDelete() throws SQLException {
+    Utente utente = new Utente();
+    Asta asta = new Asta();
+
+    utente.setId(1);
+    asta.setId(1);
+
+    Partecipazione partecipazione = new Partecipazione(asta, utente, 999d);
+    partecipazione.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+
+    partecipazioneDao.doDelete(partecipazione);
+
+    verify(preparedStatement, times(1)).setObject(anyInt(), anyInt(), anyInt());
+    verify(preparedStatement, times(1)).executeUpdate();
+  }
+
+  @Test
+  void doDeleteCatch() throws SQLException {
+    Utente utente = new Utente();
+    Asta asta = new Asta();
+
+    utente.setId(1);
+    asta.setId(1);
+
+    Partecipazione partecipazione = new Partecipazione(asta, utente, 999d);
+    partecipazione.setId(1);
+
+    when(connection.prepareStatement(anyString())).thenThrow(new SQLException());
+
+    partecipazioneDao.doDelete(partecipazione);
+
+    verify(preparedStatement, times(0)).setObject(anyInt(), anyInt(), anyInt());
+    verify(preparedStatement, times(0)).executeUpdate();
+  }
+
 }

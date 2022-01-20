@@ -1,6 +1,5 @@
 package it.unisa.c02.moneyart.gestione.utente.service;
 
-import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
@@ -50,6 +49,7 @@ public class UtenteServiceImpl implements UtenteService {
    * @param username username o email dell'utente
    * @param password password dell'utente
    * @return il bean utente se sono state trovate le credenziali nel database, null altrimenti
+   * @pre username <> null AND password <> null
    */
   @Override
   public Utente checkUser(String username, String password) {
@@ -71,10 +71,10 @@ public class UtenteServiceImpl implements UtenteService {
   }
 
   /**
-    * Restituisce un bean utente creato interrogando il database.
-     *
-     * @param id id dell'utente
-     * @return il bean utente se sono state trovate le credenziali nel database, null altrimenti
+   * Restituisce un bean utente creato interrogando il database.
+   *
+   * @param id id dell'utente
+   * @return il bean utente se sono state trovate le credenziali nel database, null altrimenti
    */
   @Override
   public Utente getUserInformation(int id) {
@@ -95,13 +95,14 @@ public class UtenteServiceImpl implements UtenteService {
     return utente;
 
   }
+
   /**
    * Restituisce un bean utente creato interrogando il database.
    *
    * @param username l'username dell'utente
    * @return il bean utente se sono state trovate le credenziali nel database null altrimenti
+   * @pre username <> null
    */
-
   @Override
   public Utente getUserInformation(String username) {
     Utente utente = utenteDao.doRetrieveByUsername(username);
@@ -142,6 +143,8 @@ public class UtenteServiceImpl implements UtenteService {
    * Aggiorna i dati di un utente nel database.
    *
    * @param utente l'utente con i dati aggiornati
+   * @pre utente <> null AND Utente.allInstance() -> exists(u:Utente | utente.getId() = u.getId())
+   * @post Utente.allInstance() -> exists(u:Utente | u = utente)
    */
   @Override
   public void updateUser(Utente utente) {
@@ -202,6 +205,7 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param txt stringa da ricercare
    * @return una lista di utenti che hanno un riscontro positivo con la ricerca
+   * @pre txt <> null
    */
   @Override
   public List<Utente> searchUsers(String txt) {
@@ -214,6 +218,7 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param username l'username da ricercare nel database
    * @return true se è stato trovato un altro utente con lo stesso username false altrimenti
+   * @pre username <> null
    */
   @Override
   public boolean checkUsername(String username) {
@@ -226,6 +231,7 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param email l'email da ricercare nel database
    * @return true se è stato trovato un altro utente con la stessa email false altrimenti
+   * @pre email <> null
    */
   @Override
   public boolean checkEmail(String email) {
@@ -240,10 +246,22 @@ public class UtenteServiceImpl implements UtenteService {
    * @param followed l'artista da seguire
    * @return true se l'utente segue con successo l'artista
    *         false se l'utente segue già un altro artista
+   * @pre followed <> null AND follower <> null AND
+   *      Utente.allInstance() -> exists(u:Utente | u = followed) AND
+   *      Utente.allInstance() -> exists(u:Utente | u = follower)
+   * @post Utente.allInstance() -> exists(u:Utente | u = follower AND u.getSeguito() = followed)
    */
   @Override
   public boolean follow(Utente follower, Utente followed) {
+    if (follower == null || followed == null) {
+      throw new IllegalArgumentException("Follower or Followed is null");
+    }
+
     followed = utenteDao.doRetrieveByUsername(followed.getUsername());
+
+    if (followed == null) {
+      throw new IllegalArgumentException("Followed non trovato");
+    }
 
     if (follower.getSeguito() == null) {
       follower.setSeguito(followed);
@@ -260,10 +278,16 @@ public class UtenteServiceImpl implements UtenteService {
    * @param follower l'utente che vuole smettere di seguire un artista.
    * @return true se l'utente smette di seguire con successo un artista
    *         false se l'utente già non seguiva nessuno
+   * @pre follower <> null AND
+   *      Utente.allInstance() -> exists(u:Utente | u = follower)
+   * @post Utente.allInstance() -> exists(u:Utente | u = follower AND u.getSeguito() = new Utente())
    */
-
   @Override
   public boolean unfollow(Utente follower) {
+    if (follower == null) {
+      throw new IllegalArgumentException("Follower is null");
+    }
+
     if (follower.getSeguito() == null) {
       return false;
     } else {
@@ -279,9 +303,12 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param utente l'utente interessato a conoscere il numero dei propri followers
    * @return il numero di followers dell'utente
+   * @pre utente <> null
    */
-
   private int getNumberOfFollowers(Utente utente) {
+    if (utente == null) {
+      throw new IllegalArgumentException("Utente is null");
+    }
     List<Utente> followers = utenteDao.doRetrieveFollowersByUserId(utente.getId());
 
     return followers.size();
@@ -294,13 +321,20 @@ public class UtenteServiceImpl implements UtenteService {
    * @param amount l'importo da depositare (da aggiungere al saldo)
    * @return true se il deposito è avvenuto con successo e
    *         false se l'amount è inferiore o uguale a zero
+   * @pre utente <> null AND amount > 0 AND
+   *      Utente.allInstance() -> exists(u:Utente | u = utente)
+   * @post utente.getSaldo() = @pre.utente.getSaldo() + amount
    */
   @Override
   public boolean deposit(Utente utente, double amount) {
-    if (amount <= 0) {
+    if (utente == null || amount <= 0) {
+      throw new IllegalArgumentException("Utente is null or amount <= 0");
+    }
+
+    utente = utenteDao.doRetrieveByUsername(utente.getUsername());
+    if (utente == null) {
       return false;
     }
-    utente = utenteDao.doRetrieveByUsername(utente.getUsername());
     utente.setSaldo(utente.getSaldo() + amount);
     utenteDao.doUpdate(utente);
 
@@ -315,11 +349,20 @@ public class UtenteServiceImpl implements UtenteService {
    * @return true se il prelievo è avvenuto con successo e
    *         false se l'amount è inferiore o uguale a zero e
    *         se il saldo dell'utente è minore dell'amount
+   * @pre utente <> null AND
+   *      Utente.allInstance() -> exists(u:Utente | u = utente) AND
+   *      amount > 0 AND amount <= utente.getSaldo()
+   * @post utente.getSaldo() = @pre.utente.getSaldo() - amount
    */
   @Override
   public boolean withdraw(Utente utente, double amount) {
+    if (utente == null) {
+      throw new IllegalArgumentException("Utente is null");
+    }
+
     utente = utenteDao.doRetrieveByUsername(utente.getUsername());
-    if (amount <= utente.getSaldo() && amount > 0) {
+
+    if (utente != null && amount <= utente.getSaldo() && amount > 0) {
       utente.setSaldo(utente.getSaldo() - amount);
       utenteDao.doUpdate(utente);
       return true;
@@ -347,9 +390,14 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param password la stringa da cifrare
    * @return la stringa cifrata
+   * @pre password <> null
    */
   @Override
   public byte[] encryptPassword(String password) {
+    if (password == null) {
+      throw new IllegalArgumentException("Password is null");
+    }
+
     byte[] pswC = null;
     try {
       MessageDigest criptarino = MessageDigest.getInstance("SHA-256");
@@ -367,8 +415,13 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param email la stringa da validare
    * @return true se la stringa è una mail, false altrimenti.
+   * @pre email <> null
    */
   private boolean validateEmail(String email) {
+    if (email == null) {
+      throw new IllegalArgumentException("Email is null");
+    }
+
     Matcher matcher = VALID_EMAIL_REGEX.matcher(email);
     return matcher.find();
   }
