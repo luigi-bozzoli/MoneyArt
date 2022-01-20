@@ -2,7 +2,6 @@ package unit.gestione.service;
 
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteServiceImpl;
-import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
@@ -20,11 +19,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import javax.sql.rowset.serial.SerialBlob;
-import java.nio.charset.StandardCharsets;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -127,29 +123,27 @@ class UtenteServiceImplUnitTest {
         @ParameterizedTest
         @ArgumentsSource(UtenteProvider.class)
         void checkUser(Utente utente) {
+            String pwdOrigin = "gattoPardo";
+            utente.setPassword(encryptPassword(pwdOrigin));
 
             when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
             when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(utente);
 
-            Utente result = utenteService.checkUser(utente.getUsername(), utente.getPassword().toString());
-            //...impl
-            System.out.println(result);
-            System.out.println(utente);
-            assertTrue(result.getId() == utente.getId());
+            Utente result = utenteService.checkUser(utente.getUsername(), pwdOrigin);
+
+            assertEquals(result, utente);
+
         }
 
         @DisplayName("checkUserUsernameNull")
         @ParameterizedTest
         @ArgumentsSource(UtenteProvider.class)
         void checkUserUsernameNull(Utente utente) {
-            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(null);
-            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(null);
 
-            Utente result = utenteService.checkUser(utente.getUsername(), utente.getPassword().toString());
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(utente);
 
-            System.out.println(result);
-            System.out.println(utente);
-            assertNull(result);
+            assertThrows(IllegalArgumentException.class, () -> utenteService.checkUser(null, utente.getPassword().toString()));
         }
 
         @DisplayName("checkUserPasswordNull")
@@ -159,11 +153,37 @@ class UtenteServiceImplUnitTest {
             when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
             when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(utente);
 
-            Utente result = utenteService.checkUser(utente.getUsername(), null);
+           assertThrows(IllegalArgumentException.class, () -> utenteService.checkUser(utente.getUsername(), null));
 
-            System.out.println(result);
-            System.out.println(utente);
+        }
+
+        @DisplayName("CheckUserErr")
+        @ParameterizedTest
+        @ArgumentsSource(UtenteProvider.class)
+        void checkUserErr(Utente utente) {
+
+            when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
+            when(utenteDao.doRetrieveByEmail(anyString())).thenReturn(utente);
+
+            Utente result = utenteService.checkUser(utente.getUsername(), utente.getPassword().toString());
+
             assertNull(result);
+
+        }
+
+        public byte[] encryptPassword(String password) {
+            if (password == null) {
+                throw new IllegalArgumentException("Password is null");
+            }
+
+            byte[] pswC = null;
+            try {
+                MessageDigest criptarino = MessageDigest.getInstance("SHA-256");
+                pswC = criptarino.digest(password.getBytes());
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            return pswC;
         }
 
     }
