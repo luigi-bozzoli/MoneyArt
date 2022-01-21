@@ -1,0 +1,157 @@
+/* Tab Menu */
+.nav-tabs {
+    border: none !important;
+    margin-bottom: 5vh !important;
+    margin-top: 3vh;
+}
+.nav-tabs .nav-item {
+    margin-bottom: -1px;
+    flex-basis: 30%;
+    text-align: center;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #BB371A !important;
+    background-color: transparent !important;
+    border: none transparent !important;
+    border-bottom: 1px solid #BB371A !important;
+    transition: .5s;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link {
+    color: #EBA83A !important;
+    border: transparent !important;
+    background-color: transparent !important;
+    border-bottom: 1px solid #dee2e6 !important;
+    transition: .5s !important;
+    font-size: 1.25em;
+}
+
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+    color: #BB371A !important;
+    border: none transparent !important;
+    border-bottom: 1px solid #BB371A !important;
+    transition: .5s !important;
+}
+
+.filtro {
+    margin-bottom: 4vh;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.sort-text {
+    margin-right: 7vw;
+}
+
+
+/*Catalogo*/
+
+.thumb-wrapper {
+    padding: 25px 15px;
+    margin-bottom: 20px;
+    background: rgba(255, 248, 217, 0.5);
+    border-radius: 6px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}
+.img-box {
+    margin-bottom: 20px;
+}
+.thumb-content h4 {
+    font-size: 18px;
+}
+.thumb-content h4, .thumb-content p {
+    margin-bottom: 5px;
+}
+.expiration-timer .timer {
+    font-size: 16px;
+    letter-spacing: 5px;
+    color: #747d89;
+}
+.thumb-content .btn {
+    color: #BB371A;
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: bold;
+    background: none;
+    border: 1px solid #BB371A;
+    padding: 6px 14px;
+    margin-top: 5px;
+    line-height: 16px;
+    border-radius: 20px;
+    transition: .8s;
+}
+.thumb-content .btn:hover, .thumb-content .btn:focus {
+    color: #fff;
+    background: #BB371A;
+    box-shadow: none;
+    transition: .8s;
+}
+
+.item-price {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 2px 0;
+
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+.img-circle {
+    border-radius: 0;
+}
+
+.ratio {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    height: 0;
+    padding-bottom: 100%;
+    position: relative;
+    width: 100%;
+}
+.img-circle {
+    border-radius: 50%;
+}
+.img-responsive {
+    display: block;
+    height: auto;
+    max-width: 100%;
+}
+
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .9 )
+    url('http://i.stack.imgur.com/FhHRx.gif')
+    50% 50%
+    no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+#myTabContent.loading .modal {
+    overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+#myTabContent.loading .modal {
+    display: block;
+}

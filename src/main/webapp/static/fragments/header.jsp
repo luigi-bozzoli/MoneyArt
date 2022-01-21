@@ -60,7 +60,7 @@
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/asteUtente')}">
-                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/aste_utente_style.css">
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/homepage_style.css">

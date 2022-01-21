@@ -473,6 +473,10 @@ public class AstaServiceImpl implements AstaService, TimerService {
       if (asta.getStato().equals(Asta.Stato.TERMINATA)
           && bestOffer(asta).getId().equals(partecipazione.getId())) {
         aste.add(asta);
+        asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+        asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
+        asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
+        asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
       }
     }
 
@@ -494,6 +498,10 @@ public class AstaServiceImpl implements AstaService, TimerService {
       if (asta.getStato().equals(Asta.Stato.TERMINATA)
           && !bestOffer(asta).getId().equals(partecipazione.getId())) {
         aste.add(asta);
+        asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+        asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
+        asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
+        asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
       }
     }
 
@@ -515,6 +523,10 @@ public class AstaServiceImpl implements AstaService, TimerService {
       if (asta.getStato().equals(Asta.Stato.IN_CORSO)
           && bestOffer(asta).getId().equals(partecipazione.getId())) {
         aste.add(asta);
+        asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+        asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
+        asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
+        asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
       }
     }
 
