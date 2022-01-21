@@ -7,7 +7,16 @@
 
 
     <c:set var="asta" value="${requestScope.asta}"/>
-    <c:set var="bestOffer" value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}"/>
+    <c:choose>
+        <c:when test="${empty asta.partecipazioni}">
+            <c:set var="bestOffer" value="${0}"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="bestOffer" value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}"/>
+        </c:otherwise>
+    </c:choose>
+    <script>let astaId = "${asta.id}"</script>
+
 
     <div class="container-fluid asta-container d-flex flex-wrap mb-3">
         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -65,7 +74,14 @@
                     <div class="best-offer-wrapper">
                         <h3 class="mb-3">Offerta corrente</h3>
                         <div class="best-offer">
-                            <h5><fmt:formatNumber value="${bestOffer}" type="currency" currencySymbol="€"/></h5>
+                            <c:choose>
+                                <c:when test="${bestOffer == 0}">
+                                    <h5><c:out value="Nessuna offerta"/></h5>
+                                </c:when>
+                                <c:otherwise>
+                                    <h5><fmt:formatNumber value="${bestOffer}" type="currency" currencySymbol="€"/></h5>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
 
@@ -115,7 +131,7 @@
         </div>
     </div>
 
-<script>let astaId = "${asta.id}"</script>
+
 
 <%@include file="../static/fragments/footer.jsp" %>
 

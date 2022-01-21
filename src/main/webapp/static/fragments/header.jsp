@@ -29,6 +29,18 @@
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <title>Home - MoneyArt</title>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
+                        <title>Profilo - MoneyArt</title>
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/esplora')}">
+                        <title>Esplora - MoneyArt</title>
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/asteUtente')}">
+                        <title>Aste - MoneyArt</title>
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/asta')}">
+                        <title>Asta - MoneyArt</title>
+                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/wallet')}">
                         <title>Deposito - MoneyArt</title>
                     </c:when>
@@ -68,6 +80,9 @@
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/homepage_style.css">
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/marketplace')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/marketplace_style.css">
+                    </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
                         <!-- TODO: Trovare una soluzione migliore -->
@@ -90,7 +105,7 @@
 
 
                 <!-- FONTAWESOME CDN -->
-                <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 
                 <!-- BOOTSTRAP BUNDLE -->
                 <c:if test="${fn:contains(requestURI, '/profiloUtente')}">
@@ -116,6 +131,9 @@
                     <c:when test="${fn:contains(requestURI, '/asteUtente')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/asteUtente.js"></script>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/marketplace')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/marketplace.js"></script>
+                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/home.js"></script>
                     </c:when>
@@ -130,7 +148,7 @@
             <body>
                 <!-- Header -->
                 <div class="content-wrapper">
-                    <nav class="navbar navbar-expand-xl navbar-light bg-light sticky-top" style="background-color: white !important;">
+                    <nav class="navbar navbar-expand-custom navbar-light bg-light sticky-top" style="background-color: white !important;">
                         <a class="navbar-brand" href="${pageContext.servletContext.contextPath}/pages/home.jsp">
                             <img src="${pageContext.servletContext.contextPath}/static/image/logo-moneyart.png" alt="MoneyArt" srcset="">
                         </a>
@@ -141,22 +159,29 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav mr-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Home</a>
+                                    <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/home.jsp">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Aste</a>
+                                    <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/esplora.jsp">Aste</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Artisti</a>
+                                    <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/esplora.jsp">Artisti</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Marketplace</a>
                                 </li>
                             </ul>
-                            <form class="searchbar form-inline my-2 my-lg-0">
-                                <input class="form-control mr-sm-2" type="search" placeholder="Cerca ..." aria-label="Search">
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
-                            </form>
+                            <div class="d-flex align-items-center">
+                                <form class="searchbar form-inline my-2 my-lg-0">
+                                    <input class="form-control mr-sm-2" type="search" placeholder="Cerca ..." aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+                                </form>
+                                <label class="switch ml-3 mb-0">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
                             <c:choose>
                                 <c:when test="${fn:contains(requestURI, '/wallet')}">
                                     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">

@@ -1,53 +1,3 @@
-/* Tab Menu */
-.nav-tabs {
-    border: none !important;
-    margin-bottom: 5vh !important;
-    margin-top: 3vh;
-}
-.nav-tabs .nav-item {
-    margin-bottom: -1px;
-    flex-basis: 50%;
-    text-align: center;
-}
-
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    color: #BB371A !important;
-    background-color: transparent !important;
-    border: none transparent !important;
-    border-bottom: 1px solid #BB371A !important;
-    transition: .5s;
-}
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link {
-    color: #EBA83A !important;
-    border: transparent !important;
-    background-color: transparent !important;
-    border-bottom: 1px solid #dee2e6 !important;
-    transition: .5s !important;
-    font-size: 1.25em;
-}
-
-.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
-    color: #BB371A !important;
-    border: none transparent !important;
-    border-bottom: 1px solid #BB371A !important;
-    transition: .5s !important;
-}
-
-.filtro {
-    margin-bottom: 4vh;
-}
-
-.dropdown-toggle::after {
-    display: none !important;
-}
-
-.sort-text {
-    margin-right: 7vw;
-}
-
-
-/*Catalogo*/
-
 .thumb-wrapper {
     padding: 25px 15px;
     margin-bottom: 20px;
@@ -65,11 +15,6 @@
 }
 .thumb-content h4, .thumb-content p {
     margin-bottom: 5px;
-}
-.expiration-timer .timer {
-    font-size: 16px;
-    letter-spacing: 5px;
-    color: #747d89;
 }
 .thumb-content .btn {
     color: #BB371A;
@@ -95,33 +40,18 @@
     font-size: 16px;
     font-weight: bold;
     padding: 2px 0;
-
 }
 
-.img-circle {
-    border-radius: 50%;
-}
-.img-circle {
-    border-radius: 0;
+.filtro {
+    margin-bottom: 4vh;
 }
 
-.ratio {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.dropdown-toggle::after {
+    display: none !important;
+}
 
-    height: 0;
-    padding-bottom: 100%;
-    position: relative;
-    width: 100%;
-}
-.img-circle {
-    border-radius: 50%;
-}
-.img-responsive {
-    display: block;
-    height: auto;
-    max-width: 100%;
+.sort-text {
+    margin-right: 7vw;
 }
 
 

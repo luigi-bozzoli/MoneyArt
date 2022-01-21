@@ -14,8 +14,15 @@
                 <span class="inverted-capital">F</span>ungible
                 <span class="inverted-capital">T</span>oken</h1>
             <div class="hero-buttons">
-                <a href="#" class="button">Esplora</a>
-                <a href="#" class="button inverted">Crea</a>
+                <a href="${pageContext.servletContext.contextPath}/pages/esplora.jsp" class="button">Esplora</a>
+                <c:choose>
+                    <c:when test="${empty sessionScope.utente}">
+                        <a href="${pageContext.servletContext.contextPath}/pages/login.jsp" class="button">Crea</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.servletContext.contextPath}/pages/??.jsp" class="button">Crea</a>  <!-- todo aggiungere link alla creazione -->
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
 
