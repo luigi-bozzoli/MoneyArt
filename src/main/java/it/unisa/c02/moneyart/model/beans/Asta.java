@@ -180,7 +180,8 @@ public class Asta {
    * @return la stringa che rappresenta l'asta
    */
   public String toString() {
-    return "id: " + this.id + " opera: " + this.opera.toString() + " Data inizio: " + this.dataInizio
+    return "id: " + this.id + " opera: " + this.opera.toString() + " Data inizio: " +
+        this.dataInizio
         + " Data fine: " + this.dataFine + " Stato: " + this.stato;
   }
 
@@ -189,18 +190,15 @@ public class Asta {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Asta)) {
-      return false;
-    }
+
     Asta asta = (Asta) o;
-    return Objects.equals(getId(), asta.getId())
-      && Objects.equals(getOpera(), asta.getOpera())
-      && Objects.equals(getDataInizio(), asta.getDataInizio())
-      && Objects.equals(getDataFine(), asta.getDataFine())
-      && getStato() == asta.getStato()
-      && Objects.equals(getSegnalazioni(), asta.getSegnalazioni())
-      && Objects.equals(getNotifiche(), asta.getNotifiche())
-      && Objects.equals(getPartecipazioni(), asta.getPartecipazioni());
+    BooleanComparator booleanComparator =
+        new BooleanComparator(Objects.equals(getId(), asta.getId()));
+    return booleanComparator
+        .and(Objects.equals(getOpera(), asta.getOpera()))
+        .and(Objects.equals(getDataInizio(), asta.getDataInizio()))
+        .and(Objects.equals(getDataFine(), asta.getDataFine()))
+        .and(Objects.equals(getStato(), asta.getStato())).getValue();
   }
 
   @Override

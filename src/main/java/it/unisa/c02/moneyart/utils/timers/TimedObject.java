@@ -1,5 +1,6 @@
 package it.unisa.c02.moneyart.utils.timers;
 
+import it.unisa.c02.moneyart.model.beans.BooleanComparator;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -123,14 +124,14 @@ public class TimedObject {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof TimedObject)) {
-      return false;
-    }
     TimedObject that = (TimedObject) o;
-    return Objects.equals(getId(), that.getId())
-      && Objects.equals(getAttribute(), that.getAttribute())
-      && Objects.equals(getTaskType(), that.getTaskType())
-      && Objects.equals(getTaskDate(), that.getTaskDate());
+    BooleanComparator booleanComparator =
+        new BooleanComparator(Objects.equals(getId(), that.getId()));
+    return booleanComparator
+        .and(Objects.equals(getAttribute(), that.getAttribute()))
+        .and(Objects.equals(getTaskType(), that.getTaskType()))
+        .and(Objects.equals(getTaskDate(), that.getTaskDate()))
+        .getValue();
   }
 
   @Override

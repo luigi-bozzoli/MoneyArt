@@ -315,24 +315,19 @@ public class Utente {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Utente)) {
-      return false;
-    }
     Utente utente = (Utente) o;
-    return getnFollowers() == utente.getnFollowers()
-      && Objects.equals(getId(), utente.getId())
-      && Objects.equals(getNome(), utente.getNome())
-      && Objects.equals(getCognome(), utente.getCognome())
-      && Objects.equals(getFotoProfilo(), utente.getFotoProfilo())
-      && Objects.equals(getEmail(), utente.getEmail())
-      && Objects.equals(getUsername(), utente.getUsername())
-      && Arrays.equals(getPassword(), utente.getPassword())
-      && Objects.equals(getSeguito(), utente.getSeguito())
-      && Objects.equals(getSaldo(), utente.getSaldo())
-      && Objects.equals(getOpereCreate(), utente.getOpereCreate())
-      && Objects.equals(getOpereInPossesso(), utente.getOpereInPossesso())
-      && Objects.equals(getNotifiche(), utente.getNotifiche())
-      && Objects.equals(getPartecipazioni(), utente.getPartecipazioni());
+    BooleanComparator booleanComparator =
+        new BooleanComparator(Objects.equals(getnFollowers(), utente.getnFollowers()));
+    return booleanComparator
+        .and(Objects.equals(getId(), utente.getId()))
+        .and(Objects.equals(getNome(), utente.getNome()))
+        .and(Objects.equals(getCognome(), utente.getCognome()))
+        .and(Objects.equals(getFotoProfilo(), utente.getFotoProfilo()))
+        .and(Objects.equals(getEmail(), utente.getEmail()))
+        .and(Objects.equals(getUsername(), utente.getUsername()))
+        .and(Arrays.equals(getPassword(), utente.getPassword()))
+        .and(Objects.equals(getSeguito(), utente.getSeguito()))
+        .and(Objects.equals(getSaldo(), utente.getSaldo())).getValue();
   }
 
   @Override

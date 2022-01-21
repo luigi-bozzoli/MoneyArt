@@ -1,10 +1,5 @@
 package it.unisa.c02.moneyart.model.beans;
 
-import java.sql.Array;
-import java.sql.SQLException;
-import java.util.Arrays;
-import org.jetbrains.annotations.NotNull;
-
 import java.sql.Blob;
 import java.util.List;
 import java.util.Objects;
@@ -243,19 +238,18 @@ public class Opera {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Opera)) {
-      return false;
-    }
+
+
     Opera opera = (Opera) o;
-    return Objects.equals(getId(), opera.getId())
-        && Objects.equals(getNome(), opera.getNome())
-        && Objects.equals(getDescrizione(), opera.getDescrizione())
-        && getStato() == opera.getStato()
-        && Objects.equals(getPossessore(), opera.getPossessore())
-        && Objects.equals(getArtista(), opera.getArtista())
-        && Objects.equals(getCertificato(), opera.getCertificato())
-        && Objects.equals(getAste(), opera.getAste())
-        && Objects.equals(getRivendite(), opera.getRivendite());
+    BooleanComparator booleanComparator =
+        new BooleanComparator(Objects.equals(getId(), opera.getId()));
+    return booleanComparator
+        .and(Objects.equals(getNome(), opera.getNome()))
+        .and(Objects.equals(getDescrizione(), opera.getDescrizione()))
+        .and(Objects.equals(getStato(), opera.getStato()))
+        .and(Objects.equals(getPossessore(), opera.getPossessore()))
+        .and(Objects.equals(getArtista(), opera.getArtista()))
+        .and(Objects.equals(getCertificato(), opera.getCertificato())).getValue();
   }
 
 

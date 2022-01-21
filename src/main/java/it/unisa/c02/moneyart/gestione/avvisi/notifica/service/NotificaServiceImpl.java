@@ -103,11 +103,7 @@ public class NotificaServiceImpl implements NotificaService {
   @Override
   public boolean addNotification(Notifica notifica) {
 
-    if(notificaDao.doCreate(notifica)) {
-      return true;
-    } else {
-      return false;
-    }
+    return notificaDao.doCreate(notifica);
   }
 
   @Inject

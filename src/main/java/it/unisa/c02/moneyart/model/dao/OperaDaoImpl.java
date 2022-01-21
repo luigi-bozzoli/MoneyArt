@@ -58,11 +58,9 @@ public class OperaDaoImpl implements OperaDao {
       preparedStatement.setObject(7, item.getStato().toString(), Types.VARCHAR);
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
-      if (resultSet != null && resultSet.next()) {
-        item.setId(resultSet.getInt(1));
-
-        return true;
-      }
+      resultSet.next();
+      item.setId(resultSet.getInt(1));
+      return true;
     } catch (SQLException e) {
       e.printStackTrace();
     }

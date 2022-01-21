@@ -83,11 +83,6 @@ public class MainContext implements ServletContextListener {
 
     System.out.println("DataSource creation: " + ds.toString());
 
-    try {
-      populateDatabase(sce.getServletContext().getRealPath(""), ds);
-    } catch (NoSuchAlgorithmException | IOException | SQLException e) {
-      e.printStackTrace();
-    }
 
 
   }
@@ -119,6 +114,7 @@ public class MainContext implements ServletContextListener {
     return timerService.retrivePersistentTimers();
   }
 
+  /*
   private void populateDatabase(String filePath, DataSource dataSource)
       throws NoSuchAlgorithmException, IOException, SQLException {
     // Necessario per salvare le password crittografate
@@ -529,6 +525,7 @@ public class MainContext implements ServletContextListener {
 
     logger.info("-- Popolamento della tabella \"segnalazione\" terminato (7/7) --");
   }
+   */
 
 
 
