@@ -331,6 +331,20 @@ class OperaDaoImplIntegrationTest {
 
         }
 
+        @DisplayName("doRetrieveAllByOwnerId")
+        @Test
+        void doRetrieveAllByArtistId() throws SQLException {
+            createOpereOnDb();
+            Utente artista = getUtenti().get(0); //questo utente ha creato 2 opere
+
+            //prendo la lista che mi restituisce il metodo doRetrieveAllByOwnerId su utente
+            List <Opera> result = operaDao.doRetrieveAllByArtistId(artista.getId());
+
+            //per ogni opera della lista result verifico se il possessore è proprio utente
+            for (Opera o : result) assertTrue(o.getArtista().getId()==artista.getId());
+
+        }
+
     }
 
 
@@ -343,13 +357,6 @@ class OperaDaoImplIntegrationTest {
 
  /*
 
-    @Test
-    void doRetrieveAllByOwnerId() {
-    }
-
-    @Test
-    void doRetrieveAllByArtistId() {
-    }
 
     @Test
     void doRetrieveAllByName() {
