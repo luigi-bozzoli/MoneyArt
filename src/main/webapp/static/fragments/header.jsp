@@ -107,6 +107,9 @@
                     <c:when test="${fn:contains(requestURI, '/esplora')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/explore.js"></script>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/asteUtente')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/asteUtente.js"></script>
+                    </c:when>
                 </c:choose>
 
 

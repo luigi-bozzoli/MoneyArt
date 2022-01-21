@@ -49,7 +49,7 @@
                         <div class="thumb-content">
                             <h4><c:out value="${asta.opera.nome}"/></h4>
                             <div class="expiration-timer" id="${asta.id}">
-                                <span class="timer"></span>
+                                <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
                             </div>
                             <c:choose>
                                 <c:when test="${empty asta.partecipazioni}">
@@ -87,7 +87,7 @@
                         <div class="thumb-content">
                             <h4><c:out value="${asta.opera.nome}"/></h4>
                             <div class="expiration-timer" id="${asta.id}">
-                                <span class="timer"></span>
+                                <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
                             </div>
                             <c:choose>
                                 <c:when test="${empty asta.partecipazioni}">
@@ -122,7 +122,7 @@
                         <div class="thumb-content">
                             <h4><c:out value="${asta.opera.nome}"/></h4>
                             <div class="expiration-timer" id="${asta.id}">
-                                <span class="timer"></span>
+                                <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
                             </div>
                             <c:choose>
                                 <c:when test="${empty asta.partecipazioni}">
