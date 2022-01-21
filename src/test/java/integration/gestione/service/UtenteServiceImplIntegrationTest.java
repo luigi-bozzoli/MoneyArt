@@ -1,12 +1,9 @@
 package integration.gestione.service;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import hthurow.tomcatjndi.TomcatJNDI;
-import it.unisa.c02.moneyart.gestione.opere.service.OperaServiceImpl;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteServiceImpl;
 import it.unisa.c02.moneyart.model.beans.*;
-import it.unisa.c02.moneyart.model.blockchain.MoneyArtNft;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.PartecipazioneDaoImpl;
@@ -15,7 +12,6 @@ import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
-import it.unisa.c02.moneyart.utils.production.ContractProducer;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -31,6 +27,7 @@ import javax.sql.DataSource;
 
 import java.io.*;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -65,6 +62,7 @@ class UtenteServiceImplIntegrationTest {
       tomcatJNDI.processContextXml(new File("src/main/webapp/META-INF/context.xml"));
       tomcatJNDI.start();
     }
+
     if (envCtx == null) {
       try {
         initCtx = new InitialContext();
@@ -230,6 +228,54 @@ class UtenteServiceImplIntegrationTest {
       u2.setNotifiche(Arrays.asList(n2));
 
       return Stream.of(Arguments.of(Arrays.asList(u1,u2,u3)));
+    }
+  }
+
+  static class UtenteAmountProvider implements ArgumentsProvider {
+
+    @Override
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
+      MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+      Utente u1 = new Utente("Alfonso", "Cannavale", null, "alfonso.cannavale@gmail.com", "alfcan", new Utente(), md.digest("pippo123".getBytes()), 1000d);
+      u1.setId(1);
+      Utente u2 = new Utente("Nicolò", "Delogu", null, "nicolò.delogu@gmail.com", "XJustUnluckyX", new Utente(), md.digest("pippo123".getBytes()), 1500d);
+      u2.setId(2);
+      Utente u3 = new Utente("Michael", "De Santis", null, "michael.desantis@gmail.com", "shoyll", new Utente(), md.digest("pippo123".getBytes()), 2000d);
+      u3.setId(3);
+
+      Connection connection = dataSource.getConnection();
+      Blob b = connection.createBlob();
+      b.setBytes(1, "0x717171".getBytes());
+      connection.close();
+
+      Opera o = new Opera("The Shibosis", "Descrizione",Opera.Stato.IN_POSSESSO, b, u2, u1, "");
+      o.setId(1);
+      u1.setOpereCreate(Arrays.asList(o));
+      u2.setOpereInPossesso(Arrays.asList(o));
+
+      Asta a = new Asta();
+      a.setId(1);
+
+      Partecipazione p1 = new Partecipazione(a, u3, 1000);
+      Partecipazione p2 = new Partecipazione(a, u2, 1500);
+      p1.setId(1);
+      p2.setId(2);
+      u3.setPartecipazioni(Arrays.asList(p1));
+      u2.setPartecipazioni(Arrays.asList(p2));
+
+      Notifica n1 = new Notifica(u3, a, null, Notifica.Tipo.SUPERATO, "Contenuto della notifica.", false);
+      Notifica n2 = new Notifica(u2, a, null, Notifica.Tipo.VITTORIA, "Contenuto della notifica.", false);
+      n1.setId(1);
+      n2.setId(2);
+      u3.setNotifiche(Arrays.asList(n1));
+      u2.setNotifiche(Arrays.asList(n2));
+
+      return Stream.of(
+              Arguments.of(u1, 100d),
+              Arguments.of(u2, 50d),
+              Arguments.of(u3, 210d)
+      );
     }
   }
 
@@ -567,25 +613,193 @@ class UtenteServiceImplIntegrationTest {
       assertEquals(followed.getId(), followerResult.getSeguito().getId());
     }
 
+    @DisplayName("Follow already present")
+    @ParameterizedTest
+    @ArgumentsSource(ListUtenteDBProvider.class)
+    void followFalse (List<Utente> utenti) {
+      Utente follower = utenti.get(1);
+      Utente followed = utenti.get(0);
+
+      follower.setSeguito(followed);
+      utenteDao.doUpdate(follower);
+
+      boolean result = utenteService.follow(follower, followed);
+
+      assertFalse(result);
+    }
+
+    @DisplayName("Follow w follower null")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteDBProvider.class)
+    void followerNull(Utente utente) {
+      Assertions.assertThrows(Exception.class, () -> utenteService.follow(null, utente));
+    }
+
+    @DisplayName("Follow w followed null")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteDBProvider.class)
+    void followedNull(Utente utente) {
+      Assertions.assertThrows(Exception.class, () -> utenteService.follow(utente, null));
+    }
+
+    @DisplayName("Followed not existing")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteDBProvider.class)
+    void followedNotExisting(Utente follower) {
+      Utente followed = new Utente("Franco","Battiato",null,
+              "sonoadmin@moneyart.it","francoadmin",new Utente(),
+              "admin".getBytes(),0d);
+
+      Assertions.assertThrows(Exception.class, () -> utenteService.follow(follower, followed));
+    }
+
   }
 
-  @Test
-  void unfollow() {
+  @Nested
+  @DisplayName("Test Suite Unfollow")
+  class Unfollow {
+
+    @DisplayName("Unfollow")
+    @ParameterizedTest
+    @ArgumentsSource(ListUtenteDBProvider.class)
+    void unfollow (List<Utente> utenti) {
+      Utente follower = utenti.get(1);
+      Utente followed = utenti.get(0);
+
+      follower.setSeguito(followed);
+      utenteDao.doUpdate(follower);
+
+      boolean result = utenteService.unfollow(follower);
+
+      Utente followerResult = utenteDao.doRetrieveByUsername(follower.getUsername());
+
+      assertTrue(result);
+      assertNull(followerResult.getSeguito().getId());
+    }
+
+    @DisplayName("Unfollow w getSeguito null")
+    @ParameterizedTest
+    @ArgumentsSource(ListUtenteDBProvider.class)
+    void unfollowFalse (List<Utente> utenti) {
+      Utente follower = utenti.get(1);
+
+      boolean result = utenteService.unfollow(follower);
+
+      assertFalse(result);
+    }
+
+
+    @DisplayName("Unollow w follower null")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteDBProvider.class)
+    void unfollowerNull(Utente utente) {
+      Assertions.assertThrows(Exception.class, () -> utenteService.unfollow(null));
+    }
+
   }
 
-  @Test
-  void deposit() {
+  @Nested
+  @DisplayName("Test Suite Deposit")
+  class TestDeposit {
+
+    @DisplayName("Deposit")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteAmountProvider.class)
+    void deposit(Utente utente, double amount) {
+      boolean result = utenteService.deposit(utente, amount);
+
+      Utente resultUtente = utenteDao.doRetrieveById(utente.getId());
+
+      assertTrue(result);
+      assertEquals(utente.getSaldo()+amount, resultUtente.getSaldo());
+    }
+
+    @DisplayName("Deposit Utente Null")
+    @Test
+    void depositUtenteNull() {
+      assertThrows(Exception.class, () -> utenteService.deposit(null, 100));
+    }
+
+    @DisplayName("Deposit Zero")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteAmountProvider.class)
+    void depositZero(Utente utente) {
+      assertThrows(Exception.class, () -> utenteService.deposit(utente, 0));
+    }
+
+    @DisplayName("Deposit Negative Amount")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteAmountProvider.class)
+    void depositNegative(Utente utente, double amount) {
+      assertThrows(Exception.class, () -> utenteService.deposit(utente, -amount));
+    }
+
+    @DisplayName("Deposit Utente Not Existing")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteProvider.class)
+    void depositFalse(Utente utente) {
+      assertFalse(utenteService.withdraw(utente, 100));
+    }
+
   }
 
-  @Test
-  void withdraw() {
+  @Nested
+  @DisplayName("Test Suite Withdraw")
+  class TestWithdraw {
+    
+    @DisplayName("Withdraw")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteAmountProvider.class)
+    void withdraw(Utente utente, double amount) {
+      boolean result = utenteService.withdraw(utente, amount);
+
+      Utente resultUtente = utenteDao.doRetrieveById(utente.getId());
+
+      assertTrue(result);
+      assertEquals(utente.getSaldo()-amount, resultUtente.getSaldo());
+    }
+
+    @DisplayName("Withdraw Utente Null")
+    @Test
+    void withdrawUtenteNull() {
+      assertThrows(Exception.class, () -> utenteService.withdraw(null, 100));
+    }
+
+    @DisplayName("Withdraw amount negative")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteAmountProvider.class)
+    void withdrawAmountNegative(Utente utente, double amount) {
+      assertThrows(Exception.class, () -> utenteService.withdraw(utente, -amount));
+    }
+
+    @DisplayName("Withdraw amount > saldo")
+    @ParameterizedTest
+    @ArgumentsSource(UtenteAmountProvider.class)
+    void withdrawAmountMagSaldo(Utente utente, double amount) {
+      assertFalse(utenteService.withdraw(utente, utente.getSaldo()+amount));
+    }
+    
   }
 
-  @Test
-  void getBalance() {
+  @DisplayName("Get Balance")
+  @ParameterizedTest
+  @ArgumentsSource(UtenteDBProvider.class)
+  void getBalance(Utente utente) {
+    assertEquals(utente.getSaldo(), utenteService.getBalance(utente));
   }
 
-  @Test
-  void encryptPassword() {
+  @DisplayName("Encrypt Password")
+  @ParameterizedTest
+  @ArgumentsSource(UtenteProvider.class)
+  void encryptPassword(Utente u, String pwd) throws NoSuchAlgorithmException {
+    MessageDigest md = MessageDigest.getInstance("SHA-256");
+    assertArrayEquals(md.digest(pwd.getBytes()), utenteService.encryptPassword(pwd));
   }
+
+  @DisplayName("Encrypt Password pwd null")
+  @Test
+  void encryptPasswordNull() {
+    assertThrows(Exception.class, () -> utenteService.encryptPassword(null));
+  }
+
 }
