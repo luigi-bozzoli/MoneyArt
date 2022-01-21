@@ -288,7 +288,7 @@ public class UtenteServiceImpl implements UtenteService {
       throw new IllegalArgumentException("Followed non trovato");
     }
 
-    if (follower.getSeguito() == null) {
+    if (follower.getSeguito() == null || follower.getSeguito().getId() == null) {
       follower.setSeguito(followed);
       utenteDao.doUpdate(follower);
       return true;
