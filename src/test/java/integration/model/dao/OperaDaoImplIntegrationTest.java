@@ -125,6 +125,7 @@ class OperaDaoImplIntegrationTest {
         }
     }
 
+/*
     //questo metodo si può anche eliminare
     static class ListOpereProvider implements ArgumentsProvider{
 
@@ -135,30 +136,29 @@ class OperaDaoImplIntegrationTest {
             return Stream.of(Arguments.of(opere));
         }
     }
+ */
+
 
     static List<Opera> getListOpere() throws SQLException {
         String s1 = "image blob 1";
         Blob b1 = new SerialBlob(s1.getBytes(StandardCharsets.UTF_8));
-        Utente u1 = new Utente();
-        u1.setId(1);
+        Utente u1 = getUtenti().get(0);
         Opera o1 = new Opera("The Shibosis", "Descrizione", Opera.Stato.PREVENDITA,
                 b1, u1, u1, "xxxxx");
         o1.setId(1);
 
         String s2 = "image blob 2";
         Blob b2 = new SerialBlob(s2.getBytes(StandardCharsets.UTF_8));
-        Utente u2 = new Utente();
-        u2.setId(2);
+        Utente u2 = getUtenti().get(1);
         Opera o2 = new Opera("The Shibosis 2", "Descrizione", Opera.Stato.PREVENDITA,
                 b2, u2, u1, "yyyyyyyyy");
         o2.setId(2);
 
         String s3 = "image blob 3";
         Blob b3 = new SerialBlob(s3.getBytes(StandardCharsets.UTF_8));
-        Utente u3 = new Utente();
-        u3.setId(3);
+        Utente u3 = getUtenti().get(2);
         Opera o3 = new Opera("PIXELARTARTARTA", "Descrizione", Opera.Stato.PREVENDITA,
-                b3, u3, u1, "zzzzzz");
+                b3, u3, u2, "zzzzzz");
         o3.setId(3);
 
         List<Opera> opere = new ArrayList<>();
@@ -195,12 +195,19 @@ class OperaDaoImplIntegrationTest {
         }
     }
 
+    static void createOpereOnDb() throws SQLException {
+        createUtentiOnDb();
+        for (Opera op : getListOpere()){
+            operaDao.doCreate(op);
+        }
+    }
+
     //__________________________________________________________________________________________________________________________________________________________________________
 
 
     @Nested
-    @DisplayName("Test Suite DoCreate")
-    class testDoCreate {
+    @DisplayName("Test Suite CRUD")
+    class testCRUD {
 
        @DisplayName("doCreate")
         @ParameterizedTest
@@ -210,30 +217,131 @@ class OperaDaoImplIntegrationTest {
           assertTrue(operaDao.doCreate(opera));
         }
 
+        @DisplayName("doCreateCatch")
+        @ParameterizedTest
+        @ArgumentsSource(OperaProvider.class)
+        void doCreateCatch(Opera opera) {
+            createUtentiOnDb();
+            assertTrue(operaDao.doCreate(opera));
+        }
+
+        @DisplayName("doCreateErr")
+        @ParameterizedTest
+        @ArgumentsSource(OperaProvider.class)
+        void doCreateErr(Opera opera) {
+            createUtentiOnDb();
+            assertTrue(!(operaDao.doCreate(null)));
+        }
+
+        @DisplayName("doCreateExistingOpera")
+        @ParameterizedTest
+        @ArgumentsSource(OperaProvider.class)
+        void doCreateExistingOpera(Opera opera) {
+            createUtentiOnDb();
+            operaDao.doCreate(opera);
+            assertTrue(!(operaDao.doCreate(opera)));
+        }
+
+
+        @DisplayName("doUpdate")
+        @ParameterizedTest
+        @ArgumentsSource(OperaProvider.class)
+        void doUpdate(Opera opera) {
+            createUtentiOnDb();
+            //aggiunta opera nel db
+            operaDao.doCreate(opera);
+            //modifica opera
+            opera.setNome("nome Modificato");
+            opera.setDescrizione("descrizione Modificata");
+            opera.setCertificato("GYIOGUIGUIPGPGUIGUP");
+            //aggiorno opera
+            operaDao.doUpdate(opera);
+            //riprendo l'oggetto dal db
+            Opera result = operaDao.doRetrieveById(opera.getId());
+
+            //verifico che l'aggiornamento ha funzionato
+            assertTrue(opera.getId() == result.getId());
+
+        }
+
+
+        @DisplayName("doDelete")
+        @Test
+        void doDelete() throws SQLException {
+            createOpereOnDb(); //mi crea 3 opere nel db
+            operaDao.doDelete(getListOpere().get(0)); //se va a buon fine me ne dovrebbero rimanere solo 2
+            assertTrue(operaDao.doRetrieveAll(null).size()==2);
+        }
 
     }
+
+    @Nested
+    @DisplayName("Test Suite Retrieve")
+    class testRetrieve {
+
+        @DisplayName("doRetriveById")
+        @ParameterizedTest
+        @ArgumentsSource(OperaProvider.class)
+        void doRetriveById(Opera opera) throws SQLException {
+            createOpereOnDb();
+            Opera result = operaDao.doRetrieveById(opera.getId());
+            System.out.println(result); //print
+            System.out.println(opera); //print
+            assertTrue(result.getId() == opera.getId());
+
+        }
+
+        @DisplayName("doRetriveAll")
+        @Test
+        void doRetriveAll() throws SQLException {
+            createOpereOnDb();
+            List<Opera> opereRisultato;
+
+            opereRisultato = operaDao.doRetrieveAll("");
+
+            for (Opera o : opereRisultato) System.out.println("\n"+o); //print
+            for (Opera o : getListOpere()) System.out.println("\n"+o); //print
+
+            assertTrue( (getListOpere().get(0).getId() == opereRisultato.get(0).getId())
+                    && (getListOpere().get(1).getId() == opereRisultato.get(1).getId())
+                    && (getListOpere().get(2).getId() == opereRisultato.get(2).getId()) );
+
+        }
+
+
+        @DisplayName("doRetrieveAllByOwnerId")
+        @Test
+        void doRetrieveAllByOwnerId() throws SQLException {
+            createOpereOnDb();
+            Utente utente = getUtenti().get(0); //questo utente possiede 2 opere
+
+            //creao un'altra opera (con questa utente ne ha 2) e la creo nel db
+            String s1 = "image blob 1";
+            Blob b1 = new SerialBlob(s1.getBytes(StandardCharsets.UTF_8));
+            Opera o1 = new Opera("The Shibosis", "Descrizione", Opera.Stato.PREVENDITA,
+                    b1, utente, getUtenti().get(1), "xxxxx");
+            o1.setId(7);
+            operaDao.doCreate(o1);
+
+            //prendo la lista che mi restituisce il metodo doRetrieveAllByOwnerId su utente
+            List <Opera> result = operaDao.doRetrieveAllByOwnerId(utente.getId());
+
+            //per ogni opera della lista result verifico se il possessore è proprio utente
+            for (Opera o : result) assertTrue(o.getPossessore().getId()==utente.getId());
+
+        }
+
+    }
+
+
+
+
+
+
+
+
 
  /*
-
-    @Test
-    void doCreate() {
-    }
-
-    @Test
-    void doRetrieveById() {
-    }
-
-    @Test
-    void doRetrieveAll() {
-    }
-
-    @Test
-    void doUpdate() {
-    }
-
-    @Test
-    void doDelete() {
-    }
 
     @Test
     void doRetrieveAllByOwnerId() {

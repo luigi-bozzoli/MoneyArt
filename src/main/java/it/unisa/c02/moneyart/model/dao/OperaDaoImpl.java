@@ -41,6 +41,9 @@ public class OperaDaoImpl implements OperaDao {
    */
   @Override
   public boolean doCreate(Opera item) {
+
+    if (item == null) return false;
+
     String insertSql = "INSERT INTO " + TABLE_NAME
         + "(id_utente, id_artista, nome, descrizione, immagine, certificato, stato)"
         + " VALUES(?, ?, ?, ?, ?, ?, ?) ";
