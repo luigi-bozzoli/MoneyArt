@@ -22,7 +22,6 @@ import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -32,8 +31,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 @DisplayName("OperaDaoImplIntegrationTest")
 class OperaDaoImplIntegrationTest {
@@ -125,19 +122,6 @@ class OperaDaoImplIntegrationTest {
         }
     }
 
-/*
-    //questo metodo si può anche eliminare
-    static class ListOpereProvider implements ArgumentsProvider{
-
-        @Override
-        public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
-            List<Opera> opere = getListOpere();
-
-            return Stream.of(Arguments.of(opere));
-        }
-    }
- */
-
 
     static List<Opera> getListOpere() throws SQLException {
         String s1 = "image blob 1";
@@ -202,7 +186,6 @@ class OperaDaoImplIntegrationTest {
         }
     }
 
-    //__________________________________________________________________________________________________________________________________________________________________________
 
 
     @Nested
