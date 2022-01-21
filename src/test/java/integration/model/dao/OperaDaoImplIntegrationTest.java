@@ -337,7 +337,7 @@ class OperaDaoImplIntegrationTest {
             createOpereOnDb();
             Utente artista = getUtenti().get(0); //questo utente ha creato 2 opere
 
-            //prendo la lista che mi restituisce il metodo doRetrieveAllByOwnerId su utente
+            //prendo la lista che mi restituisce il metodo doRetrieveAllByArtistId su utente
             List <Opera> result = operaDao.doRetrieveAllByArtistId(artista.getId());
 
             //per ogni opera della lista result verifico se il possessore è proprio utente
@@ -345,24 +345,41 @@ class OperaDaoImplIntegrationTest {
 
         }
 
+        /*le opere di uno stesso artista non possono avere lo stesso nome*/
+        @DisplayName("doRetrieveAllByName")
+        @Test
+        void doRetrieveAllByName() throws SQLException {
+            createOpereOnDb();
+            Opera opera = getListOpere().get(0); //verifico se ci sono altre opere con il nome uguale a questa
+
+            System.out.println(opera);
+
+           //creo due opere con lo stesso nome dell'opera già presente nel db (opera) e le salvo nel db
+            String s1 = "image blob 1";
+            Blob b1 = new SerialBlob(s1.getBytes(StandardCharsets.UTF_8));
+            Utente u1 = getUtenti().get(0);
+            Opera o1 = new Opera("The Shibosis", "DescrizioneXXXXXXX", Opera.Stato.PREVENDITA,
+                    b1, u1, getUtenti().get(2), "xxxxx7777777777777777");
+            o1.setId(11);
+            operaDao.doCreate(o1);
+
+            String s2 = "image blob 2";
+            Blob b2 = new SerialBlob(s2.getBytes(StandardCharsets.UTF_8));
+            Utente u2 = getUtenti().get(1);
+            Opera o2 = new Opera("The Shibosis", "DescrizioneYYYYYYY", Opera.Stato.PREVENDITA,
+                    b2, u2, getUtenti().get(1), "yyyyyyyyy777777777777777777");
+            o2.setId(12);
+            operaDao.doCreate(o2);
+
+            //prendo la lista che mi restituisce il metodo doRetrieveAllByName sul nome di opera
+            List <Opera> result = operaDao.doRetrieveAllByName(opera.getNome());
+            System.out.println(result);
+
+            //per ogni opera della lista result verifico se il nome è proprio Shibosis
+            for (Opera o : result) assertTrue(o.getNome().equals(opera.getNome()));
+
+        }
+
     }
-
-
-
-
-
-
-
-
-
- /*
-
-
-    @Test
-    void doRetrieveAllByName() {
-
-   }
-
-*/
 
 }
