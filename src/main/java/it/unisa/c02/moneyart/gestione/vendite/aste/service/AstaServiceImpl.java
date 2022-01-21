@@ -80,13 +80,12 @@ public class AstaServiceImpl implements AstaService, TimerService {
   @Override
   public Asta getAuction(int id) {
     Asta asta = astaDao.doRetrieveById(id);
-    if (asta == null) {
-      return null;
+    if (asta != null) {
+      asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+      asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
+      asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
+      asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
     }
-    asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
-    asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
-    asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
-    asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
     return asta;
   }
 
@@ -97,16 +96,15 @@ public class AstaServiceImpl implements AstaService, TimerService {
    */
   @Override
   public List<Asta> getAllAuctions() {
-    List<Asta> aste = astaDao.doRetrieveAll("");
-    if (aste == null) {
-      return null;
-    }
-    for (Asta asta : aste) {
-      asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
-      asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
-      asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
-      asta.getOpera().getArtista()
-          .setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
+    List<Asta> aste = astaDao.doRetrieveAll(null);
+    if (aste != null) {
+      for (Asta asta : aste) {
+        asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
+        asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
+        asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
+        asta.getOpera().getArtista()
+                .setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
+      }
     }
     return aste;
   }
@@ -624,8 +622,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
 
   private int getNumberOfFollowers(Utente utente) {
     List<Utente> followers = utenteDao.doRetrieveFollowersByUserId(utente.getId());
-
-    return followers.size();
+    return followers != null ? followers.size() : 0;
   }
 
 

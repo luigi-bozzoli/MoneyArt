@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Blob;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Logger;
