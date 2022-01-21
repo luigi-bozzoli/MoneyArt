@@ -57,6 +57,9 @@ public class RivenditaServiceImpl implements RivenditaService {
     Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
     opera.setArtista(utenteDao.doRetrieveById((opera.getArtista().getId())));
     opera.getArtista().setnFollowers(getNumberOfFollowers(opera.getArtista()));
+
+    opera.setPossessore(utenteDao.doRetrieveById(opera.getPossessore().getId()));
+
     rivendita.setOpera(opera);
 
     return rivendita;
@@ -161,6 +164,8 @@ public class RivenditaServiceImpl implements RivenditaService {
       Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
       opera.setArtista(utenteDao.doRetrieveById((opera.getArtista().getId())));
       opera.getArtista().setnFollowers(getNumberOfFollowers(opera.getArtista()));
+      opera.setPossessore(utenteDao.doRetrieveById(opera.getPossessore().getId()));
+
       rivendita.setOpera(opera);
     }
 

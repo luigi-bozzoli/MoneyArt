@@ -59,12 +59,13 @@
                     <c:when test="${fn:contains(requestURI, '/esplora')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/asta')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/pagina_asta_style.css">
+                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/homepage_style.css">
                     </c:when>
                     <c:otherwise>
-                        <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
-                        <!-- TODO: Trovare una soluzione migliore -->
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/homepage_style.css">
                     </c:otherwise>
                 </c:choose>
@@ -84,8 +85,7 @@
 
 
                 <!-- FONTAWESOME CDN -->
-                <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
                 <!-- BOOTSTRAP BUNDLE -->
                 <c:if test="${fn:contains(requestURI, '/profiloUtente')}">
                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -104,6 +104,15 @@
                     <c:when test="${fn:contains(requestURI, '/esplora')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/explore.js"></script>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/asta')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/auction.js"></script>
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/home')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/home.js"></script>
+                    </c:when>
+                    <c:otherwise>
+                        <script src="${pageContext.servletContext.contextPath}/static/js/home.js"></script>
+                    </c:otherwise>
                 </c:choose>
 
 
@@ -112,7 +121,7 @@
             <body>
                 <!-- Header -->
                 <div class="content-wrapper">
-                    <nav class="navbar navbar-expand-xl navbar-light bg-light sticky-top" style="background-color: white !important;">
+                    <nav class="navbar navbar-expand-custom navbar-light bg-light sticky-top" style="background-color: white !important;">
                         <a class="navbar-brand" href="${pageContext.servletContext.contextPath}/pages/home.jsp">
                             <img src="${pageContext.servletContext.contextPath}/static/image/logo-moneyart.png" alt="MoneyArt" srcset="">
                         </a>
@@ -135,10 +144,20 @@
                                     <a class="nav-link" href="#">Marketplace</a>
                                 </li>
                             </ul>
-                            <form class="searchbar form-inline my-2 my-lg-0">
-                                <input class="form-control mr-sm-2" type="search" placeholder="Cerca ..." aria-label="Search">
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
-                            </form>
+
+
+                            <div class="search-wrapper d-flex">
+                                <form class="searchbar form-inline my-2 my-lg-0">
+                                    <input class="form-control mr-sm-2" type="search" placeholder="Cerca aste..." aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+                                </form>
+
+                                <label class="switch mt-auto mb-auto ml-3">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
                             <c:choose>
                                 <c:when test="${fn:contains(requestURI, '/wallet')}">
                                     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">

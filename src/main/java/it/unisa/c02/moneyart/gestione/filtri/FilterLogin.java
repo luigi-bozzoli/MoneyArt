@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  *
  */
 
-@WebFilter(filterName = "FilterLogin", urlPatterns = {"/userPage", "/newOffer", "/newArtwork",
+@WebFilter(filterName = "FilterLogin", urlPatterns = {"/userPage", "/newArtwork",
     "/cancelAuction", "/newAuction", "/newProfilePicture", "/wallet", "/notifies",
     "/getUserArtworks", "/follow", "/logout", "/changeUserInformation", "/userAuctions",
     "/buyArtwork", "/resell", "/pay", "/recivePayment"})

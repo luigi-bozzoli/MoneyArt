@@ -73,7 +73,7 @@ $(document).ready(function (){
         $.get(ctx + '/getAuctions', $.param(parameters), function(response) {
             $('#container-aste').html('');
             $.each(response, function (index, asta) {
-                let prezzo
+                let prezzo;
                 if(asta.partecipazioni.length == 0) {
                     prezzo = 'Nessuna offerta';
                 } else {
