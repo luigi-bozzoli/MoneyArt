@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.model.beans;
 
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -36,6 +37,10 @@ public class Utente {
     this.seguito = seguito;
     this.saldo = saldo;
     this.numFollowers = 0;
+    this.opereInPossesso = new ArrayList<>();
+    this.opereCreate = new ArrayList<>();
+    this.notifiche = new ArrayList<>();
+    this.partecipazioni = new ArrayList<>();
   }
 
   /**
