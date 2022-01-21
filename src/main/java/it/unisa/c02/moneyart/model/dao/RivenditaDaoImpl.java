@@ -54,10 +54,9 @@ public class RivenditaDaoImpl implements RivenditaDao {
       preparedStatement.setObject(3, item.getStato().toString().toLowerCase(), Types.VARCHAR);
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
-      if (resultSet != null && resultSet.next()) {
-        item.setId(resultSet.getInt(1));
-        return true;
-      }
+      resultSet.next();
+      item.setId(resultSet.getInt(1));
+      return true;
     } catch (SQLException e) {
       e.printStackTrace();
     }

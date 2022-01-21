@@ -128,14 +128,17 @@ public class Partecipazione {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Partecipazione)) {
-      return false;
-    }
+
+
     Partecipazione that = (Partecipazione) o;
-    return Double.compare(that.getOfferta(), getOfferta()) == 0
-      && Objects.equals(getId(), that.getId())
-      && Objects.equals(getAsta(), that.getAsta())
-      && Objects.equals(getUtente(), that.getUtente());
+    BooleanComparator booleanComparator =
+        new BooleanComparator(Objects.equals(getOfferta(), that.getOfferta()));
+
+    return booleanComparator
+        .and(Objects.equals(getId(), that.getId()))
+        .and(Objects.equals(getAsta(), that.getAsta()))
+        .and(Objects.equals(getUtente(), that.getUtente()))
+        .getValue();
   }
 
   @Override
@@ -147,7 +150,6 @@ public class Partecipazione {
   private Asta asta;
   private Utente utente;
   private double offerta;
-
 
 
 }

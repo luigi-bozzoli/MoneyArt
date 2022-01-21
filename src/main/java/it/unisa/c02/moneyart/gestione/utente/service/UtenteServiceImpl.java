@@ -288,7 +288,7 @@ public class UtenteServiceImpl implements UtenteService {
       throw new IllegalArgumentException("Followed non trovato");
     }
 
-    if (follower.getSeguito() == null) {
+    if (follower.getSeguito() == null || follower.getSeguito().getId() == null) {
       follower.setSeguito(followed);
       utenteDao.doUpdate(follower);
       return true;
@@ -313,7 +313,7 @@ public class UtenteServiceImpl implements UtenteService {
       throw new IllegalArgumentException("Follower is null");
     }
 
-    if (follower.getSeguito() == null) {
+    if (follower.getSeguito() == null || follower.getSeguito().getId() == null) {
       return false;
     } else {
       Utente utente = new Utente();
@@ -384,10 +384,13 @@ public class UtenteServiceImpl implements UtenteService {
     if (utente == null) {
       throw new IllegalArgumentException("Utente is null");
     }
+    if (amount <= 0) {
+      throw new IllegalArgumentException("Amount is negative");
+    }
 
     utente = utenteDao.doRetrieveByUsername(utente.getUsername());
 
-    if (utente != null && amount <= utente.getSaldo() && amount > 0) {
+    if (utente != null && amount <= utente.getSaldo()) {
       utente.setSaldo(utente.getSaldo() - amount);
       utenteDao.doUpdate(utente);
       return true;

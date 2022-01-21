@@ -58,12 +58,7 @@ public class SegnalazioneServiceImpl implements SegnalazioneService {
    */
   @Override
   public boolean addReport(Segnalazione segnalazione) {
-    Boolean bool = segnalazioneDao.doCreate(segnalazione);
-    if (bool == true) {
-      return true;
-    } else {
-      return false;
-    }
+    return segnalazioneDao.doCreate(segnalazione);
   }
 
   /**

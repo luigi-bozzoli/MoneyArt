@@ -91,6 +91,8 @@ public class RivenditaServiceImpl implements RivenditaService {
    *
    * @param idOpera identificativo dell'opera da mettere in vendita
    * @return true se l'operazione va a buon fine, false altrimenti
+   * @pre opera.stato = IN_POSSESSO
+   * @post Rivendita.allIStances() -> size() = @pre Rivendita.allIStances() -> size() + 1
    */
   @Override
   public boolean resell(Integer idOpera) {
@@ -121,6 +123,8 @@ public class RivenditaServiceImpl implements RivenditaService {
    * @param idRivendita identificativo della rivendita
    * @param idUtente    identificativo dell'utente che vuole acquistare l'opera in vendita
    * @return true se l'operazione va a buon fine, false altrimenti
+   * @pre utente.saldo > rivendita.saldo
+   * @post opera.getProprietario() = utente
    */
   @Override
   public boolean buy(Integer idRivendita, Integer idUtente) {

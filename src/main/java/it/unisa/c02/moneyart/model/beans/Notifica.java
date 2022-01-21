@@ -203,17 +203,18 @@ public class Notifica {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Notifica)) {
-      return false;
-    }
+
     Notifica notifica = (Notifica) o;
-    return Objects.equals(getId(), notifica.getId())
-      && Objects.equals(getUtente(), notifica.getUtente())
-      && Objects.equals(getAsta(), notifica.getAsta())
-      && Objects.equals(getRivendita(), notifica.getRivendita())
-      && getTipo() == notifica.getTipo()
-      && Objects.equals(getContenuto(), notifica.getContenuto())
-      && Objects.equals(letta, notifica.letta);
+    BooleanComparator booleanComparator =
+        new BooleanComparator(Objects.equals(getId(), notifica.getId()));
+    return booleanComparator
+        .and(Objects.equals(getUtente(), notifica.getUtente()))
+        .and(Objects.equals(getAsta(), notifica.getAsta()))
+        .and(Objects.equals(getRivendita(), notifica.getRivendita()))
+        .and(Objects.equals(getTipo(), notifica.getTipo()))
+        .and(Objects.equals(getContenuto(), notifica.getContenuto()))
+        .and(Objects.equals(letta, notifica.letta)).getValue();
+
   }
 
   @Override

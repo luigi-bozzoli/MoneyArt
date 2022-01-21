@@ -13,7 +13,7 @@ create table utente (
     foto mediumblob,
     saldo double precision not null,
 	
-    foreign key (id_seguito) references utente(id) on update no action on delete no action
+    foreign key (id_seguito) references utente(id) on update cascade on delete cascade
 );
 
 create table opera (  

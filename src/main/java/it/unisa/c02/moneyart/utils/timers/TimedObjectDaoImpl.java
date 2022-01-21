@@ -65,10 +65,9 @@ public class TimedObjectDaoImpl implements TimedObjectDao {
       preparedStatement.setObject(3, item.getTaskDate(), Types.TIMESTAMP);
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
-      if (resultSet != null && resultSet.next()) {
-        item.setId(resultSet.getInt(1));
-        return true;
-      }
+      resultSet.next();
+      item.setId(resultSet.getInt(1));
+      return true;
     } catch (SQLException | IOException e) {
       e.printStackTrace();
     }

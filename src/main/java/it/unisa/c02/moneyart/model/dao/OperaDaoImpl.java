@@ -41,6 +41,9 @@ public class OperaDaoImpl implements OperaDao {
    */
   @Override
   public boolean doCreate(Opera item) {
+
+    if (item == null) return false;
+
     String insertSql = "INSERT INTO " + TABLE_NAME
         + "(id_utente, id_artista, nome, descrizione, immagine, certificato, stato)"
         + " VALUES(?, ?, ?, ?, ?, ?, ?) ";
@@ -58,11 +61,9 @@ public class OperaDaoImpl implements OperaDao {
       preparedStatement.setObject(7, item.getStato().toString(), Types.VARCHAR);
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
-      if (resultSet != null && resultSet.next()) {
-        item.setId(resultSet.getInt(1));
-
-        return true;
-      }
+      resultSet.next();
+      item.setId(resultSet.getInt(1));
+      return true;
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -239,7 +240,7 @@ public class OperaDaoImpl implements OperaDao {
 
     if (name != null) {
       String retrieveSql = "SELECT * FROM " + TABLE_NAME
-          + " WHERE nome LIKE '%?%'";
+          + " WHERE nome LIKE ?";
 
       List<Opera> opere = null;
 

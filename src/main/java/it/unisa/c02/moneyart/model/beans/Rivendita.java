@@ -147,15 +147,15 @@ public class Rivendita {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Rivendita)) {
-      return false;
-    }
+
     Rivendita rivendita = (Rivendita) o;
-    return Double.compare(rivendita.getPrezzo(), getPrezzo()) == 0
-      && Objects.equals(getId(), rivendita.getId())
-      && Objects.equals(getOpera(), rivendita.getOpera())
-      && getStato() == rivendita.getStato()
-      && Objects.equals(getNotifiche(), rivendita.getNotifiche());
+    BooleanComparator booleanComparator =
+        new BooleanComparator(Objects.equals(getPrezzo(), rivendita.getPrezzo()));
+    return booleanComparator
+        .and(Objects.equals(getId(), rivendita.getId()))
+        .and(Objects.equals(getOpera(), rivendita.getOpera()))
+        .and(Objects.equals(getStato(), rivendita.getStato())).getValue();
+
   }
 
   @Override

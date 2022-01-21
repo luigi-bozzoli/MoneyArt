@@ -14,9 +14,9 @@ public class Segnalazione {
   /**
    * Costruttore dell classe Segnalazione.
    *
-   * @param asta l'asta segnalata
+   * @param asta     l'asta segnalata
    * @param commento eventuale commento della segnalazione
-   * @param letta indica se la segnalazione è stata letta
+   * @param letta    indica se la segnalazione è stata letta
    */
   public Segnalazione(Asta asta, String commento, boolean letta) {
     this.id = null;
@@ -31,7 +31,7 @@ public class Segnalazione {
   public Segnalazione() {
 
   }
-  
+
   /**
    * Restituisce l'identificativo della segnalazione.
    *
@@ -129,13 +129,16 @@ public class Segnalazione {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Segnalazione)) {
-      return false;
-    }
+
+
     Segnalazione that = (Segnalazione) o;
-    return isLetta() == that.isLetta() && Objects.equals(getId(), that.getId())
-      && Objects.equals(getAsta(), that.getAsta())
-      && Objects.equals(getCommento(), that.getCommento());
+    BooleanComparator booleanComparator =
+        new BooleanComparator(Objects.equals(isLetta(), that.isLetta()));
+    return booleanComparator
+        .and(Objects.equals(getId(), that.getId()))
+        .and(Objects.equals(getAsta(), that.getAsta()))
+        .and(Objects.equals(getCommento(), that.getCommento()))
+        .getValue();
   }
 
   @Override
