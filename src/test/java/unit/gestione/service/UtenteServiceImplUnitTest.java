@@ -654,8 +654,7 @@ class UtenteServiceImplUnitTest {
             when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
             doNothing().when(utenteDao).doUpdate(any());
 
-            assertTrue(!(utenteService.withdraw(utente, amount)));
-
+            assertThrows(Exception.class, () -> utenteService.withdraw(utente, amount));
         }
 
         @DisplayName("withdrawErr3")
@@ -668,7 +667,7 @@ class UtenteServiceImplUnitTest {
             when(utenteDao.doRetrieveByUsername(anyString())).thenReturn(utente);
             doNothing().when(utenteDao).doUpdate(any());
 
-            assertTrue(!(utenteService.withdraw(utente, amount)));
+            assertThrows(Exception.class, () -> utenteService.withdraw(utente, amount));
 
         }
 
