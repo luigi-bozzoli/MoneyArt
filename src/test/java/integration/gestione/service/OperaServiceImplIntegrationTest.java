@@ -186,7 +186,7 @@ class OperaServiceImplIntegrationTest {
       opera.setImmagine(null);
 
       Assertions.assertFalse(operaService.addArtwork(opera));
-      Assertions.assertNull(operaDao.doRetrieveAllByName(opera.getNome()));
+      Assertions.assertEquals(0,operaDao.doRetrieveAllByName(opera.getNome()).size());
     }
 
     @Test
