@@ -16,13 +16,9 @@
 
     <!-- STYLESHEETS -->
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/fragments_style.css">
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/admin_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
-    <c:choose>
-        <c:when test="${fn:contains(requestURI, '/admin')}">
-            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/admin_style.css">
-            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
-        </c:when>
-    </c:choose>
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
 
     <!-- FAVICON -->
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/favicon.ico" type="image/x-icon">
@@ -41,12 +37,8 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
     <!-- JS -->
-        <script src="${pageContext.servletContext.contextPath}/static/js/sidebar.js"></script>
-        <c:choose>
-            <c:when test="${fn:contains(requestURI, '/admin')}">
-                <script src="${pageContext.servletContext.contextPath}/static/js/updateProfile.js"></script>
-            </c:when>
-        </c:choose>
+    <script src="${pageContext.servletContext.contextPath}/static/js/sidebar.js"></script>
+    <script src="${pageContext.servletContext.contextPath}/static/js/updateProfile.js"></script>
 
 </head>
 

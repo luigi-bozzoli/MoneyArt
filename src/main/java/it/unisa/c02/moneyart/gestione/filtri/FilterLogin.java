@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
 
 @WebFilter(filterName = "FilterLogin", urlPatterns = {"/userPage", "/newArtwork",
     "/cancelAuction", "/newAuction", "/newProfilePicture", "/wallet", "/walletInfo", "/notifies",
-    "/getUserArtworks", "/follow", "/logout", "/changeUserInformation", "/userAuctions",
+    "/getUserArtworks", "/follow", "/changeUserInformation", "/userAuctions",
     "/buyArtwork", "/resell", "/pay", "/recivePayment", "/pages/notifiche.jsp",
     "/deleteNotification"})
 public class FilterLogin implements Filter {
