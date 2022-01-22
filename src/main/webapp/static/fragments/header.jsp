@@ -207,22 +207,34 @@
                             </div>
 
                             <c:choose>
-                                <c:when test="${empty sessionScope.utente}">
+                                <c:when test="${empty sessionScope.utente && empty sessionScope.admin}">
                                     <div class="log-buttons">
                                         <a href="${pageContext.servletContext.contextPath}/pages/login.jsp" class="login-button">Login</a>
                                         <a href="${pageContext.servletContext.contextPath}/pages/signup.jsp" class="signup-button">Signup</a>
                                     </div>
                                 </c:when>
                                 <c:otherwise>
-                                    <div class="account-buttons">
-                                        <a href="${pageContext.servletContext.contextPath}/pages/profiloUtente.jsp" title="Account">
-                                            <i class="fas fa-user-alt"></i>
-                                        </a>
+                                    <c:choose>
+                                        <c:when test="${empty sessionScope.admin}">
+                                            <div class="account-buttons">
+                                                <a href="${pageContext.servletContext.contextPath}/pages/profiloUtente.jsp" title="Account">
+                                                    <i class="fas fa-user-alt"></i>
+                                                </a>
 
-                                        <a href="${pageContext.servletContext.contextPath}/logout" title="Esci">
-                                            <i class="fas fa-sign-out-alt"></i>
-                                        </a>
-                                    </div>
+                                                <a href="${pageContext.servletContext.contextPath}/logout" title="Esci">
+                                                    <i class="fas fa-sign-out-alt"></i>
+                                                </a>
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${empty sessionScope.utente}">
+                                            <div class="account-buttons">
+                                                <a href="${pageContext.servletContext.contextPath}/pages/admin/profiloAdmin.jsp" title="Admin">
+                                                    <i class="fas fa-user-alt"></i>
+                                                </a>
+                                            </div>
+                                        </c:when>
+                                    </c:choose>
+
                                 </c:otherwise>
                             </c:choose>
                         </div>
