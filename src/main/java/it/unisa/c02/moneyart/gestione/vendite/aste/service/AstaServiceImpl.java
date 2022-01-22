@@ -224,7 +224,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * , crea una notifica per informare il vecchio migliore offerte, se esiste.
    *
    * @param utente  l'utente che vuole effettuare l'offerta
-   * @param asta    l'asta per cui si vuole effetuare l'offerta
+   * @param asta    l'asta per cui si vuole effettuare l'offerta
    * @param offerta l'offerta fatta dall'utente
    * @return vero se l'offerta va a buon fine, falso altrimenti
    * @pre asta.getStato() = IN_CORSO and utente.getSaldo() >= offerta
@@ -236,6 +236,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * and notifica.getUtente() = @pre.bestOffer(asta).getUtente() ) )
    */
 
+  // TODO: qui va messo "participate"
   @Override
   public boolean partecipateAuction(Utente utente, Asta asta, double offerta) {
     astaLockingSingleton.lockAsta(asta);
@@ -285,13 +286,12 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * @return vero o falso
    */
 
+  // TODO: Controllare se sono null (e aggiornare @pre di addAsta())
   private boolean checkDate(Date startDate, Date endDate) {
     long millis = System.currentTimeMillis();
     Date today = setMidnightTime(new Date(millis));
 
-
     return (startDate.after(today) || startDate.equals(today)) && endDate.after(startDate);
-
   }
 
 
@@ -326,10 +326,6 @@ public class AstaServiceImpl implements AstaService, TimerService {
 
   /* La data viene restituita con il tempo impostato a mezzanotte */
   private Date setMidnightTime(Date date) {
-    if (date == null) {
-      return null;
-    }
-
     Calendar calendar = new GregorianCalendar();
     calendar.setTime(date);
 
@@ -337,7 +333,6 @@ public class AstaServiceImpl implements AstaService, TimerService {
     calendar.set(Calendar.MINUTE, 0);
     calendar.set(Calendar.SECOND, 0);
     calendar.set(Calendar.MILLISECOND, 0);
-
 
     return calendar.getTime();
   }

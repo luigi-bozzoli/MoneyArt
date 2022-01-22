@@ -523,13 +523,13 @@ public class AstaServiceImplUnitTest {
 			Assertions.assertEquals(oracle.get(0).getOpera(), requested.get(0).getOpera());
 			Assertions.assertEquals(oracle.get(1).getOpera(), requested.get(1).getOpera());
 
-			// Id aste presenti nelle partecipazioni
+			// Id aste presenti nelle partecipazioni della prima asta
 			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getAsta().getId(), requested.get(0).getPartecipazioni().get(0).getAsta().getId());
 
-			// Utenti presenti nelle partecipazioni
+			// Utenti presenti nelle partecipazioni della prima asta
 			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getUtente(), requested.get(0).getPartecipazioni().get(0).getUtente());
 
-			// Valori delle offerte
+			// Valori delle offerte della prima asta
 			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getOfferta(), requested.get(0).getPartecipazioni().get(0).getOfferta());
 
 			// Nessuna partecipazione per la seconda asta
@@ -595,13 +595,13 @@ public class AstaServiceImplUnitTest {
 			// Nessuna partecipazione per la prima asta
 			Assertions.assertEquals(oracle.get(0).getPartecipazioni().size(), requested.get(0).getPartecipazioni().size());
 
-			// Id aste presenti nelle partecipazioni
+			// Id aste presenti nelle partecipazioni della seconda asta
 			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getAsta().getId(), requested.get(1).getPartecipazioni().get(0).getAsta().getId());
 
-			// Utenti presenti nelle partecipazioni
+			// Utenti presenti nelle partecipazioni della seconda asta
 			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getUtente(), requested.get(1).getPartecipazioni().get(0).getUtente());
 
-			// Valori delle offerte
+			// Valori delle offerte della seconda asta
 			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getOfferta(), requested.get(1).getPartecipazioni().get(0).getOfferta());
 		}
 
@@ -612,29 +612,839 @@ public class AstaServiceImplUnitTest {
 	@DisplayName("Get auctions sorted by artist's number of followers")
 	class getAuctionsSortedByArtistFollowersTest {
 
+		@DisplayName("Get ongoing auctions sorted by artist's followers DESC")
+		@Test
+		void getOngoingAuctionsSortedByArtistFollowerDescTest() {
+			List<Asta> oracle = AstaCreations.ongoingAstaTwoElementsListSortedByArtistFollowersDesc();
+
+			List<Asta> ongoingAuctions = AstaCreations.ongoingAstaTwoElementsWithArtistFollowersList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.IN_CORSO)).thenReturn(ongoingAuctions);
+
+			// for di getAuctionsByState(Stato s)
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							ongoingAuctions.get(0).getOpera(),
+							ongoingAuctions.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							ongoingAuctions.get(0).getPartecipazioni(),
+							ongoingAuctions.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							ongoingAuctions.get(0).getOpera().getArtista(),
+							ongoingAuctions.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = ongoingAuctions.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = ongoingAuctions.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+			// fine for
+
+			List<Asta> requested = astaService.getAuctionsSortedByArtistFollowers("DESC", Asta.Stato.IN_CORSO);
+
+			Assertions.assertEquals(oracle.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(oracle.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(oracle.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(oracle.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(oracle.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(oracle.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(oracle.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(oracle.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(oracle.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(oracle.get(1).getOpera(), requested.get(1).getOpera());
+
+			// Non serve questo controllo, lo fanno già le due righe sopra
+			// Assertions.assertEquals(oracle.get(0).getOpera().getArtista().getnFollowers(), requested.get(0).getOpera().getArtista().getnFollowers());
+			// Assertions.assertEquals(oracle.get(1).getOpera().getArtista().getnFollowers(), requested.get(1).getOpera().getArtista().getnFollowers());
+
+			// Id aste presenti nelle partecipazioni
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getAsta().getId(), requested.get(0).getPartecipazioni().get(0).getAsta().getId());
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(1).getAsta().getId(), requested.get(0).getPartecipazioni().get(1).getAsta().getId());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getAsta().getId(), requested.get(1).getPartecipazioni().get(0).getAsta().getId());
+
+			// Utenti presenti nelle partecipazioni
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getUtente(), requested.get(0).getPartecipazioni().get(0).getUtente());
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(1).getUtente(), requested.get(0).getPartecipazioni().get(1).getUtente());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getUtente(), requested.get(1).getPartecipazioni().get(0).getUtente());
+
+			// Valori delle offerte
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getOfferta(), requested.get(0).getPartecipazioni().get(0).getOfferta());
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(1).getOfferta(), requested.get(0).getPartecipazioni().get(1).getOfferta());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getOfferta(), requested.get(1).getPartecipazioni().get(0).getOfferta());
+		}
+
+		@DisplayName("Get ongoing auctions sorted by artist's followers ASC")
+		@Test
+		void getOngoingAuctionsSortedByArtistFollowerAscTest() {
+			List<Asta> oracle = AstaCreations.ongoingAstaTwoElementsListSortedByArtistFollowersAsc();
+
+			List<Asta> ongoingAuctions = AstaCreations.ongoingAstaTwoElementsWithArtistFollowersList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.IN_CORSO)).thenReturn(ongoingAuctions);
+
+			// for di getAuctionsByState(Stato s)
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							ongoingAuctions.get(0).getOpera(),
+							ongoingAuctions.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							ongoingAuctions.get(0).getPartecipazioni(),
+							ongoingAuctions.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							ongoingAuctions.get(0).getOpera().getArtista(),
+							ongoingAuctions.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = ongoingAuctions.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = ongoingAuctions.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+			// fine for
+
+			List<Asta> requested = astaService.getAuctionsSortedByArtistFollowers("ASC", Asta.Stato.IN_CORSO);
+
+			Assertions.assertEquals(oracle.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(oracle.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(oracle.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(oracle.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(oracle.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(oracle.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(oracle.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(oracle.get(1).getStato(), requested.get(1).getStato());
+
+			// Controlla anche se il numero di presentazioni è corretto
+			Assertions.assertEquals(oracle.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(oracle.get(1).getOpera(), requested.get(1).getOpera());
+
+			// Id aste presenti nelle partecipazioni
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getAsta().getId(), requested.get(0).getPartecipazioni().get(0).getAsta().getId());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getAsta().getId(), requested.get(1).getPartecipazioni().get(0).getAsta().getId());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(1).getAsta().getId(), requested.get(1).getPartecipazioni().get(1).getAsta().getId());
+
+			// Utenti presenti nelle partecipazioni
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getUtente(), requested.get(0).getPartecipazioni().get(0).getUtente());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getUtente(), requested.get(1).getPartecipazioni().get(0).getUtente());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(1).getUtente(), requested.get(1).getPartecipazioni().get(1).getUtente());
+
+			// Valori delle offerte
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getOfferta(), requested.get(0).getPartecipazioni().get(0).getOfferta());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getOfferta(), requested.get(1).getPartecipazioni().get(0).getOfferta());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(1).getOfferta(), requested.get(1).getPartecipazioni().get(1).getOfferta());
+		}
+
+		@DisplayName("Get ended auctions sorted by artist's followers DESC")
+		@Test
+		void getEndedAuctionsSortedByArtistFollowerDescTest() {
+			List<Asta> oracle = AstaCreations.endedAstaTwoElementsListSortedByArtistFollowersDesc();
+
+			List<Asta> endedAuctions = AstaCreations.endedAstaTwoElementsWithArtistFollowersList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.TERMINATA)).thenReturn(endedAuctions);
+
+			// for di getAuctionsByState(Stato s)
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							endedAuctions.get(0).getOpera(),
+							endedAuctions.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							endedAuctions.get(0).getPartecipazioni(),
+							endedAuctions.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							endedAuctions.get(0).getOpera().getArtista(),
+							endedAuctions.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = endedAuctions.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = endedAuctions.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+			// fine for
+
+			List<Asta> requested = astaService.getAuctionsSortedByArtistFollowers("DESC", Asta.Stato.TERMINATA);
+
+			Assertions.assertEquals(oracle.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(oracle.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(oracle.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(oracle.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(oracle.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(oracle.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(oracle.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(oracle.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(oracle.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(oracle.get(1).getOpera(), requested.get(1).getOpera());
+
+			// Id aste presenti nelle partecipazioni
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getAsta().getId(), requested.get(0).getPartecipazioni().get(0).getAsta().getId());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getAsta().getId(), requested.get(1).getPartecipazioni().get(0).getAsta().getId());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(1).getAsta().getId(), requested.get(1).getPartecipazioni().get(1).getAsta().getId());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(2).getAsta().getId(), requested.get(1).getPartecipazioni().get(2).getAsta().getId());
+
+			// Utenti presenti nelle partecipazioni
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getUtente(), requested.get(0).getPartecipazioni().get(0).getUtente());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getUtente(), requested.get(1).getPartecipazioni().get(0).getUtente());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(1).getUtente(), requested.get(1).getPartecipazioni().get(1).getUtente());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(2).getUtente(), requested.get(1).getPartecipazioni().get(2).getUtente());
+
+			// Valori delle offerte
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getOfferta(), requested.get(0).getPartecipazioni().get(0).getOfferta());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getOfferta(), requested.get(1).getPartecipazioni().get(0).getOfferta());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(1).getOfferta(), requested.get(1).getPartecipazioni().get(1).getOfferta());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(2).getOfferta(), requested.get(1).getPartecipazioni().get(2).getOfferta());
+		}
+
+		@DisplayName("Get ended auctions sorted by artist's followers ASC")
+		@Test
+		void getEndedAuctionsSortedByArtistFollowerAscTest() {
+			List<Asta> oracle = AstaCreations.endedAstaTwoElementsListSortedByArtistFollowersAsc();
+
+			List<Asta> endedAuctions = AstaCreations.endedAstaTwoElementsWithArtistFollowersList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.TERMINATA)).thenReturn(endedAuctions);
+
+			// for di getAuctionsByState(Stato s)
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							endedAuctions.get(0).getOpera(),
+							endedAuctions.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							endedAuctions.get(0).getPartecipazioni(),
+							endedAuctions.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							endedAuctions.get(0).getOpera().getArtista(),
+							endedAuctions.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = endedAuctions.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = endedAuctions.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+			// fine for
+
+			List<Asta> requested = astaService.getAuctionsSortedByArtistFollowers("ASC", Asta.Stato.TERMINATA);
+
+			Assertions.assertEquals(oracle.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(oracle.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(oracle.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(oracle.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(oracle.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(oracle.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(oracle.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(oracle.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(oracle.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(oracle.get(1).getOpera(), requested.get(1).getOpera());
+
+			// Id aste presenti nelle partecipazioni
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getAsta().getId(), requested.get(0).getPartecipazioni().get(0).getAsta().getId());
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(1).getAsta().getId(), requested.get(0).getPartecipazioni().get(1).getAsta().getId());
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(2).getAsta().getId(), requested.get(0).getPartecipazioni().get(2).getAsta().getId());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getAsta().getId(), requested.get(1).getPartecipazioni().get(0).getAsta().getId());
+
+			// Utenti presenti nelle partecipazioni
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getUtente(), requested.get(0).getPartecipazioni().get(0).getUtente());
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(1).getUtente(), requested.get(0).getPartecipazioni().get(1).getUtente());
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(2).getUtente(), requested.get(0).getPartecipazioni().get(2).getUtente());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getUtente(), requested.get(1).getPartecipazioni().get(0).getUtente());
+
+			// Valori delle offerte
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getOfferta(), requested.get(0).getPartecipazioni().get(0).getOfferta());
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(1).getOfferta(), requested.get(0).getPartecipazioni().get(1).getOfferta());
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(2).getOfferta(), requested.get(0).getPartecipazioni().get(2).getOfferta());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getOfferta(), requested.get(1).getPartecipazioni().get(0).getOfferta());
+		}
+
+		@DisplayName("Get deleted auctions sorted by artist's followers DESC")
+		@Test
+		void getDeletedAuctionsSortedByArtistFollowerDescTest() {
+			List<Asta> oracle = AstaCreations.deletedAstaTwoElementsListSortedByArtistFollowersDesc();
+
+			List<Asta> deletedAuctions = AstaCreations.deletedAstaTwoElementsWithArtistFollowersList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.ELIMINATA)).thenReturn(deletedAuctions);
+
+			// for di getAuctionsByState(Stato s)
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							deletedAuctions.get(0).getOpera(),
+							deletedAuctions.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							deletedAuctions.get(0).getPartecipazioni(),
+							deletedAuctions.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							deletedAuctions.get(0).getOpera().getArtista(),
+							deletedAuctions.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = deletedAuctions.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = deletedAuctions.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+			// fine for
+
+			List<Asta> requested = astaService.getAuctionsSortedByArtistFollowers("DESC", Asta.Stato.ELIMINATA);
+
+			Assertions.assertEquals(oracle.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(oracle.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(oracle.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(oracle.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(oracle.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(oracle.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(oracle.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(oracle.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(oracle.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(oracle.get(1).getOpera(), requested.get(1).getOpera());
+
+			// Nessuna partecipazione per la prima asta
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().size(), requested.get(0).getPartecipazioni().size());
+
+			// Id aste presenti nelle partecipazioni della seconda asta
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getAsta().getId(), requested.get(1).getPartecipazioni().get(0).getAsta().getId());
+
+			// Utenti presenti nelle partecipazioni della seconda asta
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getUtente(), requested.get(1).getPartecipazioni().get(0).getUtente());
+
+			// Valori delle offerte della seconda asta
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().get(0).getOfferta(), requested.get(1).getPartecipazioni().get(0).getOfferta());
+		}
+
+		@DisplayName("Get deleted auctions sorted by artist's followers ASC")
+		@Test
+		void getDeletedAuctionsSortedByArtistFollowerAscTest() {
+			List<Asta> oracle = AstaCreations.deletedAstaTwoElementsListSortedByArtistFollowersAsc();
+
+			List<Asta> deletedAuctions = AstaCreations.deletedAstaTwoElementsWithArtistFollowersList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.ELIMINATA)).thenReturn(deletedAuctions);
+
+			// for di getAuctionsByState(Stato s)
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							deletedAuctions.get(0).getOpera(),
+							deletedAuctions.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							deletedAuctions.get(0).getPartecipazioni(),
+							deletedAuctions.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							deletedAuctions.get(0).getOpera().getArtista(),
+							deletedAuctions.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = deletedAuctions.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = deletedAuctions.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+			// fine for
+
+			List<Asta> requested = astaService.getAuctionsSortedByArtistFollowers("ASC", Asta.Stato.ELIMINATA);
+
+			Assertions.assertEquals(oracle.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(oracle.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(oracle.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(oracle.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(oracle.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(oracle.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(oracle.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(oracle.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(oracle.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(oracle.get(1).getOpera(), requested.get(1).getOpera());
+
+			// Id aste presenti nelle partecipazioni della prima asta
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getAsta().getId(), requested.get(0).getPartecipazioni().get(0).getAsta().getId());
+
+			// Utenti presenti nelle partecipazioni della prima asta
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getUtente(), requested.get(0).getPartecipazioni().get(0).getUtente());
+
+			// Valori delle offerte della prima asta
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().get(0).getOfferta(), requested.get(0).getPartecipazioni().get(0).getOfferta());
+
+			// Nessuna partecipazione per la seconda asta
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().size(), requested.get(1).getPartecipazioni().size());
+		}
+
+		@DisplayName("Get created auctions sorted by artist's followers DESC")
+		@Test
+		void getCreatedAuctionsSortedByArtistFollowerDescTest() {
+			List<Asta> oracle = AstaCreations.createdAstaTwoElementsListSortedByArtistFollowersDesc();
+
+			List<Asta> createdAuctions = AstaCreations.createdAstaTwoElementsWithArtistFollowersList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.CREATA)).thenReturn(createdAuctions);
+
+			// for di getAuctionsByState(Stato s)
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							createdAuctions.get(0).getOpera(),
+							createdAuctions.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							createdAuctions.get(0).getPartecipazioni(),
+							createdAuctions.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							createdAuctions.get(0).getOpera().getArtista(),
+							createdAuctions.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = createdAuctions.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = createdAuctions.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+			// fine for
+
+			List<Asta> requested = astaService.getAuctionsSortedByArtistFollowers("DESC", Asta.Stato.CREATA);
+
+			Assertions.assertEquals(oracle.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(oracle.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(oracle.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(oracle.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(oracle.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(oracle.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(oracle.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(oracle.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(oracle.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(oracle.get(1).getOpera(), requested.get(1).getOpera());
+
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().size(), requested.get(0).getPartecipazioni().size());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().size(), requested.get(1).getPartecipazioni().size());
+		}
+
+		@DisplayName("Get created auctions sorted by artist's followers ASC")
+		@Test
+		void getCreatedAuctionsSortedByArtistFollowerAscTest() {
+			List<Asta> oracle = AstaCreations.createdAstaTwoElementsListSortedByArtistFollowersAsc();
+
+			List<Asta> createdAuctions = AstaCreations.createdAstaTwoElementsWithArtistFollowersList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.CREATA)).thenReturn(createdAuctions);
+
+			// for di getAuctionsByState(Stato s)
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							createdAuctions.get(0).getOpera(),
+							createdAuctions.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							createdAuctions.get(0).getPartecipazioni(),
+							createdAuctions.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							createdAuctions.get(0).getOpera().getArtista(),
+							createdAuctions.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = createdAuctions.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = createdAuctions.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+			// fine for
+
+			List<Asta> requested = astaService.getAuctionsSortedByArtistFollowers("ASC", Asta.Stato.CREATA);
+
+			Assertions.assertEquals(oracle.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(oracle.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(oracle.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(oracle.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(oracle.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(oracle.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(oracle.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(oracle.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(oracle.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(oracle.get(1).getOpera(), requested.get(1).getOpera());
+
+			Assertions.assertEquals(oracle.get(0).getPartecipazioni().size(), requested.get(0).getPartecipazioni().size());
+			Assertions.assertEquals(oracle.get(1).getPartecipazioni().size(), requested.get(1).getPartecipazioni().size());
+		}
 	}
 
 	@Nested
 	@DisplayName("Get auctions sorted by expiration time")
 	class getAuctionsSortedByExpirationTimeTest {
-
+		// TODO: impl
 	}
 
 	@Nested
 	@DisplayName("Get auctions by state")
 	class getAuctionsByStateTest {
 
+		@DisplayName("Get ongoing auctions ")
+		@Test
+		void getOngoingAuctionsTest() {
+			List<Asta> ongoing = AstaCreations.ongoingAstaTwoElementsList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.IN_CORSO)).thenReturn(ongoing);
+
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							ongoing.get(0).getOpera(),
+							ongoing.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							ongoing.get(0).getPartecipazioni(),
+							ongoing.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							ongoing.get(0).getOpera().getArtista(),
+							ongoing.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = ongoing.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = ongoing.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+
+			List<Asta> requested = astaService.getAuctionsByState(Asta.Stato.IN_CORSO);
+
+			Assertions.assertEquals(ongoing.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(ongoing.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(ongoing.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(ongoing.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(ongoing.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(ongoing.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(ongoing.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(ongoing.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(ongoing.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(ongoing.get(1).getOpera(), requested.get(1).getOpera());
+
+			// Id aste presenti nelle partecipazioni
+			Assertions.assertEquals(ongoing.get(0).getPartecipazioni().get(0).getAsta().getId(), requested.get(0).getPartecipazioni().get(0).getAsta().getId());
+			Assertions.assertEquals(ongoing.get(1).getPartecipazioni().get(0).getAsta().getId(), requested.get(1).getPartecipazioni().get(0).getAsta().getId());
+			Assertions.assertEquals(ongoing.get(1).getPartecipazioni().get(1).getAsta().getId(), requested.get(1).getPartecipazioni().get(1).getAsta().getId());
+
+			// Utenti presenti nelle partecipazioni
+			Assertions.assertEquals(ongoing.get(0).getPartecipazioni().get(0).getUtente(), requested.get(0).getPartecipazioni().get(0).getUtente());
+			Assertions.assertEquals(ongoing.get(1).getPartecipazioni().get(0).getUtente(), requested.get(1).getPartecipazioni().get(0).getUtente());
+			Assertions.assertEquals(ongoing.get(1).getPartecipazioni().get(1).getUtente(), requested.get(1).getPartecipazioni().get(1).getUtente());
+
+			// Valori delle offerte
+			Assertions.assertEquals(ongoing.get(0).getPartecipazioni().get(0).getOfferta(), requested.get(0).getPartecipazioni().get(0).getOfferta());
+			Assertions.assertEquals(ongoing.get(1).getPartecipazioni().get(0).getOfferta(), requested.get(1).getPartecipazioni().get(0).getOfferta());
+			Assertions.assertEquals(ongoing.get(1).getPartecipazioni().get(1).getOfferta(), requested.get(1).getPartecipazioni().get(1).getOfferta());
+		}
+
+		@DisplayName("Get ended auctions ")
+		@Test
+		void getEndedAuctionsTest() {
+			List<Asta> ended = AstaCreations.endedAstaTwoElementsList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.TERMINATA)).thenReturn(ended);
+
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							ended.get(0).getOpera(),
+							ended.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							ended.get(0).getPartecipazioni(),
+							ended.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							ended.get(0).getOpera().getArtista(),
+							ended.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = ended.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = ended.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+
+			List<Asta> requested = astaService.getAuctionsByState(Asta.Stato.TERMINATA);
+
+			Assertions.assertEquals(ended.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(ended.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(ended.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(ended.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(ended.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(ended.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(ended.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(ended.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(ended.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(ended.get(1).getOpera(), requested.get(1).getOpera());
+
+			// Id aste presenti nelle partecipazioni
+			Assertions.assertEquals(ended.get(0).getPartecipazioni().get(0).getAsta().getId(), requested.get(0).getPartecipazioni().get(0).getAsta().getId());
+			Assertions.assertEquals(ended.get(0).getPartecipazioni().get(1).getAsta().getId(), requested.get(0).getPartecipazioni().get(1).getAsta().getId());
+			Assertions.assertEquals(ended.get(0).getPartecipazioni().get(2).getAsta().getId(), requested.get(0).getPartecipazioni().get(2).getAsta().getId());
+			Assertions.assertEquals(ended.get(1).getPartecipazioni().get(0).getAsta().getId(), requested.get(1).getPartecipazioni().get(0).getAsta().getId());
+
+			// Utenti presenti nelle partecipazioni
+			Assertions.assertEquals(ended.get(0).getPartecipazioni().get(0).getUtente(), requested.get(0).getPartecipazioni().get(0).getUtente());
+			Assertions.assertEquals(ended.get(0).getPartecipazioni().get(1).getUtente(), requested.get(0).getPartecipazioni().get(1).getUtente());
+			Assertions.assertEquals(ended.get(0).getPartecipazioni().get(2).getUtente(), requested.get(0).getPartecipazioni().get(2).getUtente());
+			Assertions.assertEquals(ended.get(1).getPartecipazioni().get(0).getUtente(), requested.get(1).getPartecipazioni().get(0).getUtente());
+
+			// Valori delle offerte
+			Assertions.assertEquals(ended.get(0).getPartecipazioni().get(0).getOfferta(), requested.get(0).getPartecipazioni().get(0).getOfferta());
+			Assertions.assertEquals(ended.get(0).getPartecipazioni().get(1).getOfferta(), requested.get(0).getPartecipazioni().get(1).getOfferta());
+			Assertions.assertEquals(ended.get(0).getPartecipazioni().get(2).getOfferta(), requested.get(0).getPartecipazioni().get(2).getOfferta());
+			Assertions.assertEquals(ended.get(1).getPartecipazioni().get(0).getOfferta(), requested.get(1).getPartecipazioni().get(0).getOfferta());
+		}
+
+		@DisplayName("Get deleted auctions ")
+		@Test
+		void getDeletedAuctionsTest() {
+			List<Asta> deleted = AstaCreations.deletedAstaTwoElementsList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.ELIMINATA)).thenReturn(deleted);
+
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							deleted.get(0).getOpera(),
+							deleted.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							deleted.get(0).getPartecipazioni(),
+							deleted.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							deleted.get(0).getOpera().getArtista(),
+							deleted.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = deleted.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = deleted.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+
+			List<Asta> requested = astaService.getAuctionsByState(Asta.Stato.ELIMINATA);
+
+			Assertions.assertEquals(deleted.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(deleted.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(deleted.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(deleted.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(deleted.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(deleted.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(deleted.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(deleted.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(deleted.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(deleted.get(1).getOpera(), requested.get(1).getOpera());
+
+			// Nessuna partecipazione per la prima asta
+			Assertions.assertEquals(deleted.get(0).getPartecipazioni().size(), requested.get(0).getPartecipazioni().size());
+
+			// Id aste presenti nelle partecipazioni della seconda asta
+			Assertions.assertEquals(deleted.get(1).getPartecipazioni().get(0).getAsta().getId(), requested.get(1).getPartecipazioni().get(0).getAsta().getId());
+
+			// Utenti presenti nelle partecipazioni della seconda asta
+			Assertions.assertEquals(deleted.get(1).getPartecipazioni().get(0).getUtente(), requested.get(1).getPartecipazioni().get(0).getUtente());
+
+			// Valori delle offerte della seconda asta
+			Assertions.assertEquals(deleted.get(1).getPartecipazioni().get(0).getOfferta(), requested.get(1).getPartecipazioni().get(0).getOfferta());
+		}
+
+		@DisplayName("Get created auctions ")
+		@Test
+		void getCreatedAuctionsTest() {
+			List<Asta> created = AstaCreations.createdAstaTwoElementsList();
+			when(astaDao.doRetrieveByStato(Asta.Stato.CREATA)).thenReturn(created);
+
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(
+							created.get(0).getOpera(),
+							created.get(1).getOpera()
+			);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(
+							created.get(0).getPartecipazioni(),
+							created.get(1).getPartecipazioni()
+			);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(
+							created.get(0).getOpera().getArtista(),
+							created.get(1).getOpera().getArtista()
+			);
+
+			int nFol0 = created.get(0).getOpera().getArtista().getnFollowers();
+			int nFol1 = created.get(1).getOpera().getArtista().getnFollowers();
+			List<Utente> followers0 = new ArrayList<>();
+			List<Utente> followers1 = new ArrayList<>();
+			for(int i = 0; i < nFol0; i++){
+				followers0.add(new Utente());
+			}
+			for(int i = 0; i < nFol1; i++){
+				followers1.add(new Utente());
+			}
+
+			when(utenteDao.doRetrieveFollowersByUserId(anyInt())).thenReturn(
+							followers0,
+							followers1
+			);
+
+			List<Asta> requested = astaService.getAuctionsByState(Asta.Stato.CREATA);
+
+			Assertions.assertEquals(created.get(0).getId(), requested.get(0).getId());
+			Assertions.assertEquals(created.get(1).getId(), requested.get(1).getId());
+
+			Assertions.assertEquals(created.get(0).getDataInizio(), requested.get(0).getDataInizio());
+			Assertions.assertEquals(created.get(1).getDataInizio(), requested.get(1).getDataInizio());
+
+			Assertions.assertEquals(created.get(0).getDataFine(), requested.get(0).getDataFine());
+			Assertions.assertEquals(created.get(1).getDataFine(), requested.get(1).getDataFine());
+
+			Assertions.assertEquals(created.get(0).getStato(), requested.get(0).getStato());
+			Assertions.assertEquals(created.get(1).getStato(), requested.get(1).getStato());
+
+			Assertions.assertEquals(created.get(0).getOpera(), requested.get(0).getOpera());
+			Assertions.assertEquals(created.get(1).getOpera(), requested.get(1).getOpera());
+
+			// Nessuna partecipazione (= 0), l'asta non è ancora in corso
+			Assertions.assertEquals(created.get(0).getPartecipazioni().size(), requested.get(0).getPartecipazioni().size());
+			Assertions.assertEquals(created.get(1).getPartecipazioni().size(), requested.get(1).getPartecipazioni().size());
+		}
 	}
 
 	@Nested
 	@DisplayName("Participate auction")
 	class participateAuctionTest {
-
-	}
-
-	@Nested
-	@DisplayName("Check date")
-	class checkDateTest {
 
 	}
 
@@ -680,11 +1490,16 @@ public class AstaServiceImplUnitTest {
 
 	}
 
+	// Non vale la pena testare il metodo getAllOffers(),
+	// non fa altro che restituire il risultato del metodo
+	// doRetrieveAll di partecipazioneDao.
+	/*
 	@Nested
-	@DisplayName("Get current auctions")
+	@DisplayName("Get all offers")
 	class getAllOffersTest {
 
 	}
+	*/
 
 	@Nested
 	@DisplayName("Execute timed tasks")
