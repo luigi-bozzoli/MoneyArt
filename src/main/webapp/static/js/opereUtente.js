@@ -4,7 +4,7 @@ $(document).ready(function (){
         $(".item-price").each(function (){
             let id = $(this).find("input").val();
             let elem = $(this)
-            $.get(ctx + '/getArtistValue', $.param({'id' : id}), function(response) {
+            $.get(ctx + '/getArtworkValue', $.param({'id' : id}), function(response) {
                 let value = response
                 let input = elem.find("input").clone();
 

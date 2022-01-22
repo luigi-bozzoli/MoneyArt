@@ -105,7 +105,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/opereUtente.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-folder"></i>
                                             <p>Le mie opere</p>
                                         </a>
