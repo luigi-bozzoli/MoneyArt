@@ -17,11 +17,6 @@
     <!-- STYLESHEETS -->
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/fragments_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
-    <c:choose>
-        <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
-            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
-        </c:when>
-    </c:choose>
 
     <!-- FAVICON -->
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/favicon.ico" type="image/x-icon">
@@ -38,6 +33,24 @@
 
     <!-- FONTAWESOME CDN -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+
+    <c:choose>
+        <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/wallet')}">
+            <!-- JQUERY CDN -->
+            <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/wallet.css">
+        </c:when>
+    </c:choose>
 
     <!-- JS -->
         <script src="${pageContext.servletContext.contextPath}/static/js/sidebar.js"></script>
@@ -80,7 +93,7 @@
                                     <!-- Add icons to the links using the .nav-icon class
                                with font-awesome or any other icon font library -->
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/profiloUtente.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-user"></i>
                                             <p>Profilo</p>
                                         </a>
@@ -98,7 +111,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/wallet.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-wallet"></i>
                                             <p>Wallet</p>
                                         </a>
@@ -110,7 +123,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/notifiche.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-bell"></i>
                                             <p>Notifiche</p>
                                         </a>

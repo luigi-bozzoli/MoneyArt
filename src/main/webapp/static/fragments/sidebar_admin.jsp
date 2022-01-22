@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <c:choose>
         <c:when test="${fn:contains(requestURI, '/admin')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/admin_style.css">
             <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
         </c:when>
     </c:choose>
@@ -80,25 +81,31 @@
                                     <!-- Add icons to the links using the .nav-icon class
                                with font-awesome or any other icon font library -->
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/admin/profiloAdmin.jsp" class="nav-link">
+                                            <i class="nav-icon fas fa-user"></i>
+                                            <p>Profilo</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/admin/segnalazioni.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-flag"></i>
                                             <p>Segnalazioni</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/admin/aste.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-gavel"></i>
-                                            <p>Aste in corso</p>
+                                            <p>Aste</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/admin/rivendite.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-shopping-cart"></i>
                                             <p>Rivendite</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/logout" class="nav-link">
                                             <i class="nav-icon fas fa-sign-out-alt"></i>
                                             <p>LogOut</p>
                                         </a>

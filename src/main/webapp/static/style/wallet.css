@@ -116,7 +116,7 @@ p {
 }
 
 .bg-blue {
-    background-color: #dfe9fc9c;
+    background-color: #dfe9fc9c !important;
     border-radius: 5px
 }
 
@@ -151,6 +151,10 @@ input.card {
     cursor: pointer
 }
 
+.btn {
+    color: white !important;
+}
+
 .btn.btn-primary {
     box-shadow: none;
     height: 40px;
@@ -160,7 +164,7 @@ input.card {
 .bg.btn.btn-primary {
     background-color: transparent;
     border: none;
-    color: #1976d2
+    color: #1976d2 !important;
 }
 
 .bg.btn.btn-primary:hover {
@@ -187,4 +191,8 @@ input.card {
      ::placeholder {
         font-size: 10px
     }
+}
+
+.content-wrapper {
+    background-color: white !important;
 }

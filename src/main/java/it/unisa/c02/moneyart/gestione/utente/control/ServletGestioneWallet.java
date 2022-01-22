@@ -11,38 +11,31 @@ import java.io.IOException;
 @WebServlet(name = "ServletGestioneWallet", value = "/wallet")
 public class ServletGestioneWallet extends HttpServlet {
 
-
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
 
-    String action = request.getParameter("action");
     Utente utente = (Utente) request.getSession().getAttribute("utente");
-    double amount = Double.parseDouble(request.getParameter("amount"));
-
+    String action = request.getParameter("action");
+    String amount = request.getParameter("amount");
 
     switch (action) {
-
       case "withdraw":
-        if (!utenteService.withdraw(utente, amount)) {
+        if (!utenteService.withdraw(utente, Double.parseDouble(amount))) {
           request.setAttribute("error", "Errore durante il prelievo del saldo!");
         } else {
           request.setAttribute("message", "Saldo prelevato con successo");
         }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/wallet.jsp");
+        dispatcher.forward(request,response);
         break;
 
       case "deposit":
-        if(!utenteService.deposit(utente, amount)) {
-          request.setAttribute("error", "Errore durante il deposito!");
-        } else {
-          request.setAttribute("message", "Deposito avvenuto con successo");
-        }
+        ServletContext context= getServletContext();
+        RequestDispatcher rd= context.getRequestDispatcher("/pay");
+        rd.forward(request, response);
         break;
     }
-
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/wallet.jsp"); //// TODO: aggiungere il link alla pagina del wallet
-    dispatcher.forward(request, response);
-
   }
 
   @Override
