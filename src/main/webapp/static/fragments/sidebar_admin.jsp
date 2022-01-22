@@ -85,7 +85,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="${pageContext.servletContext.contextPath}/pages/admin/aste.jsp" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/admin/asteAdmin.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-gavel"></i>
                                             <p>Aste</p>
                                         </a>
