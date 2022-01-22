@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     $("button.non-leggi").click(unread)
     $("button.elimina").click(elimina)
-})
+});
 
 function creaNotificaLetta(elemento) {
 
@@ -32,7 +32,7 @@ function creaNotificaLetta(elemento) {
     let buttonElimina = $(document.createElement('button')).prop({
         type: 'button',
         innerHTML: 'elimina',
-        class: 'btn elimina',
+        class: 'btn elimina ml-3',
         "value" : value
     })
     buttonElimina.click(elimina)

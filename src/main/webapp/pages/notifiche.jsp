@@ -34,34 +34,34 @@
                     <c:if test="${not notifica.isLetta()}">
                         <c:choose>
                             <c:when test="${not empty notifica.asta.opera}">
-                                <tr onclick="window.location.href = '#asta'"  class="">
+                                <tr class="">
                                 <c:choose>
                                     <c:when test="${notifica.tipo.toString() eq 'SUPERATO'}">
-                                        <td>Sei stato superato nell'asta dell'opera ${notifica.asta.opera.nome}</td>
+                                        <td onclick="window.location.href = '${pageContext.servletContext.contextPath}/getAuction?id=${notifica.asta.id}'">Sei stato superato nell'asta dell'opera ${notifica.asta.opera.nome}</td>
 
                                     </c:when>
                                     <c:when test="${notifica.tipo.toString() eq 'TERMINATA'}">
 
-                                        <td>l'asta dell'opera ${notifica.asta.opera.nome} è terminata</td>
+                                        <td onclick="window.location.href = '${pageContext.servletContext.contextPath}/getAuction?id=${notifica.asta.id}'">l'asta dell'opera ${notifica.asta.opera.nome} è terminata</td>
 
 
                                     </c:when>
                                     <c:when test="${notifica.tipo.toString() eq 'ANNULLAMENTO'}">
-                                        <td>l'asta dell'opera ${notifica.asta.opera.nome} è stata annullata</td>
+                                        <td onclick="window.location.href = '${pageContext.servletContext.contextPath}/getAuction?id=${notifica.asta.id}'">l'asta dell'opera ${notifica.asta.opera.nome} è stata annullata</td>
 
                                     </c:when>
                                     <c:when test="${notifica.tipo.toString() eq 'VITTORIA'}">
-                                        <td>Hai vinto l'asta dell'opera ${notifica.asta.opera.nome}</td>
+                                        <td onclick="window.location.href = '${pageContext.servletContext.contextPath}/getAuction?id=${notifica.asta.id}'">Hai vinto l'asta dell'opera ${notifica.asta.opera.nome}</td>
 
                                     </c:when>
                                 </c:choose>
                             </c:when>
                             <c:when test="${not empty notifica.rivendita.opera}">
-                                <tr onclick="window.location.href = '#rivendita'"  class="">
+                                <tr class="">
                                 <c:choose>
                                     <c:when test="${notifica.tipo.toString() eq 'TERMINATA'}">
 
-                                        <td>Hanno acquistato la tua opera ${notifica.rivendita.opera.nome}</td>
+                                        <td onclick="window.location.href = '${pageContext.servletContext.contextPath}/getResell?id=${notifica.rivendita.id}'">Hanno acquistato la tua opera ${notifica.rivendita.opera.nome}</td>
                                     </c:when>
                                 </c:choose>
                             </c:when>
@@ -94,41 +94,41 @@
                     <c:if test="${notifica.isLetta()}">
                         <c:choose>
                             <c:when test="${not empty notifica.asta.opera}">
-                                <tr onclick="window.location.href = '#asta'"  class="">
+                                <tr class="">
                                 <c:choose>
                                     <c:when test="${notifica.tipo.toString() eq 'SUPERATO'}">
-                                        <td>Sei stato superato nell'asta dell'opera ${notifica.asta.opera.nome}</td>
+                                        <td onclick="window.location.href = '${pageContext.servletContext.contextPath}/getAuction?id=${notifica.asta.id}'">Sei stato superato nell'asta dell'opera ${notifica.asta.opera.nome}</td>
 
                                     </c:when>
                                     <c:when test="${notifica.tipo.toString() eq 'TERMINATA'}">
 
-                                        <td>l'asta dell'opera ${notifica.asta.opera.nome} è terminata</td>
+                                        <td onclick="window.location.href = '${pageContext.servletContext.contextPath}/getAuction?id=${notifica.asta.id}'">l'asta dell'opera ${notifica.asta.opera.nome} è terminata</td>
 
 
                                     </c:when>
                                     <c:when test="${notifica.tipo.toString() eq 'ANNULLAMENTO'}">
-                                        <td>l'asta dell'opera ${notifica.asta.opera.nome} è stata annullata</td>
+                                        <td onclick="window.location.href = '${pageContext.servletContext.contextPath}/getAuction?id=${notifica.asta.id}'">l'asta dell'opera ${notifica.asta.opera.nome} è stata annullata</td>
 
                                     </c:when>
                                     <c:when test="${notifica.tipo.toString() eq 'VITTORIA'}">
-                                        <td>Hai vinto l'asta dell'opera ${notifica.asta.opera.nome}</td>
+                                        <td onclick="window.location.href = '${pageContext.servletContext.contextPath}/getAuction?id=${notifica.asta.id}'">Hai vinto l'asta dell'opera ${notifica.asta.opera.nome}</td>
 
                                     </c:when>
                                 </c:choose>
                             </c:when>
                             <c:when test="${not empty notifica.rivendita.opera}">
-                                <tr onclick="window.location.href = '#rivendita'"  class="">
+                                <tr class="">
                                 <c:choose>
                                     <c:when test="${notifica.tipo.toString() eq 'TERMINATA'}">
 
-                                        <td>Hanno acquistato la tua opera ${notifica.rivendita.opera.nome}</td>
+                                        <td onclick="window.location.href = '${pageContext.servletContext.contextPath}/getResell?id=${notifica.rivendita.id}'">Hanno acquistato la tua opera ${notifica.rivendita.opera.nome}</td>
                                     </c:when>
                                 </c:choose>
                             </c:when>
                         </c:choose>
 
 
-                        <td class="d-flex justify-content-end td"><button value="${notifica.id}"  href="#" class="btn non-leggi">segna come non letta</button><button value="${notifica.id}"  href="#" class="btn elimina">elimina</button></td>
+                        <td class="d-flex justify-content-end td"><button value="${notifica.id}"  href="#" class="btn non-leggi">segna come non letta</button><button value="${notifica.id}"  href="#" class="btn elimina ml-3">elimina</button></td>
 
                         </tr>
 

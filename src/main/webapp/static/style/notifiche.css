@@ -37,28 +37,29 @@
 
 .table td, .table th, table{
     border-top: none !important;
+    vertical-align: middle !important;
 }
 
- .table tr {
-    border-bottom: 1px solid Grey;
-     cursor: pointer;
+.table tr {
+    border-bottom: 1px solid lightgrey;
+    cursor: pointer;
 }
-
+tr:hover {
+    background-color: transparent !important;
+}
 td.justify-content-end .btn {
-    color: #BB371A;
+    background-color: #eba83a;
+    color: white;
     font-size: 15px;
     text-transform: uppercase;
     font-weight: bold;
-    background: none;
-    border: 1px solid #BB371A !important;
-    padding: 6px 14px;
+    padding: 8px 14px;
     margin-top: 5px;
     line-height: 16px;
     border-radius: 20px !important;
     transition: .8s;
 }
-td.justify-content-end .btn:hover,td.justify-content-end .btn:focus {
-    color: #fff;
+td.justify-content-end .btn:hover,td.justify-content-end .btn:hover {
     background: #BB371A;
     box-shadow: none;
     transition: .8s;

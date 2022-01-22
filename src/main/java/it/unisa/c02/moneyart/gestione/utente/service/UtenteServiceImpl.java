@@ -1,5 +1,6 @@
 package it.unisa.c02.moneyart.gestione.utente.service;
 
+import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
@@ -91,14 +92,32 @@ public class UtenteServiceImpl implements UtenteService {
         utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
       }
     }
-    utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
-    utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
+    List<Opera>  inPossesso = operaDao.doRetrieveAllByOwnerId(utente.getId());
+
+    if(inPossesso != null) {
+      for(Opera o : inPossesso) {
+        o.setArtista(utenteDao.doRetrieveById(o.getArtista().getId()));
+        o.setPossessore(utente);
+      }
+    }
+    utente.setOpereInPossesso(inPossesso);
+
+    List<Opera>  create = operaDao.doRetrieveAllByOwnerId(utente.getId());
+
+    if(create != null) {
+      for(Opera o : create) {
+        o.setArtista(utente);
+        o.setPossessore(utenteDao.doRetrieveById(o.getPossessore().getId()));
+      }
+    }
+
+    utente.setOpereCreate(create);
+
     utente.setNotifiche(notificaDao.doRetrieveAllByUserId(utente.getId()));
     utente.setPartecipazioni(partecipazioneDao.doRetrieveAllByUserId(utente.getId()));
 
     utente.setnFollowers(getNumberOfFollowers(utente));
     return utente;
-
   }
 
   /**
@@ -124,8 +143,26 @@ public class UtenteServiceImpl implements UtenteService {
         utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
       }
     }
-    utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
-    utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
+    List<Opera>  inPossesso = operaDao.doRetrieveAllByOwnerId(utente.getId());
+
+    if(inPossesso != null) {
+      for(Opera o : inPossesso) {
+        o.setArtista(utenteDao.doRetrieveById(o.getArtista().getId()));
+        o.setPossessore(utente);
+      }
+    }
+    utente.setOpereInPossesso(inPossesso);
+
+    List<Opera>  create = operaDao.doRetrieveAllByOwnerId(utente.getId());
+
+    if(create != null) {
+      for(Opera o : create) {
+        o.setArtista(utente);
+        o.setPossessore(utenteDao.doRetrieveById(o.getPossessore().getId()));
+      }
+    }
+
+    utente.setOpereCreate(create);
     utente.setNotifiche(notificaDao.doRetrieveAllByUserId(utente.getId()));
     utente.setPartecipazioni(partecipazioneDao.doRetrieveAllByUserId(utente.getId()));
 
@@ -181,8 +218,27 @@ public class UtenteServiceImpl implements UtenteService {
           utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
         }
       }
-      utente.setOpereInPossesso(operaDao.doRetrieveAllByOwnerId(utente.getId()));
-      utente.setOpereCreate(operaDao.doRetrieveAllByArtistId(utente.getId()));
+      List<Opera>  inPossesso = operaDao.doRetrieveAllByOwnerId(utente.getId());
+
+      if(inPossesso != null) {
+        for(Opera o : inPossesso) {
+          o.setArtista(utenteDao.doRetrieveById(o.getArtista().getId()));
+          o.setPossessore(utente);
+        }
+      }
+      utente.setOpereInPossesso(inPossesso);
+
+      List<Opera>  create = operaDao.doRetrieveAllByOwnerId(utente.getId());
+
+      if(create != null) {
+        for(Opera o : create) {
+          o.setArtista(utente);
+          o.setPossessore(utenteDao.doRetrieveById(o.getPossessore().getId()));
+        }
+      }
+
+      utente.setOpereCreate(create);
+
       utente.setNotifiche(notificaDao.doRetrieveAllByUserId(utente.getId()));
       utente.setPartecipazioni(partecipazioneDao.doRetrieveAllByUserId(utente.getId()));
 
