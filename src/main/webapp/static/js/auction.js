@@ -32,7 +32,7 @@ $(document).ready(function() {
         }, 3000);
     });
 
-    if (document.URL.includes("asta.jsp") ) {
+    if (document.URL.includes("getAuction") ) {
         let astaCorrente;
         $.get(ctx + '/getAuction?id=' + astaId, function (asta) {
             let countdown = new Date(asta.dataFine).getTime();

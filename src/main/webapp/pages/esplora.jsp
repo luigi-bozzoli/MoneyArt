@@ -169,7 +169,7 @@
                                     <h6 class="mb-0">Followers:</h6>
                                     <p><c:out value="${utente.nFollowers}"/></p>
                                 </div>
-                                <a href="#" class="btn btn-primary">Visualizza profilo</a>
+                                <a href="${pageContext.servletContext.contextPath}/getUser?id=${utente.id}" class="btn btn-primary">Visualizza profilo</a>
                             </div>
                         </div>
                     </div>

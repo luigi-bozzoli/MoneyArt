@@ -1,5 +1,6 @@
 package it.unisa.c02.moneyart.gestione.utente.control;
 
+import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import javax.inject.Inject;
@@ -14,23 +15,48 @@ public class ServletFollow extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    Utente utente = (Utente) request.getSession().getAttribute("utente");
+    HttpSession session = request.getSession();
+
+    Utente utente = (Utente) session.getAttribute("utente");
     String action = request.getParameter("action");
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/profiloUtente.jsp");
+
+    boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+    boolean flag;
 
     switch (action) {
       case "follow":
         int idFollowed = Integer.parseInt(request.getParameter("followed"));
         Utente followed = utenteService.getUserInformation(idFollowed);
-        utenteService.follow(utente, followed);
+
+        if(!utenteService.follow(utente, followed)) {
+          utenteService.unfollow(utente);
+          utenteService.follow(utente, followed);
+        }
+        session.removeAttribute("utente");
+        session.setAttribute("utente", utente);
+        flag = true;
         break;
       case "unfollow":
         utenteService.unfollow(utente);
+        session.removeAttribute("utente");
+        session.setAttribute("utente", utente);
+        flag = true;
         break;
       default:
+        flag = false;
         throw new IllegalStateException("Unexpected value: " + action);
     }
-    dispatcher.forward(request, response);
+
+    if(ajax) {
+      String json = new Gson().toJson(flag);
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write(json);
+    } else {
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/profiloUtente.jsp");
+      dispatcher.forward(request, response);
+    }
+
   }
 
   @Override

@@ -21,16 +21,16 @@ public class ServletGetUtente extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    String username = request.getParameter("username");
+    String id = request.getParameter("id");
 
-    Utente utente = utenteService.getUserInformation(username);
+    Utente utente = utenteService.getUserInformation(Integer.parseInt(id));
 
     if (utente == null) {
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
           "Nessun utente trovato!");
     } else {
-      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/utenteRicercato.jsp");
-      request.setAttribute("utenteRicercato", utente);
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/artista.jsp");
+      request.setAttribute("artista", utente);
       dispatcher.forward(request, response);
     }
   }
