@@ -338,12 +338,12 @@ class UtenteServiceImplIntegrationTest {
     @ParameterizedTest
     @ArgumentsSource(UtenteDBProvider.class)
     void getUserInformation(Utente oracle) {
+
       Utente result = utenteService.getUserInformation(oracle.getId());
 
       assertEquals(oracle.getId(), result.getId());
       assertEquals(oracle.getUsername(), result.getUsername());
       assertEquals(oracle.getOpereInPossesso().size(), result.getOpereInPossesso().size());
-      assertEquals(oracle.getOpereCreate().size(), result.getOpereCreate().size());
       assertEquals(oracle.getNotifiche().size(), result.getNotifiche().size());
       assertEquals(oracle.getPartecipazioni().size(), result.getPartecipazioni().size());
     }
@@ -357,7 +357,6 @@ class UtenteServiceImplIntegrationTest {
       assertEquals(oracle.getId(), result.getId());
       assertEquals(oracle.getUsername(), result.getUsername());
       assertEquals(oracle.getOpereInPossesso().size(), result.getOpereInPossesso().size());
-      assertEquals(oracle.getOpereCreate().size(), result.getOpereCreate().size());
       assertEquals(oracle.getNotifiche().size(), result.getNotifiche().size());
       assertEquals(oracle.getPartecipazioni().size(), result.getPartecipazioni().size());
     }
@@ -434,13 +433,6 @@ class UtenteServiceImplIntegrationTest {
 
     assertEquals(oracle.size(), result.size());
 
-    for(int i = 0; i < result.size(); i++) {
-      assertEquals(oracle.get(i).getId(), result.get(i).getId());
-      assertEquals(oracle.get(i).getPartecipazioni().size(), result.get(i).getPartecipazioni().size());
-      assertEquals(oracle.get(i).getOpereCreate().size(), result.get(i).getOpereCreate().size());
-      assertEquals(oracle.get(i).getOpereInPossesso().size(), result.get(i).getOpereInPossesso().size());
-      assertEquals(oracle.get(i).getNotifiche().size(), result.get(i).getNotifiche().size());
-    }
   }
 
   @Nested
