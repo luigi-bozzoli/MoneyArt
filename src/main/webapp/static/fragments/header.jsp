@@ -50,6 +50,9 @@
                     <c:when test="${fn:contains(requestURI, '/notifiche')}">
                         <title>Notifiche - MoneyArt</title>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/segnalazioni')}">
+                        <title>Segnalazioni - MoneyArt</title>
+                    </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
                         <!-- TODO: Trovare una soluzione migliore -->
@@ -92,7 +95,7 @@
                     <c:when test="${fn:contains(requestURI, '/marketplace')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/marketplace_style.css">
                     </c:when>
-                    <c:when test="${fn:contains(requestURI, '/notifiche')}">
+                    <c:when test="${fn:contains(requestURI, '/notifiche') or fn:contains(requestURI, '/segnalazioni')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/notifiche.css">
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/rivendita')}">
@@ -161,6 +164,9 @@
                     <c:when test="${fn:contains(requestURI, '/notifiche')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/notifiche.js"></script>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/segnalazioni')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/segnalazione.js"></script>
+                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/artista')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/artist.js"></script>
                     </c:when>
@@ -171,8 +177,6 @@
                         <script src="${pageContext.servletContext.contextPath}/static/js/home.js"></script>
                     </c:otherwise>
                 </c:choose>
-
-
             </head>
 
             <body>
@@ -235,7 +239,7 @@
                                         <c:when test="${empty sessionScope.utente}">
                                             <div class="account-buttons">
                                                 <a href="${pageContext.servletContext.contextPath}/pages/admin/profiloAdmin.jsp" title="Admin">
-                                                    <i class="fas fa-user-alt"></i>
+                                                    <i class="fas fa-user-cog"></i>
                                                 </a>
                                             </div>
                                         </c:when>

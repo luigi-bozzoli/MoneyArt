@@ -197,7 +197,7 @@ $(document).ready(function (){
                                     `<h6 class="mb-0">Followers:</h6>` +
                                     `<p>` + utente.numFollowers + `</p>` +
                                 `</div>` +
-                                `<a href="#" class="btn btn-primary">Visualizza profilo</a>` +
+                                `<a href="` + ctx + `/getUser?id=` + utente.id +`" class="btn btn-primary">Visualizza profilo</a>` +
                             `</div>` +
                         `</div>` +
                     `</div>`
@@ -231,7 +231,7 @@ $(document).ready(function (){
                     `<h6 class="mb-0">Followers:</h6>` +
                     `<p>` + utente.numFollowers + `</p>` +
                     `</div>` +
-                    `<a href="#" class="btn btn-primary">Visualizza profilo</a>` +
+                    `<a href="` + ctx + `/getUser?id=` + utente.id +`" class="btn btn-primary">Visualizza profilo</a>` +
                     `</div>` +
                     `</div>` +
                     `</div>`
