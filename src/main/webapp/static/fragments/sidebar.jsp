@@ -93,7 +93,7 @@
                                     <!-- Add icons to the links using the .nav-icon class
                                with font-awesome or any other icon font library -->
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/profiloUtente.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-user"></i>
                                             <p>Profilo</p>
                                         </a>
@@ -123,7 +123,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/notifiche.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-bell"></i>
                                             <p>Notifiche</p>
                                         </a>

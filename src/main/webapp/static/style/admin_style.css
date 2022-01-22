@@ -1,0 +1,8 @@
+.mybox-info {
+    margin: auto !important;
+}
+
+.mybox-info h3,
+.mybox-info p {
+    color: white !important;
+}
