@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  */
 
 @WebFilter(filterName = "FilterLogin", urlPatterns = {"/userPage", "/newArtwork",
-    "/cancelAuction", "/newAuction", "/newProfilePicture", "/wallet", "/notifies",
+    "/cancelAuction", "/newAuction", "/newProfilePicture", "/wallet", "/walletInfo", "/notifies",
     "/getUserArtworks", "/follow", "/logout", "/changeUserInformation", "/userAuctions",
     "/buyArtwork", "/resell", "/pay", "/recivePayment", "/pages/notifiche.jsp",
     "/deleteNotification"})

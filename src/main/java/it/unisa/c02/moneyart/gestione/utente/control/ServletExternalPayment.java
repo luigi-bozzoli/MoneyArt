@@ -28,8 +28,8 @@ public class ServletExternalPayment extends HttpServlet {
       response.sendRedirect(payerAdapter.makePayment(amount));
     } catch (Exception e) {
       e.printStackTrace();
-      request.getRequestDispatcher("/payment.jsp")
-          .forward(request, response);//Todo: aggiungere vera view;
+      request.getRequestDispatcher("/walletInfo")
+          .forward(request, response);
 
     }
 

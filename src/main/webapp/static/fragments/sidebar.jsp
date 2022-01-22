@@ -111,7 +111,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/wallet.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-wallet"></i>
                                             <p>Wallet</p>
                                         </a>
