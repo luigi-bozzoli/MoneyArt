@@ -50,6 +50,9 @@
                     <c:when test="${fn:contains(requestURI, '/wallet')}">
                         <title>Deposito - MoneyArt</title>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/notifiche')}">
+                        <title>Notifiche - MoneyArt</title>
+                    </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
                         <!-- TODO: Trovare una soluzione migliore -->
@@ -88,6 +91,9 @@
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/marketplace')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/marketplace_style.css">
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/notifiche')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/notifiche.css">
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/rivendita')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/pagina_rivendita_style.css">
@@ -145,6 +151,9 @@
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/rivendita')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/auction.js"></script>
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/notifiche')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/notifiche.js"></script>
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/home.js"></script>

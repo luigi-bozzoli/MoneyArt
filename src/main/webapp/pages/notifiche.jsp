@@ -28,7 +28,7 @@
 
         <div class="container-fluid d-flex flex-wrap" id="container-nuove">
 
-            <table class="table table-hover ">
+            <table class="table table-hover non-lette " id="non-lette">
                 <tbody class="">
                 <c:forEach var="notifica" items="${notifiche}">
                     <c:if test="${not notifica.isLetta()}">
@@ -68,7 +68,7 @@
                         </c:choose>
 
 
-                        <td class="d-flex justify-content-end"><a href="#" class="btn leggi">segna come letta</a></td>
+                        <td class="d-flex justify-content-end td"><button value="${notifica.id}"  href="#" class="btn leggi">segna come letta</button></td>
 
                         </tr>
 
@@ -88,8 +88,8 @@
 
         <div class="container-fluid d-flex flex-wrap" id="container-lette">
 
-            <table class="table table-hover ">
-                <tbody class="">
+            <table class="table table-hover lette" id = "gia-lette">
+                <tbody>
                 <c:forEach var="notifica" items="${notifiche}">
                     <c:if test="${notifica.isLetta()}">
                         <c:choose>
@@ -128,7 +128,7 @@
                         </c:choose>
 
 
-                        <td class="d-flex justify-content-end"><a href="#" class="btn leggi">segna come non letta</a></td>
+                        <td class="d-flex justify-content-end td"><button value="${notifica.id}"  href="#" class="btn non-leggi">segna come non letta</button><button value="${notifica.id}"  href="#" class="btn elimina">elimina</button></td>
 
                         </tr>
 
