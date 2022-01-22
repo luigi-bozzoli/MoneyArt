@@ -100,7 +100,7 @@ $(document).ready(function (){
                                    `<span class="timer"></span>` +
                                 `</div>` +
                                 `<p class="item-price">` + prezzo + `</p>` +
-                                `<a href="#" class="btn btn-primary">Vai all'asta</a>` +    //todo aggiungere il link alla pagina dell'asta
+                                `<a href="`+ ctx +`/getAuction?id=` + asta.id +`" class="btn btn-primary">Vai all'asta</a>` +
                             `</div>` +
                         `</div>` +
                     `</div>`

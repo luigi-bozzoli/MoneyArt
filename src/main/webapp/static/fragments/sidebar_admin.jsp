@@ -12,13 +12,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- TITLE -->
-    <title>Profilo Utente - MoneyArt</title>
+    <title>Admin - MoneyArt</title>
 
     <!-- STYLESHEETS -->
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/fragments_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <c:choose>
-        <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
+        <c:when test="${fn:contains(requestURI, '/admin')}">
             <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
         </c:when>
     </c:choose>
@@ -42,7 +42,7 @@
     <!-- JS -->
         <script src="${pageContext.servletContext.contextPath}/static/js/sidebar.js"></script>
         <c:choose>
-            <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
+            <c:when test="${fn:contains(requestURI, '/admin')}">
                 <script src="${pageContext.servletContext.contextPath}/static/js/updateProfile.js"></script>
             </c:when>
         </c:choose>
@@ -81,38 +81,20 @@
                                with font-awesome or any other icon font library -->
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
-                                            <i class="nav-icon fas fa-user"></i>
-                                            <p>Profilo</p>
+                                            <i class="nav-icon fas fa-flag"></i>
+                                            <p>Segnalazioni</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
-                                            <i class="nav-icon fas fa-download"></i>
-                                            <p>Carica opera</p>
+                                            <i class="nav-icon fas fa-gavel"></i>
+                                            <p>Aste in corso</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
-                                            <i class="nav-icon fas fa-folder"></i>
-                                            <p>Le mie opere</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="nav-icon fas fa-wallet"></i>
-                                            <p>Wallet</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="${pageContext.servletContext.contextPath}/pages/asteUtente.jsp" class="nav-link">
-                                            <i class="nav-icon fas fa-th-list"></i>
-                                            <p>Aste</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="nav-icon fas fa-bell"></i>
-                                            <p>Notifiche</p>
+                                            <i class="nav-icon fas fa-shopping-cart"></i>
+                                            <p>Rivendite</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">

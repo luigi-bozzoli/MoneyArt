@@ -4,7 +4,7 @@ function copyUrl() {
         return;
     }
     const dummy = document.createElement('p');
-    dummy.textContent = window.location.href.substring(0, window.location.href.length-1);
+    dummy.textContent = window.location.href;
     document.body.appendChild(dummy);
 
     const range = document.createRange();
@@ -22,11 +22,22 @@ function copyUrl() {
 
 $(document).ready(function() {
 
-    let astaCorrente;
-    $.get(ctx + '/getAuction?id=' + astaId, function(asta) {
+    $('#share').click(function () {
+        copyUrl();
+        $('#share i').attr("class", "fas fa-check");
+        $('#share p').html('Link <br> copiato!');
+        setTimeout(function () {
+            $('#share i').attr("class", "fas fa-share-alt");
+            $('#share p').html('Condividi');
+        }, 3000);
+    });
+
+    if (document.URL.includes("asta.jsp") ) {
+        let astaCorrente;
+        $.get(ctx + '/getAuction?id=' + astaId, function (asta) {
             let countdown = new Date(asta.dataFine).getTime();
             astaCorrente = asta;
-            let x = setInterval(function() {
+            let x = setInterval(function () {
 
                 // Get todays date and time
                 let now = new Date().getTime();
@@ -40,16 +51,16 @@ $(document).ready(function() {
                 let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                if(days.toString().length == 1) {
+                if (days.toString().length == 1) {
                     days = '0' + days;
                 }
-                if(hours.toString().length == 1) {
+                if (hours.toString().length == 1) {
                     hours = '0' + hours;
                 }
-                if(minutes.toString().length == 1) {
+                if (minutes.toString().length == 1) {
                     minutes = '0' + minutes;
                 }
-                if(seconds.toString().length == 1) {
+                if (seconds.toString().length == 1) {
                     seconds = '0' + seconds;
                 }
 
@@ -65,7 +76,7 @@ $(document).ready(function() {
                 }
 
                 let prezzo;
-                if(asta.partecipazioni.length == 0) {
+                if (asta.partecipazioni.length == 0) {
                     prezzo = 'Nessuna offerta';
                 } else {
                     prezzo = asta.partecipazioni[(asta.partecipazioni.length - 1)].offerta.toFixed(2);
@@ -77,50 +88,40 @@ $(document).ready(function() {
 
 
             }, 1000);
-    });
-
-    $('.offer-input input').keyup(function (){
-        $.get(ctx + '/newOffer', function (utente) {
-            let prezzo;
-            if(astaCorrente.partecipazioni.length == 0) {
-                prezzo = 0;
-            } else {
-                prezzo = astaCorrente.partecipazioni[(astaCorrente.partecipazioni.length - 1)].offerta;
-            }
-
-            let offerta = $('.offer-input input[name = offerta]').val();
-
-
-            if(utente != null) {
-                $(".error").html(``);
-                if (utente.saldo >= offerta && offerta > prezzo) {
-                    $('.offer-input button').removeClass('disabled');
-                    $(".error").html(``);
-                } else {
-                    $('.offer-input button').addClass('disabled');
-                    $(".error").html(`<p class="mt-3">Il tuo saldo non é sufficiente oppure hai fatto un'offerta non valida!</p>`);
-                }
-            } else {
-                $(".error").html(`<p class="mt-3">Devi effettuare il login!</p>`);
-            }
-
-            if (offerta.length === 0) {
-                $(".error").html(``);
-            }
         });
-    });
 
-    $('#share').click(function () {
-        copyUrl();
-        $('#share i').attr("class", "fas fa-check");
-        $('#share p').html('Link <br> copiato!');
-        setTimeout(function() {
-            $('#share i').attr("class", "fas fa-share-alt");
-            $('#share p').html('Condividi');
-        }, 3000);
+        $('.offer-input input').keyup(function () {
+            $.get(ctx + '/newOffer', function (utente) {
+                let prezzo;
+                if (astaCorrente.partecipazioni.length == 0) {
+                    prezzo = 0;
+                } else {
+                    prezzo = astaCorrente.partecipazioni[(astaCorrente.partecipazioni.length - 1)].offerta;
+                }
 
-    });
+                let offerta = $('.offer-input input[name = offerta]').val();
 
+
+                if (utente != null) {
+                    $(".error").html(``);
+                    if (utente.saldo >= offerta && offerta > prezzo) {
+                        $('.offer-input button').removeClass('disabled');
+                        $(".error").html(``);
+                    } else {
+                        $('.offer-input button').addClass('disabled');
+                        $(".error").html(`<p class="mt-3">Il tuo saldo non é sufficiente oppure hai fatto un'offerta non valida!</p>`);
+                    }
+                } else {
+                    $(".error").html(`<p class="mt-3">Devi effettuare il login!</p>`);
+                }
+
+                if (offerta.length === 0) {
+                    $(".error").html(``);
+                }
+            });
+        });
+
+    }
 
 
 });

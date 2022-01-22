@@ -30,62 +30,62 @@
         <div class="tab-pane fade show active" id="auctions" role="tabpanel" aria-labelledby="aste-tab">
 
             <div class="container filtro d-flex justify-content-center align-items-center">
-                        <h5 class="mr-3 mb-0">Ordina per: </h5>
-                        <div class="dropdown">
-                            <button class="dropdown-toggle btn" type="button" id="dropdownAuctions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <div class="sort-option d-flex align-items-center">
-                                    <p class="mb-0 sort-text"></p>
-                                    <i class="fas fa-sort sort-icon"></i>
-                                </div>
-                            </button>
-
-                            <span class="ml-2 invisible close-drop" style="cursor: pointer">
-                                <i class="fas fa-times"></i>
-                            </span>
-
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownAuctions">
-                                <a class="dropdown-item" href="#">
-                                    <div class="sort-option d-flex align-items-cente justify-content-between">
-                                        <p class="mb-0">Prezzo</p>
-                                        <i class="fas fa-sort-amount-up"></i>
-                                    </div>
-                                </a>
-
-                                <a class="dropdown-item" href="#">
-                                    <div class="sort-option d-flex align-items-center justify-content-between">
-                                        <p class="mb-0">Prezzo</p>
-                                        <i class="fas fa-sort-amount-down"></i>
-                                    </div>
-                                </a>
-
-                                <a class="dropdown-item" href="#">
-                                    <div class="sort-option d-flex align-items-center justify-content-between">
-                                        <p class="mb-0 mr-3">Popolarità artista</p>
-                                        <i class="fas fa-sort-amount-up"></i>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <div class="sort-option d-flex align-items-center justify-content-between">
-                                        <p class="mb-0">Popolarità artista</p>
-                                        <i class="fas fa-sort-amount-down"></i>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <div class="sort-option d-flex align-items-center justify-content-between">
-                                        <p class="mb-0">Scadenza</p>
-                                        <i class="fas fa-sort-amount-up"></i>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <div class="sort-option d-flex align-items-center justify-content-between">
-                                        <p class="mb-0">Scadenza</p>
-                                        <i class="fas fa-sort-amount-down"></i>
-                                    </div>
-                                </a>
-                            </div>
+                <h5 class="mr-3 mb-0">Ordina per: </h5>
+                <div class="dropdown">
+                    <button class="dropdown-toggle btn" type="button" id="dropdownAuctions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="sort-option d-flex align-items-center">
+                            <p class="mb-0 sort-text"></p>
+                            <i class="fas fa-sort sort-icon"></i>
                         </div>
+                    </button>
+
+                    <span class="ml-2 invisible close-drop" style="cursor: pointer">
+                        <i class="fas fa-times"></i>
+                    </span>
+
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownAuctions">
+                        <a class="dropdown-item" href="#">
+                            <div class="sort-option d-flex align-items-cente justify-content-between">
+                                <p class="mb-0">Prezzo</p>
+                                <i class="fas fa-sort-amount-up"></i>
+                            </div>
+                        </a>
+
+                        <a class="dropdown-item" href="#">
+                            <div class="sort-option d-flex align-items-center justify-content-between">
+                                <p class="mb-0">Prezzo</p>
+                                <i class="fas fa-sort-amount-down"></i>
+                            </div>
+                        </a>
+
+                        <a class="dropdown-item" href="#">
+                            <div class="sort-option d-flex align-items-center justify-content-between">
+                                <p class="mb-0 mr-3">Popolarità artista</p>
+                                <i class="fas fa-sort-amount-up"></i>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="sort-option d-flex align-items-center justify-content-between">
+                                <p class="mb-0">Popolarità artista</p>
+                                <i class="fas fa-sort-amount-down"></i>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="sort-option d-flex align-items-center justify-content-between">
+                                <p class="mb-0">Scadenza</p>
+                                <i class="fas fa-sort-amount-up"></i>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="sort-option d-flex align-items-center justify-content-between">
+                                <p class="mb-0">Scadenza</p>
+                                <i class="fas fa-sort-amount-down"></i>
+                            </div>
+                        </a>
                     </div>
+                </div>
+            </div>
 
             <div class="container-fluid d-flex flex-wrap" id="container-aste">
 
@@ -110,7 +110,7 @@
                                     </c:otherwise>
                                 </c:choose>
 
-                                <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
                             </div>
                         </div>
                     </div>
