@@ -222,9 +222,9 @@ public class Opera {
   }
 
   /**
-   * Restituisce la rappresentazione sotto forma di stringa di un'asta.
+   * Restituisce la rappresentazione sotto forma di stringa di un'opera.
    *
-   * @return la stringa che rappresenta l'asta
+   * @return la stringa che rappresenta l'opera
    */
   @Override
   public String toString() {
