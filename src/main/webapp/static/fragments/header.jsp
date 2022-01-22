@@ -53,6 +53,9 @@
                     <c:when test="${fn:contains(requestURI, '/segnalazioni')}">
                         <title>Segnalazioni - MoneyArt</title>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/opereUtente')}">
+                        <title>Le tue Opere - MoneyArt</title>
+                    </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
                         <!-- TODO: Trovare una soluzione migliore -->
@@ -103,6 +106,9 @@
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/artista')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/artista.css">
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/opereUtente')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/opereUtente.css">
                     </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
@@ -172,6 +178,9 @@
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/home.js"></script>
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/opereUtente')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/opereUtente.js"></script>
                     </c:when>
                     <c:otherwise>
                         <script src="${pageContext.servletContext.contextPath}/static/js/home.js"></script>

@@ -2,13 +2,17 @@ package unit.gestione.service;
 
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaServiceImpl;
+import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import javax.inject.Inject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,11 +51,16 @@ public class RivenditaServiceImplUnitTest {
   @Mock
   private UtenteDao utenteDao;
 
+  @Mock
+  private AstaDao astaDao;
+  @Mock
+  private PartecipazioneDao partecipazioneDao;
+
   private RivenditaService service;
 
   @BeforeEach
   void setUp() {
-    service = new RivenditaServiceImpl(utenteDao, operaDao, rivenditaDao, notificaDao);
+    service = new RivenditaServiceImpl(utenteDao, operaDao, rivenditaDao, notificaDao,astaDao,partecipazioneDao);
   }
 
   @AfterEach
@@ -187,6 +196,8 @@ public class RivenditaServiceImplUnitTest {
   void getResellPrice(Opera opera) {
 
     when(operaDao.doRetrieveById(anyInt())).thenReturn(opera);
+    when(utenteDao.doRetrieveById(opera.getArtista().getId())).thenReturn(opera.getArtista());
+    when(astaDao.doRetrieveByOperaId(anyInt())).thenReturn(new ArrayList<>());
     assertEquals(0, service.getResellPrice(opera));
   }
 
@@ -196,6 +207,7 @@ public class RivenditaServiceImplUnitTest {
   void resell(Opera opera) {
 
     when(operaDao.doRetrieveById(anyInt())).thenReturn(opera);
+    when(utenteDao.doRetrieveById(opera.getArtista().getId())).thenReturn(opera.getArtista());
     assertEquals(true, service.resell(opera.getId()));
   }
 

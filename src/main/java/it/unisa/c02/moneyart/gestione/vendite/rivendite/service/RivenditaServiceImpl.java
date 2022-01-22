@@ -1,12 +1,15 @@
 package it.unisa.c02.moneyart.gestione.vendite.rivendite.service;
 
+import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import java.util.Collections;
@@ -16,10 +19,10 @@ import javax.inject.Inject;
 
 /**
  * Classe che implementa i metodi dell'interfaccia RivenditaService.
- *
  */
 
 public class RivenditaServiceImpl implements RivenditaService {
+
 
   /**
    * Costruttore senza paramentri.
@@ -36,11 +39,14 @@ public class RivenditaServiceImpl implements RivenditaService {
    * @param rivenditaDao dao di un utente
    */
   public RivenditaServiceImpl(UtenteDao utenteDao, OperaDao operaDao, RivenditaDao rivenditaDao,
-                              NotificaDao notificaDao) {
+                              NotificaDao notificaDao, AstaDao astaDao,
+                              PartecipazioneDao partecipazioneDao) {
     this.operaDao = operaDao;
     this.utenteDao = utenteDao;
     this.rivenditaDao = rivenditaDao;
     this.notificaDao = notificaDao;
+    this.astaDao = astaDao;
+    this.partecipazioneDao = partecipazioneDao;
 
   }
 
@@ -78,10 +84,26 @@ public class RivenditaServiceImpl implements RivenditaService {
       return 0;
     }
 
-    double prezzo = 0;
-    Utente artista = opera.getArtista();
-    Integer followers = getNumberOfFollowers(artista);
-    prezzo = followers * prezzo;
+    opera = operaDao.doRetrieveById(opera.getId());
+    Asta asta = new Asta();
+    asta.setId(-1);
+    for (Asta asta1 : astaDao.doRetrieveByOperaId(opera.getId())) {
+      if (asta1.getStato().equals(Asta.Stato.TERMINATA)) {
+        asta = asta1;
+        break;
+      }
+    }
+
+    List<Partecipazione> partecipazioni = partecipazioneDao.doRetrieveAllByAuctionId(asta.getId());
+    if (partecipazioni.size() == 0) {
+      return 0;
+    }
+    Partecipazione partecipazione =
+        partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()).get(partecipazioni.size() - 1);
+    double prezzo = partecipazione.getOfferta();
+    Utente artista = utenteDao.doRetrieveById(opera.getArtista().getId());
+    int followers = getNumberOfFollowers(artista);
+    prezzo += prezzo * (followers / 10000.0);
     return prezzo;
   }
 
@@ -144,7 +166,8 @@ public class RivenditaServiceImpl implements RivenditaService {
     owner.setSaldo(owner.getSaldo() + rivendita.getPrezzo());
 
     rivendita.setStato(Rivendita.Stato.TERMINATA);
-    Notifica notifica = new Notifica(owner, new Asta(),rivendita, Notifica.Tipo.TERMINATA, "", false);
+    Notifica notifica =
+        new Notifica(owner, new Asta(), rivendita, Notifica.Tipo.TERMINATA, "", false);
 
     notificaDao.doCreate(notifica);
     utenteDao.doUpdate(utente);
@@ -201,7 +224,7 @@ public class RivenditaServiceImpl implements RivenditaService {
    * Restituisce tutte le rivendite con un determinato stato ordinate in base al prezzo.
    *
    * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
-   * @param s lo stato della rivendita
+   * @param s     lo stato della rivendita
    * @return la lista ordinata
    */
   @Override
@@ -229,7 +252,7 @@ public class RivenditaServiceImpl implements RivenditaService {
    * alla popolarità dell'artista.
    *
    * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
-   * @param s lo stato della rivendita
+   * @param s     lo stato della rivendita
    * @return la lista ordinata
    */
   @Override
@@ -274,4 +297,10 @@ public class RivenditaServiceImpl implements RivenditaService {
   private OperaDao operaDao;
   @Inject
   private NotificaDao notificaDao;
+  @Inject
+  private AstaDao astaDao;
+  @Inject
+  private PartecipazioneDao partecipazioneDao;
+
+  private static final double VALORE_PER_FOLLOWER = 0.10d;
 }

@@ -23,7 +23,6 @@ public class ServletGetOpereByUser extends HttpServlet {
     } else {
       opere = operaService.getArtworkByOwner(id);
     }
-    System.out.println(opere.size());
     for (Opera opera : opere) {
       opera.setArtista(utenteService.getUserInformation(opera.getArtista().getId()));
     }

@@ -7,12 +7,16 @@ import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.PartecipazioneDaoImpl;
 import it.unisa.c02.moneyart.model.dao.RivenditaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
+import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import org.apache.ibatis.jdbc.ScriptRunner;
@@ -50,6 +54,8 @@ class RivenditaServiceImplIntegrationTest {
   private NotificaDao notificaDao;
   private UtenteDao utenteDao;
   private OperaDao operaDao;
+  private AstaDao astaDao;
+  private PartecipazioneDao partecipazioneDao;
 
   @BeforeAll
   public static void generalSetUp() throws SQLException, FileNotFoundException {
@@ -89,6 +95,8 @@ class RivenditaServiceImplIntegrationTest {
     operaDao = new OperaDaoImpl(dataSource);
     notificaDao = new NotificaDaoImpl(dataSource);
     utenteDao = new UtenteDaoImpl(dataSource);
+    astaDao = new AstaDaoImpl(dataSource);
+    partecipazioneDao = new PartecipazioneDaoImpl(dataSource);
 
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
@@ -97,7 +105,7 @@ class RivenditaServiceImplIntegrationTest {
     runner.runScript(reader);
     connection.close();
 
-    service = new RivenditaServiceImpl(utenteDao, operaDao, rivenditaDao, notificaDao);
+    service = new RivenditaServiceImpl(utenteDao, operaDao, rivenditaDao, notificaDao,astaDao,partecipazioneDao);
   }
 
   @AfterEach
@@ -282,6 +290,9 @@ class RivenditaServiceImplIntegrationTest {
     assertNotNull(resell);
 
     Utente buyer = utenteDao.doRetrieveById(1);
+    buyer.setSaldo(100d);
+    utenteDao.doUpdate(buyer);
+    System.out.println(buyer.getSaldo());
     assertNotNull(buyer);
 
     boolean result = service.buy(resell.getId(), buyer.getId());

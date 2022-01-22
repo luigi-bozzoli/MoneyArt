@@ -68,8 +68,8 @@
                         </div>
                         <div class="thumb-content">
                             <h4><c:out value="${opera.nome}"/></h4>
-                            <p>di <a href="#artista">${opera.artista.username}</a></p>
-                            <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                            <p>di <a href="${pageContext.servletContext.contextPath}/getUser?id=${opera.artista.id}">${opera.artista.username}</a></p>
+                            <p class="item-price"><input type="hidden" value="${opera.artista.id}"></p>
                             <a href="${pageContext.servletContext.contextPath}/#" class="btn btn-primary">Rivendi</a>
                         </div>
 
