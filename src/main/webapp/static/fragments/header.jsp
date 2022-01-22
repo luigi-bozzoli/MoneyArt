@@ -68,6 +68,9 @@
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/homepage_style.css">
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/notifiche')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/notifiche.css">
+                    </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
                         <!-- TODO: Trovare una soluzione migliore -->

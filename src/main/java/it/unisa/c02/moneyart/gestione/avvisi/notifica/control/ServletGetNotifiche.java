@@ -1,7 +1,11 @@
 package it.unisa.c02.moneyart.gestione.avvisi.notifica.control;
 
 import it.unisa.c02.moneyart.gestione.avvisi.notifica.service.NotificaService;
+import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
+import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
+import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
 
 import javax.inject.Inject;
@@ -23,11 +27,17 @@ public class ServletGetNotifiche extends HttpServlet {
     Utente utente = (Utente) request.getSession().getAttribute("utente");
 
     List<Notifica> notifiche = notificaService.getNotificationsByUser(utente.getId());
+    for (Notifica notifica : notifiche) {
+      if (notifica.getAsta().getId() != null) {
+        Asta asta = astaService.getAuction(notifica.getAsta().getId());
+        notifica.setAsta(asta);
+      } else {
+        Rivendita rivendita = rivenditaService.getResell(notifica.getRivendita().getId());
+        notifica.setRivendita(rivendita);
+      }
+    }
     request.setAttribute("notifiche", notifiche);
 
-
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/notificheUtente.jsp");
-    dispatcher.forward(request, response);
   }
 
   @Override
@@ -38,5 +48,11 @@ public class ServletGetNotifiche extends HttpServlet {
 
   @Inject
   private NotificaService notificaService;
+
+  @Inject
+  private AstaService astaService;
+
+  @Inject
+  private RivenditaService rivenditaService;
 
 }
