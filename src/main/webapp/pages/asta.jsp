@@ -94,6 +94,10 @@
                                 <input type="text" name="offerta" id="offerta" placeholder="<fmt:formatNumber value="${bestOffer+0.01}" type="currency" currencySymbol="€"/>" class="mr-3">
                                 <button type="submit" class="disabled">Offri</button>
                             </div>
+                            <c:if test="${not empty requestScope.admin}">
+                                <br>
+                                <a href="${pageContext.servletContext.contextPath}/removeAuction?idAsta=${asta.id}">Rimuovi Asta</a>
+                            </c:if>
                             <div class="error">
                                 <c:if test="${not empty requestScope.error}">
                                     <p class="mt-3" style="color: #BB371A !important;">${requestScope.error}</p>

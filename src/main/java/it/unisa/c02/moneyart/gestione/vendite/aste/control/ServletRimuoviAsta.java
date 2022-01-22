@@ -33,7 +33,7 @@ public class ServletRimuoviAsta extends HttpServlet {
     }
 
     RequestDispatcher dispatcher =
-        request.getRequestDispatcher("/pages/aste.jsp");//Todo: aggiungere il link alla view
+        request.getRequestDispatcher("/pages/admin/asteAdmin.jsp");
     dispatcher.forward(request, response);
   }
 

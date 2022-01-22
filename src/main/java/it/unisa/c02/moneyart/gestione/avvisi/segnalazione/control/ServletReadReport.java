@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "ServletAddReport", value = "/readReport")
+@WebServlet(name = "ServletReadReport", value = "/readReport")
 public class ServletReadReport extends HttpServlet {
 
 
@@ -21,7 +21,7 @@ public class ServletReadReport extends HttpServlet {
 
     String action = request.getParameter("action");
     Segnalazione segnalazione =
-        segnalazioneService.getReport(Integer.parseInt(request.getParameter("idNotifica")));
+        segnalazioneService.getReport(Integer.parseInt(request.getParameter("idReport")));
 
     switch (action) {
 
