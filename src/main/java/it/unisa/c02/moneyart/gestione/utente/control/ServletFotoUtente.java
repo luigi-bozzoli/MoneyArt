@@ -43,7 +43,6 @@ public class ServletFotoUtente extends HttpServlet {
     response.setContentLength(imageBytes.length);
     response.getOutputStream().write(imageBytes);
 
-
   }
 
   @Override
