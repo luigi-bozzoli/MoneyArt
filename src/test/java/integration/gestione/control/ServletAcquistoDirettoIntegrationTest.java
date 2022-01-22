@@ -6,12 +6,16 @@ import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaServiceImpl;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.PartecipazioneDaoImpl;
 import it.unisa.c02.moneyart.model.dao.RivenditaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
+import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
 import org.apache.ibatis.jdbc.ScriptRunner;
@@ -59,6 +63,8 @@ class ServletAcquistoDirettoIntegrationTest {
   private NotificaDao notificaDao;
   private UtenteDao utenteDao;
   private RivenditaDao rivenditaDao;
+  private AstaDao astaDao;
+  private PartecipazioneDao partecipazioneDao;
 
   @Mock
   HttpServletRequest request;
@@ -114,8 +120,10 @@ class ServletAcquistoDirettoIntegrationTest {
     notificaDao = new NotificaDaoImpl(dataSource);
     rivenditaDao = new RivenditaDaoImpl(dataSource);
     utenteDao = new UtenteDaoImpl(dataSource);
+    astaDao = new AstaDaoImpl(dataSource);
+    partecipazioneDao = new PartecipazioneDaoImpl(dataSource);
 
-    service = new RivenditaServiceImpl(utenteDao, operaDao, rivenditaDao, notificaDao);
+    service = new RivenditaServiceImpl(utenteDao, operaDao, rivenditaDao, notificaDao,astaDao,partecipazioneDao);
 
     servletAcquistoDiretto = new ServletAcquistoDiretto();
 

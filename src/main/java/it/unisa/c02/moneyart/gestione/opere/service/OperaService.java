@@ -55,4 +55,12 @@ public interface OperaService {
    * @return una lista di opere
    */
   List<Opera> getArtworkByUser(int id);
+
+  /**
+   * Restituisce tutte le opere possedute da un utente.
+   *
+   * @param id dell'utente
+   * @return una lista di opere
+   */
+  List<Opera> getArtworkByOwner(int id);
 }

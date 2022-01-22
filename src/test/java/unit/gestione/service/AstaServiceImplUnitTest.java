@@ -3,10 +3,7 @@ package unit.gestione.service;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
-import it.unisa.c02.moneyart.model.beans.Asta;
-import it.unisa.c02.moneyart.model.beans.Opera;
-import it.unisa.c02.moneyart.model.beans.Partecipazione;
-import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.beans.*;
 import it.unisa.c02.moneyart.model.dao.interfaces.*;
 import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
 import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
@@ -33,6 +30,7 @@ import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -1446,6 +1444,231 @@ public class AstaServiceImplUnitTest {
 	@DisplayName("Participate auction")
 	class participateAuctionTest {
 
+		@DisplayName("Participate in an ongoing auction with no bids and a single user and a valid offer")
+		@Test
+		void participateOngoingAuctionWithNoBidsAndASingleUserAndAValidOfferTest() {
+			Asta asta = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+
+			Utente u9 = new Utente();
+			u9.setId(9);
+			u9.setSaldo(500d);
+
+			double offerta = 150d;
+
+			// lockAsta()
+			// TODO: impl
+			// end lockAsta()
+
+			// recupero versione aggiornata dei dati
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(u9);
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(asta);
+
+			// recupero lista partecipazioni per ricavare la migliore offerta
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(asta.getPartecipazioni());
+
+			Partecipazione nuovaOfferta = new Partecipazione(asta, u9, offerta);
+
+			// aggiornamento dati persistenti
+			when(partecipazioneDao.doCreate(nuovaOfferta)).thenReturn(true);
+			doNothing().when(utenteDao).doUpdate(u9);
+
+			boolean result = astaService.partecipateAuction(u9, asta, offerta);
+
+			Assertions.assertEquals(350d, u9.getSaldo());
+			Assertions.assertEquals(true, result);
+		}
+
+		@DisplayName("Participate in an ongoing auction with no bids and a single user and not enough funds")
+		@Test
+		void participateOngoingAuctionWithNoBidsAndASingleUserAndNotEnoughFundsTest() {
+			Asta asta = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+
+			Utente u9 = new Utente();
+			u9.setId(9);
+			u9.setSaldo(100d);
+
+			double offerta = 150d;
+
+			// lockAsta()
+			// TODO: impl
+			// end lockAsta()
+
+			// recupero versione aggiornata dei dati
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(u9);
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(asta);
+
+			// recupero lista partecipazioni per ricavare la migliore offerta
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(asta.getPartecipazioni());
+
+			boolean result = astaService.partecipateAuction(u9, asta, offerta);
+
+			Assertions.assertEquals(100d, u9.getSaldo());
+			Assertions.assertEquals(false, result);
+		}
+
+		@DisplayName("Participate in an ongoing auction with a single user and one bid and a valid offer")
+		@Test
+		void participateOngoingAuctionWithASingleUserAndOneBidAndAValidOfferTest() {
+			Asta asta = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndOneBid();
+			Utente oldBestBidder = asta.getPartecipazioni().get(0).getUtente();
+
+			Utente u9 = new Utente();
+			u9.setId(9);
+			u9.setSaldo(500d);
+
+			double offerta = 450d;
+
+			// lockAsta()
+			// TODO: impl
+			// end lockAsta()
+
+			// recupero versione aggiornata dei dati
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(u9, oldBestBidder);
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(asta);
+
+			// recupero lista partecipazioni per ricavare la migliore offerta
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(asta.getPartecipazioni());
+
+			Partecipazione nuovaOfferta = new Partecipazione(asta, u9, offerta);
+
+			// ripristino saldo del vecchio miglior offerente
+			doNothing().when(utenteDao).doUpdate(oldBestBidder);
+
+			Notifica notifica = new Notifica(
+					oldBestBidder,
+					asta,
+					new Rivendita(),
+					Notifica.Tipo.SUPERATO,
+					"La tua offerta è stata superata.",
+					false
+			);
+
+			when(notificaDao.doCreate(notifica)).thenReturn(true);
+
+			// aggiornamento dati persistenti
+			when(partecipazioneDao.doCreate(nuovaOfferta)).thenReturn(true);
+			doNothing().when(utenteDao).doUpdate(u9);
+
+			boolean result = astaService.partecipateAuction(u9, asta, offerta);
+
+			Assertions.assertEquals(50d, u9.getSaldo());
+			Assertions.assertEquals(1000d, oldBestBidder.getSaldo());
+			Assertions.assertEquals(true, result);
+		}
+
+		@DisplayName("Participate in an ongoing auction with a single user and one bid and an invalid offer")
+		@Test
+		void participateOngoingAuctionWithASingleUserAndOneBidAndAnInvalidOfferTest() {
+			Asta asta = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndOneBid();
+
+			Utente u9 = new Utente();
+			u9.setId(9);
+			u9.setSaldo(500d);
+
+			double offerta = 150d;
+
+			// lockAsta()
+			// TODO: impl
+			// end lockAsta()
+
+			// recupero versione aggiornata dei dati
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(u9);
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(asta);
+
+			// recupero lista partecipazioni per ricavare la migliore offerta
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(asta.getPartecipazioni());
+
+			boolean result = astaService.partecipateAuction(u9, asta, offerta);
+
+			Assertions.assertEquals(500d, u9.getSaldo());
+			Assertions.assertEquals(false, result);
+		}
+
+		@DisplayName("Participate in an ended auction")
+		@Test
+		void participateInAnEndedAuctionTest() {
+			Asta asta = AstaCreations.endedAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+
+			Utente u9 = new Utente();
+			u9.setId(9);
+			u9.setSaldo(500d);
+
+			double offerta = 150d;
+
+			// lockAsta()
+			// TODO: impl
+			// end lockAsta()
+
+			// recupero versione aggiornata dei dati
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(u9);
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(asta);
+
+			// recupero lista partecipazioni per ricavare la migliore offerta
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(asta.getPartecipazioni());
+
+			boolean result = astaService.partecipateAuction(u9, asta, offerta);
+
+			Assertions.assertEquals(500d, u9.getSaldo());
+			Assertions.assertEquals(false, result);
+		}
+
+		@DisplayName("Participate in a deleted auction")
+		@Test
+		void participateInADeletedAuctionTest() {
+			Asta asta = AstaCreations.deletedAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+
+			Utente u9 = new Utente();
+			u9.setId(9);
+			u9.setSaldo(500d);
+
+			double offerta = 150d;
+
+			// lockAsta()
+			// TODO: impl
+			// end lockAsta()
+
+			// recupero versione aggiornata dei dati
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(u9);
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(asta);
+
+			// recupero lista partecipazioni per ricavare la migliore offerta
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(asta.getPartecipazioni());
+
+			boolean result = astaService.partecipateAuction(u9, asta, offerta);
+
+			Assertions.assertEquals(500d, u9.getSaldo());
+			Assertions.assertEquals(false, result);
+		}
+
+		@DisplayName("Participate in a created auction")
+		@Test
+		void participateInACreatedAuctionTest() {
+			Asta asta = AstaCreations.createdAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+
+			Utente u9 = new Utente();
+			u9.setId(9);
+			u9.setSaldo(500d);
+
+			double offerta = 150d;
+
+			// lockAsta()
+			// TODO: impl
+			// end lockAsta()
+
+			// recupero versione aggiornata dei dati
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(u9);
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(asta);
+
+			// recupero lista partecipazioni per ricavare la migliore offerta
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(asta.getPartecipazioni());
+
+			boolean result = astaService.partecipateAuction(u9, asta, offerta);
+
+			Assertions.assertEquals(500d, u9.getSaldo());
+			Assertions.assertEquals(false, result);
+		}
+
+		// TODO: test con più utenti che cercano di fare un'offerta alla stessa asta?
 	}
 
 	@Nested

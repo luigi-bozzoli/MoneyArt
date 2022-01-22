@@ -195,6 +195,12 @@ class ServletGetAsteUtenteIntegrationTest {
   void doPost() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
     doGetTest();
+  }
+
+  @Test
+  @DisplayName("doPostException Test ")
+  void doPostException() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+
     doGetTestException();
   }
 }

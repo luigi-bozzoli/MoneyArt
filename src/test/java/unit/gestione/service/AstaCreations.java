@@ -33,6 +33,88 @@ abstract class AstaCreations {
 		return a1;
 	}
 
+	public static Asta endedAstaLastingSevenDaysWithNoArtistFollowersAndNoBids() {
+		Utente u1 = new Utente();
+		u1.setId(1);
+
+		u1.setnFollowers(0);
+
+		Opera o1 = new Opera();
+		o1.setId(1);
+		o1.setArtista(u1);
+
+		Asta a1 = new Asta(o1, new Date(System.currentTimeMillis() - 14 * DAY_MILLIS), new Date(System.currentTimeMillis() - 7 * DAY_MILLIS), Asta.Stato.TERMINATA);
+		a1.setId(1);
+
+		List<Partecipazione> p1 = new ArrayList<>();
+		a1.setPartecipazioni(p1);
+
+		return a1;
+	}
+
+	public static Asta deletedAstaLastingSevenDaysWithNoArtistFollowersAndNoBids() {
+		Utente u1 = new Utente();
+		u1.setId(1);
+
+		u1.setnFollowers(0);
+
+		Opera o1 = new Opera();
+		o1.setId(1);
+		o1.setArtista(u1);
+
+		Asta a1 = new Asta(o1, new Date(), new Date(System.currentTimeMillis() + 7 * DAY_MILLIS), Asta.Stato.ELIMINATA);
+		a1.setId(1);
+
+		List<Partecipazione> p1 = new ArrayList<>();
+		a1.setPartecipazioni(p1);
+
+		return a1;
+	}
+
+	public static Asta createdAstaLastingSevenDaysWithNoArtistFollowersAndNoBids() {
+		Utente u1 = new Utente();
+		u1.setId(1);
+
+		u1.setnFollowers(0);
+
+		Opera o1 = new Opera();
+		o1.setId(1);
+		o1.setArtista(u1);
+
+		Asta a1 = new Asta(o1, new Date(System.currentTimeMillis() + 7 * DAY_MILLIS), new Date(System.currentTimeMillis() + 14 * DAY_MILLIS), Asta.Stato.CREATA);
+		a1.setId(1);
+
+		List<Partecipazione> p1 = new ArrayList<>();
+		a1.setPartecipazioni(p1);
+
+		return a1;
+	}
+
+	public static Asta ongoingAstaLastingSevenDaysWithNoArtistFollowersAndOneBid() {
+		Utente u1 = new Utente();
+		u1.setId(1);
+		Utente u2 = new Utente();
+		u2.setId(2);
+		u2.setSaldo(1000d);
+
+		u1.setnFollowers(0);
+		u2.setnFollowers(0);
+
+		Opera o1 = new Opera();
+		o1.setId(1);
+		o1.setArtista(u1);
+
+		Asta a1 = new Asta(o1, new Date(), new Date(System.currentTimeMillis() + 7 * DAY_MILLIS), Asta.Stato.IN_CORSO);
+		a1.setId(1);
+
+		List<Partecipazione> p1 = new ArrayList<>();
+		p1.add(new Partecipazione(a1, u2, 400d));
+		u2.setSaldo(u2.getSaldo() - 400d);
+		a1.setPartecipazioni(p1);
+
+		return a1;
+	}
+
 	public static Asta ongoingAstaLastingSevenDaysWith3ArtistFollowersAnd3Bids() {
 		// Utente u1 con 3 followers
 		Utente u1 = new Utente();

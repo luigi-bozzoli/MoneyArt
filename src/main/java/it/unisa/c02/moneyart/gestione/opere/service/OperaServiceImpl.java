@@ -33,9 +33,9 @@ public class OperaServiceImpl implements OperaService {
    *
    * @param opera bean dell'opera da inserire
    * @return true se l'inserimento va a buon fine,
-   *         false altrimenti
+   * false altrimenti
    * @pre opera.getNome() <> null AND opera.getImmagine() <> null AND
-   *      utente.carica -> forAll(o:Opera | o.getNome() <> opera.getNome())
+   * utente.carica -> forAll(o:Opera | o.getNome() <> opera.getNome())
    * @post utente.carica -> includes(opera)
    */
   @Override
@@ -58,12 +58,12 @@ public class OperaServiceImpl implements OperaService {
    * @param id   dell'utente artista
    * @param name titolo dell'opera
    * @return true se esiste un'opera con quel nome,
-   *         false altrimenti
+   * false altrimenti
    * @pre Utente.allIstances() -> exists(u:Utente | id = u.getId()) AND name <> null
    */
   @Override
   public boolean checkArtwork(int id, String name) {
-    if(name == null){
+    if (name == null) {
       throw new IllegalArgumentException("Name is null");
     }
     List<Opera> opere = operaDao.doRetrieveAllByArtistId(id);
@@ -110,6 +110,17 @@ public class OperaServiceImpl implements OperaService {
   @Override
   public List<Opera> getArtworkByUser(int id) {
     return operaDao.doRetrieveAllByArtistId(id);
+  }
+
+  /**
+   * Restituisce tutte le opere possedute da un utente.
+   *
+   * @param id dell'utente
+   * @return una lista di opere
+   */
+  public List<Opera> getArtworkByOwner(int id) {
+
+    return operaDao.doRetrieveAllByOwnerId(id);
   }
 
   private boolean checkOpera(Opera opera) {
