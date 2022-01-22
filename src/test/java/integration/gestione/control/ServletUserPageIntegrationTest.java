@@ -2,6 +2,7 @@ package integration.gestione.control;
 
 import hthurow.tomcatjndi.TomcatJNDI;
 import it.unisa.c02.moneyart.gestione.utente.control.ServletRicercaUtente;
+import it.unisa.c02.moneyart.gestione.utente.control.ServletUserPage;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteServiceImpl;
 import it.unisa.c02.moneyart.model.beans.Utente;
@@ -38,22 +39,28 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class ServletRicercaUtenteIntegrationTest {
+class ServletUserPageIntegrationTest {
 
     @Mock
     HttpServletRequest request;
     @Mock
     HttpServletResponse response;
+    @Mock
+    RequestDispatcher dispatcher;
+    @Mock
+    HttpSession session;
 
     private static DataSource dataSource;
 
-    private ServletRicercaUtente servletRicercaUtente;
+    private ServletUserPage servletUserPage;
     private UtenteService utenteService;
 
     private UtenteDao utenteDao;
@@ -110,12 +117,12 @@ class ServletRicercaUtenteIntegrationTest {
 
         utenteService= new UtenteServiceImpl( utenteDao, operaDao, notificaDao, partecipazioneDao);
 
-        servletRicercaUtente = new ServletRicercaUtente();
+        servletUserPage = new ServletUserPage();
 
         //inject manuale della variabile di istanza =)
-        Field injectedObject = servletRicercaUtente.getClass().getDeclaredField("utenteService");
+        Field injectedObject = servletUserPage.getClass().getDeclaredField("utenteService");
         injectedObject.setAccessible(true);
-        injectedObject.set(servletRicercaUtente, utenteService);
+        injectedObject.set(servletUserPage, utenteService);
     }
 
     @AfterEach
@@ -138,18 +145,23 @@ class ServletRicercaUtenteIntegrationTest {
                 "s_ano", new Utente(), "stelle".getBytes(StandardCharsets.UTF_8), 0.002);
         utenteDao.doCreate(utente);
 
-        when(request.getParameter("name")).thenReturn(utente.getNome());
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute(anyString())).thenReturn(utente);
+        when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
         doNothing().when(request).setAttribute(anyString(), any());
+        doNothing().when(dispatcher).forward(any(), any());
 
 
-        Method privateStringMethod = ServletRicercaUtente.class
+        Method privateStringMethod = ServletUserPage.class
                 .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
         privateStringMethod.setAccessible(true);
-        privateStringMethod.invoke(servletRicercaUtente, request, response);
+        privateStringMethod.invoke(servletUserPage, request, response);
 
-
-        verify(request, times(1)).getParameter(anyString());
+        verify(request, times(1)).getSession();
+        verify(session, times(1)).getAttribute(anyString());
+        verify(request, times(1)).getRequestDispatcher(anyString());
         verify(request, times(1)).setAttribute(anyString(), any());
+        verify(dispatcher, times(1)).forward(any(), any());
 
     }
 
@@ -160,3 +172,4 @@ class ServletRicercaUtenteIntegrationTest {
         doGet();
     }
 }
+
