@@ -47,9 +47,6 @@
                     <c:when test="${fn:contains(requestURI, '/rivendita')}">
                         <title>Rivendita - MoneyArt</title>
                     </c:when>
-                    <c:when test="${fn:contains(requestURI, '/wallet')}">
-                        <title>Deposito - MoneyArt</title>
-                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/notifiche')}">
                         <title>Notifiche - MoneyArt</title>
                     </c:when>
@@ -204,13 +201,6 @@
                             </div>
 
                             <c:choose>
-                                <c:when test="${fn:contains(requestURI, '/wallet')}">
-                                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
-                                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
-                                    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
-                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-                                    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/wallet.css">
-                                </c:when>
                                 <c:when test="${empty sessionScope.utente}">
                                     <div class="log-buttons">
                                         <a href="${pageContext.servletContext.contextPath}/pages/login.jsp" class="login-button">Login</a>
