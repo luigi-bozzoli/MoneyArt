@@ -77,6 +77,9 @@
                     <c:when test="${fn:contains(requestURI, '/esplora')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/asteAdmin')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
+                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/asta')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/pagina_asta_style.css">
                     </c:when>
@@ -136,6 +139,9 @@
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
                         <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/asteAdmin')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/explore.js"></script>
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/esplora')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/explore.js"></script>
