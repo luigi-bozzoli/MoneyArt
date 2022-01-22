@@ -33,13 +33,13 @@
                     </div>
                     <div class="buttons d-flex">
                         <div id="share" class="mr-3 text-center">
-                            <a href="#">
+                            <a href="javascript:void(0)">
                                 <i class="fas fa-share-alt"></i>
                                 <p>Condividi</p>
                             </a>
                         </div>
                         <div id="report" class="ml-3 text-center">
-                            <a href="#">
+                            <a href="javascript:void(0)">
                                 <i class="fas fa-flag"></i>
                                 <p>Segnala</p>
                             </a>

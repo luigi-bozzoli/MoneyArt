@@ -48,7 +48,7 @@ $(document).ready(function() {
                                 `<h4>` + rivendita.opera.nome +`</h4>` +
                                 `<h6>Di ` + rivendita.opera.artista.username + `</h6>` +
                                 `<p class="item-price">` + prezzo + `</p>` +
-                                `<a href="`+ ctx +`/getAuction?id=` + rivendita.id +`" class="btn btn-primary">Acquista</a>` +
+                                `<a href="`+ ctx +`/getResell?id=` + rivendita.id +`" class="btn btn-primary">Acquista</a>` +
                             `</div>` +
                         `</div>` +
                     `</div>`
@@ -86,7 +86,7 @@ $(document).ready(function() {
                     `<h4>` + rivendita.opera.nome +`</h4>` +
                     `<h6>Di ` + rivendita.opera.artista.username + `</h6>` +
                     `<p class="item-price">` + prezzo + `</p>` +
-                    `<a href="`+ ctx +`/getAuction?id=` + rivendita.id +`" class="btn btn-primary">Acquista</a>` +
+                    `<a href="`+ ctx +`/getResell?id=` + rivendita.id +`" class="btn btn-primary">Acquista</a>` +
                     `</div>` +
                     `</div>` +
                     `</div>`

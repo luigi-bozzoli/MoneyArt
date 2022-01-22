@@ -41,6 +41,12 @@
                     <c:when test="${fn:contains(requestURI, '/asta')}">
                         <title>Asta - MoneyArt</title>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/marketplace')}">
+                        <title>Marketplace - MoneyArt</title>
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/rivendita')}">
+                        <title>Rivendita - MoneyArt</title>
+                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/wallet')}">
                         <title>Deposito - MoneyArt</title>
                     </c:when>
@@ -82,6 +88,9 @@
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/marketplace')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/marketplace_style.css">
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/rivendita')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/pagina_rivendita_style.css">
                     </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
@@ -134,6 +143,9 @@
                     <c:when test="${fn:contains(requestURI, '/marketplace')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/marketplace.js"></script>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/rivendita')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/auction.js"></script>
+                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/home.js"></script>
                     </c:when>
@@ -168,7 +180,7 @@
                                     <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/esplora.jsp">Artisti</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Marketplace</a>
+                                    <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/marketplace.jsp">Marketplace</a>
                                 </li>
                             </ul>
                             <div class="d-flex align-items-center">
@@ -177,7 +189,7 @@
                                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
                                 </form>
                                 <label class="switch ml-3 mb-0">
-                                    <input type="checkbox" checked>
+                                    <input type="checkbox">
                                     <span class="slider"></span>
                                 </label>
                             </div>

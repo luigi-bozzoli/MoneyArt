@@ -46,7 +46,6 @@ public class ServletGetAsta extends HttpServlet {
       request.setAttribute("message", request.getAttribute("message"));
       if(asta.getStato().equals(Asta.Stato.IN_CORSO)) {
         request.setAttribute("asta", asta);
-        System.out.println(asta);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asta.jsp");
         dispatcher.forward(request, response);

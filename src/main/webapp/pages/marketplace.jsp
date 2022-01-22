@@ -75,7 +75,7 @@
 
                         <p class="item-price"><fmt:formatNumber value="${rivendita.prezzo}" type="currency" currencySymbol="€"/></p>
 
-                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${rivendita.id}" class="btn btn-primary">Acquista</a>
+                        <a href="${pageContext.servletContext.contextPath}/getResell?id=${rivendita.id}" class="btn btn-primary">Acquista</a>
                     </div>
                 </div>
             </div>
