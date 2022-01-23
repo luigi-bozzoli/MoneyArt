@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Questa serlvet gestisce l'acquisto diretto di un'opera.
+ *
+ */
 
 @WebServlet(name = "ServletAcquistoDiretto", value = "/buyArtwork")
 public class ServletAcquistoDiretto extends HttpServlet {

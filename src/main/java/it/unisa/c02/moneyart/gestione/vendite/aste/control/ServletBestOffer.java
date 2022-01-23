@@ -3,12 +3,20 @@ package it.unisa.c02.moneyart.gestione.vendite.aste.control;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Partecipazione;
-import javax.inject.Inject;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+
+/**
+ * Questa servlet gestisce il miglior offerente.
+ *
+ */
 @WebServlet(name = "ServletBestOffer", value = "/getBestOffer")
 public class ServletBestOffer extends HttpServlet {
 
@@ -25,7 +33,8 @@ public class ServletBestOffer extends HttpServlet {
 
     request.setAttribute("bestOffer", bestOffer);
 
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/??"); //TODO: aggiungere link all view
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/??");
+    //TODO: aggiungere link all view
     dispatcher.forward(request, response);
 
   }

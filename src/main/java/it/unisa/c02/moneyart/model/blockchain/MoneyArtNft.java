@@ -63,7 +63,11 @@ public class MoneyArtNft extends Contract {
     super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
   }
 
-
+  /**
+   * Richiama una funzione remota.
+   *
+   * @return executeRemoteCallSingleValueReturn
+   */
 
   public RemoteFunctionCall<String> name() {
     final org.web3j.abi.datatypes.Function function =
@@ -75,10 +79,17 @@ public class MoneyArtNft extends Contract {
   }
 
 
-  public RemoteFunctionCall<TransactionReceipt> create(String _id) {
+  /**
+   * Restituisce una funziona remota.
+   *
+   * @param id identificativo della funzione
+   *
+   * @return una funzione remota
+   */
+  public RemoteFunctionCall<TransactionReceipt> create(String id) {
     final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
         FUNC_CREATE,
-        Arrays.<Type>asList(new Utf8String(_id)),
+        Arrays.<Type>asList(new Utf8String(id)),
         Collections.<TypeReference<?>>emptyList());
     return executeRemoteCallTransaction(function);
   }

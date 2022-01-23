@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Partecipazione;
-import it.unisa.c02.moneyart.model.beans.Utente;
-
+import java.io.IOException;
+import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,17 +13,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
 
+/**
+ * Questa servlet gestisce il recupero di un'asta.
+ *
+ */
 @WebServlet(name = "ServletGetAsta", value = "/getAuction")
 public class ServletGetAsta extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
 
-    if(request.getSession().getAttribute("admin") != null){
+    if (request.getSession().getAttribute("admin") != null) {
       request.setAttribute("admin", true);
     }
 
@@ -33,15 +35,15 @@ public class ServletGetAsta extends HttpServlet {
 
     boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
-    if(ajax) {
+    if (ajax) {
 
-        List<Partecipazione> partecipazioni = asta.getPartecipazioni();
+      List<Partecipazione> partecipazioni = asta.getPartecipazioni();
 
-        for(Partecipazione p : partecipazioni) {
-          p.setAsta(null);
-          asta.setNotifiche(null);
-          asta.setSegnalazioni(null);
-        }
+      for (Partecipazione p : partecipazioni) {
+        p.setAsta(null);
+        asta.setNotifiche(null);
+        asta.setSegnalazioni(null);
+      }
 
       String json = new Gson().toJson(asta);
       response.setContentType("application/json");
@@ -49,7 +51,7 @@ public class ServletGetAsta extends HttpServlet {
       response.getWriter().write(json);
     } else {
       request.setAttribute("message", request.getAttribute("message"));
-      if(asta.getStato().equals(Asta.Stato.IN_CORSO)) {
+      if (asta.getStato().equals(Asta.Stato.IN_CORSO)) {
         request.setAttribute("asta", asta);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asta.jsp");
@@ -64,8 +66,7 @@ public class ServletGetAsta extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-
+      throws ServletException, IOException {
     doGet(request, response);
   }
 

@@ -4,9 +4,8 @@ import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Partecipazione;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet che si occupa di recuperare le aste da far visualizzare.
+ *
  */
 @WebServlet(name = "ServletGetAste", value = "/getAuctions")
 public class ServletGetAste extends HttpServlet {
@@ -47,7 +47,7 @@ public class ServletGetAste extends HttpServlet {
 
     boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
-    if(ajax) {
+    if (ajax) {
 
       String criteria = request.getParameter("criteria");
       String order = request.getParameter("order");
@@ -75,7 +75,7 @@ public class ServletGetAste extends HttpServlet {
         for (Asta asta : asteFiltrate) {
 
           List<Partecipazione> partecipazioni = asta.getPartecipazioni();
-          for(Partecipazione p : partecipazioni) {
+          for (Partecipazione p : partecipazioni) {
             p.setAsta(null);
           }
           asta.setNotifiche(null);
@@ -91,7 +91,7 @@ public class ServletGetAste extends HttpServlet {
 
         for (Asta asta : aste) {
           List<Partecipazione> partecipazioni = asta.getPartecipazioni();
-          for(Partecipazione p : partecipazioni) {
+          for (Partecipazione p : partecipazioni) {
             p.setAsta(null);
           }
           asta.setNotifiche(null);
@@ -104,7 +104,7 @@ public class ServletGetAste extends HttpServlet {
         response.getWriter().write(json);
       }
     } else {
-        request.setAttribute("aste", aste);
+      request.setAttribute("aste", aste);
     }
   }
 

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet per la creazione e aggiunta di un'asta.
+ *
  */
 @WebServlet(name = "ServletCreaAsta", value = "/newAuction")
 public class ServletCreaAsta extends HttpServlet {
@@ -28,15 +29,13 @@ public class ServletCreaAsta extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    Utente utente = (Utente) request.getSession().getAttribute("utente");
     String idOpera = request.getParameter("id");
-
-
     Opera opera = operaService.getArtwork(Integer.parseInt(idOpera));
+    Utente utente = (Utente) request.getSession().getAttribute("utente");
 
     if (opera == null || !utente.getId().equals(opera.getArtista().getId())) {
       request.setAttribute("error",
-        "Non sei il creatore di quest'opera!");
+          "Non sei il creatore di quest'opera!");
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/opereUtente.jsp");
       dispatcher.forward(request, response);
       return;
@@ -51,11 +50,9 @@ public class ServletCreaAsta extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    Utente utente = (Utente) request.getSession().getAttribute("utente");
     String idOperaS = request.getParameter("id");
     String dataInizioS = request.getParameter("inizio");
     String dataFineS = request.getParameter("fine");
-
     int idOpera;
     Date dataInizio;
     Date dataFine;
@@ -78,6 +75,8 @@ public class ServletCreaAsta extends HttpServlet {
       return;
 
     }
+
+    Utente utente = (Utente) request.getSession().getAttribute("utente");
 
     if (opera == null || !utente.getId().equals(opera.getArtista().getId())) {
       request.setAttribute("error",
