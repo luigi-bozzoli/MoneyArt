@@ -9,8 +9,8 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "ServletGetValoreArtista", value = "/getArtworkValue")
-public class ServletGetValoreArtista extends HttpServlet {
+@WebServlet(name = "ServletGetValoreOpera", value = "/getArtworkValue")
+public class ServletGetValoreOpera extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
