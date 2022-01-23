@@ -7,16 +7,19 @@ import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Notifica;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
-
+import java.io.IOException;
+import java.util.List;
 import javax.inject.Inject;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
+
+/**
+ * Questa servlet gestisce il recupre delle notifiche.
+ *
+ */
 
 @WebServlet(name = "ServletGetNotifiche", value = "/notifies")
 public class ServletGetNotifiche extends HttpServlet {

@@ -2,14 +2,21 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import javax.inject.Inject;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
+
+/**
+ * Questa servlet gestisce il caricamento della foto utente.
+ *
+ */
 
 @WebServlet(name = "ServletFotoUtente", value = "/userPicture")
 public class ServletFotoUtente extends HttpServlet {

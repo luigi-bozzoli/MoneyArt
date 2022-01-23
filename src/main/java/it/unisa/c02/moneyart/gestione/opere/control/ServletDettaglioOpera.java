@@ -2,7 +2,7 @@ package it.unisa.c02.moneyart.gestione.opere.control;
 
 import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.model.beans.Opera;
-
+import java.io.IOException;
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,9 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-
+/**
+ * Questa servlet fornisce i dettagli di un'opera.
+ */
 @WebServlet(name = "ServletDettaglioOpera", value = "/artwork")
 public class ServletDettaglioOpera extends HttpServlet {
 
