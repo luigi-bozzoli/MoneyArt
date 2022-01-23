@@ -27,7 +27,24 @@ public class ServletCreaAsta extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    doPost(request, response);
+
+    Utente utente = (Utente) request.getSession().getAttribute("utente");
+    String idOpera = request.getParameter("id");
+
+
+    Opera opera = operaService.getArtwork(Integer.parseInt(idOpera));
+
+    if (opera == null || !utente.getId().equals(opera.getArtista().getId())) {
+      request.setAttribute("error",
+        "Non sei il creatore di quest'opera!");
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/opereUtente.jsp");
+      dispatcher.forward(request, response);
+      return;
+    } else {
+      request.setAttribute("opera", opera);
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/creaAsta.jsp");
+      dispatcher.forward(request, response);
+    }
   }
 
   @Override
@@ -42,39 +59,46 @@ public class ServletCreaAsta extends HttpServlet {
     int idOpera;
     Date dataInizio;
     Date dataFine;
+    idOpera = Integer.parseInt(idOperaS);
+    Opera opera = operaService.getArtwork(idOpera);
 
+    System.out.println(dataFineS);
     try {
-      idOpera = Integer.parseInt(idOperaS);
-      dataInizio = new SimpleDateFormat("dd/MM/yyyy").parse(dataInizioS);
-      dataFine = new SimpleDateFormat("dd/MM/yyyy").parse(dataFineS);
+
+      dataInizio = new SimpleDateFormat("yyyy-MM-dd").parse(dataInizioS);
+      dataFine = new SimpleDateFormat("yyyy-MM-dd").parse(dataFineS);
 
     } catch (Exception e) {
       request.setAttribute("error",
           "Formato date non corrette!");
-      response.sendRedirect(
-          "/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
+      request.setAttribute("opera", opera);
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/creaAsta.jsp");
+      dispatcher.forward(request, response);
+      e.printStackTrace();
       return;
 
     }
-    Opera opera = operaService.getArtwork(idOpera);
+
     if (opera == null || !utente.getId().equals(opera.getArtista().getId())) {
       request.setAttribute("error",
           "Non sei il creatore di quest'opera!");
-      response.sendRedirect(
-          "/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
+      request.setAttribute("opera", opera);
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/creaAsta.jsp");
+      dispatcher.forward(request, response);
       return;
     }
     Asta asta = new Asta(opera, dataInizio, dataFine, Asta.Stato.CREATA);
     if (!astaService.addAsta(asta)) {
       request.setAttribute("error",
           "Errore creazione asta!");
-      response.sendRedirect(
-          "/pages/crea-asta.jsp"); // TODO: Aggiungere link alla pagina creazione asta
+      request.setAttribute("opera", opera);
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/creaAsta.jsp");
+      dispatcher.forward(request, response);
       return;
     }
 
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/dettaglio-asta?id="
-        + asta.getId() + ".jsp"); // TODO: aggiungere il link alla pagina dell'asta
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asteUtente.jsp");
+    dispatcher.forward(request, response);
     dispatcher.forward(request, response);
   }
 

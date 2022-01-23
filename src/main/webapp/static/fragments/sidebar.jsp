@@ -59,6 +59,9 @@
         <c:when test="${fn:contains(requestURI, '/creaOpera')}">
             <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/crea_opera.css">
         </c:when>
+        <c:when test="${fn:contains(requestURI, '/creaAsta')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/crea_asta.css">
+        </c:when>
     </c:choose>
 
     <!-- JS -->
@@ -67,12 +70,13 @@
             <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
                 <script src="${pageContext.servletContext.contextPath}/static/js/updateProfile.js"></script>
             </c:when>
+            <c:when test="${fn:contains(requestURI, '/creaOpera')}">
+                <script src="${pageContext.servletContext.contextPath}/static/js/creaOpera.js"></script>
+            </c:when>
+            <c:when test="${fn:contains(requestURI, '/creaAsta')}">
+                <script src="${pageContext.servletContext.contextPath}/static/js/creaAsta.js"></script>
+            </c:when>
         </c:choose>
-    <c:choose>
-        <c:when test="${fn:contains(requestURI, '/creaOpera')}">
-            <script src="${pageContext.servletContext.contextPath}/static/js/creaOpera.js"></script>
-        </c:when>
-    </c:choose>
 
 </head>
 
@@ -113,7 +117,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/creaOpera.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-download"></i>
                                             <p>Carica opera</p>
                                         </a>

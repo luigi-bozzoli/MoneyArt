@@ -70,7 +70,7 @@
                             <h4><c:out value="${opera.nome}"/></h4>
                             <p>di <a href="${pageContext.servletContext.contextPath}/getUser?id=${opera.artista.id}">${opera.artista.username}</a></p>
                             <p class="item-price"><input type="hidden" value="${opera.id}"></p>
-                            <a href="${pageContext.servletContext.contextPath}/#" class="btn btn-primary">Metti all'asta</a>
+                            <a href="${pageContext.servletContext.contextPath}/newAuction?id=${opera.id}" class="btn btn-primary">Metti all'asta</a>
                         </div>
 
                     </div>
