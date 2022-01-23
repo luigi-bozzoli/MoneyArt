@@ -1,4 +1,4 @@
-package integration.gestione.control;
+package integration.gestione.control.rivendite;
 
 import hthurow.tomcatjndi.TomcatJNDI;
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.control.ServletAcquistoDiretto;
@@ -48,8 +48,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -167,13 +166,14 @@ class ServletAcquistoDirettoIntegrationTest {
     privateStringMethod.setAccessible(true);
     privateStringMethod.invoke(servletAcquistoDiretto, request, response);
 
+    verify(request, times(1)).getParameter(anyString());
+    verify(request, times(1)).getSession();
+    verify(session, times(1)).getAttribute(anyString());
+    verify(request, times(1)).getRequestDispatcher(anyString());
+    verify(dispatcher, times(1)).forward(any(), any());
+
     Rivendita retrieve = rivenditaDao.doRetrieveById(1);
     assertEquals(Rivendita.Stato.TERMINATA, retrieve.getStato());
   }
 
-  @Test
-  @DisplayName("doPost Test")
-  void doPost() throws ServletException, IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-    doGet();
-  }
 }

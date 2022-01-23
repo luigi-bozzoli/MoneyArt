@@ -213,10 +213,10 @@
                                     <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/home.jsp">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/esplora.jsp">Aste</a>
+                                    <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/esplora.jsp#auctions">Aste</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/esplora.jsp">Artisti</a>
+                                    <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/esplora.jsp#artists">Artisti</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="${pageContext.servletContext.contextPath}/pages/marketplace.jsp">Marketplace</a>
