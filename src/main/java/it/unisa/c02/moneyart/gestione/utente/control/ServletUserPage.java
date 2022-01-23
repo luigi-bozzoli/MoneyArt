@@ -2,14 +2,19 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import java.io.IOException;
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa servlet mostra il profilo utente.
+ *
+ */
 
 @WebServlet(name = "ServletUserPage", value = "/userPage")
 public class ServletUserPage extends HttpServlet {

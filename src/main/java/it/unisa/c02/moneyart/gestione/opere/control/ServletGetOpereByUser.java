@@ -3,13 +3,19 @@ package it.unisa.c02.moneyart.gestione.opere.control;
 import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Opera;
+import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Questa servlet gestisce il recupero di un'opera.
+ *
+ */
 @WebServlet(name = "ServletGetOpereOwner", value = "/getArtworksByUser")
 public class ServletGetOpereByUser extends HttpServlet {
   @Override

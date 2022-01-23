@@ -2,11 +2,20 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import javax.inject.Inject;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa servlet gestisce il wallet dell'utente.
+ *
+ */
 
 @WebServlet(name = "ServletGestioneWallet", value = "/wallet")
 public class ServletGestioneWallet extends HttpServlet {
@@ -20,6 +29,9 @@ public class ServletGestioneWallet extends HttpServlet {
     String amount = request.getParameter("amount");
 
     switch (action) {
+      default:
+        break;
+
       case "withdraw":
         if (!utenteService.withdraw(utente, Double.parseDouble(amount))) {
           request.setAttribute("error", "Errore durante il prelievo del saldo!");
@@ -27,12 +39,12 @@ public class ServletGestioneWallet extends HttpServlet {
           request.setAttribute("message", "Saldo prelevato con successo");
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/wallet.jsp");
-        dispatcher.forward(request,response);
+        dispatcher.forward(request, response);
         break;
 
       case "deposit":
-        ServletContext context= getServletContext();
-        RequestDispatcher rd= context.getRequestDispatcher("/pay");
+        ServletContext context = getServletContext();
+        RequestDispatcher rd = context.getRequestDispatcher("/pay");
         rd.forward(request, response);
         break;
     }

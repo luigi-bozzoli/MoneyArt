@@ -3,11 +3,20 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import javax.inject.Inject;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Questa servlet gestisce il meccanismo di following.
+ *
+ */
 
 @WebServlet(name = "ServletFollow", value = "/follow")
 public class ServletFollow extends HttpServlet {
@@ -28,7 +37,7 @@ public class ServletFollow extends HttpServlet {
         int idFollowed = Integer.parseInt(request.getParameter("followed"));
         Utente followed = utenteService.getUserInformation(idFollowed);
 
-        if(!utenteService.follow(utente, followed)) {
+        if (!utenteService.follow(utente, followed)) {
           utenteService.unfollow(utente);
           utenteService.follow(utente, followed);
         }
@@ -47,7 +56,7 @@ public class ServletFollow extends HttpServlet {
         throw new IllegalStateException("Unexpected value: " + action);
     }
 
-    if(ajax) {
+    if (ajax) {
       String json = new Gson().toJson(flag);
       response.setContentType("application/json");
       response.setCharacterEncoding("UTF-8");

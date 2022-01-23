@@ -3,10 +3,17 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 import it.unisa.c02.moneyart.utils.payment.PayPalPayment;
 import it.unisa.c02.moneyart.utils.payment.PaymentAdapter;
 import it.unisa.c02.moneyart.utils.payment.StripePayment;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa servlet gestisce il pagamento esterno.
+ *
+ */
 
 @WebServlet(name = "ServletExternalPayment", value = "/pay")
 public class ServletExternalPayment extends HttpServlet {
