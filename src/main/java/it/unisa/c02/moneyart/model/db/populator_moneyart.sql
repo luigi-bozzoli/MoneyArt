@@ -13,6 +13,8 @@
 #
 #
 
+use moneyart;
+
 /****************************** ELIMINAZIONE DATI PRECEDENTI ******************************/
 UPDATE moneyart.utente SET id_seguito = NULL WHERE id > 0;
 
