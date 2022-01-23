@@ -32,7 +32,25 @@ $(document).ready(function() {
         }, 3000);
     });
 
-    if (document.URL.includes("getAuction") ) {
+    $('.modal-content button[type = submit]').click(function (event) {
+        event.preventDefault();
+        let params = {
+            asta : $('.modal-content input[name = asta]').val(),
+            commento : $('.modal-content textarea').val()
+        }
+
+        $.post(ctx+'/addReport', $.param(params), function(response) {
+            if(response) {
+                $('.modal-content button[type = button]').click();
+                $('#report i').attr("class", "fas fa-check");
+                $('#report p').html('Segnalato!');
+            } else {
+                $('.message').html(`<p class="mt-3" style="color: #BB371A !important;">Problema con la segnalazione</p>`);
+            }
+        });
+    });
+
+    if (document.URL.includes("getAuction") || document.URL.includes("newOffer") || document.URL.includes("addReport")) {
         let astaCorrente;
         $.get(ctx + '/getAuction?id=' + astaId, function (asta) {
             let countdown = new Date(asta.dataFine).getTime();
@@ -83,14 +101,11 @@ $(document).ready(function() {
                     prezzo = prezzo.toString().replace('.', ',');
                     prezzo = '€ '.concat(prezzo);
                 }
-
-                $('.best-offer h5').html(prezzo);
-
-
             }, 1000);
+            $('.best-offer h5').html(prezzo);
         });
 
-        $('.offer-input input').keyup(function () {
+        $('.offer-input input[name = offerta]').keyup(function () {
             $.get(ctx + '/newOffer', function (utente) {
                 let prezzo;
                 if (astaCorrente.partecipazioni.length == 0) {
@@ -109,6 +124,7 @@ $(document).ready(function() {
                         $(".error").html(``);
                     } else {
                         $('.offer-input button').addClass('disabled');
+                        $(".message").html(``);
                         $(".error").html(`<p class="mt-3">Il tuo saldo non é sufficiente oppure hai fatto un'offerta non valida!</p>`);
                     }
                 } else {
@@ -120,6 +136,30 @@ $(document).ready(function() {
                 }
             });
         });
+
+        $('.offer-input button').click(function (event) {
+            event.preventDefault();
+
+            let params = {
+                asta : $('.offer-input input[name = asta]').val(),
+                offerta : $('.offer-input input[name = offerta]').val()
+            }
+
+            $.post(ctx+'/newOffer', $.param(params), function(response) {
+                if(response) {
+                    $('.message').html(`<p class="mt-3" style="color: #05cf48 !important;">Offerta registrata correttamente!</p>`);
+                    let prezzo = Number(params.offerta).toFixed(2);
+                    prezzo = prezzo.toString().replace('.', ',');
+                    prezzo = '€ '.concat(prezzo);
+                    $('.best-offer h5').html(prezzo);
+                } else {
+                    $('.message').html(`<p class="mt-3" style="color: #BB371A !important;">Problema con la registrazione dell'offerta</p>`);
+                }
+            });
+
+        });
+
+
 
     }
 
