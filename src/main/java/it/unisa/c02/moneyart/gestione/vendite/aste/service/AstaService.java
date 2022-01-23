@@ -62,7 +62,7 @@ public interface AstaService {
   List<Asta> getAuctionsSortedByExpirationTime(String order, Asta.Stato s);
 
   /**
-   * Permette di partecipare ad un asta facendo un offerta
+   * Permette di partecipare ad un asta facendo un'offerta
    * , crea una notifica per informare il vecchio migliore offerte, se esiste.
    *
    * @param utente  l'utente che vuole effettuare l'offerta

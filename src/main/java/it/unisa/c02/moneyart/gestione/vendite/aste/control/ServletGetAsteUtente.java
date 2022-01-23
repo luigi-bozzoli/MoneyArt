@@ -3,12 +3,19 @@ package it.unisa.c02.moneyart.gestione.vendite.aste.control;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa servlet mostra le aste a cui un utente ha preso parte.
+ *
+ */
 
 @WebServlet(name = "ServletGetAsteUtente", value = "/userAuctions")
 public class ServletGetAsteUtente extends HttpServlet {

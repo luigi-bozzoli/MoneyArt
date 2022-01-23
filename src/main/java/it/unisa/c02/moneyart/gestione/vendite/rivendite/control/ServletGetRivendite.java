@@ -2,21 +2,20 @@ package it.unisa.c02.moneyart.gestione.vendite.rivendite.control;
 
 import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
-
-import it.unisa.c02.moneyart.model.beans.Asta;
-import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
-
 import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Questa servlet gestisce il recupero delle rivendite.
+ *
+ */
 
 @WebServlet(name = "ServletGetRivendite", value = "/getResells")
 public class ServletGetRivendite extends HttpServlet {
@@ -49,7 +48,7 @@ public class ServletGetRivendite extends HttpServlet {
 
     boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
-    if(ajax) {
+    if (ajax) {
 
       String criteria = request.getParameter("criteria");
       String order = request.getParameter("order");
@@ -71,7 +70,7 @@ public class ServletGetRivendite extends HttpServlet {
             break;
         }
 
-        for(Rivendita r : rivenditeFiltrate) {
+        for (Rivendita r : rivenditeFiltrate) {
           r.setNotifiche(null);
         }
 
@@ -82,7 +81,7 @@ public class ServletGetRivendite extends HttpServlet {
       } else {
 
 
-        for(Rivendita r : rivendite) {
+        for (Rivendita r : rivendite) {
           r.setNotifiche(null);
         }
 
@@ -101,7 +100,6 @@ public class ServletGetRivendite extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
     doGet(request, response);
   }
 

@@ -3,11 +3,18 @@ package it.unisa.c02.moneyart.gestione.vendite.rivendite.control;
 import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
 import it.unisa.c02.moneyart.model.beans.Opera;
-import javax.inject.Inject;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa servlet gestisce il recupero del valore di un'opera.
+ *
+ */
 
 @WebServlet(name = "ServletGetValoreOpera", value = "/getArtworkValue")
 public class ServletGetValoreOpera extends HttpServlet {
@@ -29,7 +36,7 @@ public class ServletGetValoreOpera extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    doGet(request,response);
+    doGet(request, response);
   }
 
   @Inject

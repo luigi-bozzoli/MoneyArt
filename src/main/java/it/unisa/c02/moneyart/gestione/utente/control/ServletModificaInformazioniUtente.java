@@ -3,16 +3,26 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import javax.inject.Inject;
-import org.apache.commons.io.IOUtils;
-
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+import javax.sql.rowset.serial.SerialBlob;
+import org.apache.commons.io.IOUtils;
+
+/**
+ * Questa servlet gestisce la modifica delle informazioni del profilo utente.
+ *
+ */
 
 @WebServlet(name = "ServletModificaInformazioniUtente", value = "/changeUserInformation")
 @MultipartConfig

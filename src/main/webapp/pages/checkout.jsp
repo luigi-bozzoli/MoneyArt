@@ -3,7 +3,7 @@
 
         <%@include file="../static/fragments/header.jsp"%>
 
-        <script>let ctx = "${pageContext.servletContext.contextPath}"</script>
+
 
         <c:set var="rivendita" value="${requestScope.rivendita}"/>
         <c:set var="opera" value="${requestScope.opera}"/>

@@ -62,6 +62,7 @@
                         </div>
                 </div>
 
+                    <c:if test="${(empty sessionScope.utente) || (rivendita.opera.possessore.id != sessionScope.utente.id)}">
                 <div class="offer-wrapper">
                     <form action="servletCheckout" method="post">
                         <label for="buy"><h3>Acquisto diretto</h3></label>
@@ -81,6 +82,7 @@
                         </div>
                     </form>
                 </div>
+                    </c:if>
             </div>
         </div>
     </div>

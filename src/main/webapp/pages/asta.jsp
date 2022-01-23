@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@include file="../static/fragments/header.jsp" %>
-    <script>let ctx = "${pageContext.servletContext.contextPath}"</script>
+
 
 
     <c:set var="asta" value="${requestScope.asta}"/>
@@ -29,7 +29,7 @@
                 <div class="info-heading d-flex justify-content-between flex-wrap">
                     <div class="artwork-info">
                         <h2 class="artwork-title"><c:out value="${asta.opera.nome}"/></h2>
-                        <p class="artist">Di <a href="#"><c:out value="${asta.opera.artista.username}"/></a></p>
+                        <p class="artist">Di <a href="${pageContext.servletContext.contextPath}/getUser?id=${asta.opera.artista.id}"><c:out value="${asta.opera.artista.username}"/></a></p>
                     </div>
                     <div class="buttons d-flex">
                         <div id="share" class="mr-3 text-center">
@@ -73,31 +73,54 @@
                 </div>
 
                 <div class="content-wrapper d-flex flex-column h-100">
-                    <div class="expiration-wrapper">
-                        <h3 class="mb-3">Tempo rimanente</h3>
-                        <div class="timer-info d-flex justify-content-between ml-1">
-                            <div class="days">
-                                <h5>--</h5>
-                                <span>Giorni</span>
-                            </div>
-                            <div class="hours">
-                                <h5>--</h5>
-                                <span>Ore</span>
-                            </div>
-                            <div class="minutes">
-                                <h5>--</h5>
-                                <span>Minuti</span>
-                            </div>
-                            <div class="seconds">
-                                <h5>--</h5>
-                                <span>Secondi</span>
-                            </div>
 
-                        </div>
+                    <div class="expiration-wrapper">
+                        <c:choose>
+                            <c:when test="${asta.stato eq 'IN_CORSO'}">
+                                <h3 class="mb-3">Tempo rimanente</h3>
+                            </c:when>
+                            <c:when test="${asta.stato eq 'CREATA'}">
+                                <h3 class="mb-3">L'asta parte fra</h3>
+                            </c:when>
+                            <c:when test="${asta.stato eq 'TERMINATA'}">
+                                <h3 class="mb-3">L'asta è terminata</h3>
+                            </c:when>
+
+                        </c:choose>
+                        <c:if test="${(asta.stato eq 'CREATA') || (asta.stato eq 'IN_CORSO')}">
+
+                            <div class="timer-info d-flex justify-content-between ml-1">
+                                <div class="days">
+                                    <h5>--</h5>
+                                    <span>Giorni</span>
+                                </div>
+                                <div class="hours">
+                                    <h5>--</h5>
+                                    <span>Ore</span>
+                                </div>
+                                <div class="minutes">
+                                    <h5>--</h5>
+                                    <span>Minuti</span>
+                                </div>
+                                <div class="seconds">
+                                    <h5>--</h5>
+                                    <span>Secondi</span>
+                                </div>
+
+                            </div>
+                        </c:if>
                     </div>
 
+                <c:if test="${(asta.stato eq 'TERMINATA') || (asta.stato eq 'IN_CORSO')}">
                     <div class="best-offer-wrapper">
-                        <h3 class="mb-3">Offerta corrente</h3>
+                        <c:choose>
+                            <c:when test="${asta.stato eq 'TERMINATA'}">
+                                <h3 class="mb-3">Offerta vincente</h3
+                            </c:when>
+                            <c:otherwise>
+                                <h3 class="mb-3">Offerta corrente</h3
+                            </c:otherwise>
+                        </c:choose>
                         <div class="best-offer">
                             <c:choose>
                                 <c:when test="${bestOffer == 0}">
@@ -109,7 +132,9 @@
                             </c:choose>
                         </div>
                     </div>
+                </c:if>
 
+                <c:if test="${(asta.stato eq 'IN_CORSO') && ((empty sessionScope.utente) || (asta.opera.possessore.id != sessionScope.utente.id))}">
                     <div class="offer-wrapper">
                         <form method="post">
 
@@ -136,6 +161,7 @@
                             </div>
                         </form>
                     </div>
+                </c:if>
                 </div>
 
             </div>
@@ -145,7 +171,7 @@
         <div class="col-12">
             <div class="artwork-info">
                 <h2 class="artwork-title">Descrizione</h2>
-                <p class="artist">Creata da <a href="#"><c:out value="${asta.opera.artista.username}"/></a></p>
+                <p class="artist">Creata da <a href="${pageContext.servletContext.contextPath}/getUser?id=${asta.opera.artista.id}"><c:out value="${asta.opera.artista.username}"/></a></p>
             </div>
 
             <div class="description">

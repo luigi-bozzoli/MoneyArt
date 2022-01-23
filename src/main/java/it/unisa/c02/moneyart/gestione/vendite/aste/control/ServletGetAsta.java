@@ -21,9 +21,9 @@ public class ServletGetAsta extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
 
-    if(request.getSession().getAttribute("admin") != null){
+    if (request.getSession().getAttribute("admin") != null) {
       request.setAttribute("admin", true);
     }
 
@@ -33,15 +33,15 @@ public class ServletGetAsta extends HttpServlet {
 
     boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
-    if(ajax) {
+    if (ajax) {
 
-        List<Partecipazione> partecipazioni = asta.getPartecipazioni();
+      List<Partecipazione> partecipazioni = asta.getPartecipazioni();
 
-        for(Partecipazione p : partecipazioni) {
-          p.setAsta(null);
-          asta.setNotifiche(null);
-          asta.setSegnalazioni(null);
-        }
+      for (Partecipazione p : partecipazioni) {
+        p.setAsta(null);
+        asta.setNotifiche(null);
+        asta.setSegnalazioni(null);
+      }
 
       String json = new Gson().toJson(asta);
       response.setContentType("application/json");
@@ -49,22 +49,17 @@ public class ServletGetAsta extends HttpServlet {
       response.getWriter().write(json);
     } else {
       request.setAttribute("message", request.getAttribute("message"));
-      if(asta.getStato().equals(Asta.Stato.IN_CORSO)) {
-        request.setAttribute("asta", asta);
+      request.setAttribute("asta", asta);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asta.jsp");
-        dispatcher.forward(request, response);
-      } else {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/esplora.jsp");
-        dispatcher.forward(request, response);
-      }
+      RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asta.jsp");
+      dispatcher.forward(request, response);
     }
 
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+      throws ServletException, IOException {
 
     doGet(request, response);
   }

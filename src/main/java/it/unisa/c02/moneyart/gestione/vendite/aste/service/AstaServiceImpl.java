@@ -627,6 +627,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
   @Override
   public void executeTimedTask(TimedObject item) {
     Asta asta = astaDao.doRetrieveById((Integer) item.getAttribute());
+    if (asta.getStato().equals(Asta.Stato.ELIMINATA)) {
+      return;
+    }
     if (item.getTaskType().equals("avviaAsta")) {
       avviaAsta(asta);
     } else if (item.getTaskType().equals("terminaAsta")) {

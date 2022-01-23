@@ -1,10 +1,9 @@
-$(document).ready(function() {
-
+$(document).ready(function () {
 
     $(".timer").each(function () {
 
-            let countdown = Date.parse($(this).text());
-            let element = $(this);
+            let countdown = Date.parse($(this).text())
+            let element = $(this)
 
             let x = setInterval(function() {
 
@@ -46,5 +45,22 @@ $(document).ready(function() {
                     element.html(days + ':' + hours + ':' + minutes + ':' + seconds);
                 }
             }, 1000);
-        });
-});
+        }
+    )
+
+    $(".bottone-in-attesa").click(function (){
+        let astaId = $(this).val();
+        let elem = $("#in-attesa-" + astaId)
+        $.get(ctx + '/cancelAuction?id=' + astaId, function (asta) {
+            elem.remove();
+        })
+    })
+
+    $(".bottone-in-corso").click(function (){
+        let astaId = $(this).val();
+        let elem = $("#in-corso-" + astaId)
+        $.get(ctx + '/cancelAuction?id=' + astaId, function (asta) {
+            elem.remove();
+        })
+    })
+})

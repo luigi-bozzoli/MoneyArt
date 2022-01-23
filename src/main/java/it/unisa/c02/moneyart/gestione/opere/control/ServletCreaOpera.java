@@ -3,15 +3,18 @@ package it.unisa.c02.moneyart.gestione.opere.control;
 import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
-
-import javax.inject.Inject;
+import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.IOException;
 import java.util.Base64;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 
 /**
@@ -64,8 +67,9 @@ public class ServletCreaOpera extends HttpServlet {
                 "/pages/creaOpera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
         dispatcher.forward(request, response);
       } else {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
-        dispatcher.forward(request, response);
+        response.sendRedirect(getServletContext().getContextPath()
+            +
+            "/pages/opereUtente.jsp#opere-possedute-asta");
       }
     } catch (Exception e) {
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore certificato");

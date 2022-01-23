@@ -6,7 +6,7 @@
 }
 .nav-tabs .nav-item {
     margin-bottom: -1px;
-    flex-basis: 50%;
+    flex-basis: 30%;
     text-align: center;
 }
 
@@ -65,16 +65,6 @@
 }
 .thumb-content h4, .thumb-content p {
     margin-bottom: 5px;
-}
-.thumb-content a {
-    color: #bb371a;
-    text-decoration: none;
-    transition: .6s;
-}
-.thumb-content a:hover {
-    color: #eba83a;
-    text-decoration: none;
-    transition: .6s;
 }
 .expiration-timer .timer {
     font-size: 16px;
@@ -156,12 +146,12 @@
 
 /* When the body has the loading class, we turn
    the scrollbar off with overflow:hidden */
-body.loading .modal {
+#myTabContent.loading .modal {
     overflow: hidden;
 }
 
 /* Anytime the body has the loading class, our
    modal element will be visible */
-body.loading .modal {
+#myTabContent.loading .modal {
     display: block;
 }

@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Questa classe gestisce una rivendita.
+ *
+ */
 
 @WebServlet(name = "ServletRivendita", value = "/resell")
 public class ServletRivendita extends HttpServlet {

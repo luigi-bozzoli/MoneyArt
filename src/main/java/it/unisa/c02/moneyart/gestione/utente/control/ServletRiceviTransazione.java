@@ -5,11 +5,18 @@ import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.utils.payment.PayPalPayment;
 import it.unisa.c02.moneyart.utils.payment.PaymentAdapter;
 import it.unisa.c02.moneyart.utils.payment.StripePayment;
-import javax.inject.Inject;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa classe gestisce le transazioni.
+ *
+ */
 
 @WebServlet(name = "ServletRiceviTransazione", value = "/recivePayment")
 public class ServletRiceviTransazione extends HttpServlet {
