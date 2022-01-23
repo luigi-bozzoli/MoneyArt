@@ -33,6 +33,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -77,7 +78,7 @@ public class MainContext implements ServletContextListener {
     }
 
     System.out.println("-- Ripristino dei timer persistenti --");
-    int timerRipristinati = initializeTimerService();
+    int timerRipristinati = initializeTimerService(ds);
     System.out.println("-- " + timerRipristinati + " timer sono stati ripristinati --");
 
     ServletContext context = sce.getServletContext();
@@ -106,12 +107,12 @@ public class MainContext implements ServletContextListener {
   }
 
 
-  private int initializeTimerService() {
+  private int initializeTimerService(DataSource dataSource) {
     TimerScheduler timerService = TimerScheduler.getInstance();
-    TimerService avviaAsta = new AstaServiceImpl();
+    TimerService avviaAsta = astaService;
     timerService.registerTimedService("avviaAsta", avviaAsta);
-    TimerService terminaAsta = new AstaServiceImpl();
-    timerService.registerTimedService("terminaAsta", avviaAsta);
+    TimerService terminaAsta = astaService;
+    timerService.registerTimedService("terminaAsta", terminaAsta);
 
     return timerService.retrivePersistentTimers();
   }
@@ -530,6 +531,8 @@ public class MainContext implements ServletContextListener {
    */
 
 
+  @Inject
+  private AstaServiceImpl astaService;
 
   private static final Logger logger = Logger.getLogger("MainContext.class");
 }
