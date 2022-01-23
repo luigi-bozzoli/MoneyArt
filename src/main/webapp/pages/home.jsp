@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@include file="../static/fragments/header.jsp"%>
 
@@ -51,100 +52,58 @@
                 <div class="carousel-inner" role="listbox">
                     <!-- First Slide-->
                     <div class="carousel-item active">
-                        <div class="col-md-4">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/cupcat.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>CupCat</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="0" end="2">
+                            <div class="col-md-4">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/shibosis.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>The Shibosis</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
-                                    </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/tiger.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>TIGXR</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
-                                    </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
-                                </div>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /First Slide-->
                     <!-- Second Slide-->
                     <div class="carousel-item">
-                        <div class="col-md-4">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/capsule-house.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>Capsule House</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="2" end="5">
+                            <div class="col-md-4">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/kumo-resident.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>Kumo Resident</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
-                                    </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/miner.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>The Miner</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
-                                    </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
-                                </div>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /Second Slide-->
                 </div>
@@ -183,104 +142,86 @@
                 <div class="carousel-inner" role="listbox">
                     <!-- First Slide-->
                     <div class="carousel-item active">
-                        <div class="col-md-6">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/cupcat.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>CupCat</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="0" end="1">
+                            <div class="col-md-6">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/shibosis.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>The Shibosis</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
-                                    </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
-                                </div>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /First Slide-->
                     <!-- Second Slide-->
                     <div class="carousel-item">
-                        <div class="col-md-6">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/capsule-house.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>Capsule House</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="2" end="3">
+                            <div class="col-md-6">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/kumo-resident.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>Kumo Resident</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
-                                    </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
-                                </div>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /Second Slide-->
                     <!-- Third Slide-->
                     <div class="carousel-item">
-                        <div class="col-md-6">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/tiger.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>TIGXR</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="4" end="5">
+                            <div class="col-md-6">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/miner.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>The Miner</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
-                                    </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
-                                </div>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /Third Slide-->
                 </div>
@@ -323,115 +264,169 @@
                 <div class="carousel-inner" role="listbox">
                     <!-- First Slide-->
                     <div class="carousel-item active">
-                        <div class="col-sm-12">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/cupcat.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>CupCat</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="0" end="0">
+                            <div class="col-sm-12">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /First Slide-->
                     <!-- Second Slide-->
                     <div class="carousel-item">
-                        <div class="col-sm-12">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/capsule-house.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>Capsule House</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="1" end="1">
+                            <div class="col-sm-12">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /Second Slide-->
                     <!-- Third Slide-->
                     <div class="carousel-item">
-                        <div class="col-sm-12">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/shibosis.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>The Shibosis</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="2" end="2">
+                            <div class="col-sm-12">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /Third Slide-->
                     <!-- Fourth Slide-->
                     <div class="carousel-item">
-                        <div class="col-sm-12">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/tiger.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>TIGXR</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="3" end="3">
+                            <div class="col-sm-12">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /Fourth Slide-->
                     <!-- Fifth Slide-->
                     <div class="carousel-item">
-                        <div class="col-sm-12">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/kumo-resident.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>Kumo Resident</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="4" end="4">
+                            <div class="col-sm-12">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /Sixth Slide-->
                     <div class="carousel-item">
-                        <div class="col-sm-12">
-                            <div class="thumb-wrapper">
-                                <div class="img-box">
-                                    <img src="<c:out value="${pageContext.servletContext.contextPath}"/>/static/demo/miner.jpg" class="img-responsive">
-                                </div>
-                                <div class="thumb-content">
-                                    <h4>The Miner</h4>
-                                    <div class="expiration-timer">
-                                        <span class="timer">12:29:59</span>
+                        <c:forEach var="asta" items="${aste}" begin="5" end="5">
+                            <div class="col-sm-12">
+                                <div class="thumb-wrapper">
+                                    <div class="img-box">
+                                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${asta.opera.id}" class="img-responsive">
                                     </div>
-                                    <p class="item-price">€3024,33</p>
-                                    <a href="#" class="btn btn-primary">Vai all'asta</a>
+                                    <div class="thumb-content">
+                                        <h4>${asta.opera.nome}</h4>
+                                        <div class="expiration-timer">
+                                            <span class="timer"><fmt:formatDate pattern="MM dd yyyy" value="${asta.dataFine}" /></span>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${empty asta.partecipazioni}">
+                                                <p class="item-price"><c:out value="Nessuna offerta"/></p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="item-price"><fmt:formatNumber value="${asta.partecipazioni.get(asta.partecipazioni.size()-1).offerta}" type="currency" currencySymbol="€"/></p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:forEach>
                     </div>
                     <!-- /Sixth Slide-->
                 </div>
