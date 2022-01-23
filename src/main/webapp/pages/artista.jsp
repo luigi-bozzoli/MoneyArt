@@ -65,23 +65,56 @@
             <span class="line-break"></span>
         </div>
     </div>
-    <div class="container-fluid d-flex flex-wrap" id="container-aste">
+    <ul class="nav nav-tabs d-flex justify-content-between" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="possedute-tab" data-toggle="tab" href="#possedute" role="tab" aria-controls="auctions" aria-selected="true">Possedute</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="create-tab" data-toggle="tab" href="#create" role="tab" aria-controls="artists" aria-selected="true">Create</a>
+        </li>
+    </ul>
 
-        <c:forEach var="opera" items="${artista.opereCreate}">
-            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="thumb-wrapper">
-                    <div class="img-box artwork">
-                        <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${opera.id}"
-                             class="img-responsive">
-                    </div>
-                    <div class="thumb-content">
-                        <h4><c:out value="${opera.nome}"/></h4>
-                        <h6>Posseduto da ${opera.possessore.username}</h6>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="possedute" role="tabpanel" aria-labelledby="possedute-tab">
+        <div class="container-fluid d-flex flex-wrap" id="container-aste">
+            <c:forEach var="opera" items="${artista.opereInPossesso}">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                    <div class="thumb-wrapper">
+                        <div class="img-box artwork">
+                            <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${opera.id}"
+                                 class="img-responsive">
+                        </div>
+                        <div class="thumb-content">
+                            <h4><c:out value="${opera.nome}"/></h4>
+                            <h6>Posseduto da ${opera.possessore.username}</h6>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </c:forEach>
+            </c:forEach>
+        </div>
     </div>
+
+    <div class="tab-pane fade show" id="create" role="tabpanel" aria-labelledby="create-tab">
+        <div class="container-fluid d-flex flex-wrap">
+
+            <c:forEach var="opera" items="${artista.opereCreate}">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                    <div class="thumb-wrapper">
+                        <div class="img-box artwork">
+                            <img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${opera.id}"
+                                 class="img-responsive">
+                        </div>
+                        <div class="thumb-content">
+                            <h4><c:out value="${opera.nome}"/></h4>
+                            <h6>Posseduto da ${opera.possessore.username}</h6>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+</div>
+
     <script>let idArtista = "${artista.id}"</script>
 
 
