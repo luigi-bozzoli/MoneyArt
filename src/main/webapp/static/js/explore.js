@@ -1,4 +1,9 @@
 $(document).ready(function (){
+    var hash = location.hash.replace(/^#/, '');  // ^ means starting, meaning only match the first hash
+    if(hash === "artists"){
+        $("#artisti-tab").tab("show");
+    }
+
     $('#myTabContent').addClass("loading");
     setTimeout(function() {
         $('#myTabContent').removeClass("loading");
