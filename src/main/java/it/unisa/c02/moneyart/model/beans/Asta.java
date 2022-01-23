@@ -180,11 +180,18 @@ public class Asta {
    * @return la stringa che rappresenta l'asta
    */
   public String toString() {
-    return "id: " + this.id + " opera: " + this.opera.toString() + " Data inizio: " +
-        this.dataInizio
+    return "id: " + this.id + " opera: " + this.opera.toString() + " Data inizio: "
+      + this.dataInizio
         + " Data fine: " + this.dataFine + " Stato: " + this.stato;
   }
 
+  /**
+   * Verifica l'uguaglianza tra due oggetti.
+   *
+   * @param o oggetto da confrontare con un'istanza della classe corrente
+   * @return true se l'uguaglianza tra i due oggetti è verificato,
+   *         false altrimenti
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -201,6 +208,11 @@ public class Asta {
         .and(Objects.equals(getStato(), asta.getStato())).getValue();
   }
 
+  /**
+   * Genera un hash.
+   *
+   * @return un intero che rappresenta l'hash della classe
+   */
   @Override
   public int hashCode() {
     return Objects.hash(getId(), getOpera(), getDataInizio(), getDataFine(), getStato(),

@@ -315,6 +315,13 @@ public class Utente {
         '}';
   }
 
+  /**
+   * Verifica l'uguaglianza tra due oggetti.
+   *
+   * @param o oggetto da confrontare con un'istanza della classe corrente
+   * @return true se l'uguaglianza tra i due oggetti è verificato,
+   *         false altrimenti
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -335,6 +342,11 @@ public class Utente {
         .and(Objects.equals(getSaldo(), utente.getSaldo())).getValue();
   }
 
+  /**
+   * Genera un hash.
+   *
+   * @return un intero che rappresenta l'hash della classe
+   */
   @Override
   public int hashCode() {
     int result =
@@ -345,6 +357,10 @@ public class Utente {
     return result;
   }
 
+  /**
+   * Variabili di istanza.
+   *
+   */
   private Integer id;
   private String nome;
   private String cognome;
@@ -355,8 +371,6 @@ public class Utente {
   private Utente seguito;
   private Double saldo;
   private int numFollowers;
-
-  /* Liste utili */
   private List<Opera> opereCreate;
   private List<Opera> opereInPossesso;
   private List<Notifica> notifiche;

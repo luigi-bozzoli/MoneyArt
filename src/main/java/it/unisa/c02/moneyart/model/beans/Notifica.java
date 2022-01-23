@@ -198,6 +198,13 @@ public class Notifica {
         '}';
   }
 
+  /**
+   * Verifica l'uguaglianza tra due oggetti.
+   *
+   * @param o oggetto da confrontare con un'istanza della classe corrente
+   * @return true se l'uguaglianza tra i due oggetti è verificato,
+   *         false altrimenti
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -214,15 +221,23 @@ public class Notifica {
         .and(Objects.equals(getTipo(), notifica.getTipo()))
         .and(Objects.equals(getContenuto(), notifica.getContenuto()))
         .and(Objects.equals(letta, notifica.letta)).getValue();
-
   }
 
+  /**
+   * Genera un hash.
+   *
+   * @return un intero che rappresenta l'hash della classe
+   */
   @Override
   public int hashCode() {
     return Objects.hash(getId(), getUtente(), getAsta(), getRivendita(), getTipo(), getContenuto(),
         letta);
   }
 
+  /**
+   * Variabili di istanza.
+   *
+   */
   private Integer id;
   private Utente utente;
   private Asta asta;
