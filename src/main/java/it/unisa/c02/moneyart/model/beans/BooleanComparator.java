@@ -1,18 +1,21 @@
 package it.unisa.c02.moneyart.model.beans;
 
+/**
+ * BooleanComparator effettua il confronto tra due valori booleani.
+ */
 public class BooleanComparator {
 
-  private boolean aBoolean;
-
   public BooleanComparator(boolean bool) {
-    this.aBoolean = bool;
+    this.bool = bool;
   }
 
   public BooleanComparator and(boolean anotherBoolean) {
-    return new BooleanComparator(this.aBoolean && anotherBoolean);
+    return new BooleanComparator(this.bool && anotherBoolean);
   }
 
   public boolean getValue() {
-    return aBoolean;
+    return bool;
   }
+
+  private boolean bool;
 }

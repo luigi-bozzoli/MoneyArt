@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
  */
 
 @WebFilter(filterName = "FilterAdmin", urlPatterns = {"/removeAuction", "/getReports",
-    "/readReport", "/offersHistory", "/adminPage", "/asteAdmin"})
+    "/readReport", "/removeReport", "/offersHistory", "/adminPage", "/asteAdmin"})
 public class FilterAdmin implements Filter {
   public void init(FilterConfig config) throws ServletException {
   }

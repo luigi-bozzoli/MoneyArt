@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
     "/cancelAuction", "/newAuction", "/newProfilePicture", "/wallet", "/walletInfo", "/notifies",
     "/getUserArtworks", "/follow", "/changeUserInformation", "/userAuctions",
     "/buyArtwork", "/resell", "/pay", "/recivePayment", "/pages/notifiche.jsp",
-    "/deleteNotification"})
+    "/deleteNotification", "/addReport", "/servletCheckout", "/pages/opereUtente.jsp"})
 public class FilterLogin implements Filter {
   public void init(FilterConfig config) throws ServletException {
   }

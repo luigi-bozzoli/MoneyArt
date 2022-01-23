@@ -39,10 +39,35 @@
                             </a>
                         </div>
                         <div id="report" class="ml-3 text-center">
-                            <a href="javascript:void(0)">
+                            <a style="cursor: pointer" data-toggle="modal" data-target="#segnalazioneModal">
                                 <i class="fas fa-flag"></i>
                                 <p>Segnala</p>
                             </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="segnalazioneModal" tabindex="-1" role="dialog" aria-labelledby="segnalazioneModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="segnalazioneModalLabel">Segnalazione</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post">
+                                <input type="hidden" name="asta" value="${asta.id}">
+                                <div class="modal-body">
+                                    <textarea class="form-control" rows="3" name="commento"
+                                              placeholder="Inserisci un commento"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                                    <button type="submit" class="btn btn-primary" style="background-color: #BB371A; border: none">Invia Segnalazione</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -86,7 +111,8 @@
                     </div>
 
                     <div class="offer-wrapper">
-                        <form action="${pageContext.servletContext.contextPath}/newOffer" method="post">
+                        <form method="post">
+
 
                             <label for="offerta"><h3>Fai un'offerta</h3></label>
                             <div class="offer-input">
@@ -134,8 +160,6 @@
             </div>
         </div>
     </div>
-
-
 
 <%@include file="../static/fragments/footer.jsp" %>
 

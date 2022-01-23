@@ -45,6 +45,7 @@ a.nav-link:hover p, a.nav-link:hover i {
     z-index: 1;
     transition: .5s ease;
     background-color: grey;
+    cursor: pointer;
 }
 
 .propic:hover .overlay {

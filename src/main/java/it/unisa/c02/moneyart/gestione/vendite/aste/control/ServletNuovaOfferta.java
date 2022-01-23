@@ -44,14 +44,17 @@ public class ServletNuovaOfferta extends HttpServlet {
 
     Asta asta = astaService.getAuction(astaId);
 
-    if (astaService.partecipateAuction(utente, asta, offerta)) {
-      request.setAttribute("message", "Offerta registrata correttamente!");
-    } else {
-      request.setAttribute("error", "Problema con la registrazione dell'offerta");
+    boolean offertaOk = astaService.partecipateAuction(utente, asta, offerta);
+    if(offertaOk) {
+      request.getSession().removeAttribute("utente");
+      request.getSession().setAttribute("utente", utente);
     }
+    String json = new Gson().toJson(offertaOk);
 
-    dispatcher = request.getRequestDispatcher("/getAuction?id="+astaId);
-    dispatcher.forward(request, response);
+    response.setContentType("application/json");
+    response.setCharacterEncoding("UTF-8");
+    response.getWriter().write(json);
+
   }
 
   @Inject

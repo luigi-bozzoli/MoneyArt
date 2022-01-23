@@ -1,0 +1,128 @@
+.sidebar .nav-icon {
+    color: #EBA83A !important;
+}
+
+a.nav-link:hover p, a.nav-link:hover i {
+    color: #BB371A !important;
+}
+
+.content-wrapper{
+    background: none !important;
+}
+.pic {
+    position: relative;
+}
+.pic img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+ }
+
+.overlay {
+    cursor: pointer;
+    align-items: center;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    transition: .5s ease;
+    background-color: grey;
+}
+
+.pic:hover .overlay {
+    opacity: .9;
+}
+
+.overlay .text {
+    color: white;
+    font-size: 2em;
+}
+
+
+.data,
+.create-artwork {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.create-artwork {
+    overflow: hidden;
+    padding: 40px 30px 5px;
+    width: 80%;
+    margin: 4vh auto 5vh;
+}
+
+.data>.data-input {
+    background: white;
+    box-shadow: 0 0 10px #e6e9f9;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-radius: 20px;
+    color: #454545;
+    transition: .8s;
+}
+
+.data>.data-input:hover {
+    box-shadow: 0 0 10px rgba(187, 55, 26, 0.3);
+    transition: .8s;
+}
+
+.data-input .input-icon input,
+.data-input .input-icon textarea{
+    outline: none;
+    border: none;
+    width: 90%;
+    margin-top: 5px;
+}
+
+.input-icon i {
+    margin-right: 5px;
+}
+
+.input-icon input::placeholder {
+    color: rgba(69, 69, 69, 0.5);
+}
+
+.data>button {
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    width: 40%;
+    border: none;
+    padding: 10px 0;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+    background-color: #BB371A;
+    transition: 0.3s;
+}
+
+.data>button:hover {
+    background-color: #EBA83A;
+}
+.artwork-box {
+    overflow: hidden;
+    background-color: rgba(213, 219, 179, 0.2);
+    border-radius: 30px;
+    box-shadow: 5px 10px 10px rgba(213, 219, 179, 0.1);
+    padding: 60px 0px 20px;
+}
+.disabled {
+    pointer-events: none;
+}
+
+@media screen and (max-width: 1200px) {
+    .create-artwork {
+        width: 100%;
+    }
+}

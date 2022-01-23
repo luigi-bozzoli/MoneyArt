@@ -13,6 +13,8 @@ import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,6 +52,11 @@ class ServletRicercaUtenteIntegrationTest {
     HttpServletRequest request;
     @Mock
     HttpServletResponse response;
+    @Mock
+    ServletContext ctx;
+
+    private InputStream in;
+    private ServletConfig config;
 
     private static DataSource dataSource;
 
@@ -94,7 +101,9 @@ class ServletRicercaUtenteIntegrationTest {
     }
 
     @BeforeEach
-    public void setUp() throws SQLException, FileNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public void setUp()
+        throws SQLException, FileNotFoundException, NoSuchFieldException, IllegalAccessException,
+        NoSuchMethodException, InvocationTargetException, ServletException {
 
         Connection connection = dataSource.getConnection();
         ScriptRunner runner = new ScriptRunner(connection);
@@ -111,6 +120,8 @@ class ServletRicercaUtenteIntegrationTest {
         utenteService= new UtenteServiceImpl( utenteDao, operaDao, notificaDao, partecipazioneDao);
 
         servletRicercaUtente = new ServletRicercaUtente();
+        config = mock(ServletConfig.class);
+        servletRicercaUtente.init(config);
 
         //inject manuale della variabile di istanza =)
         Field injectedObject = servletRicercaUtente.getClass().getDeclaredField("utenteService");
@@ -134,6 +145,10 @@ class ServletRicercaUtenteIntegrationTest {
     void doGet() throws ServletException, IOException, InvocationTargetException,
             NoSuchMethodException, IllegalAccessException {
 
+        in = new FileInputStream("./src/main/webapp/amministratori.json");
+
+        when(config.getServletContext()).thenReturn(ctx);
+        when(ctx.getResourceAsStream(anyString())).thenReturn(in);
         Utente utente = new Utente("Alfonso", "Zarro", null, "stefanus@unisa.it",
                 "s_ano", new Utente(), "stelle".getBytes(StandardCharsets.UTF_8), 0.002);
         utenteDao.doCreate(utente);

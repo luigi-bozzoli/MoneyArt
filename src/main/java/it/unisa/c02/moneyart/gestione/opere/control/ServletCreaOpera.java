@@ -3,14 +3,15 @@ package it.unisa.c02.moneyart.gestione.opere.control;
 import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
 import it.unisa.c02.moneyart.model.beans.Opera;
 import it.unisa.c02.moneyart.model.beans.Utente;
+
 import javax.inject.Inject;
-import org.apache.commons.io.IOUtils;
 import java.sql.Blob;
 import java.sql.SQLException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.Base64;
 import javax.sql.rowset.serial.SerialBlob;
 
 /**
@@ -32,20 +33,22 @@ public class ServletCreaOpera extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    Part immagine = request.getPart("immagine");
-    String nome = request.getParameter("nome");
-    String descrizione = request.getParameter("descrizione");
+    String immagine = request.getParameter("picture");
+    String nome = request.getParameter("name");
+    String descrizione = request.getParameter("description");
 
     Utente artista = (Utente) request.getSession().getAttribute("utente");
+    immagine = immagine.replace("data:image/png;base64,", "");
     Blob blob;
     try {
-      blob = new SerialBlob(IOUtils.toByteArray(immagine.getInputStream()));
+      byte[] encodedByte = Base64.getDecoder().decode(immagine);
+      blob = new SerialBlob(encodedByte);
     } catch (SQLException e) {
       request.setAttribute("error",
           "errore nel caricamento dell'immagine");
       RequestDispatcher dispatcher = request
           .getRequestDispatcher(
-              "/pages/aggiungi-opera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
+              "/pages/creaOpera.jsp");
       dispatcher.forward(request, response);
       return;
     }
@@ -58,15 +61,14 @@ public class ServletCreaOpera extends HttpServlet {
             "L'opera è già presente nella piattaforma!");
         RequestDispatcher dispatcher = request
             .getRequestDispatcher(
-                "/pages/aggiungi-opera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
+                "/pages/creaOpera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
         dispatcher.forward(request, response);
       } else {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/dettaglio-opera?id="
-            + nuovaOpera.getId() + ".jsp"); // TODO: aggiungere il link alla pagina del wallet
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
         dispatcher.forward(request, response);
       }
     } catch (Exception e) {
-
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore certificato");
     }
 
 

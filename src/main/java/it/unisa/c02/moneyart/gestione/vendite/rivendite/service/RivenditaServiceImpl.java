@@ -159,11 +159,11 @@ public class RivenditaServiceImpl implements RivenditaService {
       return false;
     }
     Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());
-    opera.setPossessore(utente);
-    opera.setStato(Opera.Stato.IN_POSSESSO);
     Utente owner = utenteDao.doRetrieveById(opera.getPossessore().getId());
     utente.setSaldo(utente.getSaldo() - rivendita.getPrezzo());
     owner.setSaldo(owner.getSaldo() + rivendita.getPrezzo());
+    opera.setPossessore(utente);
+    opera.setStato(Opera.Stato.IN_POSSESSO);
 
     rivendita.setStato(Rivendita.Stato.TERMINATA);
     Notifica notifica =

@@ -1,5 +1,6 @@
 package it.unisa.c02.moneyart.gestione.avvisi.segnalazione.control;
 
+import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.*;
@@ -34,11 +35,15 @@ public class ServletAddReport extends HttpServlet {
 
     Segnalazione segnalazione = new Segnalazione(asta, commento, letta);
 
-    segnalazioneService.addReport(segnalazione);
+    boolean segnalazioneOk = segnalazioneService.addReport(segnalazione);
 
-    request.setAttribute("reportMessage", "Segnalazione inviata con successo!");
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/"); //TODO: link alla pagina dell'asta segnalata
-    dispatcher.forward(request, response);
+    String json = new Gson().toJson(segnalazioneOk);
+
+    response.setContentType("application/json");
+    response.setCharacterEncoding("UTF-8");
+    response.getWriter().write(json);
+
+
   }
 
   @Inject
