@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class ServletGetRivenditeIntegrationTest {
+class ServletGetRivenditeIntegrationTest {
 
   private static DataSource dataSource;
   private ServletGetRivendite servletGetRivendite;
@@ -95,7 +95,7 @@ public class ServletGetRivenditeIntegrationTest {
     rivenditaService = new RivenditaServiceImpl(utenteDao, operaDao, rivenditaDao, notificaDao,
         astaDao, partecipazioneDao);
 
-    servletGetRivendite= new ServletGetRivendite();
+    servletGetRivendite = new ServletGetRivendite();
 
     Field injectedObject = servletGetRivendite.getClass().getDeclaredField("rivenditaService");
     injectedObject.setAccessible(true);
