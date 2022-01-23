@@ -57,7 +57,7 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form action="${pageContext.servletContext.contextPath}/addReport" method="post">
+                            <form method="post">
                                 <input type="hidden" name="asta" value="${asta.id}">
                                 <div class="modal-body">
                                     <textarea class="form-control" rows="3" name="commento"
@@ -111,7 +111,8 @@
                     </div>
 
                     <div class="offer-wrapper">
-                        <form action="${pageContext.servletContext.contextPath}/newOffer" method="post">
+                        <form method="post">
+
 
                             <label for="offerta"><h3>Fai un'offerta</h3></label>
                             <div class="offer-input">
@@ -159,8 +160,6 @@
             </div>
         </div>
     </div>
-
-
 
 <%@include file="../static/fragments/footer.jsp" %>
 
