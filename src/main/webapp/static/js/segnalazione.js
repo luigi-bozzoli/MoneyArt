@@ -75,10 +75,18 @@ function unread(){
     let idBottone = $(this).val();
     let elem = $(this).parent().parent();
     $.get(ctx + "/readReport",{"action" : "unread", "idReport" : idBottone},function (){
-
         let copia = elem.clone();
         nonLette.append(copia)
         elem.remove()
         creaReportNonLetta(copia);
+    })
+}
+
+function elimina(){
+
+    let idBottone = $(this).val();
+    let elem = $(this).parent().parent();
+    $.get(ctx + "/removeReport", {"idReport": idBottone}, function () {
+        elem.remove()
     })
 }

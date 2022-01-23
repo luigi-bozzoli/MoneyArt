@@ -37,7 +37,7 @@ public class ServletAddReport extends HttpServlet {
     segnalazioneService.addReport(segnalazione);
 
     request.setAttribute("reportMessage", "Segnalazione inviata con successo!");
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/"); //TODO: link alla pagina dell'asta segnalata
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/getAuction?id="+asta.getId());
     dispatcher.forward(request, response);
   }
 
