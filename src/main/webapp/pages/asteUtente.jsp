@@ -60,7 +60,7 @@
                                 </c:otherwise>
                             </c:choose>
 
-                            <a href="#" class="btn btn-primary">Vai all'asta</a>
+                            <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                                 </c:otherwise>
                             </c:choose>
 
-                            <a href="#" class="btn btn-primary">Vai all'asta</a>
+                            <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
                         </div>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
                                 </c:otherwise>
                             </c:choose>
 
-                            <a href="#" class="btn btn-primary">Vai all'asta</a>
+                            <a href="${pageContext.servletContext.contextPath}/getAuction?id=${asta.id}" class="btn btn-primary">Vai all'asta</a>
                         </div>
                     </div>
                 </div>

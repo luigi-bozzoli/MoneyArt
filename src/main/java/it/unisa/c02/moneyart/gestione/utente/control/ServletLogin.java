@@ -45,8 +45,10 @@ public class ServletLogin extends HttpServlet {
 
       if (idAmministratori.contains(utente.getId())) {
         session.setAttribute("admin", true);
+        session.removeAttribute("utente");
       } else {
         session.setAttribute("utente", utente);
+        session.removeAttribute("admin");
       }
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
 

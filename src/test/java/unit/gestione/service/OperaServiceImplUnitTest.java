@@ -270,7 +270,7 @@ class OperaServiceImplUnitTest {
     Assertions.assertEquals(opere, operaService.searchOpera(opera.getNome()));
   }
 
-  @DisplayName("Test Search Opera")
+  @DisplayName("Test Get Artwark By artist")
   @ParameterizedTest
   @ArgumentsSource(ListOpereProvider.class)
   void getArtworkByUser(List<Opera> opere) {
@@ -278,5 +278,15 @@ class OperaServiceImplUnitTest {
 
     Assertions.assertEquals(opere, operaService.getArtworkByUser(1));
   }
+
+  @DisplayName("Test Get Artwark By artist")
+  @ParameterizedTest
+  @ArgumentsSource(ListOpereProvider.class)
+  void getArtworkByOwner(List<Opera> opere) {
+    when(operaDao.doRetrieveAllByOwnerId(anyInt())).thenReturn(opere);
+
+    Assertions.assertEquals(opere, operaService.getArtworkByOwner(1));
+  }
+
 
 }

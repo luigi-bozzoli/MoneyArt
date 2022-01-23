@@ -53,7 +53,7 @@ public class StripePayment implements PaymentAdapter {
 
   private static final String YOUR_DOMAIN = "http://localhost:8080/MoneyArt_war";
   private static final String SUCCESS_URL = "/recivePayment?session_id={CHECKOUT_SESSION_ID}";
-  private static final String CANCEL_URL = "/";
+  private static final String CANCEL_URL = "/walletInfo";
   private static final String PRODUCT_ID = "prod_KytYHpYu4DKRYm";
 
   static {

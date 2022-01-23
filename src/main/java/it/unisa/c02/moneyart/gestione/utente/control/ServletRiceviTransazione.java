@@ -32,8 +32,8 @@ public class ServletRiceviTransazione extends HttpServlet {
     try {
       double amount = paymentReciverAdapter.recievePayment(paymentId);
       utenteService.deposit(utente, amount);
-      request.getRequestDispatcher("/")
-          .forward(request, response);//Todo: aggiungere vera view;
+      request.getRequestDispatcher("/walletInfo")
+          .forward(request, response);
 
     } catch (Exception e) {
       response.sendError(HttpServletResponse.SC_BAD_REQUEST, "qualcosa è andato storto");

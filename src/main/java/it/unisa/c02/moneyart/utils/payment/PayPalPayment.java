@@ -50,6 +50,6 @@ public class PayPalPayment implements PaymentAdapter {
           + "yvpdq194KTkZxtkwD72P6H2rVwiteSMvacjAxPd61laDSWBWU7N6y1_ZG9")
         .setClientSecret("EEh8AzYy9IRpDCgF33qOI3n7R8Bc"
           + "OlxlezMCEVQkUECtxjOrZEVSCu7pREQQSYz2Y4PlesFvvzggiqnS")
-        .setReturnUrl("http://localhost:8080/MoneyArt_war/recivePayment").setCancelUrl("http://localhost:8080/MoneyArt_war")
+        .setReturnUrl("http://localhost:8080/MoneyArt_war/recivePayment").setCancelUrl("http://localhost:8080/MoneyArt_war/walletInfo")
         .setMode(PayPalConfig.Mode.SANDBOX);
 }

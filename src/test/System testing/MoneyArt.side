@@ -2,7 +2,7 @@
   "id": "e3469196-30ea-421e-9d06-90c93c1c179f",
   "version": "2.0",
   "name": "MoneyArt",
-  "url": "http://localhost:8080/MoneyArt_war",
+  "url": "http://localhost:8080/MoneyArt_war/walletInfo",
   "tests": [{
     "id": "fd687b98-7b29-4703-bfe6-63fd02f6edd0",
     "name": "TC_1.1_1",
@@ -1589,7 +1589,7 @@
       "id": "3a2a1432-c97c-45b9-836c-da7d41ec39e7",
       "comment": "",
       "command": "executeScript",
-      "target": "return ${startLocation} != ${endLocation}",
+      "target": "return \"${startLocation}\" != \"${endLocation}\"",
       "targets": [],
       "value": "test"
     }, {
@@ -1598,7 +1598,642 @@
       "command": "assert",
       "target": "test",
       "targets": [],
+      "value": "true"
+    }]
+  }, {
+    "id": "7db33c3a-a406-40d6-9170-9cc4a3858625",
+    "name": "TC_1.4_2",
+    "commands": [{
+      "id": "4d3609e1-e87a-42c7-9717-cda441c0ab5c",
+      "comment": "",
+      "command": "open",
+      "target": "",
+      "targets": [],
       "value": ""
+    }, {
+      "id": "508d1b70-839c-4bbb-a57a-d8a03dcfebac",
+      "comment": "",
+      "command": "click",
+      "target": "name=amount",
+      "targets": [
+        ["name=amount", "name"],
+        ["css=.row:nth-child(1) > .col-12 > div > .form-control", "css:finder"],
+        ["xpath=//input[@name='amount']", "xpath:attributes"],
+        ["xpath=//div[@id='ricarica']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8eefee46-943d-4065-8941-3facf820625a",
+      "comment": "",
+      "command": "type",
+      "target": "name=amount",
+      "targets": [
+        ["name=amount", "name"],
+        ["css=.row:nth-child(1) > .col-12 > div > .form-control", "css:finder"],
+        ["xpath=//input[@name='amount']", "xpath:attributes"],
+        ["xpath=//div[@id='ricarica']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "-100"
+    }, {
+      "id": "af456480-82a7-4641-b53f-acdc5e905e5b",
+      "comment": "",
+      "command": "click",
+      "target": "id=ricarica",
+      "targets": [
+        ["id=ricarica", "id"],
+        ["css=#ricarica", "css:finder"],
+        ["xpath=//div[@id='ricarica']", "xpath:attributes"],
+        ["xpath=//div[@id='myTabContent']/div", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eafab8b0-9928-4401-b9d4-7c2d30c98951",
+      "comment": "",
+      "command": "click",
+      "target": "name=method",
+      "targets": [
+        ["name=method", "name"],
+        ["css=.btn-carta:nth-child(2)", "css:finder"],
+        ["xpath=//button[@name='method']", "xpath:attributes"],
+        ["xpath=//div[@id='ricarica']/div/div/div[2]/div/div/form/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'  Procedi con Carta')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "88335fd4-f10c-49b3-a224-df1d45838845",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ricarica .ps-3",
+      "targets": [
+        ["css=#ricarica .ps-3", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p", "xpath:idRelative"],
+        ["xpath=//div/p", "xpath:position"],
+        ["xpath=//p[contains(.,'SALDO')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "db0c51b7-f92e-4455-a888-5fa647ecefbf",
+    "name": "TC_1.4_3",
+    "commands": [{
+      "id": "e2db30f7-dcb7-4fd7-926a-8bbfd336ee09",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/walletInfo",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "47e290f7-a4ee-41c1-b521-5f4445c04e95",
+      "comment": "",
+      "command": "type",
+      "target": "name=amount",
+      "targets": [
+        ["name=amount", "name"],
+        ["css=.row:nth-child(1) > .col-12 > div > .form-control", "css:finder"],
+        ["xpath=//input[@name='amount']", "xpath:attributes"],
+        ["xpath=//div[@id='ricarica']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "100"
+    }, {
+      "id": "c088003a-040f-4e64-9ecd-331b32d9ff5a",
+      "comment": "",
+      "command": "click",
+      "target": "name=method",
+      "targets": [
+        ["name=method", "name"],
+        ["css=.btn-carta:nth-child(2)", "css:finder"],
+        ["xpath=//button[@name='method']", "xpath:attributes"],
+        ["xpath=//div[@id='ricarica']/div/div/div[2]/div/div/form/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'  Procedi con Carta')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c368d111-fa0a-40a7-ace4-d0ce6211ca92",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=ProductSummary-totalAmount",
+      "targets": [],
+      "value": "100,00 €"
+    }]
+  }, {
+    "id": "e4605bb6-7bac-4e67-8c6b-e5f74eab81a7",
+    "name": "TC_1.4_1",
+    "commands": [{
+      "id": "96b093e8-9055-4c4f-a887-28a52726a729",
+      "comment": "",
+      "command": "open",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "26a19130-c70b-49b1-893b-2cd876f1cd5c",
+      "comment": "",
+      "command": "click",
+      "target": "name=amount",
+      "targets": [
+        ["name=amount", "name"],
+        ["css=.row:nth-child(1) > .col-12 > div > .form-control", "css:finder"],
+        ["xpath=//input[@name='amount']", "xpath:attributes"],
+        ["xpath=//div[@id='ricarica']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b5d8f874-2df6-4325-8c49-1c78b9e20459",
+      "comment": "",
+      "command": "type",
+      "target": "name=amount",
+      "targets": [],
+      "value": "AAAA"
+    }, {
+      "id": "c8f56755-5a4e-4d34-82d3-8de87ff46b5c",
+      "comment": "",
+      "command": "click",
+      "target": "id=ricarica",
+      "targets": [
+        ["id=ricarica", "id"],
+        ["css=#ricarica", "css:finder"],
+        ["xpath=//div[@id='ricarica']", "xpath:attributes"],
+        ["xpath=//div[@id='myTabContent']/div", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3ee2f696-961f-4bbb-a34f-2e916bb1e8bc",
+      "comment": "",
+      "command": "click",
+      "target": "name=method",
+      "targets": [
+        ["name=method", "name"],
+        ["css=.btn-carta:nth-child(2)", "css:finder"],
+        ["xpath=//button[@name='method']", "xpath:attributes"],
+        ["xpath=//div[@id='ricarica']/div/div/div[2]/div/div/form/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'  Procedi con Carta')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "98aa153b-ed51-4911-beab-39b5866ccfef",
+      "comment": "",
+      "command": "click",
+      "target": "css=#ricarica .ps-3",
+      "targets": [
+        ["css=#ricarica .ps-3", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p", "xpath:idRelative"],
+        ["xpath=//div/p", "xpath:position"],
+        ["xpath=//p[contains(.,'SALDO')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "59abbf7d-6f8d-4687-9791-bc4081491874",
+    "name": "TC_1.5.1",
+    "commands": [{
+      "id": "dc18e642-55b3-46e9-9f4d-7dd1485aee4f",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/walletInfo",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "51a9bf5d-226b-48f6-a727-5d7bb38dd9e4",
+      "comment": "",
+      "command": "click",
+      "target": "id=prelievo-tab",
+      "targets": [
+        ["id=prelievo-tab", "id"],
+        ["linkText=Prelievo", "linkText"],
+        ["css=#prelievo-tab", "css:finder"],
+        ["xpath=//a[contains(text(),'Prelievo')]", "xpath:link"],
+        ["xpath=//a[@id='prelievo-tab']", "xpath:attributes"],
+        ["xpath=//a[contains(@href, '#prelievo')]", "xpath:href"],
+        ["xpath=//div[2]/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Prelievo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8a56554d-7797-414c-a18c-3809255b7c81",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=#prelievo .h1",
+      "targets": [
+        ["css=#prelievo .h1", "css:finder"],
+        ["xpath=//div[@id='prelievo']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/div/div/div/p[2]", "xpath:position"]
+      ],
+      "value": "saldo"
+    }, {
+      "id": "10e9f686-0c6f-4e32-9408-1eca917f5868",
+      "comment": "",
+      "command": "type",
+      "target": "css=.row:nth-child(2) > .col-12:nth-child(1) .form-control",
+      "targets": [
+        ["css=.row:nth-child(2) > .col-12:nth-child(1) .form-control", "css:finder"],
+        ["xpath=(//input[@name='amount'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": "100"
+    }, {
+      "id": "0346273d-8aa0-44cb-b471-cdd38023f3d3",
+      "comment": "",
+      "command": "type",
+      "target": "name=iban",
+      "targets": [
+        ["name=iban", "name"],
+        ["css=.col-12:nth-child(3) .form-control", "css:finder"],
+        ["xpath=//input[@name='iban']", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "123456789"
+    }, {
+      "id": "0e647ca3-5f0f-4a71-90fc-3db287589076",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-carta:nth-child(4)",
+      "targets": [
+        ["css=.btn-carta:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/form/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Preleva Importo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "dfe6937c-9f69-4159-946e-ea130cf776b8",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=#ricarica .h1",
+      "targets": [
+        ["css=#ricarica .h1", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
+        ["xpath=//p[2]", "xpath:position"],
+        ["xpath=//p[contains(.,'0.0')]", "xpath:innerText"]
+      ],
+      "value": "${saldo}"
+    }]
+  }, {
+    "id": "d5f212ae-a04d-4416-8e44-49d18dc2e861",
+    "name": "TC_1.5.4",
+    "commands": [{
+      "id": "1914f716-dbf2-403e-ae41-2dd84bdd9d20",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/walletInfo",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0a88c3d7-0308-4f01-9c8f-4ce1281a9a9d",
+      "comment": "",
+      "command": "click",
+      "target": "id=prelievo-tab",
+      "targets": [
+        ["id=prelievo-tab", "id"],
+        ["linkText=Prelievo", "linkText"],
+        ["css=#prelievo-tab", "css:finder"],
+        ["xpath=//a[contains(text(),'Prelievo')]", "xpath:link"],
+        ["xpath=//a[@id='prelievo-tab']", "xpath:attributes"],
+        ["xpath=//a[contains(@href, '#prelievo')]", "xpath:href"],
+        ["xpath=//div[2]/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Prelievo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "aadc05a4-ca7b-4fbf-a0db-1d40d10262fa",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=#prelievo .h1",
+      "targets": [
+        ["css=#ricarica .h1", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
+        ["xpath=//p[2]", "xpath:position"],
+        ["xpath=//p[contains(.,'0.0')]", "xpath:innerText"]
+      ],
+      "value": "saldo"
+    }, {
+      "id": "38df4f62-7c16-479a-95f9-dd66fb28a51a",
+      "comment": "",
+      "command": "type",
+      "target": "css=.row:nth-child(2) > .col-12:nth-child(1) .form-control",
+      "targets": [
+        ["css=.row:nth-child(2) > .col-12:nth-child(1) .form-control", "css:finder"],
+        ["xpath=(//input[@name='amount'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": "300"
+    }, {
+      "id": "86ed6e81-ba0c-4661-a59e-54422710ff60",
+      "comment": "",
+      "command": "type",
+      "target": "name=iban",
+      "targets": [
+        ["name=iban", "name"],
+        ["css=.col-12:nth-child(3) .form-control", "css:finder"],
+        ["xpath=//input[@name='iban']", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "IT11B3600334210600001094985"
+    }, {
+      "id": "c97e907b-56b6-4649-83af-378ce4a6cb35",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-carta:nth-child(4)",
+      "targets": [
+        ["css=.btn-carta:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/form/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Preleva Importo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "259173b2-8dd8-4c3f-9e61-09d07d589189",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=#ricarica .h1",
+      "targets": [
+        ["css=#ricarica .h1", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
+        ["xpath=//p[2]", "xpath:position"],
+        ["xpath=//p[contains(.,'0.0')]", "xpath:innerText"]
+      ],
+      "value": "${saldo}"
+    }]
+  }, {
+    "id": "bd6b536e-2901-4ebb-9843-f903a75c8076",
+    "name": "TC_1.5.2",
+    "commands": [{
+      "id": "2aeac83d-a441-4a57-a194-2581c695e03d",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/walletInfo",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e97a6e8e-dc7f-4d06-9ae6-ce1c200b37a2",
+      "comment": "",
+      "command": "click",
+      "target": "id=prelievo-tab",
+      "targets": [
+        ["id=prelievo-tab", "id"],
+        ["linkText=Prelievo", "linkText"],
+        ["css=#prelievo-tab", "css:finder"],
+        ["xpath=//a[contains(text(),'Prelievo')]", "xpath:link"],
+        ["xpath=//a[@id='prelievo-tab']", "xpath:attributes"],
+        ["xpath=//a[contains(@href, '#prelievo')]", "xpath:href"],
+        ["xpath=//div[2]/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Prelievo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "54d7f065-9baa-40ba-9f20-5ed68ab6891f",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=#prelievo .h1",
+      "targets": [
+        ["css=#ricarica .h1", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
+        ["xpath=//p[2]", "xpath:position"],
+        ["xpath=//p[contains(.,'0.0')]", "xpath:innerText"]
+      ],
+      "value": "saldo"
+    }, {
+      "id": "3d310e67-8ab3-45da-ba1b-bb4479fe0c6a",
+      "comment": "",
+      "command": "type",
+      "target": "css=.row:nth-child(2) > .col-12:nth-child(1) .form-control",
+      "targets": [
+        ["css=.row:nth-child(2) > .col-12:nth-child(1) .form-control", "css:finder"],
+        ["xpath=(//input[@name='amount'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": "cento"
+    }, {
+      "id": "a06c25a3-52fa-4d92-8db9-c1f3c22f09ed",
+      "comment": "",
+      "command": "type",
+      "target": "name=iban",
+      "targets": [
+        ["name=iban", "name"],
+        ["css=.col-12:nth-child(3) .form-control", "css:finder"],
+        ["xpath=//input[@name='iban']", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "IT11B3600334210600001094985"
+    }, {
+      "id": "853f0ab5-15bb-4bef-ae04-8693d205cf64",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-carta:nth-child(4)",
+      "targets": [
+        ["css=.btn-carta:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/form/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Preleva Importo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "67b7198b-977d-4e19-a322-8caebc416f3e",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=#prelievo .h1",
+      "targets": [
+        ["css=#ricarica .h1", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
+        ["xpath=//p[2]", "xpath:position"],
+        ["xpath=//p[contains(.,'0.0')]", "xpath:innerText"]
+      ],
+      "value": "${saldo}"
+    }]
+  }, {
+    "id": "7e81efc8-d822-453f-a7d5-42b428fa1e6e",
+    "name": "TC_1.5.3",
+    "commands": [{
+      "id": "9a48a36b-7cee-4a25-8e96-597352891600",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/walletInfo",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9c2f0a36-f8b3-4076-89ad-aeafa6a2a214",
+      "comment": "",
+      "command": "click",
+      "target": "id=prelievo-tab",
+      "targets": [
+        ["id=prelievo-tab", "id"],
+        ["linkText=Prelievo", "linkText"],
+        ["css=#prelievo-tab", "css:finder"],
+        ["xpath=//a[contains(text(),'Prelievo')]", "xpath:link"],
+        ["xpath=//a[@id='prelievo-tab']", "xpath:attributes"],
+        ["xpath=//a[contains(@href, '#prelievo')]", "xpath:href"],
+        ["xpath=//div[2]/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Prelievo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "716b591f-1cb1-4309-b146-e556259bb907",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=#prelievo .h1",
+      "targets": [
+        ["css=#ricarica .h1", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
+        ["xpath=//p[2]", "xpath:position"],
+        ["xpath=//p[contains(.,'0.0')]", "xpath:innerText"]
+      ],
+      "value": "saldo"
+    }, {
+      "id": "48d04a0e-6b49-4d6e-98ae-daed10a14466",
+      "comment": "",
+      "command": "type",
+      "target": "css=.row:nth-child(2) > .col-12:nth-child(1) .form-control",
+      "targets": [
+        ["css=.row:nth-child(2) > .col-12:nth-child(1) .form-control", "css:finder"],
+        ["xpath=(//input[@name='amount'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": "-200"
+    }, {
+      "id": "30658de2-8c4e-452f-9fc3-80118d8447ff",
+      "comment": "",
+      "command": "type",
+      "target": "name=iban",
+      "targets": [
+        ["name=iban", "name"],
+        ["css=.col-12:nth-child(3) .form-control", "css:finder"],
+        ["xpath=//input[@name='iban']", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "IT11B3600334210600001094985"
+    }, {
+      "id": "6f3c2409-7654-4fec-b725-2b328fd6d3c3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-carta:nth-child(4)",
+      "targets": [
+        ["css=.btn-carta:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/form/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Preleva Importo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4f98274c-c274-46b2-ae16-0dd4dc86a516",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=#ricarica .h1",
+      "targets": [
+        ["css=#ricarica .h1", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
+        ["xpath=//p[2]", "xpath:position"],
+        ["xpath=//p[contains(.,'0.0')]", "xpath:innerText"]
+      ],
+      "value": "${saldo}"
+    }]
+  }, {
+    "id": "9dff8631-5a62-4fdb-b42f-fbbbe965a41f",
+    "name": "TC_1.5.5",
+    "commands": [{
+      "id": "09d2b486-d34b-4e1e-8090-8c8bad0ba87b",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/walletInfo",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ea0e8676-051f-403b-a92d-8dd6b2d4ff95",
+      "comment": "",
+      "command": "click",
+      "target": "id=prelievo-tab",
+      "targets": [
+        ["id=prelievo-tab", "id"],
+        ["linkText=Prelievo", "linkText"],
+        ["css=#prelievo-tab", "css:finder"],
+        ["xpath=//a[contains(text(),'Prelievo')]", "xpath:link"],
+        ["xpath=//a[@id='prelievo-tab']", "xpath:attributes"],
+        ["xpath=//a[contains(@href, '#prelievo')]", "xpath:href"],
+        ["xpath=//div[2]/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Prelievo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "73dc9c7c-a24a-41d5-9954-2c9566264a1a",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=#prelievo .h1",
+      "targets": [
+        ["css=#ricarica .h1", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
+        ["xpath=//p[2]", "xpath:position"],
+        ["xpath=//p[contains(.,'0.0')]", "xpath:innerText"]
+      ],
+      "value": "saldo"
+    }, {
+      "id": "3db11394-2863-48dc-ac27-8f6f436401ae",
+      "comment": "",
+      "command": "type",
+      "target": "css=.row:nth-child(2) > .col-12:nth-child(1) .form-control",
+      "targets": [
+        ["css=.row:nth-child(2) > .col-12:nth-child(1) .form-control", "css:finder"],
+        ["xpath=(//input[@name='amount'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": "100"
+    }, {
+      "id": "9ea91033-157c-433a-8463-708a2813f481",
+      "comment": "",
+      "command": "type",
+      "target": "name=iban",
+      "targets": [
+        ["name=iban", "name"],
+        ["css=.col-12:nth-child(3) .form-control", "css:finder"],
+        ["xpath=//input[@name='iban']", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "IT11B3600334210600001094985"
+    }, {
+      "id": "25b9e963-d6e9-4d0c-be8c-c651d0fa73e4",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-carta:nth-child(4)",
+      "targets": [
+        ["css=.btn-carta:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div[2]/div/div/form/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Preleva Importo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4f48717e-a675-4337-8409-609698f300e0",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=#ricarica .h1",
+      "targets": [
+        ["css=#ricarica .h1", "css:finder"],
+        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
+        ["xpath=//p[2]", "xpath:position"],
+        ["xpath=//p[contains(.,'0.0')]", "xpath:innerText"]
+      ],
+      "value": "${saldo}"
     }]
   }],
   "suites": [{
@@ -1608,7 +2243,21 @@
     "parallel": false,
     "timeout": 300,
     "tests": ["fd687b98-7b29-4703-bfe6-63fd02f6edd0", "0adbff81-b308-43a9-a89b-eefbb7b26502", "fb10e272-00e0-41f7-99e8-219f075f8140", "74137f0b-69d4-4f57-9c9a-8345f1bcaf2a", "f34c7fae-6d14-4637-8cbf-b6e05702ac73", "1efd57b7-389e-413a-94cc-fa76243056ae", "84ab8378-86c6-4ed4-9afe-e5b7696cffe0", "91d6c851-33ca-433a-bb37-2aed8a2fdef6", "0172ee5b-b909-4a83-a555-9fd2fc821c6a", "46ca39fc-d3cd-4988-8215-0783b905d260", "4c06cee2-7327-454c-a90d-d01ecb10df9a", "f9caad27-570c-4156-896a-b0f155855ff5"]
+  }, {
+    "id": "54cc29dd-11ff-4b3c-8d04-8e839cab8bf1",
+    "name": "Ricarica",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["e4605bb6-7bac-4e67-8c6b-e5f74eab81a7", "7db33c3a-a406-40d6-9170-9cc4a3858625", "db0c51b7-f92e-4455-a888-5fa647ecefbf"]
+  }, {
+    "id": "7cfb1484-7240-41fb-be86-13025d108249",
+    "name": "Prelievo",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["59abbf7d-6f8d-4687-9791-bc4081491874", "bd6b536e-2901-4ebb-9843-f903a75c8076", "7e81efc8-d822-453f-a7d5-42b428fa1e6e", "d5f212ae-a04d-4416-8e44-49d18dc2e861", "9dff8631-5a62-4fdb-b42f-fbbbe965a41f"]
   }],
-  "urls": ["http://localhost:8080/", "http://localhost:8080/MoneyArt_war"],
+  "urls": ["http://localhost:8080/", "http://localhost:8080/MoneyArt_war", "http://localhost:8080/MoneyArt_war/walletInfo"],
   "plugins": []
 }
