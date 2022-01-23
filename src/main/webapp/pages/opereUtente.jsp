@@ -14,11 +14,11 @@
 <ul class="nav nav-tabs d-flex justify-content-between" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="opere-possedute-asta-tab" data-toggle="tab" href="#opere-possedute-asta" role="tab" aria-controls="opere-possedute-asta"
-           aria-selected="true">Possedute</a>
+           aria-selected="true">Pronte per la rivendita</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" id="opere-possedute-rivendita-tab" data-toggle="tab" href="#opere-possedute-rivendita" role="tab" aria-controls="opere-possedute-rivendita"
-           aria-selected="true">Create</a>
+           aria-selected="true">Prevendita</a>
     </li>
 </ul>
 <!-- /Nav Tab -->

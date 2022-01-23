@@ -92,7 +92,7 @@ public class UtenteServiceImpl implements UtenteService {
         utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
       }
     }
-    List<Opera>  inPossesso = operaDao.doRetrieveAllByOwnerId(utente.getId());
+    List<Opera> inPossesso = operaDao.doRetrieveAllByOwnerId(utente.getId());
 
     if(inPossesso != null) {
       for(Opera o : inPossesso) {
@@ -102,7 +102,7 @@ public class UtenteServiceImpl implements UtenteService {
     }
     utente.setOpereInPossesso(inPossesso);
 
-    List<Opera>  create = operaDao.doRetrieveAllByOwnerId(utente.getId());
+    List<Opera> create = operaDao.doRetrieveAllByArtistId(utente.getId());
 
     if(create != null) {
       for(Opera o : create) {
