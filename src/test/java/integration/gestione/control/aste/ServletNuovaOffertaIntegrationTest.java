@@ -4,6 +4,7 @@ import hthurow.tomcatjndi.TomcatJNDI;
 import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletNuovaOfferta;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
+import it.unisa.c02.moneyart.model.beans.Partecipazione;
 import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.*;
 import it.unisa.c02.moneyart.model.dao.interfaces.*;
@@ -177,8 +178,9 @@ class ServletNuovaOffertaIntegrationTest {
     when(request.getSession()).thenReturn(session);
     when(session.getAttribute("utente")).thenReturn(utente);
     when(request.getParameter("asta")).thenReturn("2");
-    when(request.getParameter("offerta")).thenReturn("20");
-    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+    when(request.getParameter("offerta")).thenReturn("600");
+    when(response.getWriter()).thenReturn(writer);
+    doNothing().when(writer).write(anyString());
     doNothing().when(dispatcher).forward(any(),any());
 
     Method privateStringMethod = ServletNuovaOfferta.class
@@ -186,11 +188,11 @@ class ServletNuovaOffertaIntegrationTest {
 
     privateStringMethod.setAccessible(true);
     privateStringMethod.invoke(servletNuovaOfferta, request, response);
+    Partecipazione partecipazione = partecipazioneDao.doRetrieveById(9);
+    Assertions.assertEquals(600,partecipazione.getOfferta());
 
-    verify(request, times(1)).getSession();
+    verify(request, times(3)).getSession();
     verify(session, times(1)).getAttribute(anyString());
-    verify(request, times(1)).setAttribute(anyString(), any());
-    verify(request, times(1)).getRequestDispatcher(anyString());
-    verify(dispatcher, times(1)).forward(any(), any());
+    verify(session, times(1)).removeAttribute(anyString());
   }
 }

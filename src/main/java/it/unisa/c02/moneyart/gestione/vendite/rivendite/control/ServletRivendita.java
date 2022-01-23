@@ -32,7 +32,7 @@ public class ServletRivendita extends HttpServlet {
       rivenditaService.resell(idOpera);
     }
 
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/rivendita.jsp");//Todo: aggiungere link alla view;
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/marketplace.jsp");
     dispatcher.forward(request, response);
   }
 

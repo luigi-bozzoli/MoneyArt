@@ -17,6 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -1178,6 +1179,15 @@ public class AstaServiceImplUnitTest {
 	@DisplayName("Get auctions by state")
 	class getAuctionsByStateTest {
 
+		@DisplayName("Get no auctions ")
+		@ParameterizedTest
+		@ValueSource(strings = {"CREATA","TERMINATA","IN_CORSO","ELIMINATA"})
+		void getNoAuctionsTest(String stato) {
+			when(astaDao.doRetrieveByStato(Asta.Stato.valueOf(stato))).thenReturn(null);
+			List<Asta> result = astaService.getAuctionsByState(Asta.Stato.valueOf(stato));
+			Assertions.assertNull(result);
+		}
+
 		@DisplayName("Get ongoing auctions ")
 		@Test
 		void getOngoingAuctionsTest() {
@@ -1668,6 +1678,51 @@ public class AstaServiceImplUnitTest {
 			Assertions.assertEquals(false, result);
 		}
 
+		@DisplayName("Best bidder raises his bid in an ongoing auction ")
+		@Test
+		void BestBidderRaisesHisBidInAnOngoingAuctionTest() {
+			Asta asta = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndOneBid();
+			Utente oldBestBidder = asta.getPartecipazioni().get(0).getUtente();
+
+			double offerta = 450d;
+
+			// lockAsta()
+			// TODO: impl
+			// end lockAsta()
+
+			// recupero versione aggiornata dei dati
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(oldBestBidder, oldBestBidder);
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(asta);
+
+			// recupero lista partecipazioni per ricavare la migliore offerta
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(asta.getPartecipazioni());
+
+			Partecipazione nuovaOfferta = new Partecipazione(asta, oldBestBidder, offerta);
+
+			// ripristino saldo del vecchio miglior offerente
+			//doNothing().when(utenteDao).doUpdate(oldBestBidder);
+
+			Notifica notifica = new Notifica(
+							oldBestBidder,
+							asta,
+							new Rivendita(),
+							Notifica.Tipo.SUPERATO,
+							"La tua offerta è stata superata.",
+							false
+			);
+
+			when(notificaDao.doCreate(notifica)).thenReturn(true);
+
+			// aggiornamento dati persistenti
+			when(partecipazioneDao.doCreate(nuovaOfferta)).thenReturn(true);
+			doNothing().when(utenteDao).doUpdate(oldBestBidder);
+
+			boolean result = astaService.partecipateAuction(oldBestBidder, asta, offerta);
+
+			Assertions.assertEquals(550d, oldBestBidder.getSaldo());
+			Assertions.assertEquals(true, result);
+		}
+
 		// TODO: test con più utenti che cercano di fare un'offerta alla stessa asta?
 	}
 
@@ -1680,7 +1735,84 @@ public class AstaServiceImplUnitTest {
 	@Nested
 	@DisplayName("Remove asta")
 	class removeAstaTest {
+		@DisplayName("Remove an ongoing auction with no bids")
+		@Test
+		void removeAnOngoingAuctionWithNoBidsTest() {
+			Asta toRemove = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+			Opera operaToRemove = toRemove.getOpera();
 
+			// metodo privato bestOffer
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(toRemove.getPartecipazioni());
+
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(operaToRemove);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(operaToRemove.getArtista());
+
+			Notifica notificaPerArtista = new Notifica(
+							operaToRemove.getArtista(),
+							toRemove,
+							new Rivendita(),
+							Notifica.Tipo.ANNULLAMENTO,
+							"",
+							false
+			);
+
+			when(notificaDao.doCreate(notificaPerArtista)).thenReturn(true);
+			doNothing().when(astaDao).doUpdate(toRemove);
+
+			boolean result = astaService.removeAsta(toRemove);
+
+			Assertions.assertEquals(true, result);
+			Assertions.assertEquals(Asta.Stato.ELIMINATA, toRemove.getStato());
+		}
+
+		@DisplayName("Remove an ongoing auction with one bid")
+		@Test
+		void removeAnOngoingAuctionWithOneBidTest() {
+			Asta toRemove = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndOneBid();
+			Opera operaToRemove = toRemove.getOpera();
+			Utente bestBidder = toRemove.getPartecipazioni().get(0).getUtente();
+
+			// metodo privato bestOffer
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(toRemove.getPartecipazioni());
+
+			// metodo asta annullata (utenteDao prima cerca il miglior offerente e poi l'artista che ha creato
+			// l'asta per generare le notifiche)
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(bestBidder, operaToRemove.getArtista());
+			doNothing().when(utenteDao).doUpdate(bestBidder);
+
+			Notifica notificaPerMigliorOfferente = new Notifica(
+							bestBidder,
+							toRemove,
+							new Rivendita(),
+							Notifica.Tipo.ANNULLAMENTO,
+							"",
+							false
+			);
+
+			when(notificaDao.doCreate(notificaPerMigliorOfferente)).thenReturn(true);
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(operaToRemove);
+			doNothing().when(operaDao).doUpdate(operaToRemove);
+
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(operaToRemove);
+
+			Notifica notificaPerArtista = new Notifica(
+							operaToRemove.getArtista(),
+							toRemove,
+							new Rivendita(),
+							Notifica.Tipo.ANNULLAMENTO,
+							"",
+							false
+			);
+
+			when(notificaDao.doCreate(notificaPerArtista)).thenReturn(true);
+			doNothing().when(astaDao).doUpdate(toRemove);
+
+			boolean result = astaService.removeAsta(toRemove);
+
+			Assertions.assertEquals(true, result);
+			Assertions.assertEquals(Asta.Stato.ELIMINATA, toRemove.getStato());
+			Assertions.assertEquals(Opera.Stato.PREVENDITA, toRemove.getOpera().getStato());
+		}
 	}
 
 	@Nested

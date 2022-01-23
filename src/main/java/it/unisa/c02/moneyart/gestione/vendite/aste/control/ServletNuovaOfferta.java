@@ -20,7 +20,6 @@ public class ServletNuovaOfferta extends HttpServlet {
       throws ServletException, IOException {
 
 
-
     Utente utente = (Utente) request.getSession().getAttribute("utente");
 
     String json = new Gson().toJson(utente);
@@ -45,7 +44,7 @@ public class ServletNuovaOfferta extends HttpServlet {
     Asta asta = astaService.getAuction(astaId);
 
     boolean offertaOk = astaService.partecipateAuction(utente, asta, offerta);
-    if(offertaOk) {
+    if (offertaOk) {
       request.getSession().removeAttribute("utente");
       request.getSession().setAttribute("utente", utente);
     }
