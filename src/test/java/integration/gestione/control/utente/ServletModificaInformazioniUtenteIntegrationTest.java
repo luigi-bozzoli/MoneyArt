@@ -2,7 +2,6 @@ package integration.gestione.control.utente;
 
 import hthurow.tomcatjndi.TomcatJNDI;
 import it.unisa.c02.moneyart.gestione.utente.control.ServletModificaInformazioniUtente;
-import it.unisa.c02.moneyart.gestione.utente.control.ServletUserPage;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteServiceImpl;
 import it.unisa.c02.moneyart.model.beans.Utente;
@@ -191,18 +190,15 @@ class ServletModificaInformazioniUtenteIntegrationTest {
         when(request.getParameter("surname")).thenReturn(utente.getCognome());
         when(request.getParameter("username")).thenReturn(utente.getUsername());
         when(request.getParameter("email")).thenReturn(utente.getEmail());
-        when(request.getParameter("email")).thenReturn(utente.getEmail());
         Part p = mock(Part.class);
-        when(request.getPart("picture")).thenReturn(p); //-------Part-------
-        when(request.getParameter("new-password")).thenReturn(utente.getPassword().toString()); //------nuova password = alla vecchia?------
-        doNothing().when(request).setAttribute(anyString(),anyString());
-       // doNothing().when(request).setAttribute(anyString(), anyString()); già sta sopra
-        when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-        doNothing().when(dispatcher).forward(any(), any());
+        when(request.getPart("picture")).thenReturn(p);
+        when(request.getParameter("new-password")).thenReturn(utente.getPassword().toString());
+
         doNothing().when(session).removeAttribute(anyString());
         doNothing().when(session).setAttribute(anyString(), any());
-        // when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher); già sta sopra
-        // doNothing().when(dispatcher).forward(any(), any());                     già sta sopra
+
+        when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+        doNothing().when(dispatcher).forward(any(), any());
 
 
         Method privateStringMethod = ServletModificaInformazioniUtente.class
@@ -211,15 +207,14 @@ class ServletModificaInformazioniUtenteIntegrationTest {
         privateStringMethod.invoke(servletModificaInformazioniUtente, request, response);
 
         verify(request, times(1)).getSession();
-       // verify(session, times(1)).getAttribute(anyString());
-       // verify(request, times(1)).getHeader(anyString());
-        //verify(request, times(6)).getParameter(anyString());
-       // verify(request, times(1)).getPart(anyString());
-      //  verify(session, times(2)).setAttribute(anyString(), anyString());
-       // verify(request, times(2)).getRequestDispatcher(anyString());
-       // verify(dispatcher, times(2)).forward(any(), any());
-       // verify(session, times(1)).removeAttribute(anyString());
-       // verify(session, times(2)).setAttribute(anyString(), any());
+        verify(session, times(1)).getAttribute(anyString());
+        verify(request, times(1)).getHeader(anyString());
+        verify(request, times(5)).getParameter(anyString());
+        verify(request, times(1)).getPart(anyString());
+        verify(session, times(1)).removeAttribute(anyString());
+        verify(session, times(1)).setAttribute(anyString(), any());
+        verify(request, times(1)).getRequestDispatcher(anyString());
+        verify(dispatcher, times(1)).forward(any(), any());
 
     }
 
