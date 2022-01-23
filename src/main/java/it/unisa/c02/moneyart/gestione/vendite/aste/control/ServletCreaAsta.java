@@ -99,7 +99,6 @@ public class ServletCreaAsta extends HttpServlet {
 
     RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asteUtente.jsp");
     dispatcher.forward(request, response);
-    dispatcher.forward(request, response);
   }
 
   @Inject
