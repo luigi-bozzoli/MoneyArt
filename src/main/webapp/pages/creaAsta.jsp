@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="data-input">
-                    <label for="fine">Descrizione</label>
+                    <abel for="fine">Data fine</abel>
                     <div class="input-icon">
                         <i class="fas fa-calendar-day"></i>
                         <input name="fine" id="fine" type="date" placeholder="Data di scadenza dell'asta" required>

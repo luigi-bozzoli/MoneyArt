@@ -61,11 +61,10 @@ public class ServletCreaOpera extends HttpServlet {
             "L'opera è già presente nella piattaforma!");
         RequestDispatcher dispatcher = request
             .getRequestDispatcher(
-                "/pages/creaOpera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
+                "/pages/creaOpera.jsp"); //
         dispatcher.forward(request, response);
       } else {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
-        dispatcher.forward(request, response);
+        response.sendRedirect(getServletContext().getContextPath() + "/pages/opereUtente.jsp");
       }
     } catch (Exception e) {
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore certificato");

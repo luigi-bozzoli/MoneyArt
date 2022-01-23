@@ -57,6 +57,12 @@
                     <c:when test="${fn:contains(requestURI, '/opereUtente')}">
                         <title>Le tue Opere - MoneyArt</title>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/asteCreateUtente')}">
+                        <title>Le tue Aste - MoneyArt</title>
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/rivenditeUtente')}">
+                        <title>Le tue Rivendite - MoneyArt</title>
+                    </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
                         <!-- TODO: Trovare una soluzione migliore -->
@@ -116,6 +122,12 @@
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/cercaUtenti')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/cercaUtenti.css">
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/asteCreateUtente')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/asteCreateUtente.css">
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/rivenditeUtente')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/rivenditeUtente.css">
                     </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
@@ -191,6 +203,9 @@
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/cercaOpere')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/cercaOpere.js"></script>
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/asteCreateUtente')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/asteCreateUtente.js"></script>
                     </c:when>
                 </c:choose>
                 <script src="${pageContext.servletContext.contextPath}/static/js/header.js"></script>

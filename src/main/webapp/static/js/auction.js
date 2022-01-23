@@ -53,7 +53,13 @@ $(document).ready(function() {
     if (document.URL.includes("getAuction") || document.URL.includes("newOffer") || document.URL.includes("addReport")) {
         let astaCorrente;
         $.get(ctx + '/getAuction?id=' + astaId, function (asta) {
-            let countdown = new Date(asta.dataFine).getTime();
+
+            let countdown;
+            if(asta.stato === "IN_CORSO"){
+                countdown = new Date(asta.dataFine).getTime()
+            }else if(asta.stato === "CREATA") {
+                countdown = new Date(asta.dataInizio).getTime()
+            }
             astaCorrente = asta;
             let x = setInterval(function () {
 
@@ -89,8 +95,13 @@ $(document).ready(function() {
 
                 // If the count down is over, write some text
                 if (distance < 0) {
-                    clearInterval(x);
-                    $('.timer-info').html('Asta scaduta');
+                    if(astaCorrente.stato === "CREATA"){
+                        window.location.href = ctx + "/getAuction?id=" + astaCorrente.id;
+                    } else if(astaCorrente.stato === "IN_CORSO"){
+
+                        clearInterval(x);
+                        $('.timer-info').html('Asta scaduta');
+                    }
                 }
 
                 let prezzo;

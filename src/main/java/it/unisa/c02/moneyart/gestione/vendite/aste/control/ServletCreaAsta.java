@@ -36,10 +36,9 @@ public class ServletCreaAsta extends HttpServlet {
 
     if (opera == null || !utente.getId().equals(opera.getArtista().getId())) {
       request.setAttribute("error",
-        "Non sei il creatore di quest'opera!");
+          "Non sei il creatore di quest'opera!");
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/opereUtente.jsp");
       dispatcher.forward(request, response);
-      return;
     } else {
       request.setAttribute("opera", opera);
       RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/creaAsta.jsp");
@@ -97,9 +96,9 @@ public class ServletCreaAsta extends HttpServlet {
       return;
     }
 
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asteUtente.jsp");
-    dispatcher.forward(request, response);
-    dispatcher.forward(request, response);
+    response.sendRedirect(getServletContext().getContextPath() + "/pages/asteCreateUtente.jsp");
+
+
   }
 
   @Inject

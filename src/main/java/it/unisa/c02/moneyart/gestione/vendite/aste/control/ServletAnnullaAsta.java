@@ -35,11 +35,11 @@ public class ServletAnnullaAsta extends HttpServlet {
 
     if (!risultato) {
       request.setAttribute("error", "Errore durante l'annullamento dell'asta!");
-      response.sendRedirect("/getAuctionDetails?idAsta=" + astaId);
+      response.sendRedirect("/getAuction?idAsta=" + astaId);
       return;
     }
 
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/aste.jsp");
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asteCreateUtente.jsp");
     dispatcher.forward(request, response);
 
   }
