@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@include file="../static/fragments/header.jsp" %>
-    <script>let ctx = "${pageContext.servletContext.contextPath}"</script>
+
 
 
 
@@ -67,10 +67,10 @@
     </div>
     <ul class="nav nav-tabs d-flex justify-content-between" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="possedute-tab" data-toggle="tab" href="#possedute" role="tab" aria-controls="auctions" aria-selected="true">Possedute</a>
+            <a class="nav-link" id="possedute-tab" data-toggle="tab" href="#possedute" role="tab" aria-controls="auctions" aria-selected="true">Possedute</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="create-tab" data-toggle="tab" href="#create" role="tab" aria-controls="artists" aria-selected="true">Create</a>
+            <a class="nav-link active" id="create-tab" data-toggle="tab" href="#create" role="tab" aria-controls="artists" aria-selected="true">Create</a>
         </li>
     </ul>
 
@@ -86,7 +86,7 @@
                         </div>
                         <div class="thumb-content">
                             <h4><c:out value="${opera.nome}"/></h4>
-                            <h6>Posseduto da ${opera.possessore.username}</h6>
+                            <h6>Creato da ${opera.artista.username}</h6>
                         </div>
                     </div>
                 </div>

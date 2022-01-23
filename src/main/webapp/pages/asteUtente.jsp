@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@include file="../static/fragments/header.jsp" %>
-<script>let ctx = "${pageContext.servletContext.contextPath}"</script>
+
 
 
 <jsp:include page="/userAuctions?action=won"/>

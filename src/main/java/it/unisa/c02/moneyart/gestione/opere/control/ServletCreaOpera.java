@@ -68,7 +68,7 @@ public class ServletCreaOpera extends HttpServlet {
                 "/pages/creaOpera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
         dispatcher.forward(request, response);
       } else {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/opereUtente#opere-possedute-asta-tab.jsp");
         dispatcher.forward(request, response);
       }
     } catch (Exception e) {
