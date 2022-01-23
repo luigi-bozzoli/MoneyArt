@@ -19,7 +19,6 @@ import javax.sql.rowset.serial.SerialBlob;
 
 /**
  * Servlet per la creazione di un opera.
- *
  */
 @WebServlet(name = "ServletCreaOpera", value = "/newArtwork")
 @MultipartConfig
@@ -68,8 +67,9 @@ public class ServletCreaOpera extends HttpServlet {
                 "/pages/creaOpera.jsp"); // TODO: aggiungere il link alla pagina di creazione opera
         dispatcher.forward(request, response);
       } else {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/opereUtente#opere-possedute-asta-tab.jsp");
-        dispatcher.forward(request, response);
+        response.sendRedirect(getServletContext().getContextPath()
+            +
+            "/pages/opereUtente.jsp#opere-possedute-asta");
       }
     } catch (Exception e) {
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore certificato");
