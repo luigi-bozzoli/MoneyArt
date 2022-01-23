@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<script>let ctx = "${pageContext.servletContext.contextPath}"</script>
 
             <c:set var="requestURI" value="${pageContext.request.requestURI}" />
 
@@ -110,6 +111,12 @@
                     <c:when test="${fn:contains(requestURI, '/opereUtente')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/opereUtente.css">
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/cercaOpere')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/cercaOpere.css">
+                    </c:when>
+                    <c:when test="${fn:contains(requestURI, '/cercaUtenti')}">
+                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/cercaUtenti.css">
+                    </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
                         <!-- TODO: Trovare una soluzione migliore -->
@@ -182,10 +189,11 @@
                     <c:when test="${fn:contains(requestURI, '/opereUtente')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/opereUtente.js"></script>
                     </c:when>
-                    <c:otherwise>
-                        <script src="${pageContext.servletContext.contextPath}/static/js/home.js"></script>
-                    </c:otherwise>
+                    <c:when test="${fn:contains(requestURI, '/cercaOpere')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/cercaOpere.js"></script>
+                    </c:when>
                 </c:choose>
+                <script src="${pageContext.servletContext.contextPath}/static/js/header.js"></script>
             </head>
 
             <body>
@@ -215,8 +223,8 @@
                                 </li>
                             </ul>
                             <div class="d-flex align-items-center">
-                                <form class="searchbar form-inline my-2 my-lg-0">
-                                    <input class="form-control mr-sm-2" type="search" placeholder="Cerca ..." aria-label="Search">
+                                <form id ="search-bar" class="searchbar form-inline my-2 my-lg-0" METHOD="get" action="">
+                                    <input class="form-control mr-sm-2" type="search" placeholder="Cerca ..." aria-label="Search" name="action">
                                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
                                 </form>
                                 <label class="switch ml-3 mb-0">
