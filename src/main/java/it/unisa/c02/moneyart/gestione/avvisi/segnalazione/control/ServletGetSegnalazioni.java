@@ -1,7 +1,9 @@
 package it.unisa.c02.moneyart.gestione.avvisi.segnalazione.control;
 
 import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneService;
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Segnalazione;
+import it.unisa.c02.moneyart.model.beans.Utente;
 
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -16,8 +18,6 @@ import java.util.List;
 @WebServlet(name = "ServletGetSegnalazioni", value = "/getReports")
 public class ServletGetSegnalazioni extends HttpServlet {
 
-
-
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -31,7 +31,7 @@ public class ServletGetSegnalazioni extends HttpServlet {
 
     request.setAttribute("segnalazioni", segnalazioni);
 
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/segnalazioniAdmin.jsp");
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/admin/segnalazioni.jsp");
     dispatcher.forward(request, response);
 
   }

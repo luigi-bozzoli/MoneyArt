@@ -1,23 +1,13 @@
-package integration.gestione.control;
+package integration.gestione.control.aste;
 
 import hthurow.tomcatjndi.TomcatJNDI;
-import it.unisa.c02.moneyart.gestione.vendite.rivendite.control.ServletAcquistoDiretto;
-import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
-import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaServiceImpl;
-import it.unisa.c02.moneyart.model.beans.Rivendita;
-import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
-import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
-import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
-import it.unisa.c02.moneyart.model.dao.PartecipazioneDaoImpl;
-import it.unisa.c02.moneyart.model.dao.RivenditaDaoImpl;
-import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
-import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
-import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
-import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
-import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
-import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
-import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletRimuoviAsta;
+import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
+import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
+import it.unisa.c02.moneyart.model.dao.*;
+import it.unisa.c02.moneyart.model.dao.interfaces.*;
+import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
+import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,46 +22,38 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.Reader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class ServletAcquistoDirettoIntegrationTest {
+class ServletRimuoviAstaIntegrationTest {
 
   private static DataSource dataSource;
-  private RivenditaService service;
-  ServletAcquistoDiretto servletAcquistoDiretto;
+  private ServletRimuoviAsta servletRimuoviAsta;
+  private AstaService service;
 
-  private OperaDao operaDao;
   private NotificaDao notificaDao;
   private UtenteDao utenteDao;
-  private RivenditaDao rivenditaDao;
+  private OperaDao operaDao;
   private AstaDao astaDao;
   private PartecipazioneDao partecipazioneDao;
+  private AstaLockingSingleton astaLockingSingleton;
+  private TimerScheduler timerScheduler;
 
   @Mock
   HttpServletRequest request;
   @Mock
   HttpServletResponse response;
-  @Mock
-  HttpSession session;
   @Mock
   RequestDispatcher dispatcher;
 
@@ -107,29 +89,39 @@ class ServletAcquistoDirettoIntegrationTest {
   }
 
   @BeforeEach
-  public void setUp() throws SQLException, FileNotFoundException, NoSuchFieldException, IllegalAccessException {
+  public void setUp() throws SQLException, FileNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
-    Reader reader = new BufferedReader(new FileReader("./src/test/database/test_rivendita.sql"));
+    Reader reader = new BufferedReader(new FileReader("./src/test/database/test_partecipazione.sql"));
     runner.runScript(reader);
     connection.close();
 
     operaDao = new OperaDaoImpl(dataSource);
-    notificaDao = new NotificaDaoImpl(dataSource);
-    rivenditaDao = new RivenditaDaoImpl(dataSource);
-    utenteDao = new UtenteDaoImpl(dataSource);
     astaDao = new AstaDaoImpl(dataSource);
     partecipazioneDao = new PartecipazioneDaoImpl(dataSource);
+    utenteDao = new UtenteDaoImpl(dataSource);
+    notificaDao = new NotificaDaoImpl(dataSource);
 
-    service = new RivenditaServiceImpl(utenteDao, operaDao, rivenditaDao, notificaDao,astaDao,partecipazioneDao);
+    Method astaLockingS = AstaLockingSingleton.class.
+      getDeclaredMethod("retrieveIstance");
+    astaLockingS.setAccessible(true);
+    astaLockingSingleton = (AstaLockingSingleton) astaLockingS.invoke(astaLockingSingleton, null);
 
-    servletAcquistoDiretto = new ServletAcquistoDiretto();
+    Method timerS = TimerScheduler.class.
+      getDeclaredMethod("getInstance");
+    timerS.setAccessible(true);
+    timerScheduler = (TimerScheduler) timerS.invoke(timerScheduler, null);
 
-    Field injectedObject = servletAcquistoDiretto.getClass().getDeclaredField("rivenditaService");
+    service = new AstaServiceImpl(astaDao, operaDao, utenteDao, partecipazioneDao,
+      timerScheduler, astaLockingSingleton, notificaDao);
+
+    servletRimuoviAsta = new ServletRimuoviAsta();
+
+    Field injectedObject = servletRimuoviAsta.getClass().getDeclaredField("astaService");
     injectedObject.setAccessible(true);
-    injectedObject.set(servletAcquistoDiretto, service);
+    injectedObject.set(servletRimuoviAsta, service);
   }
 
   @AfterEach
@@ -144,36 +136,42 @@ class ServletAcquistoDirettoIntegrationTest {
 
   @Test
   @DisplayName("doGet Test")
-  void doGet() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ServletException, IOException {
+  void doGet() throws ServletException, IOException, NoSuchMethodException,
+      InvocationTargetException, IllegalAccessException {
 
-    rivenditaDao.doCreate(new Rivendita(
-      operaDao.doRetrieveById(1),
-      Rivendita.Stato.IN_CORSO,
-      0d
-    ));
-
-    Utente utente = new Utente();
-    utente.setId(1);
-
-    when(request.getParameter(anyString())).thenReturn("1");
-    when(request.getSession()).thenReturn(session);
-    when(session.getAttribute(anyString())).thenReturn(utente);
+    when(request.getParameter(anyString())).thenReturn("2");
     when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
     doNothing().when(dispatcher).forward(any(), any());
 
-    Method privateStringMethod = ServletAcquistoDiretto.class.
-      getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
+    Method privateStringMethod = ServletRimuoviAsta.class
+      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
 
     privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletAcquistoDiretto, request, response);
+    privateStringMethod.invoke(servletRimuoviAsta, request, response);
 
-    Rivendita retrieve = rivenditaDao.doRetrieveById(1);
-    assertEquals(Rivendita.Stato.TERMINATA, retrieve.getStato());
+    verify(dispatcher, times(1)).forward(any(), any());
+    verify(request, times(1)).getRequestDispatcher(anyString());
+    verify(request, times(1)).getParameter(anyString());
   }
 
   @Test
-  @DisplayName("doPost Test")
-  void doPost() throws ServletException, IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-    doGet();
+  @DisplayName("doGet Test Error")
+  void doGetError() throws ServletException, IOException, NoSuchMethodException,
+    InvocationTargetException, IllegalAccessException {
+
+    when(request.getParameter(anyString())).thenReturn("1");
+    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+    doNothing().when(response).sendRedirect(anyString());
+
+    Method privateStringMethod = ServletRimuoviAsta.class
+      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
+
+    privateStringMethod.setAccessible(true);
+    privateStringMethod.invoke(servletRimuoviAsta, request, response);
+
+    verify(request, times(1)).setAttribute(anyString(), any());
+    verify(request, times(1)).getParameter(anyString());
+    verify(response, times(1)).sendRedirect(anyString());
   }
+
 }

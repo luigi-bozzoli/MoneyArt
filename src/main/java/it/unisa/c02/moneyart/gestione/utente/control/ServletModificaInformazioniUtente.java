@@ -22,7 +22,7 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-      doPost(request, response);
+    doPost(request, response);
   }
 
   @Override
@@ -34,14 +34,14 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
 
     boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
-    if(ajax) {
+    if (ajax) {
       String password = request.getParameter("password");
 
       Utente checkUtente = utenteService.checkUser(utente.getUsername(), password);
 
       boolean passOk;
 
-      if(checkUtente == null) {
+      if (checkUtente == null) {
         passOk = false;
       } else {
         passOk = true;
@@ -62,7 +62,7 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
 
       Blob nuovaImmagine = null;
 
-      if(immagine.getSize() != 0) {
+      if (immagine.getSize() != 0) {
         try {
           System.out.println("immagine trovata");
           nuovaImmagine = new SerialBlob(IOUtils.toByteArray(immagine.getInputStream()));
@@ -76,16 +76,26 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
 
       byte[] newPassword = null;
 
-      if(password == null || password.equals("")) {
-       newPassword = utente.getPassword();
+      if (password == null || password.equals("")) {
+        newPassword = utente.getPassword();
       } else {
         newPassword = utenteService.encryptPassword(password);
       }
 
 
-      Utente newUtente = new Utente(name, surname, nuovaImmagine, email, username, utente.getSeguito(), newPassword, utente.getSaldo());
+      Utente newUtente =
+          new Utente(name, surname, nuovaImmagine, email, username, utente.getSeguito(),
+              newPassword, utente.getSaldo());
       newUtente.setId(utente.getId());
-      utenteService.updateUser(newUtente);
+      try {
+
+        utenteService.updateUser(newUtente);
+      } catch (IllegalArgumentException e) {
+        request.setAttribute("error", "Esiste già un account con queste informazioni");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/profiloUtente.jsp");
+        dispatcher.forward(request, response);
+        return;
+      }
 
       session.removeAttribute("utente");
       session.setAttribute("utente", newUtente);
@@ -96,6 +106,7 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
 
 
   }
+
   @Inject
   private UtenteService utenteService;
 

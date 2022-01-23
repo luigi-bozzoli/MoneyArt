@@ -2,6 +2,12 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
         <%@include file="../static/fragments/header.jsp"%>
+
+        <script>let ctx = "${pageContext.servletContext.contextPath}"</script>
+
+        <c:set var="rivendita" value="${requestScope.rivendita}"/>
+        <c:set var="opera" value="${requestScope.opera}"/>
+
             <section class="container">
                 <section class="content">
                     <article id="checkoutNav" class="shadow">
@@ -18,43 +24,44 @@
                             </li>
                         </ul>
                     </article>
-                    <article id="product" class="shadow"><img src="https://static.open.online/wp-content/uploads/2021/12/Nft-2-1280x677.jpg" alt="nft"></article>
+                    <article id="product" class="shadow"><img src="${pageContext.servletContext.contextPath}/artworkPicture?id=${opera.id}" alt="nft"></article>
                     <div class="title-product">
-                        <h1>NOME NFT</h1>
-                        <h5>by @artista</h5>
+                        <h1><c:out value="${opera.nome}"/></h1>
+                        <h5>@<c:out value="${opera.artista.username}"/></h5>
                     </div>
                     <article id="checkoutCard" class="shadow">
                         <div id="details">
                             <dl class="">
                                 <dt>Prodotto</dt>
-                                <dd> <img id="thumbnail" src="https://static.open.online/wp-content/uploads/2021/12/Nft-2-1280x677.jpg" alt="Lunar 2"></dd>
+                                <dd> <img id="thumbnail" src="${pageContext.servletContext.contextPath}/artworkPicture?id=${opera.id}" alt="nft"></dd>
                                 <dt></dt>
                                 <dd></dd>
                                 <dt>Prezzo</dt>
-                                <dd> $69.99 </dd>
+                                <dd> €<c:out value="${rivendita.prezzo}" /> </dd>
                             </dl>
                         </div>
-                        <form action="">
+                        <form action="buyArtwork" method="get">
+                            <input type="hidden" name="idRivendita" value="<c:out value="${rivendita.id}" />">
                             <div id="card-checkout">
                                 <div id="cards">
                                     <ul>
-                                        <li><label for="" name="Card Type">Riepilogo Ordine</label></li>
+                                        <li><label name="Card Type">Riepilogo Ordine</label></li>
                                     </ul>
                                 </div>
                                 <div id="riepilogo-info">
                                     <ul>
                                         <li>
-                                            <p>Nome NFT</p>
+                                            <p><c:out value="${opera.nome}"/></p>
                                         </li>
                                         <li>
                                             <p>
-                                                <a href="#">username Artista</a>
+                                                <a href="#"><c:out value="${opera.artista.username}"/></a>
                                             </p>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <input type="submit" value="Check out" id="btnSubmit">
+                            <input type="submit" id="btnSubmit" style="cursor: pointer;">
                         </form>
                     </article>
                 </section>

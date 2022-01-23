@@ -244,34 +244,41 @@ public class AstaServiceImpl implements AstaService, TimerService {
       //prendo la versione aggiornata di asta e utente
       utente = utenteDao.doRetrieveById(utente.getId());
       asta = astaDao.doRetrieveById(asta.getId());
+
       //prendo la migliore offerta attuale
       Partecipazione currentBestOffer = bestOffer(asta);
+
       //controllo le precondizioni
       if (!asta.getStato().equals(Asta.Stato.IN_CORSO) || utente.getSaldo() < offerta
           || (currentBestOffer != null && offerta <= currentBestOffer.getOfferta())) {
         return false;
       }
+
       //creo la nuova offerta
       Partecipazione nuovaOfferta = new Partecipazione(asta, utente, offerta);
+
       //riduco il saldo dell'offerente
       utente.setSaldo(utente.getSaldo() - offerta);
+
       //ripristino il saldo disponibile del vecchio miglior offerente
       if (currentBestOffer != null) {
         Utente oldBestBidder = utenteDao.doRetrieveById(currentBestOffer.getUtente().getId());
-        oldBestBidder.setSaldo(
-            oldBestBidder.getSaldo() + currentBestOffer.getOfferta());
+        oldBestBidder.setSaldo(oldBestBidder.getSaldo() + currentBestOffer.getOfferta());
         utenteDao.doUpdate(oldBestBidder);
-        Notifica notifica =
-            new Notifica(oldBestBidder, asta, new Rivendita(), Notifica.Tipo.SUPERATO, "", false);
+        Notifica notifica = new Notifica(
+            oldBestBidder,
+            asta,
+            new Rivendita(),
+            Notifica.Tipo.SUPERATO,
+            "La tua offerta è stata superata.",
+            false
+        );
         notificaDao.doCreate(notifica);
-
       }
-      //aggiorno i dati perstistenti
+      //aggiorno i dati persistenti
       partecipazioneDao.doCreate(nuovaOfferta);
       utenteDao.doUpdate(utente);
       return true;
-
-
     } finally {
       astaLockingSingleton.unlockAsta(asta);
     }
@@ -440,7 +447,6 @@ public class AstaServiceImpl implements AstaService, TimerService {
         if (max.getOfferta() < partecipazione.getOfferta()) {
           maxForAsta.put(partecipazione.getAsta().getId(), partecipazione);
         }
-
       } else {
         maxForAsta.put(partecipazione.getAsta().getId(), partecipazione);
       }

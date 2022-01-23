@@ -15,6 +15,8 @@ class PayPalPaymentIntegrationTest {
 
   private PaymentAdapter paymentAdapter;
 
+  private String paymentId;
+
   @BeforeEach
   void setUp() {
     paymentAdapter = new PayPalPayment();
@@ -31,6 +33,7 @@ class PayPalPaymentIntegrationTest {
 
       String result = paymentAdapter.makePayment(amount);
       Assertions.assertTrue(result.contains("https://www.sandbox.paypal.com/"));
+      System.out.println(result);
 
     }
 
@@ -48,7 +51,7 @@ class PayPalPaymentIntegrationTest {
     @Test
     public void recivePaymentSuccess() throws Exception {
 
-      Assertions.assertEquals(100,paymentAdapter.recievePayment("PAYID-MHT65MY84A54453916521533"));
+      Assertions.assertEquals(20,paymentAdapter.recievePayment("PAYID-MHV6RGY0HM49402B98786707"));
     }
 
     @Test

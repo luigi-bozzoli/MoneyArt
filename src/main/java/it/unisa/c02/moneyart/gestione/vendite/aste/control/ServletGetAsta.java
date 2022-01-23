@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Partecipazione;
+import it.unisa.c02.moneyart.model.beans.Utente;
 
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -21,6 +22,10 @@ public class ServletGetAsta extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+
+    if(request.getSession().getAttribute("admin") != null){
+      request.setAttribute("admin", true);
+    }
 
     String id = request.getParameter("id");
 

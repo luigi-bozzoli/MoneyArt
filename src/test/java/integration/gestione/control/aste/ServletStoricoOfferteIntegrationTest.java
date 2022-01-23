@@ -1,7 +1,7 @@
-package integration.gestione.control;
+package integration.gestione.control.aste;
 
 import hthurow.tomcatjndi.TomcatJNDI;
-import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletGetAste;
+import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletStoricoOfferte;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
 import it.unisa.c02.moneyart.model.dao.*;
@@ -33,10 +33,10 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class ServletGetAsteIntegrationTest {
+class ServletStoricoOfferteIntegrationTest {
 
   private static DataSource dataSource;
-  private ServletGetAste servletGetAste;
+  private ServletStoricoOfferte servletStoricoOfferte;
   private AstaService service;
 
   private NotificaDao notificaDao;
@@ -51,8 +51,6 @@ class ServletGetAsteIntegrationTest {
   HttpServletRequest request;
   @Mock
   HttpServletResponse response;
-  @Mock
-  PrintWriter writer;
 
   @BeforeAll
   public static void generalSetUp() throws SQLException, FileNotFoundException {
@@ -114,11 +112,11 @@ class ServletGetAsteIntegrationTest {
     service = new AstaServiceImpl(astaDao, operaDao, utenteDao, partecipazioneDao,
       timerScheduler, astaLockingSingleton, notificaDao);
 
-    servletGetAste = new ServletGetAste();
+    servletStoricoOfferte = new ServletStoricoOfferte();
 
-    Field injectedObject = servletGetAste.getClass().getDeclaredField("astaService");
+    Field injectedObject = servletStoricoOfferte.getClass().getDeclaredField("astaService");
     injectedObject.setAccessible(true);
-    injectedObject.set(servletGetAste, service);
+    injectedObject.set(servletStoricoOfferte, service);
   }
 
   @AfterEach
@@ -130,101 +128,20 @@ class ServletGetAsteIntegrationTest {
     runner.runScript(reader);
     connection.close();
   }
-
   @Test
-  @DisplayName("doGet Test Ajax GetAsteInCorsoSortedByPrezzo")
-  void doGetTestAjaxInCorsoSortedByPrezzo() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-      IOException {
+  @DisplayName("doGet Test")
+  void doGet() throws NoSuchMethodException, InvocationTargetException,
+      IllegalAccessException {
 
-    when(request.getParameter("action")).thenReturn("inCorso");
-    when(request.getHeader(anyString())).thenReturn("XMLHttpRequest");
-    when(request.getParameter("criteria")).thenReturn("Prezzo");
-    when(request.getParameter("order")).thenReturn("DESC");
     doNothing().when(request).setAttribute(anyString(), any());
-    when(response.getWriter()).thenReturn(writer);
-    doNothing().when(response).setContentType(anyString());
-    doNothing().when(response).setCharacterEncoding(anyString());
-    doNothing().when(writer).write(anyString());
 
-    Method privateStringMethod = ServletGetAste.class
+    Method privateStringMethod = ServletStoricoOfferte.class
       .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
 
     privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletGetAste, request, response);
+    privateStringMethod.invoke(servletStoricoOfferte, request, response);
 
-    verify(response, times(1)).setContentType(anyString());
-    verify(response, times(1)).setCharacterEncoding(anyString());
-    verify(request, times(1)).getHeader(anyString());
-    verify(request, times(3)).getParameter(anyString());
-    verify(request, times(0)).setAttribute(anyString(), any());
-
-  }
-
-  @Test
-  @DisplayName("doGet Test GetAste Ajax NoCriteria")
-  void doGetTestAjaxNoCriteria() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-    IOException {
-
-    when(request.getParameter("action")).thenReturn("");
-    when(request.getHeader(anyString())).thenReturn("XMLHttpRequest");
-    when(request.getParameter("criteria")).thenReturn("");
-    when(request.getParameter("order")).thenReturn("");
-    doNothing().when(request).setAttribute(anyString(), any());
-    when(response.getWriter()).thenReturn(writer);
-    doNothing().when(response).setContentType(anyString());
-    doNothing().when(response).setCharacterEncoding(anyString());
-    doNothing().when(writer).write(anyString());
-
-    Method privateStringMethod = ServletGetAste.class
-      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
-
-    privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletGetAste, request, response);
-
-    verify(response, times(1)).setContentType(anyString());
-    verify(response, times(1)).setCharacterEncoding(anyString());
-    verify(request, times(1)).getHeader(anyString());
-    verify(request, times(3)).getParameter(anyString());
-    verify(request, times(0)).setAttribute(anyString(), any());
-
-  }
-
-  @Test
-  @DisplayName("doGet Test GetAste NoAjax")
-  void doGetTestNoAjax() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-    IOException {
-
-    when(request.getParameter("action")).thenReturn("");
-    when(request.getHeader(anyString())).thenReturn("");
-    when(request.getParameter("criteria")).thenReturn("");
-    when(request.getParameter("order")).thenReturn("");
-    doNothing().when(request).setAttribute(anyString(), any());
-    when(response.getWriter()).thenReturn(writer);
-    doNothing().when(response).setContentType(anyString());
-    doNothing().when(response).setCharacterEncoding(anyString());
-    doNothing().when(writer).write(anyString());
-
-    Method privateStringMethod = ServletGetAste.class
-      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
-
-    privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletGetAste, request, response);
-
-    verify(response, times(0)).setContentType(anyString());
-    verify(response, times(0)).setCharacterEncoding(anyString());
-    verify(request, times(1)).getHeader(anyString());
-    verify(request, times(1)).getParameter(anyString());
     verify(request, times(1)).setAttribute(anyString(), any());
-
   }
 
-  @Test
-  @DisplayName("doPost Test")
-  void doPost() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-    IOException {
-
-    doGetTestAjaxInCorsoSortedByPrezzo();
-    doGetTestAjaxNoCriteria();
-    doGetTestNoAjax();
-  }
 }

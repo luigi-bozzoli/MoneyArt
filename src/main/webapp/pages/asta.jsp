@@ -39,10 +39,35 @@
                             </a>
                         </div>
                         <div id="report" class="ml-3 text-center">
-                            <a href="javascript:void(0)">
+                            <a style="cursor: pointer" data-toggle="modal" data-target="#segnalazioneModal">
                                 <i class="fas fa-flag"></i>
                                 <p>Segnala</p>
                             </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="segnalazioneModal" tabindex="-1" role="dialog" aria-labelledby="segnalazioneModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="segnalazioneModalLabel">Segnalazione</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="${pageContext.servletContext.contextPath}/addReport" method="post">
+                                <input type="hidden" name="asta" value="${asta.id}">
+                                <div class="modal-body">
+                                    <textarea class="form-control" rows="3" name="commento"
+                                              placeholder="Inserisci un commento"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                                    <button type="submit" class="btn btn-primary" style="background-color: #BB371A; border: none">Invia Segnalazione</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -94,6 +119,10 @@
                                 <input type="text" name="offerta" id="offerta" placeholder="<fmt:formatNumber value="${bestOffer+0.01}" type="currency" currencySymbol="€"/>" class="mr-3">
                                 <button type="submit" class="disabled">Offri</button>
                             </div>
+                            <c:if test="${not empty requestScope.admin}">
+                                <br>
+                                <a href="${pageContext.servletContext.contextPath}/removeAuction?idAsta=${asta.id}">Rimuovi Asta</a>
+                            </c:if>
                             <div class="error">
                                 <c:if test="${not empty requestScope.error}">
                                     <p class="mt-3" style="color: #BB371A !important;">${requestScope.error}</p>
