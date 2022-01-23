@@ -113,7 +113,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/creaOpera.jsp" class="nav-link">
                                             <i class="nav-icon fas fa-download"></i>
                                             <p>Carica opera</p>
                                         </a>

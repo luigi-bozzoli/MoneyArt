@@ -14,11 +14,11 @@
 <ul class="nav nav-tabs d-flex justify-content-between" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="opere-possedute-asta-tab" data-toggle="tab" href="#opere-possedute-asta" role="tab" aria-controls="opere-possedute-asta"
-           aria-selected="true">Create</a>
+           aria-selected="true">Prevendita</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" id="opere-possedute-rivendita-tab" data-toggle="tab" href="#opere-possedute-rivendita" role="tab" aria-controls="opere-possedute-rivendita"
-           aria-selected="true">Possedute</a>
+           aria-selected="true">Pronte per la rivendita</a>
     </li>
 </ul>
 <!-- /Nav Tab -->
@@ -43,9 +43,7 @@
                                 <p>di <a href="${pageContext.servletContext.contextPath}/getUser?id=${opera.artista.id}">${opera.artista.username}</a></p>
                                 <a href="${pageContext.servletContext.contextPath}/#" class="btn btn-primary">Metti all'asta</a>
                             </div>
-
                         </div>
-
                     </div>
                 </c:if>
             </c:forEach>
@@ -68,13 +66,33 @@
                             <div class="thumb-content">
                                 <h4><c:out value="${opera.nome}"/></h4>
                                 <p class="item-price"><input type="hidden" value="${opera.id}"></p>
-                                <a href="${pageContext.servletContext.contextPath}/#" class="btn btn-primary">Rivendi</a>
-
+                                <a data-toggle="modal" data-target="#rivenditaModal" class="btn btn-primary">Rivendi</a>
                             </div>
 
+                            <div class="modal fade" id="rivenditaModal" tabindex="-1" role="dialog" aria-labelledby="rivenditaModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="rivenditaModalLabel">Conferma Rivendita</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="${pageContext.servletContext.contextPath}/resell" method="post">
+                                            <input type="hidden" name="idOpera" value="${opera.id}">
+                                            <div class="modal-body">
+                                                <p>Vuoi confermare l'operazione di rivendita?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                                                <button type="submit" class="btn btn-primary" style="background-color: #BB371A; border: none">Conferma</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                    </div>
                 </c:if>
             </c:forEach>
 
@@ -89,9 +107,4 @@
 </div>
 
 
-
-
-
-
 <%@include file="../static/fragments/footer.jsp" %>
-
