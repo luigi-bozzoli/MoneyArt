@@ -1,4 +1,4 @@
-package integration.gestione.control;
+package integration.gestione.control.rivendite;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -9,12 +9,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import hthurow.tomcatjndi.TomcatJNDI;
-import it.unisa.c02.moneyart.gestione.vendite.rivendite.control.ServletAcquistoDiretto;
+import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
+import it.unisa.c02.moneyart.gestione.opere.service.OperaServiceImpl;
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.control.ServletCheckout;
+import it.unisa.c02.moneyart.gestione.vendite.rivendite.control.ServletGetValoreOpera;
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
 import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaServiceImpl;
 import it.unisa.c02.moneyart.model.beans.Rivendita;
 import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.blockchain.MoneyArtNft;
 import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
 import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
@@ -27,11 +30,13 @@ import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import it.unisa.c02.moneyart.utils.production.ContractProducer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -61,11 +66,11 @@ import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class ServletCheckoutIntegrationTest {
+class ServletGetValoreOperaIntegrationTest {
 
   private static DataSource dataSource;
   private RivenditaService service;
-  ServletCheckout servletCheckout;
+  ServletGetValoreOpera servletGetValoreOpera;
 
   private OperaDao operaDao;
   private NotificaDao notificaDao;
@@ -82,6 +87,8 @@ class ServletCheckoutIntegrationTest {
   HttpSession session;
   @Mock
   RequestDispatcher dispatcher;
+  @Mock
+  PrintWriter printWriter;
 
   @BeforeAll
   public static void generalSetUp() throws SQLException, FileNotFoundException {
@@ -134,11 +141,12 @@ class ServletCheckoutIntegrationTest {
 
     service = new RivenditaServiceImpl(utenteDao, operaDao, rivenditaDao, notificaDao,astaDao,partecipazioneDao);
 
-    servletCheckout = new ServletCheckout();
 
-    Field injectedObject = servletCheckout.getClass().getDeclaredField("rivenditaService");
+    servletGetValoreOpera = new ServletGetValoreOpera();
+
+    Field injectedObject = servletGetValoreOpera.getClass().getDeclaredField("rivenditaService");
     injectedObject.setAccessible(true);
-    injectedObject.set(servletCheckout, service);
+    injectedObject.set(servletGetValoreOpera, service);
   }
 
   @AfterEach
@@ -150,7 +158,6 @@ class ServletCheckoutIntegrationTest {
     runner.runScript(reader);
     connection.close();
   }
-
   @Test
   @DisplayName("doGet Test")
   void doGet() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
@@ -163,21 +170,41 @@ class ServletCheckoutIntegrationTest {
     ));
 
     when(request.getParameter(anyString())).thenReturn("1");
-    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-    doNothing().when(dispatcher).forward(any(), any());
+    when(response.getWriter()).thenReturn(printWriter);
 
-    Method privateStringMethod = ServletCheckout.class.
+    Method privateStringMethod = ServletGetValoreOpera.class.
         getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
 
     privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletCheckout, request, response);
+    privateStringMethod.invoke(servletGetValoreOpera, request, response);
 
-    verify(request, times(2)).setAttribute(anyString(), any());
-    verify(request, times(1)).getRequestDispatcher(anyString());
-    verify(dispatcher, times(1)).forward(request,response);
+    verify(response, times(1)).setContentType(anyString());
+    verify(response, times(1)).setCharacterEncoding(anyString());
+    verify(response, times(1)).getWriter();
+    verify(printWriter,times(1)).write(anyString());
   }
 
   @Test
-  void doPost() {
+  void doPost()
+      throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    rivenditaDao.doCreate(new Rivendita(
+        operaDao.doRetrieveById(1),
+        Rivendita.Stato.IN_CORSO,
+        0d
+    ));
+
+    when(request.getParameter(anyString())).thenReturn("1");
+    when(response.getWriter()).thenReturn(printWriter);
+
+    Method privateStringMethod = ServletGetValoreOpera.class.
+        getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
+
+    privateStringMethod.setAccessible(true);
+    privateStringMethod.invoke(servletGetValoreOpera, request, response);
+
+    verify(response, times(1)).setContentType(anyString());
+    verify(response, times(1)).setCharacterEncoding(anyString());
+    verify(response, times(1)).getWriter();
+    verify(printWriter,times(1)).write(anyString());
   }
 }

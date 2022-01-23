@@ -84,7 +84,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
       asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
       asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
       asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
-      asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
+      asta.getOpera().getArtista().setnFollowers(
+          getNumberOfFollowers(asta.getOpera().getArtista())
+      );
     }
     return asta;
   }
@@ -102,8 +104,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
         asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
         asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
         asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
-        asta.getOpera().getArtista()
-                .setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
+        asta.getOpera().getArtista().setnFollowers(
+            getNumberOfFollowers(asta.getOpera().getArtista())
+        );
       }
     }
     return aste;
@@ -213,8 +216,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
       asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
       asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
       asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
-      asta.getOpera().getArtista()
-          .setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
+      asta.getOpera().getArtista().setnFollowers(
+          getNumberOfFollowers(asta.getOpera().getArtista())
+      );
     }
     return aste;
   }
@@ -228,12 +232,12 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * @param offerta l'offerta fatta dall'utente
    * @return vero se l'offerta va a buon fine, falso altrimenti
    * @pre asta.getStato() = IN_CORSO and utente.getSaldo() >= offerta
-   * and (bestOffer(asta) = null or offerta >= bestOffer(asta).getOfferta() )
+   *      and (bestOffer(asta) = null or offerta >= bestOffer(asta).getOfferta() )
    * @post bestOffer(asta).getOfferta() = offerta
-   * and bestOffer(asta).getUtente() = utente
-   * and (@pre.bestOffer(asta).getUtente() = null
-   * or notifica.allIstances() -> exists(n:notifica | notifica.getAsta(asta)
-   * and notifica.getUtente() = @pre.bestOffer(asta).getUtente() ) )
+   *       and bestOffer(asta).getUtente() = utente
+   *       and (@pre.bestOffer(asta).getUtente() = null
+   *       or notifica.allIstances() -> exists(n:notifica | notifica.getAsta(asta)
+   *       and notifica.getUtente() = @pre.bestOffer(asta).getUtente() ) )
    */
 
   // TODO: qui va messo "participate"
@@ -256,15 +260,21 @@ public class AstaServiceImpl implements AstaService, TimerService {
 
       //creo la nuova offerta
       Partecipazione nuovaOfferta = new Partecipazione(asta, utente, offerta);
-
-      //riduco il saldo dell'offerente
-      utente.setSaldo(utente.getSaldo() - offerta);
+      //asta.getPartecipazioni().add(nuovaOfferta);
 
       //ripristino il saldo disponibile del vecchio miglior offerente
       if (currentBestOffer != null) {
         Utente oldBestBidder = utenteDao.doRetrieveById(currentBestOffer.getUtente().getId());
         oldBestBidder.setSaldo(oldBestBidder.getSaldo() + currentBestOffer.getOfferta());
-        utenteDao.doUpdate(oldBestBidder);
+
+        // Caso in cui il miglior offerente vuole alzare
+        // la sua offerta
+        if (oldBestBidder.getId() == utente.getId()) {
+          utente = oldBestBidder;
+        } else {
+          utenteDao.doUpdate(oldBestBidder);
+        }
+
         Notifica notifica = new Notifica(
             oldBestBidder,
             asta,
@@ -273,11 +283,17 @@ public class AstaServiceImpl implements AstaService, TimerService {
             "La tua offerta è stata superata.",
             false
         );
+
         notificaDao.doCreate(notifica);
       }
+
+      //riduco il saldo dell'offerente
+      utente.setSaldo(utente.getSaldo() - offerta);
+
       //aggiorno i dati persistenti
       partecipazioneDao.doCreate(nuovaOfferta);
       utenteDao.doUpdate(utente);
+
       return true;
     } finally {
       astaLockingSingleton.unlockAsta(asta);
@@ -308,8 +324,8 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * @param asta l'asta da aggiungere
    * @return vero se l'aggiunta è andata a buon fine, falso altrimenti
    * @pre day(asta.getDataInizio ()) >= day(new Date())
-   * and day(asta.getDataFine()) > day(asta.getDataInizio())
-   * and asta.getOpera().getStato() = PREVENDITA
+   *      and day(asta.getDataFine()) > day(asta.getDataInizio())
+   *      and asta.getOpera().getStato() = PREVENDITA
    * @post aste.allIstances() -> includes(asta) and asta.getOpera().getStato() = ALL_ASTA
    */
   @Override
@@ -318,8 +334,8 @@ public class AstaServiceImpl implements AstaService, TimerService {
     asta.setDataFine(setMidnightTime(asta.getDataFine()));
     Opera opera = operaDao.doRetrieveById(asta.getOpera().getId());
 
-    if (!checkDate(asta.getDataInizio(), asta.getDataFine()) ||
-        !opera.getStato().equals(Opera.Stato.PREVENDITA)) {
+    if (!checkDate(asta.getDataInizio(), asta.getDataFine())
+        || !opera.getStato().equals(Opera.Stato.PREVENDITA)) {
       return false;
     }
     opera.setStato(Opera.Stato.ALL_ASTA);
@@ -350,12 +366,12 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * @param asta l'asta da rimuovere
    * @return vero se la rimozione è andata a buon fine, falso altrimenti
    * @pre asta.getStato() = IN_CORSO or asta.getStato() = CREATA
-   * @post asta.allIstances()  -> not includes(asta)
-   * and asta.getOpera().getStato() = PREVENDITA
-   * and ( pre.bestOffer(asta) = null
-   * or notifica.allIstances().doRetrieveAll() ->
-   * Exists(n:notifica | n.getAsta() = asta and n.getUtente = pre.bestOffer(asta).getUtente()
-   * and n.tipo = ANNULLAMENTO))
+   * @post asta.allInstances()  -> not includes(asta)
+   *       and asta.getOpera().getStato() = PREVENDITA
+   *       and ( pre.bestOffer(asta) = null
+   *       or notifica.allInstances().doRetrieveAll() ->
+   *       Exists(n:notifica | n.getAsta() = asta and n.getUtente = pre.bestOffer(asta).getUtente()
+   *       and n.tipo = ANNULLAMENTO))
    */
   @Override
   public boolean removeAsta(Asta asta) {
@@ -381,7 +397,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
    * @return vero se l'annullamento è andata a buon fine, falso altrimenti
    * @pre asta.getStato() = IN_CORSO or asta.getStato() = CREATA
    * @post asta.allIstances()  -> not includes(asta)
-   * and asta.getOpera().getStato() = PREVENDITA
+   *       and asta.getOpera().getStato() = PREVENDITA
    */
   @Override
   public boolean annullaAsta(Asta asta) {
@@ -398,7 +414,7 @@ public class AstaServiceImpl implements AstaService, TimerService {
   }
 
   /**
-   * effettua tutte le modifiche causate dall'annullamento di un asta.
+   * Effettua tutte le modifiche causate dall'annullamento o dalla rimozione di un asta.
    * Ripristina il saldo del miglior offerente.
    * imposta lo stato dell'opera.
    * avvisa il miglior offerente della cancellazione
@@ -475,7 +491,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
         asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
         asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
         asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
-        asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
+        asta.getOpera().getArtista().setnFollowers(
+            getNumberOfFollowers(asta.getOpera().getArtista())
+        );
       }
     }
 
@@ -500,7 +518,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
         asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
         asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
         asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
-        asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
+        asta.getOpera().getArtista().setnFollowers(
+            getNumberOfFollowers(asta.getOpera().getArtista())
+        );
       }
     }
 
@@ -525,7 +545,9 @@ public class AstaServiceImpl implements AstaService, TimerService {
         asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
         asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));
         asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
-        asta.getOpera().getArtista().setnFollowers(getNumberOfFollowers(asta.getOpera().getArtista()));
+        asta.getOpera().getArtista().setnFollowers(
+            getNumberOfFollowers(asta.getOpera().getArtista())
+        );
       }
     }
 
@@ -596,12 +618,11 @@ public class AstaServiceImpl implements AstaService, TimerService {
    *
    * @param item dati riguardanti il timer che si è attivato
    * @pre (item.getTaskType = " avviaAsta "
-   *and ( asta.allIstances () -> any(a:asta | asta.getId() = item.attribute())).stato = CREATO
-   * )
-   * or
-   * (item.getTaskType = "terminaAsta"
-   * and (bestOffer(asta) = null || asta.Stato = Prevendita)
-   * )
+   *      and (asta.allIstances () -> any(a:asta | asta.getId() = item.attribute())).stato = CREATO)
+   *      or
+   *      (item.getTaskType = "terminaAsta"
+   *      and (bestOffer(asta) = null || asta.Stato = Prevendita)
+   *      )
    */
   @Override
   public void executeTimedTask(TimedObject item) {

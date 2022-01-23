@@ -42,6 +42,7 @@ public class ServletGetRivendite extends HttpServlet {
         rivendite = rivenditaService.getResellsByState(stato);
         break;
       default:
+        stato = Rivendita.Stato.IN_CORSO;
         rivendite = rivenditaService.getResells();
         break;
     }
