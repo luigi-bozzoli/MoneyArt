@@ -31,7 +31,7 @@
 
         <div class="container-fluid d-flex flex-wrap" id="container-asta">
         <c:forEach var="opera" items="${operePossedute}">
-            <c:if test="${opera.stato eq 'PREVENDITA'}">
+            <c:if test="${opera.stato eq 'IN_POSSESSO'}">
                 <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
                     <div class="thumb-wrapper">
                         <div class="img-box">
@@ -40,7 +40,7 @@
                         </div>
                         <div class="thumb-content">
                             <h4><c:out value="${opera.nome}"/></h4>
-                            <a href="${pageContext.servletContext.contextPath}/#" class="btn btn-primary">Metti all'asta</a>
+                            <a href="${pageContext.servletContext.contextPath}/#" class="btn btn-primary">Rivendi</a>
 
                         </div>
 
@@ -59,7 +59,7 @@
 
         <div class="container-fluid d-flex flex-wrap" id="container-rivendita">
         <c:forEach var="opera" items="${operePossedute}">
-            <c:if test="${opera.stato eq 'IN_POSSESSO'}">
+            <c:if test="${opera.stato eq 'PREVENDITA'}">
                 <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
                     <div class="thumb-wrapper">
                         <div class="img-box">
@@ -70,7 +70,7 @@
                             <h4><c:out value="${opera.nome}"/></h4>
                             <p>di <a href="${pageContext.servletContext.contextPath}/getUser?id=${opera.artista.id}">${opera.artista.username}</a></p>
                             <p class="item-price"><input type="hidden" value="${opera.id}"></p>
-                            <a href="${pageContext.servletContext.contextPath}/#" class="btn btn-primary">Rivendi</a>
+                            <a href="${pageContext.servletContext.contextPath}/#" class="btn btn-primary">Metti all'asta</a>
                         </div>
 
                     </div>

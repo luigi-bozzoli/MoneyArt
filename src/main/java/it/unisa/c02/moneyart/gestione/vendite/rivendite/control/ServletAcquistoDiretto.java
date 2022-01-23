@@ -24,7 +24,7 @@ public class ServletAcquistoDiretto extends HttpServlet {
     Integer idUtente = utente.getId();
     rivenditaService.buy(idRivendita, idUtente);
     RequestDispatcher dispatcher =
-        request.getRequestDispatcher("/pages/acquistoDiretto.jsp");//Todo:aggiungere link alla view
+        request.getRequestDispatcher("/pages/profiloUtente.jsp");
     dispatcher.forward(request, response);
   }
 
@@ -37,6 +37,5 @@ public class ServletAcquistoDiretto extends HttpServlet {
 
   @Inject
   private RivenditaService rivenditaService;
-
 
 }
