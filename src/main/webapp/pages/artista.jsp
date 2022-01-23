@@ -117,8 +117,4 @@
 
     <script>let idArtista = "${artista.id}"</script>
 
-
-
-
-
 <%@include file="../static/fragments/footer.jsp" %>
