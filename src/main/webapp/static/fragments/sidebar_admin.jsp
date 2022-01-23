@@ -91,12 +91,6 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="${pageContext.servletContext.contextPath}/pages/admin/rivendite.jsp" class="nav-link">
-                                            <i class="nav-icon fas fa-shopping-cart"></i>
-                                            <p>Rivendite</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a href="${pageContext.servletContext.contextPath}/logout" class="nav-link">
                                             <i class="nav-icon fas fa-sign-out-alt"></i>
                                             <p>LogOut</p>

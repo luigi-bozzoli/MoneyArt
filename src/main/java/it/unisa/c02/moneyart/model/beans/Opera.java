@@ -233,6 +233,13 @@ public class Opera {
   }
 
 
+  /**
+   * Verifica l'uguaglianza tra due oggetti.
+   *
+   * @param o oggetto da confrontare con un'istanza della classe corrente
+   * @return true se l'uguaglianza tra i due oggetti è verificato,
+   *         false altrimenti
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -253,6 +260,11 @@ public class Opera {
   }
 
 
+  /**
+   * Genera un hash.
+   *
+   * @return un intero che rappresenta l'hash della classe
+   */
   @Override
   public int hashCode() {
     return Objects.hash(getId(), getNome(), getDescrizione(), getStato(),
@@ -260,6 +272,10 @@ public class Opera {
   }
 
 
+  /**
+   * Variabili di istanza.
+   *
+   */
   private Integer id;
   private String nome; //
   private String descrizione;

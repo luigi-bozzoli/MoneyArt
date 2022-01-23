@@ -43,7 +43,5 @@ public class ServletGetSegnalazioni extends HttpServlet {
 
   @Inject
   private SegnalazioneService segnalazioneService;
-  @Inject
-  private UtenteService utenteService;
 
 }

@@ -63,10 +63,10 @@
                 </div>
 
                 <div class="offer-wrapper">
-                    <form action="${pageContext.servletContext.contextPath}/buyArtwork" method="post">
+                    <form action="servletCheckout" method="post">
                         <label for="buy"><h3>Acquisto diretto</h3></label>
                         <div class="offer-input">
-                            <input type="hidden" name="asta" value="${rivendita.id}">
+                            <input type="hidden" name="rivendita" value="${rivendita.id}">
                             <button type="submit" id="buy">Compra</button>
                         </div>
                         <div class="error">
