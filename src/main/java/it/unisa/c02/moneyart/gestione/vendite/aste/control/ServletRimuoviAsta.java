@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet per la rimozione di un'asta.
+ *
  */
 @WebServlet(name = "ServletRimuoviAsta", value = "/removeAuction")
 public class ServletRimuoviAsta extends HttpServlet {

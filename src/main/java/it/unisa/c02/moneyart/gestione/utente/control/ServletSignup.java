@@ -2,7 +2,7 @@ package it.unisa.c02.moneyart.gestione.utente.control;
 
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.model.beans.Utente;
-
+import java.io.IOException;
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
+
+/**
+ * Questa servlet gestisce la registrazione.
+ *
+ */
 
 @WebServlet(name = "ServletSignup", value = "/signup")
 public class ServletSignup extends HttpServlet {

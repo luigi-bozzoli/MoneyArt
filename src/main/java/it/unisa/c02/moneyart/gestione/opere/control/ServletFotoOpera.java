@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Questa servlet gestisce il caricamento di un'immagine.
+ *
+ */
 @WebServlet(name = "ServletFotoOpera", value = "/artworkPicture")
 public class ServletFotoOpera extends HttpServlet {
 
@@ -47,7 +51,7 @@ public class ServletFotoOpera extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    doGet(request,response);
+    doGet(request, response);
   }
 
   @Inject

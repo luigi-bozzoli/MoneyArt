@@ -66,6 +66,16 @@
 .thumb-content h4, .thumb-content p {
     margin-bottom: 5px;
 }
+.thumb-content a {
+    color: #bb371a;
+    text-decoration: none;
+    transition: .6s;
+}
+.thumb-content a:hover {
+    color: #eba83a;
+    text-decoration: none;
+    transition: .6s;
+}
 .expiration-timer .timer {
     font-size: 16px;
     letter-spacing: 5px;

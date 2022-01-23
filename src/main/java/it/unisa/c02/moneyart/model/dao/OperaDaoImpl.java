@@ -42,7 +42,9 @@ public class OperaDaoImpl implements OperaDao {
   @Override
   public boolean doCreate(Opera item) {
 
-    if (item == null) return false;
+    if (item == null) {
+      return false;
+    }
 
     String insertSql = "INSERT INTO " + TABLE_NAME
         + "(id_utente, id_artista, nome, descrizione, immagine, certificato, stato)"
@@ -83,7 +85,7 @@ public class OperaDaoImpl implements OperaDao {
     Opera opera = null;
 
     try (Connection connection = ds.getConnection();
-      PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
+        PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {
       preparedStatement.setInt(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
