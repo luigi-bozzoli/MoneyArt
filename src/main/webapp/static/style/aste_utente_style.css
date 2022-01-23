@@ -6,7 +6,7 @@
 }
 .nav-tabs .nav-item {
     margin-bottom: -1px;
-    flex-basis: 30%;
+    flex-basis: 33.3%;
     text-align: center;
 }
 
@@ -89,6 +89,7 @@
     background: #BB371A;
     box-shadow: none;
     transition: .8s;
+    border: none;
 }
 
 .item-price {
@@ -155,3 +156,4 @@
 #myTabContent.loading .modal {
     display: block;
 }
+

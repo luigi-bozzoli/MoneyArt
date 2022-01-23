@@ -43,7 +43,7 @@
 
             <div class="balance-info d-flex justify-content-center align-items-baseline mt-3">
                 <h4 class="mb-0">Saldo:</h4>
-                <h5 class="mb-0 ml-2"><fmt:formatNumber type="currency" value="${user.saldo}"/></h5>
+                <h5 class="mb-0 ml-2"><fmt:formatNumber type="currency" value="${user.saldo}" currencySymbol="€"/></h5>
             </div>
 
             <div class="followers-info d-flex justify-content-center align-items-baseline mt-2">

@@ -21,7 +21,7 @@
                         <a href="${pageContext.servletContext.contextPath}/pages/login.jsp" class="button">Crea</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="${pageContext.servletContext.contextPath}/pages/??.jsp" class="button">Crea</a>  <!-- todo aggiungere link alla creazione -->
+                        <a href="${pageContext.servletContext.contextPath}/pages/creaOpera.jsp" class="button">Crea</a>  <!-- todo aggiungere link alla creazione -->
                     </c:otherwise>
                 </c:choose>
             </div>
