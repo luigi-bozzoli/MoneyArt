@@ -1,10 +1,9 @@
-package integration.gestione.control;
+package integration.gestione.control.aste;
 
 import hthurow.tomcatjndi.TomcatJNDI;
-import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletGetAsteUtente;
+import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletStoricoOfferte;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
-import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.*;
 import it.unisa.c02.moneyart.model.dao.interfaces.*;
 import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
@@ -21,7 +20,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.*;
 import java.lang.reflect.Field;
@@ -29,22 +27,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
-
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class ServletGetAsteUtenteIntegrationTest {
+class ServletStoricoOfferteIntegrationTest {
 
   private static DataSource dataSource;
-  private ServletGetAsteUtente servletGetAsteUtente;
-  private Utente utente;
+  private ServletStoricoOfferte servletStoricoOfferte;
   private AstaService service;
 
   private NotificaDao notificaDao;
@@ -59,8 +51,6 @@ class ServletGetAsteUtenteIntegrationTest {
   HttpServletRequest request;
   @Mock
   HttpServletResponse response;
-  @Mock
-  HttpSession session;
 
   @BeforeAll
   public static void generalSetUp() throws SQLException, FileNotFoundException {
@@ -122,11 +112,11 @@ class ServletGetAsteUtenteIntegrationTest {
     service = new AstaServiceImpl(astaDao, operaDao, utenteDao, partecipazioneDao,
       timerScheduler, astaLockingSingleton, notificaDao);
 
-    servletGetAsteUtente = new ServletGetAsteUtente();
+    servletStoricoOfferte = new ServletStoricoOfferte();
 
-    Field injectedObject = servletGetAsteUtente.getClass().getDeclaredField("astaService");
+    Field injectedObject = servletStoricoOfferte.getClass().getDeclaredField("astaService");
     injectedObject.setAccessible(true);
-    injectedObject.set(servletGetAsteUtente, service);
+    injectedObject.set(servletStoricoOfferte, service);
   }
 
   @AfterEach
@@ -138,69 +128,20 @@ class ServletGetAsteUtenteIntegrationTest {
     runner.runScript(reader);
     connection.close();
   }
-
   @Test
-  @DisplayName("doGet Test AsteUtenteVinte")
-  void doGetTest() throws NoSuchMethodException, InvocationTargetException,
+  @DisplayName("doGet Test")
+  void doGet() throws NoSuchMethodException, InvocationTargetException,
       IllegalAccessException {
 
-    utente = new Utente();
-    utente.setId(2);
+    doNothing().when(request).setAttribute(anyString(), any());
 
-    when(request.getSession()).thenReturn(session);
-    when(session.getAttribute(anyString())).thenReturn(utente);
-    when(request.getParameter("action")).thenReturn("won");
-
-    Method privateStringMethod = ServletGetAsteUtente.class
+    Method privateStringMethod = ServletStoricoOfferte.class
       .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
 
     privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletGetAsteUtente, request, response);
+    privateStringMethod.invoke(servletStoricoOfferte, request, response);
 
-    verify(request, times(1)).getSession();
-    verify(request, times(1)).getParameter(anyString());
     verify(request, times(1)).setAttribute(anyString(), any());
   }
 
-  @Test
-  @DisplayName("doGet Test Exception")
-  void doGetTestException() throws NoSuchMethodException {
-
-    utente = new Utente();
-    utente.setId(2);
-
-    when(request.getSession()).thenReturn(session);
-    when(session.getAttribute(anyString())).thenReturn(utente);
-    when(request.getParameter("action")).thenReturn("ExceptionTest");
-
-    Method privateStringMethod = ServletGetAsteUtente.class
-      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
-
-    privateStringMethod.setAccessible(true);
-
-    Throwable t = assertThrows(InvocationTargetException.class,
-      () -> {
-            privateStringMethod.invoke(servletGetAsteUtente, request, response);
-      });
-
-    assertEquals(IllegalStateException.class, t.getCause().getClass());
-
-    verify(request, times(1)).getSession();
-    verify(request, times(1)).getParameter(anyString());
-    verify(request, times(0)).setAttribute(anyString(), any());
-  }
-
-  @Test
-  @DisplayName("doPost Test ")
-  void doPost() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-
-    doGetTest();
-  }
-
-  @Test
-  @DisplayName("doPostException Test ")
-  void doPostException() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-
-    doGetTestException();
-  }
 }

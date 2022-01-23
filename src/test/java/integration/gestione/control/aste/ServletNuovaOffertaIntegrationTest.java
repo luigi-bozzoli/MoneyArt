@@ -1,9 +1,10 @@
-package integration.gestione.control;
+package integration.gestione.control.aste;
 
 import hthurow.tomcatjndi.TomcatJNDI;
-import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletGetAsta;
+import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletNuovaOfferta;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
+import it.unisa.c02.moneyart.model.beans.Utente;
 import it.unisa.c02.moneyart.model.dao.*;
 import it.unisa.c02.moneyart.model.dao.interfaces.*;
 import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
@@ -22,6 +23,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.*;
 import java.lang.reflect.Field;
@@ -29,17 +31,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class ServletGetAstaIntegrationTest {
+class ServletNuovaOffertaIntegrationTest {
 
   private static DataSource dataSource;
-  private ServletGetAsta servletGetAsta;
+  private ServletNuovaOfferta servletNuovaOfferta;
   private AstaService service;
 
   private NotificaDao notificaDao;
@@ -56,6 +56,8 @@ class ServletGetAstaIntegrationTest {
   HttpServletResponse response;
   @Mock
   PrintWriter writer;
+  @Mock
+  HttpSession session;
   @Mock
   RequestDispatcher dispatcher;
 
@@ -96,7 +98,7 @@ class ServletGetAstaIntegrationTest {
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
-    Reader reader = new BufferedReader(new FileReader("./src/test/database/test_partecipazione.sql"));
+    Reader reader = new BufferedReader(new FileReader("./src/test/database/test_notifica.sql"));
     runner.runScript(reader);
     connection.close();
 
@@ -119,11 +121,11 @@ class ServletGetAstaIntegrationTest {
     service = new AstaServiceImpl(astaDao, operaDao, utenteDao, partecipazioneDao,
       timerScheduler, astaLockingSingleton, notificaDao);
 
-    servletGetAsta = new ServletGetAsta();
+    servletNuovaOfferta = new ServletNuovaOfferta();
 
-    Field injectedObject = servletGetAsta.getClass().getDeclaredField("astaService");
+    Field injectedObject = servletNuovaOfferta.getClass().getDeclaredField("astaService");
     injectedObject.setAccessible(true);
-    injectedObject.set(servletGetAsta, service);
+    injectedObject.set(servletNuovaOfferta, service);
   }
 
   @AfterEach
@@ -137,102 +139,58 @@ class ServletGetAstaIntegrationTest {
   }
 
   @Test
-  @DisplayName("doGet Test Ajax")
-  void doGetTestAjax() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-    IOException, ServletException {
+  @DisplayName("doGet Test")
+  void doGetTest() throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
-    when(request.getParameter("id")).thenReturn("1");
-    when(request.getHeader(anyString())).thenReturn("XMLHttpRequest");
-    doNothing().when(request).setAttribute(anyString(), any());
+    Utente utente = new Utente();
+    utente.setId(3);
+
+    when(request.getSession()).thenReturn(session);
+    when(session.getAttribute("utente")).thenReturn(utente);
     when(response.getWriter()).thenReturn(writer);
+    doNothing().when(writer).write(anyString());
     doNothing().when(response).setContentType(anyString());
     doNothing().when(response).setCharacterEncoding(anyString());
-    doNothing().when(writer).write(anyString());
-    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-    doNothing().when(dispatcher).forward(any(), any());
 
-    Method privateStringMethod = ServletGetAsta.class
+    Method privateStringMethod = ServletNuovaOfferta.class
       .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
 
     privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletGetAsta, request, response);
+    privateStringMethod.invoke(servletNuovaOfferta, request, response);
 
-    verify(response, times(1)).setContentType(anyString());
+    verify(request, times(1)).getSession();
+    verify(session, times(1)).getAttribute(anyString());
     verify(response, times(1)).setCharacterEncoding(anyString());
-    verify(dispatcher, times(0)).forward(any(), any());
-    verify(request, times(0)).getRequestDispatcher(anyString());
-    verify(request, times(1)).getHeader(anyString());
-    verify(request, times(1)).getParameter(anyString());
-    verify(request, times(0)).setAttribute(anyString(), any());
-  }
-
-  @Test
-  @DisplayName("doGet Test NoAjax Terminata")
-  void doGetTestNoAjaxTerminata() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-    IOException, ServletException {
-
-    when(request.getParameter("id")).thenReturn("1");
-    when(request.getHeader(anyString())).thenReturn("");
-    doNothing().when(request).setAttribute(anyString(), any());
-    when(response.getWriter()).thenReturn(writer);
-    doNothing().when(response).setContentType(anyString());
-    doNothing().when(response).setCharacterEncoding(anyString());
-    doNothing().when(writer).write(anyString());
-    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-    doNothing().when(dispatcher).forward(any(), any());
-
-    Method privateStringMethod = ServletGetAsta.class
-      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
-
-    privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletGetAsta, request, response);
-
-    verify(response, times(0)).setContentType(anyString());
-    verify(response, times(0)).setCharacterEncoding(anyString());
-    verify(dispatcher, times(1)).forward(any(), any());
-    verify(request, times(1)).getRequestDispatcher(anyString());
-    verify(request, times(1)).getHeader(anyString());
-    verify(request, times(1)).getParameter(anyString());
-    verify(request, times(1)).setAttribute(anyString(), any());
-  }
-
-  @Test
-  @DisplayName("doGet Test NoAjax InCorso")
-  void doGetTestNoAjaxInCorso() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-    IOException, ServletException {
-
-    when(request.getParameter("id")).thenReturn("2");
-    when(request.getHeader(anyString())).thenReturn("");
-    doNothing().when(request).setAttribute(anyString(), any());
-    when(response.getWriter()).thenReturn(writer);
-    doNothing().when(response).setContentType(anyString());
-    doNothing().when(response).setCharacterEncoding(anyString());
-    doNothing().when(writer).write(anyString());
-    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-    doNothing().when(dispatcher).forward(any(), any());
-
-    Method privateStringMethod = ServletGetAsta.class
-      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
-
-    privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletGetAsta, request, response);
-
-    verify(response, times(0)).setContentType(anyString());
-    verify(response, times(0)).setCharacterEncoding(anyString());
-    verify(dispatcher, times(1)).forward(any(), any());
-    verify(request, times(1)).getRequestDispatcher(anyString());
-    verify(request, times(1)).getHeader(anyString());
-    verify(request, times(1)).getParameter(anyString());
-    verify(request, times(2)).setAttribute(anyString(), any());
+    verify(response, times(1)).setContentType(anyString());
+    verify(response, times(1)).getWriter();
+    verify(writer, times(1)).write(anyString());
   }
 
   @Test
   @DisplayName("doPost Test")
-  void doPost() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-    IOException, ServletException {
+  void doPost() throws IOException, NoSuchMethodException, InvocationTargetException,
+    IllegalAccessException, ServletException {
 
-    doGetTestAjax();
-    doGetTestNoAjaxTerminata();
-    doGetTestNoAjaxInCorso();
+    Utente utente = new Utente();
+    utente.setId(3);
+
+    when(request.getSession()).thenReturn(session);
+    when(session.getAttribute("utente")).thenReturn(utente);
+    when(request.getParameter("asta")).thenReturn("2");
+    when(request.getParameter("offerta")).thenReturn("20");
+    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+    doNothing().when(dispatcher).forward(any(),any());
+
+    Method privateStringMethod = ServletNuovaOfferta.class
+      .getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
+
+    privateStringMethod.setAccessible(true);
+    privateStringMethod.invoke(servletNuovaOfferta, request, response);
+
+    verify(request, times(1)).getSession();
+    verify(session, times(1)).getAttribute(anyString());
+    verify(request, times(1)).setAttribute(anyString(), any());
+    verify(request, times(1)).getRequestDispatcher(anyString());
+    verify(dispatcher, times(1)).forward(any(), any());
   }
 }

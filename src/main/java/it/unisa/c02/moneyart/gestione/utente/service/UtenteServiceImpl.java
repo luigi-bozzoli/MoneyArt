@@ -223,7 +223,7 @@ public class UtenteServiceImpl implements UtenteService {
       if(inPossesso != null) {
         for(Opera o : inPossesso) {
           o.setArtista(utenteDao.doRetrieveById(o.getArtista().getId()));
-          o.setPossessore(utente);
+          o.setPossessore(utenteDao.doRetrieveById(utente.getId()));
         }
       }
       utente.setOpereInPossesso(inPossesso);
@@ -232,7 +232,7 @@ public class UtenteServiceImpl implements UtenteService {
 
       if(create != null) {
         for(Opera o : create) {
-          o.setArtista(utente);
+          o.setArtista(utenteDao.doRetrieveById(utente.getId()));
           o.setPossessore(utenteDao.doRetrieveById(o.getPossessore().getId()));
         }
       }

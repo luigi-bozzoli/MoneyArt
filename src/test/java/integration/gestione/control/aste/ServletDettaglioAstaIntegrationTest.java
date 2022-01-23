@@ -1,7 +1,7 @@
-package integration.gestione.control;
+package integration.gestione.control.aste;
 
 import hthurow.tomcatjndi.TomcatJNDI;
-import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletRimuoviAsta;
+import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletDettaglioAsta;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
 import it.unisa.c02.moneyart.model.dao.*;
@@ -22,23 +22,21 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;;import java.io.*;
+import javax.sql.DataSource;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class ServletRimuoviAstaIntegrationTest {
+class ServletDettaglioAstaIntegrationTest {
 
   private static DataSource dataSource;
-  private ServletRimuoviAsta servletRimuoviAsta;
+  private ServletDettaglioAsta servletDettaglioAsta;
   private AstaService service;
 
   private NotificaDao notificaDao;
@@ -116,11 +114,11 @@ class ServletRimuoviAstaIntegrationTest {
     service = new AstaServiceImpl(astaDao, operaDao, utenteDao, partecipazioneDao,
       timerScheduler, astaLockingSingleton, notificaDao);
 
-    servletRimuoviAsta = new ServletRimuoviAsta();
+    servletDettaglioAsta = new ServletDettaglioAsta();
 
-    Field injectedObject = servletRimuoviAsta.getClass().getDeclaredField("astaService");
+    Field injectedObject = servletDettaglioAsta.getClass().getDeclaredField("astaService");
     injectedObject.setAccessible(true);
-    injectedObject.set(servletRimuoviAsta, service);
+    injectedObject.set(servletDettaglioAsta, service);
   }
 
   @AfterEach
@@ -135,51 +133,25 @@ class ServletRimuoviAstaIntegrationTest {
 
   @Test
   @DisplayName("doGet Test")
-  void doGet() throws ServletException, IOException, NoSuchMethodException,
-      InvocationTargetException, IllegalAccessException {
-
-    when(request.getParameter(anyString())).thenReturn("2");
-    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-    doNothing().when(dispatcher).forward(any(), any());
-
-    Method privateStringMethod = ServletRimuoviAsta.class
-      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
-
-    privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletRimuoviAsta, request, response);
-
-    verify(dispatcher, times(1)).forward(any(), any());
-    verify(request, times(1)).getRequestDispatcher(anyString());
-    verify(request, times(1)).getParameter(anyString());
-  }
-
-  @Test
-  @DisplayName("doGet Test Error")
-  void doGetError() throws ServletException, IOException, NoSuchMethodException,
-    InvocationTargetException, IllegalAccessException {
+  void doGet() throws NoSuchMethodException, InvocationTargetException,
+    IllegalAccessException, ServletException, IOException {
 
     when(request.getParameter(anyString())).thenReturn("1");
     when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-    doNothing().when(response).sendRedirect(anyString());
+    doNothing().when(request).setAttribute(anyString(), any());
+    doNothing().when(dispatcher).forward(any(), any());
 
-    Method privateStringMethod = ServletRimuoviAsta.class
+    Method privateStringMethod = ServletDettaglioAsta.class
       .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
 
     privateStringMethod.setAccessible(true);
-    privateStringMethod.invoke(servletRimuoviAsta, request, response);
+    privateStringMethod.invoke(servletDettaglioAsta, request, response);
 
-    verify(request, times(1)).setAttribute(anyString(), any());
     verify(request, times(1)).getParameter(anyString());
-    verify(response, times(1)).sendRedirect(anyString());
-  }
+    verify(request, times(1)).setAttribute(anyString(), any());
+    verify(request, times(1)).getRequestDispatcher(anyString());
+    verify(dispatcher, times(1)).forward(any(), any());
 
-  @Test
-  @DisplayName("doPost Test")
-  void doPost() throws ServletException, IOException, InvocationTargetException,
-      NoSuchMethodException, IllegalAccessException {
-
-    doGet();
-    doGetError();
   }
 
 }

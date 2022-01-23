@@ -1,4 +1,4 @@
-package integration.gestione.control;
+package integration.gestione.control.utente;
 
 import hthurow.tomcatjndi.TomcatJNDI;
 import it.unisa.c02.moneyart.gestione.utente.control.ServletRicercaUtente;

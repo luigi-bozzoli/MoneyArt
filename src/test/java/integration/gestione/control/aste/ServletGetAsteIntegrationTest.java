@@ -1,4 +1,4 @@
-package integration.gestione.control;
+package integration.gestione.control.aste;
 
 import hthurow.tomcatjndi.TomcatJNDI;
 import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletGetAste;
@@ -218,13 +218,4 @@ class ServletGetAsteIntegrationTest {
 
   }
 
-  @Test
-  @DisplayName("doPost Test")
-  void doPost() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-    IOException {
-
-    doGetTestAjaxInCorsoSortedByPrezzo();
-    doGetTestAjaxNoCriteria();
-    doGetTestNoAjax();
-  }
 }

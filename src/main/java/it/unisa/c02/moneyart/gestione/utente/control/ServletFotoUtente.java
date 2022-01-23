@@ -37,7 +37,7 @@ public class ServletFotoUtente extends HttpServlet {
       }
     } catch (SQLException e) {
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-          "errore durante il processamento dell'immagine");
+          "errore durante l'elaborazione dell'immagine");
       return;
     }
     response.setContentLength(imageBytes.length);

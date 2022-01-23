@@ -1,4 +1,4 @@
-package integration.gestione.control;
+package integration.gestione.control.aste;
 
 import hthurow.tomcatjndi.TomcatJNDI;
 import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletBestOffer;
@@ -153,14 +153,6 @@ class ServletBestOfferIntegrationTest {
     verify(request, times(1)).getRequestDispatcher(anyString());
     verify(request, times(1)).setAttribute(anyString(), any());
     verify(dispatcher, times(1)).forward(any(), any());
-  }
-
-  @Test
-  @DisplayName("doPost Test")
-  void doPost() throws ServletException, IOException, InvocationTargetException,
-      NoSuchMethodException, IllegalAccessException {
-
-    doGet();
   }
 
 }

@@ -1,20 +1,15 @@
-package integration.gestione.control;
+package integration.gestione.control.utente;
 
 import hthurow.tomcatjndi.TomcatJNDI;
-import it.unisa.c02.moneyart.gestione.utente.control.ServletFotoUtente;
 import it.unisa.c02.moneyart.gestione.utente.control.ServletLogin;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.gestione.utente.service.UtenteServiceImpl;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
-import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
-import it.unisa.c02.moneyart.model.dao.PartecipazioneDaoImpl;
-import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
+import it.unisa.c02.moneyart.model.dao.*;
 import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
 import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
-import org.apache.commons.io.IOUtils;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,31 +22,29 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import javax.sql.rowset.serial.SerialBlob;
+
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class ServletFotoUtenteIntegrationTest {
+class ServletLoginIntegrationTest {
+
     @Mock
     HttpServletRequest request;
     @Mock
@@ -63,7 +56,7 @@ class ServletFotoUtenteIntegrationTest {
 
     private static DataSource dataSource;
 
-    private ServletFotoUtente servletFotoUtente;
+    private ServletLogin servletLogin;
     private UtenteService utenteService;
 
     private UtenteDao utenteDao;
@@ -120,12 +113,12 @@ class ServletFotoUtenteIntegrationTest {
 
         utenteService= new UtenteServiceImpl( utenteDao, operaDao, notificaDao, partecipazioneDao);
 
-        servletFotoUtente = new ServletFotoUtente();
+        servletLogin = new ServletLogin();
 
         //inject manuale della variabile di istanza =)
-        Field injectedObject = servletFotoUtente.getClass().getDeclaredField("utenteService");
+        Field injectedObject = servletLogin.getClass().getDeclaredField("utenteService");
         injectedObject.setAccessible(true);
-        injectedObject.set(servletFotoUtente, utenteService);
+        injectedObject.set(servletLogin, utenteService);
     }
 
     @AfterEach
@@ -138,91 +131,71 @@ class ServletFotoUtenteIntegrationTest {
         connection.close();
     }
 
-    @Test
-    @DisplayName("doGet")
-    void doGet() throws ServletException, IOException, InvocationTargetException,
-            NoSuchMethodException, IllegalAccessException, SQLException {
-
-        String s1 = "image blob 1";
-        Blob image = new SerialBlob(s1.getBytes(StandardCharsets.UTF_8));
-
-        Utente utente = new Utente("Stefano", "Zarro", image, "stefanus@unisa.it",
-                "s_ano", new Utente(), "stelle".getBytes(StandardCharsets.UTF_8), 0.002);
-        utenteDao.doCreate(utente);
-
-        doNothing().when(response).setContentType(anyString());
-        when(request.getParameter("id")).thenReturn(Integer.toString(utente.getId()));
-
-        doNothing().when(response).setContentLength(anyInt());
-
-        ServletOutputStream writer = mock(ServletOutputStream.class); //moccato
-        when(response.getOutputStream()).thenReturn(writer);
-        doNothing().when(writer).write(anyByte());
-
-        Method privateStringMethod = ServletFotoUtente.class
-                .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
-        privateStringMethod.setAccessible(true);
-        privateStringMethod.invoke(servletFotoUtente, request, response);
-
-        verify(request, times(1)).getParameter(anyString());
-        verify(response, times(1)).setContentType(anyString());
-        verify(response, times(1)).setContentLength(anyInt());
-        verify(response, times(1)).getOutputStream();
-
-    }
-
-
-    @Test
-    @DisplayName("doGetImgNull")
-    void doGetImgNull() throws ServletException, IOException, InvocationTargetException,
-            NoSuchMethodException, IllegalAccessException, SQLException {
-
-        String s1 = "image blob 1";
-        Blob image = new SerialBlob(s1.getBytes(StandardCharsets.UTF_8));
-
-        Utente utente = new Utente("Stefano", "Zarro", image, "stefanus@unisa.it",
-                "s_ano", new Utente(), "stelle".getBytes(StandardCharsets.UTF_8), 0.002);
-
-        utente.setFotoProfilo(null);
-        utenteDao.doCreate(utente);
-
-        doNothing().when(response).setContentType(anyString());
-        when(request.getParameter("id")).thenReturn(Integer.toString(utente.getId()));
-
-        //if img==null ******************************************************************************
-
-        ServletContext ctx = mock(ServletContext.class);
-        when(session.getServletContext()).thenReturn(ctx); //ritorna qualcosa
-        InputStream in = mock(InputStream.class);
-        when(ctx.getResourceAsStream(anyString())).thenReturn(in); //ritorna qualsiasi cosa
-        IOUtils utils = mock(IOUtils.class);
-        when(utils.toByteArray(in)).thenReturn(s1.getBytes(StandardCharsets.UTF_8));
-
-        // ******************************************************************************
-
-        doNothing().when(response).setContentLength(anyInt());
-
-        ServletOutputStream writer = mock(ServletOutputStream.class); //moccato
-        when(response.getOutputStream()).thenReturn(writer);
-        doNothing().when(writer).write(anyByte());
-
-        Method privateStringMethod = ServletFotoUtente.class
-                .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
-        privateStringMethod.setAccessible(true);
-        privateStringMethod.invoke(servletFotoUtente, request, response);
-
-
-        verify(request, times(1)).getParameter(anyString());
-        verify(response, times(1)).setContentType(anyString());
-        verify(response, times(1)).setContentLength(anyInt());
-        verify(response, times(1)).getOutputStream().write(anyByte());
-    }
-
 
     @Test
     @DisplayName("doPost Test")
-    void doPost() throws NoSuchMethodException, InvocationTargetException,
-            IllegalAccessException, ServletException, IOException, SQLException {
-        doGet();
+    void doPost() throws ServletException, IOException, InvocationTargetException,
+            NoSuchMethodException, IllegalAccessException {
+
+       Utente utente = new Utente("Stefano", "Zarro", null, "stefanus@unisa.it",
+                "s_ano", new Utente(), "stelle".getBytes(StandardCharsets.UTF_8), 0.002);
+        utenteDao.doCreate(utente);
+
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("username")).thenReturn(utente.getUsername());
+        when(request.getParameter("password")).thenReturn("stelle");
+
+        doNothing().when(session).setAttribute(anyString(), any());
+        when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+        doNothing().when(dispatcher).forward(any(), any());
+        doNothing().when(request).setAttribute(anyString(), anyString());
+
+        Method privateStringMethod = ServletLogin.class
+               .getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
+
+       privateStringMethod.setAccessible(true);
+       privateStringMethod.invoke(servletLogin, request, response);
+
+
+        verify(request, times(2)).getParameter(anyString());
+        verify(request, times(1)).getSession();
+        verify(request, times(1)).getRequestDispatcher(anyString());
+        verify(dispatcher, times(1)).forward(any(), any());
+        verify(request, times(1)).setAttribute(anyString(), anyString());
+        verify(dispatcher, times(1)).forward(any(), any());
+
     }
+
+    @Test
+    @DisplayName("doPostUserNull")
+    void doPostUserNull() throws ServletException, IOException, InvocationTargetException,
+            NoSuchMethodException, IllegalAccessException {
+
+        Utente utente = new Utente("Stefano", "Zarro", null, "stefanus@unisa.it",
+                "s_ano", new Utente(), "stelle".getBytes(StandardCharsets.UTF_8), 0.002);
+        utenteDao.doCreate(utente);
+
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("username")).thenReturn(""); //no username
+        when(request.getParameter("password")).thenReturn(""); //no password
+        doNothing().when(request).setAttribute(anyString(), anyString());
+        when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+        doNothing().when(dispatcher).forward(any(), any());
+
+        Method privateStringMethod = ServletLogin.class
+                .getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
+
+        privateStringMethod.setAccessible(true);
+        privateStringMethod.invoke(servletLogin, request, response);
+
+
+        verify(request, times(2)).getParameter(anyString());
+        verify(request, times(1)).getSession();
+        verify(request, times(1)).getRequestDispatcher(anyString());
+        verify(dispatcher, times(1)).forward(any(), any());
+        verify(request, times(1)).setAttribute(anyString(), anyString());
+        verify(dispatcher, times(1)).forward(any(), any());
+
+    }
+
 }
