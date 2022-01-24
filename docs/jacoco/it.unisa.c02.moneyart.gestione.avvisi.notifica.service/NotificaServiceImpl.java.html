@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotificaServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.avvisi.notifica.service</a> &gt; <span class="el_source">NotificaServiceImpl.java</span></div><h1>NotificaServiceImpl.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.avvisi.notifica.service;
+
+import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import java.util.List;
+import javax.inject.Inject;
+
+/**
+ * Questa classe implementa i metodi dell'interfaccia NotificaService.
+ */
+public class NotificaServiceImpl implements NotificaService {
+
+<span class="nc" id="L14">  public NotificaServiceImpl() {</span>
+
+<span class="nc" id="L16">  }</span>
+
+  /**
+   * Costruttore con parametri.
+   *
+   * @param notificaDao dao di notifica
+   */
+<span class="fc" id="L23">  public NotificaServiceImpl(NotificaDao notificaDao) {</span>
+<span class="fc" id="L24">    this.notificaDao = notificaDao;</span>
+<span class="fc" id="L25">  }</span>
+
+  /**
+   * Restituisce tutte le notifiche di un utente.
+   *
+   * @param idUtente id dell'utente interessato alle notifiche
+   * @return List di notifiche
+   */
+  @Override
+  public List&lt;Notifica&gt; getNotificationsByUser(int idUtente) {
+
+<span class="fc" id="L36">    List&lt;Notifica&gt; notifies = notificaDao.doRetrieveAllByUserId(idUtente);</span>
+
+<span class="fc" id="L38">    return notifies;</span>
+  }
+
+  /**
+   * Restituisce la notifica.
+   *
+   * @param id l'identificativo della notifica da restituire
+   * @return la notifica trovata
+   */
+  @Override
+  public Notifica getNotification(int id) {
+<span class="fc" id="L49">    return notificaDao.doRetrieveById(id);</span>
+  }
+
+  /**
+   * Imposta il parametro &quot;letta&quot; a true.
+   *
+   * @param notifica notifica da impostare come letta
+   * @pre Notifica.allIstances() -&gt; exists(n:Notifica | n = notifica)
+   * @post notifica.setLetta(true)
+   */
+  @Override
+  public void readNotification(Notifica notifica) {
+<span class="fc" id="L61">    notifica = notificaDao.doRetrieveById(notifica.getId());</span>
+<span class="fc" id="L62">    notifica.setLetta(true);</span>
+
+<span class="fc" id="L64">    notificaDao.doUpdate(notifica);</span>
+<span class="fc" id="L65">  }</span>
+
+  /**
+   * Imposta il parametro &quot;letta&quot; a false.
+   *
+   * @param notifica notifica da impostare come non letta
+   * @pre Notifica.allIstances() -&gt; exists(n:Notifica | n = notifica)
+   * @post notifica.setLetta(false)
+   */
+  @Override
+  public void unreadNotification(Notifica notifica) {
+<span class="fc" id="L76">    notifica = notificaDao.doRetrieveById(notifica.getId());</span>
+<span class="fc" id="L77">    notifica.setLetta(false);</span>
+
+<span class="fc" id="L79">    notificaDao.doUpdate(notifica);</span>
+<span class="fc" id="L80">  }</span>
+
+  /**
+   * Elimina una notifca.
+   *
+   * @param notifica notifica da eliminare
+   * @pre Notifica.allIstances() -&gt; exists(n:Notifica | n = notifica)
+   * @post Notifica.allIstances() -&gt; not exists(n:Notifica | n = notifica)
+   */
+  @Override
+  public void deleteNotification(Notifica notifica) {
+<span class="fc" id="L91">    notifica = notificaDao.doRetrieveById(notifica.getId());</span>
+<span class="fc" id="L92">    notificaDao.doDelete(notifica);</span>
+<span class="fc" id="L93">  }</span>
+
+  /**
+   * Aggiunge una nuova notifica.
+   *
+   * @param notifica notifica da aggiungere
+   * @pre Notifica.allIstances() -&gt; not exists(n:Notifica | n = notifica)
+   * @post Notifica.allIstances() -&gt; exists(n:Notifica | n = notifica)
+   * @return true o false
+   */
+  @Override
+  public boolean addNotification(Notifica notifica) {
+
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">    if (notificaDao.doCreate(notifica)) {</span>
+<span class="fc" id="L107">      return true;</span>
+    } else {
+<span class="nc" id="L109">      return false;</span>
+    }
+  }
+
+  @Inject
+  private UtenteDao utenteDao;
+
+  @Inject
+  private NotificaDao notificaDao;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

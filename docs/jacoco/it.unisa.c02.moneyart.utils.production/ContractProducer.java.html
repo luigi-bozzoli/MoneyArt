@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ContractProducer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.utils.production</a> &gt; <span class="el_source">ContractProducer.java</span></div><h1>ContractProducer.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.utils.production;
+
+import it.unisa.c02.moneyart.model.blockchain.MoneyArtNft;
+import java.math.BigInteger;
+import javax.enterprise.inject.Produces;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.StaticGasProvider;
+
+/**
+ * Classe che modella un contratto.
+ *
+ */
+<span class="fc" id="L16">public class ContractProducer {</span>
+
+  /**
+   * Inizializzazione di un contratto.
+   *
+   * @return di un contratto
+   */
+  @Produces
+  @Sing
+  public MoneyArtNft contractInizializer() {
+
+<span class="fc" id="L27">    ContractGasProvider contractGasProvider = getGasProvider();</span>
+
+<span class="fc" id="L29">    Credentials credentials = getCredentialsFromPrivateKey();</span>
+
+<span class="fc" id="L31">    return loadContract(CONTRACT_ADDRESS, web3j, credentials, contractGasProvider);</span>
+
+  }
+
+  private static ContractGasProvider getGasProvider() {
+<span class="fc" id="L36">    return new StaticGasProvider(GAS_PRICE, GAS_LIMIT);</span>
+  }
+
+  private static Credentials getCredentialsFromPrivateKey() {
+<span class="fc" id="L40">    return Credentials.create(PRIVATE_KEY);</span>
+  }
+
+  private static MoneyArtNft loadContract(String contractAddress, Web3j web3j,
+                                          Credentials credentials,
+                                          ContractGasProvider contractGasProvider) {
+<span class="fc" id="L46">    return MoneyArtNft.load(contractAddress, web3j, credentials, contractGasProvider);</span>
+  }
+
+  private static final String PRIVATE_KEY =
+      &quot;d53e4c1d9fb9ae4748924a1b2fd6396ba5de7bab31bd686c1c871ce1e9f51d28&quot;;
+
+<span class="fc" id="L52">  private static final BigInteger GAS_LIMIT = BigInteger.valueOf(6721975L);</span>
+<span class="fc" id="L53">  private static final BigInteger GAS_PRICE = BigInteger.valueOf(20000000000L);</span>
+  private static final String CONTRACT_ADDRESS = &quot;0xC33918f93E9F46Ef4366ebfa84C3dA8C10AB9ec6&quot;;
+
+<span class="fc" id="L56">  private static final Web3j web3j = Web3j.build(new HttpService(&quot;HTTP://127.0.0.1:7545&quot;));</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

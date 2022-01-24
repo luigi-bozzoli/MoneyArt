@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RivenditaDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.model.dao</a> &gt; <span class="el_source">RivenditaDaoImpl.java</span></div><h1>RivenditaDaoImpl.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.model.dao;
+
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
+import javax.sql.DataSource;
+
+/**
+ * Implementa la classe che esplicita i metodi
+ * definiti nell'intefaccia RivenditaDao.
+ */
+public class RivenditaDaoImpl implements RivenditaDao {
+
+
+<span class="nc" id="L23">  public RivenditaDaoImpl() {</span>
+
+<span class="nc" id="L25">  }</span>
+
+  /**
+   * Costruttore, permette di specificare il datasource utilizzato.
+   *
+   * @param ds il datasource utilizzato
+   */
+<span class="fc" id="L32">  public RivenditaDaoImpl(DataSource ds) {</span>
+<span class="fc" id="L33">    this.ds = ds;</span>
+<span class="fc" id="L34">  }</span>
+
+  /**
+   * Inserisce un item del database.
+   *
+   * @param item l'oggetto da inserire nel database
+   */
+  @Override
+  public boolean doCreate(Rivendita item) {
+<span class="fc" id="L43">    String sql =</span>
+        &quot;INSERT INTO &quot; + TABLE_NAME
+            + &quot;(id_opera, prezzo, stato) &quot;
+            + &quot; VALUES(?, ? , ?) &quot;;
+
+
+<span class="fc" id="L49">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L50">         PreparedStatement preparedStatement = connection.prepareStatement(sql,</span>
+             PreparedStatement.RETURN_GENERATED_KEYS)) {
+<span class="fc" id="L52">      preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);</span>
+<span class="fc" id="L53">      preparedStatement.setObject(2, item.getPrezzo(), Types.DOUBLE);</span>
+<span class="fc" id="L54">      preparedStatement.setObject(3, item.getStato().toString().toLowerCase(), Types.VARCHAR);</span>
+<span class="fc" id="L55">      preparedStatement.executeUpdate();</span>
+<span class="fc" id="L56">      ResultSet resultSet = preparedStatement.getGeneratedKeys();</span>
+<span class="fc" id="L57">      resultSet.next();</span>
+<span class="fc" id="L58">      item.setId(resultSet.getInt(1));</span>
+<span class="fc" id="L59">      return true;</span>
+<span class="nc" id="L60">    } catch (SQLException e) {</span>
+<span class="nc" id="L61">      e.printStackTrace();</span>
+    }
+
+<span class="nc" id="L64">    return false;</span>
+
+  }
+
+  /**
+   * Ricerca nel database un item tramite un identificativo univoco.
+   *
+   * @param id l'identificativo dell'item
+   * @return item trovato nel database
+   */
+  @Override
+  public Rivendita doRetrieveById(int id) {
+<span class="fc" id="L76">    String sql =</span>
+        &quot;select * from &quot; + TABLE_NAME
+            + &quot; where id = ? &quot;;
+<span class="fc" id="L79">    Rivendita rivendita = null;</span>
+
+<span class="fc" id="L81">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L82">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+<span class="fc" id="L83">      preparedStatement.setInt(1, id);</span>
+
+<span class="fc" id="L85">      ResultSet rs = preparedStatement.executeQuery();</span>
+
+<span class="fc" id="L87">      rivendita = getSingleResultFromResultSet(rs);</span>
+
+<span class="fc" id="L89">    } catch (SQLException e) {</span>
+<span class="fc" id="L90">      e.printStackTrace();</span>
+<span class="fc" id="L91">    }</span>
+
+<span class="fc" id="L93">    return rivendita;</span>
+  }
+
+  /**
+   * Ricerca nel database tutti gli item,
+   * eventualmente ordinati tramite un filtro.
+   *
+   * @param filter filtro di ordinamento delle tuple
+   * @return lista di item trovata nel database
+   */
+  @Override
+  public List&lt;Rivendita&gt; doRetrieveAll(String filter) {
+<span class="fc" id="L105">    String sql =</span>
+        &quot;select * from &quot; + TABLE_NAME;
+<span class="fc" id="L107">    List&lt;Rivendita&gt; rivendite = null;</span>
+
+<span class="fc bfc" id="L109" title="All 4 branches covered.">    if (filter != null &amp;&amp; !filter.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L110">      sql += &quot; ORDER BY &quot; + filter;</span>
+    }
+
+<span class="fc" id="L113">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L114">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+
+<span class="fc" id="L116">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L117">      rivendite = getMultipleResultFromResultSet(rs);</span>
+
+<span class="fc" id="L119">    } catch (SQLException e) {</span>
+<span class="fc" id="L120">      e.printStackTrace();</span>
+<span class="fc" id="L121">    }</span>
+
+<span class="fc" id="L123">    return rivendite;</span>
+  }
+
+  /**
+   * Aggiorna l'item bel database.
+   *
+   * @param item l'item da aggiornare
+   */
+  @Override
+  public void doUpdate(Rivendita item) {
+<span class="fc" id="L133">    String sql =</span>
+        &quot;UPDATE &quot; + TABLE_NAME
+            + &quot; set id_opera = ?,prezzo = ?, stato = ?&quot;
+            + &quot; where id = ?&quot;;
+
+
+<span class="fc" id="L139">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L140">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+<span class="fc" id="L141">      preparedStatement.setObject(1, item.getOpera().getId(), Types.INTEGER);</span>
+<span class="fc" id="L142">      preparedStatement.setObject(2, item.getPrezzo(), Types.DOUBLE);</span>
+<span class="fc" id="L143">      preparedStatement.setObject(3, item.getStato().toString().toLowerCase(), Types.VARCHAR);</span>
+<span class="fc" id="L144">      preparedStatement.setObject(4, item.getId(), Types.INTEGER);</span>
+<span class="fc" id="L145">      preparedStatement.executeUpdate();</span>
+
+<span class="fc" id="L147">    } catch (SQLException e) {</span>
+<span class="fc" id="L148">      e.printStackTrace();</span>
+<span class="fc" id="L149">    }</span>
+<span class="fc" id="L150">  }</span>
+
+  /**
+   * Elimina item dal database.
+   *
+   * @param item l'item da eliminare
+   */
+  @Override
+  public void doDelete(Rivendita item) {
+<span class="fc" id="L159">    String sql =</span>
+        &quot;delete from &quot; + TABLE_NAME
+            + &quot; where id = ? &quot;;
+
+
+<span class="fc" id="L164">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L165">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+<span class="fc" id="L166">      preparedStatement.setObject(1, item.getId(), Types.INTEGER);</span>
+
+<span class="fc" id="L168">      preparedStatement.executeUpdate();</span>
+
+
+<span class="fc" id="L171">    } catch (SQLException e) {</span>
+<span class="fc" id="L172">      e.printStackTrace();</span>
+<span class="fc" id="L173">    }</span>
+<span class="fc" id="L174">  }</span>
+
+  /**
+   * Ricerca nel database tutti gli item
+   * con un determinato stato.
+   *
+   * @param s stato ricercato
+   * @return lista di item trovata nel database
+   */
+  @Override
+  public List&lt;Rivendita&gt; doRetrieveByStato(Rivendita.Stato s) {
+<span class="fc" id="L185">    String sql =</span>
+        &quot;select * from &quot; + TABLE_NAME
+            + &quot; where stato = ? &quot;;
+
+<span class="fc" id="L189">    List&lt;Rivendita&gt; rivendite = null;</span>
+
+<span class="fc" id="L191">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L192">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+
+<span class="fc" id="L194">      preparedStatement.setObject(1, s.toString().toUpperCase(), Types.VARCHAR);</span>
+<span class="fc" id="L195">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L196">      rivendite = getMultipleResultFromResultSet(rs);</span>
+
+<span class="fc" id="L198">      return rivendite;</span>
+
+<span class="fc" id="L200">    } catch (SQLException e) {</span>
+<span class="fc" id="L201">      e.printStackTrace();</span>
+    }
+
+<span class="fc" id="L204">    return  rivendite;</span>
+  }
+
+  /**
+   * Metodo privato per restituire un singolo oggetto Rivendita dopo aver
+   * effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return l'oggetto Segnalazione
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
+  private Rivendita getSingleResultFromResultSet(ResultSet rs) throws SQLException {
+<span class="fc" id="L216">    Rivendita rivendita = null;</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">    if (rs.next()) {</span>
+<span class="fc" id="L218">      rivendita = new Rivendita();</span>
+<span class="fc" id="L219">      rivendita.setId(rs.getObject(&quot;id&quot;, Integer.class));</span>
+
+<span class="fc" id="L221">      Opera opera = new Opera();</span>
+<span class="fc" id="L222">      opera.setId(rs.getObject(&quot;id_opera&quot;, Integer.class));</span>
+<span class="fc" id="L223">      rivendita.setOpera(opera);</span>
+
+<span class="fc" id="L225">      rivendita.setPrezzo(rs.getObject(&quot;prezzo&quot;, Double.class));</span>
+<span class="fc" id="L226">      rivendita.setStato(Rivendita.Stato.valueOf(rs.getObject(&quot;stato&quot;, String.class)</span>
+<span class="fc" id="L227">          .toUpperCase()));</span>
+    }
+<span class="fc" id="L229">    return rivendita;</span>
+  }
+
+  /**
+   * Metodo privato per restituire una collezione di oggetti Rivendita
+   * dopo aver effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return la collezione di oggetti Segnalazione
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
+  private List&lt;Rivendita&gt; getMultipleResultFromResultSet(ResultSet rs) throws SQLException {
+<span class="fc" id="L241">    List&lt;Rivendita&gt; rivendite = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">    while (rs.next()) {</span>
+<span class="fc" id="L243">      Rivendita rivendita = new Rivendita();</span>
+<span class="fc" id="L244">      rivendita.setId(rs.getObject(&quot;id&quot;, Integer.class));</span>
+
+<span class="fc" id="L246">      Opera opera = new Opera();</span>
+<span class="fc" id="L247">      opera.setId(rs.getObject(&quot;id_opera&quot;, Integer.class));</span>
+<span class="fc" id="L248">      rivendita.setOpera(opera);</span>
+
+<span class="fc" id="L250">      rivendita.setPrezzo(rs.getObject(&quot;prezzo&quot;, Double.class));</span>
+<span class="fc" id="L251">      rivendita.setStato(Rivendita.Stato.valueOf(rs.getObject(&quot;stato&quot;, String.class)</span>
+<span class="fc" id="L252">          .toUpperCase()));</span>
+<span class="fc" id="L253">      rivendite.add(rivendita);</span>
+
+<span class="fc" id="L255">    }</span>
+<span class="fc" id="L256">    return rivendite;</span>
+  }
+
+  @Inject
+  private DataSource ds;
+
+  private static final String TABLE_NAME = &quot;rivendita&quot;;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

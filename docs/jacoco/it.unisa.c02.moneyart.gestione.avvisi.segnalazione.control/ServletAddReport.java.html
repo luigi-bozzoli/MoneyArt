@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletAddReport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.avvisi.segnalazione.control</a> &gt; <span class="el_source">ServletAddReport.java</span></div><h1>ServletAddReport.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.avvisi.segnalazione.control;
+
+import com.google.gson.Gson;
+import it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service.SegnalazioneService;
+import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Segnalazione;
+import java.io.IOException;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+/**
+ * Questa servlet gestisce l'aggiunta di una segnalazione.
+ *
+ */
+
+@WebServlet(name = &quot;ServletAddReport&quot;, value = &quot;/addReport&quot;)
+<span class="nc" id="L22">public class ServletAddReport extends HttpServlet {</span>
+
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+<span class="nc" id="L28">    doPost(request, response);</span>
+<span class="nc" id="L29">  }</span>
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+<span class="nc" id="L34">    int idAsta = Integer.parseInt(request.getParameter(&quot;asta&quot;));</span>
+<span class="nc" id="L35">    String commento = request.getParameter(&quot;commento&quot;);</span>
+
+<span class="nc" id="L37">    Asta asta = new Asta();</span>
+<span class="nc" id="L38">    asta.setId(idAsta);</span>
+
+<span class="nc" id="L40">    Boolean letta = false;</span>
+
+<span class="nc" id="L42">    Segnalazione segnalazione = new Segnalazione(asta, commento, letta);</span>
+
+<span class="nc" id="L44">    boolean segnalazioneOk = segnalazioneService.addReport(segnalazione);</span>
+
+<span class="nc" id="L46">    String json = new Gson().toJson(segnalazioneOk);</span>
+
+<span class="nc" id="L48">    response.setContentType(&quot;application/json&quot;);</span>
+<span class="nc" id="L49">    response.setCharacterEncoding(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L50">    response.getWriter().write(json);</span>
+
+
+<span class="nc" id="L53">  }</span>
+
+  @Inject
+  private SegnalazioneService segnalazioneService;
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

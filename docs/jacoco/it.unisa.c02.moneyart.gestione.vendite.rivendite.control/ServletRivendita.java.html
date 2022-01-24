@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletRivendita.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.vendite.rivendite.control</a> &gt; <span class="el_source">ServletRivendita.java</span></div><h1>ServletRivendita.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.vendite.rivendite.control;
+
+import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
+import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Utente;
+import java.io.IOException;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa classe gestisce una rivendita.
+ *
+ */
+
+@WebServlet(name = &quot;ServletRivendita&quot;, value = &quot;/resell&quot;)
+<span class="fc" id="L22">public class ServletRivendita extends HttpServlet {</span>
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+<span class="fc" id="L28">    Integer idOpera = Integer.parseInt(request.getParameter(&quot;idOpera&quot;));</span>
+<span class="fc" id="L29">    Opera opera = operaService.getArtwork(idOpera);</span>
+<span class="fc" id="L30">    Utente utente = (Utente) request.getSession().getAttribute(&quot;utente&quot;);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">    if (!opera.getPossessore().getId().equals(utente.getId())) {</span>
+<span class="fc" id="L32">      request.setAttribute(&quot;errore&quot;, &quot;non possiedi quest opera&quot;);</span>
+
+    } else {
+
+<span class="fc" id="L36">      rivenditaService.resell(idOpera);</span>
+    }
+
+<span class="fc" id="L39">    RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/pages/marketplace.jsp&quot;);</span>
+<span class="fc" id="L40">    dispatcher.forward(request, response);</span>
+<span class="fc" id="L41">  }</span>
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+<span class="fc" id="L47">    doGet(request, response);</span>
+<span class="fc" id="L48">  }</span>
+
+  @Inject
+  private RivenditaService rivenditaService;
+  @Inject
+  private OperaService operaService;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

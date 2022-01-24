@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PayPalPayment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.utils.payment</a> &gt; <span class="el_source">PayPalPayment.java</span></div><h1>PayPalPayment.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.utils.payment;
+
+import de.micromata.paypal.PayPalConfig;
+import de.micromata.paypal.PayPalConnector;
+import de.micromata.paypal.data.Currency;
+import de.micromata.paypal.data.Payment;
+import de.micromata.paypal.data.ShippingPreference;
+import de.micromata.paypal.data.Transaction;
+
+/**
+ * Classe che implementa i metodi dell'interfaccia di PaymentAdapter per interfacciarsi con Paypal.
+ *
+ */
+<span class="fc" id="L14">public class PayPalPayment implements PaymentAdapter {</span>
+
+  /**
+   * Richiede un pagamento e restituisce
+   * l'url dover reindirizzare l'utente per completare il pagamento.
+   *
+   * @param amount l'ammontare da pagare
+   * @return l'url dover reindirizzare l'utente per completare il pagamento
+   * @throws Exception in caso Paypal da un errore
+   */
+  @Override
+  public String makePayment(double amount) throws  Exception {
+<span class="fc" id="L26">    Transaction transaction = new Transaction(Currency.EUR);</span>
+<span class="fc" id="L27">    transaction.addItem(&quot;MoneyArt Saldo&quot;, amount);</span>
+<span class="fc" id="L28">    Payment payment = new Payment(transaction);</span>
+<span class="fc" id="L29">    payment.setShipping(ShippingPreference.NO_SHIPPING);</span>
+<span class="fc" id="L30">    Payment paymentCreated = PayPalConnector.createPayment(config, payment);</span>
+<span class="fc" id="L31">    return paymentCreated.getPayPalApprovalUrl();</span>
+  }
+
+  /**
+   * Restituisce l'ammontare pagato dato l'id di un pagamento.
+   *
+   * @param paymentId l'id del pagamento
+   * @return l'ammontare speso nel pagamento
+   * @throws Exception nel caso Paypal da errore
+   */
+  @Override
+  public double recievePayment(String paymentId) throws Exception {
+<span class="fc" id="L43">    Payment payment = PayPalConnector.getPaymentDetails(config, paymentId);</span>
+<span class="fc" id="L44">    Transaction t = payment.getTransactions().get(0);</span>
+<span class="fc" id="L45">    return t.getAmount().getDetails().getSubtotal().doubleValue();</span>
+  }
+
+<span class="fc" id="L48">  private static final PayPalConfig config = new PayPalConfig()</span>
+<span class="fc" id="L49">        .setClientId(&quot;AdQKkY9nhdWjnFSQFMIRi-&quot;</span>
+          + &quot;yvpdq194KTkZxtkwD72P6H2rVwiteSMvacjAxPd61laDSWBWU7N6y1_ZG9&quot;)
+<span class="fc" id="L51">        .setClientSecret(&quot;EEh8AzYy9IRpDCgF33qOI3n7R8Bc&quot;</span>
+          + &quot;OlxlezMCEVQkUECtxjOrZEVSCu7pREQQSYz2Y4PlesFvvzggiqnS&quot;)
+<span class="fc" id="L53">        .setReturnUrl(&quot;http://localhost:8080/MoneyArt_war/recivePayment&quot;).setCancelUrl(&quot;http://localhost:8080/MoneyArt_war/walletInfo&quot;)</span>
+<span class="fc" id="L54">        .setMode(PayPalConfig.Mode.SANDBOX);</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

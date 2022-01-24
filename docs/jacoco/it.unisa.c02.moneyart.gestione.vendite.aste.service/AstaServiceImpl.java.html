@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AstaServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.vendite.aste.service</a> &gt; <span class="el_source">AstaServiceImpl.java</span></div><h1>AstaServiceImpl.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.vendite.aste.service;
+
+import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Partecipazione;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import it.unisa.c02.moneyart.utils.locking.AstaLockingSingleton;
+import it.unisa.c02.moneyart.utils.production.Sing;
+import it.unisa.c02.moneyart.utils.timers.TimedObject;
+import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
+import it.unisa.c02.moneyart.utils.timers.TimerService;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.inject.Inject;
+import javax.servlet.http.Part;
+
+/**
+ * Classe che implementa i metodi dell'interfaccia AstaService.
+ */
+
+public class AstaServiceImpl implements AstaService, TimerService {
+
+  /**
+   * Costruttore senza paramentri.
+   */
+<span class="nc" id="L40">  public AstaServiceImpl() {</span>
+<span class="nc" id="L41">  }</span>
+
+  /**
+   * Costruttore.
+   *
+   * @param astaDao              il dao per accedere agli oggetti
+   *                             Asta memorizzati in modo peristente
+   * @param operaDao             il dao per accedere agli oggetti
+   *                             Opera memorizzati in modo peristente
+   * @param utenteDao            il dao per accedere agli oggetti
+   *                             Utente memorizzati in modo peristente
+   * @param partecipazioneDao    il dao per accedere agli oggetti
+   *                             Partecipazione memorizzati in modo peristente
+   * @param timerScheduler       permette di attivare servizi allo
+   *                             scadere di un timer
+   * @param astaLockingSingleton permette di serializzare l'accesso ad un asta
+   * @param notificaDao          il dao per accedere agli oggetti notifica
+   */
+  public AstaServiceImpl(AstaDao astaDao,
+                         OperaDao operaDao,
+                         UtenteDao utenteDao,
+                         PartecipazioneDao partecipazioneDao,
+                         TimerScheduler timerScheduler,
+                         AstaLockingSingleton astaLockingSingleton,
+<span class="fc" id="L65">                         NotificaDao notificaDao) {</span>
+<span class="fc" id="L66">    this.astaDao = astaDao;</span>
+<span class="fc" id="L67">    this.operaDao = operaDao;</span>
+<span class="fc" id="L68">    this.utenteDao = utenteDao;</span>
+<span class="fc" id="L69">    this.partecipazioneDao = partecipazioneDao;</span>
+<span class="fc" id="L70">    this.timerScheduler = timerScheduler;</span>
+<span class="fc" id="L71">    this.astaLockingSingleton = astaLockingSingleton;</span>
+<span class="fc" id="L72">    this.notificaDao = notificaDao;</span>
+<span class="fc" id="L73">  }</span>
+
+  /**
+   * Restituisce tutte le informazioni relative ad un asta.
+   *
+   * @param id l'identificativo dell'asta
+   * @return l'asta identificata dall'id
+   */
+  @Override
+  public Asta getAuction(int id) {
+<span class="fc" id="L83">    Asta asta = astaDao.doRetrieveById(id);</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">    if (asta != null) {</span>
+<span class="fc" id="L85">      asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));</span>
+<span class="fc" id="L86">      List&lt;Partecipazione&gt; partecipazioni = partecipazioneDao.doRetrieveAllByAuctionId(</span>
+<span class="fc" id="L87">          asta.getId()</span>
+      );
+<span class="fc" id="L89">      asta.setPartecipazioni(partecipazioni);</span>
+<span class="fc" id="L90">      asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));</span>
+<span class="fc" id="L91">      asta.getOpera().getArtista().setnFollowers(</span>
+<span class="fc" id="L92">          getNumberOfFollowers(asta.getOpera().getArtista())</span>
+      );
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">      for (Partecipazione p : partecipazioni) {</span>
+<span class="fc" id="L96">        p.setUtente(utenteDao.doRetrieveById(p.getUtente().getId()));</span>
+<span class="fc" id="L97">      }</span>
+    }
+<span class="fc" id="L99">    return asta;</span>
+  }
+
+  /**
+   * Restituisce tutte le aste esistenti sulla piattaforma.
+   *
+   * @return la lista di tutte le aste presenti sulla piattaforma.
+   */
+  @Override
+  public List&lt;Asta&gt; getAllAuctions() {
+<span class="fc" id="L109">    List&lt;Asta&gt; aste = astaDao.doRetrieveAll(null);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">    if (aste != null) {</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">      for (Asta asta : aste) {</span>
+<span class="fc" id="L112">        asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));</span>
+<span class="fc" id="L113">        asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));</span>
+<span class="fc" id="L114">        asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));</span>
+<span class="fc" id="L115">        asta.getOpera().getArtista().setnFollowers(</span>
+<span class="fc" id="L116">            getNumberOfFollowers(asta.getOpera().getArtista())</span>
+        );
+<span class="fc" id="L118">      }</span>
+    }
+<span class="fc" id="L120">    return aste;</span>
+  }
+
+  /**
+   * Restituisce tutte le aste con un determinato stato ordinate in base al prezzo.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s     lo stato della rivendita
+   * @return la lista ordinata
+   */
+  @Override
+  public List&lt;Asta&gt; getAuctionsSortedByPrice(String order, Asta.Stato s) {
+
+<span class="fc" id="L133">    List&lt;Asta&gt; aste = getAuctionsByState(s);</span>
+
+<span class="fc" id="L135">    aste.sort((a1, a2) -&gt; {</span>
+      Double maxA1 =
+<span class="fc bfc" id="L137" title="All 2 branches covered.">          a1.getPartecipazioni().size() &gt; 0</span>
+<span class="fc" id="L138">          ? a1.getPartecipazioni().get(a1.getPartecipazioni().size() - 1).getOfferta() : 0;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">      Double maxA2 = a2.getPartecipazioni().size() &gt; 0</span>
+<span class="fc" id="L140">          ? a2.getPartecipazioni().get(a2.getPartecipazioni().size() - 1).getOfferta() : 0;</span>
+<span class="fc" id="L141">      return Double.compare(maxA1, maxA2);</span>
+    });
+
+<span class="fc bfc" id="L144" title="All 2 branches covered.">    if (order.equalsIgnoreCase(&quot;DESC&quot;)) {</span>
+<span class="fc" id="L145">      Collections.reverse(aste);</span>
+    }
+
+<span class="fc" id="L148">    return aste;</span>
+
+  }
+
+  /**
+   * Restituisce tutte le aste con un determinato stato ordinate in base ai follower dell'artista.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s     lo stato della rivendita
+   * @return la lista ordinata
+   */
+  @Override
+  public List&lt;Asta&gt; getAuctionsSortedByArtistFollowers(String order, Asta.Stato s) {
+<span class="fc" id="L161">    List&lt;Asta&gt; aste = getAuctionsByState(s);</span>
+
+<span class="fc" id="L163">    Collections.sort(aste, new Comparator&lt;Asta&gt;() {</span>
+      @Override
+      public int compare(Asta a1, Asta a2) {
+<span class="fc" id="L166">        int f1 = a1.getOpera().getArtista().getnFollowers();</span>
+<span class="fc" id="L167">        int f2 = a2.getOpera().getArtista().getnFollowers();</span>
+<span class="fc" id="L168">        return Integer.compare(f1, f2);</span>
+      }
+    });
+
+<span class="fc bfc" id="L172" title="All 2 branches covered.">    if (order.equalsIgnoreCase(&quot;DESC&quot;)) {</span>
+<span class="fc" id="L173">      Collections.reverse(aste);</span>
+    }
+
+<span class="fc" id="L176">    return aste;</span>
+  }
+
+  /**
+   * Restituisce tutte le aste con un determinato stato ordinate in base alla scadenza.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s     lo stato della rivendita
+   * @return la lista ordinata
+   */
+  @Override
+  public List&lt;Asta&gt; getAuctionsSortedByExpirationTime(String order, Asta.Stato s) {
+<span class="fc" id="L188">    List&lt;Asta&gt; aste = getAuctionsByState(s);</span>
+
+<span class="fc" id="L190">    Collections.sort(aste, new Comparator&lt;Asta&gt;() {</span>
+      @Override
+      public int compare(Asta a1, Asta a2) {
+<span class="fc" id="L193">        Date d1 = a1.getDataFine();</span>
+<span class="fc" id="L194">        Date d2 = a2.getDataFine();</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        if (d1.before(d2)) {</span>
+<span class="nc" id="L196">          return -1;</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        } else if (d1.after(d2)) {</span>
+<span class="fc" id="L198">          return 1;</span>
+        } else {
+<span class="fc" id="L200">          return 0;</span>
+        }
+      }
+    });
+
+<span class="fc bfc" id="L205" title="All 2 branches covered.">    if (order.equalsIgnoreCase(&quot;DESC&quot;)) {</span>
+<span class="fc" id="L206">      Collections.reverse(aste);</span>
+    }
+
+<span class="fc" id="L209">    return aste;</span>
+  }
+
+  /**
+   * Restituisce le aste sulla piattaforma che si trovano in un determinato stato.
+   *
+   * @param s stato delle aste da restituire
+   * @return la lista di tutte le aste presenti sulla piattaforma in un determinato stato.
+   */
+  public List&lt;Asta&gt; getAuctionsByState(Asta.Stato s) {
+<span class="fc" id="L219">    List&lt;Asta&gt; aste = astaDao.doRetrieveByStato(s);</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">    if (aste == null) {</span>
+<span class="fc" id="L221">      return null;</span>
+    }
+<span class="fc bfc" id="L223" title="All 2 branches covered.">    for (Asta asta : aste) {</span>
+<span class="fc" id="L224">      asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));</span>
+<span class="fc" id="L225">      asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));</span>
+<span class="fc" id="L226">      asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));</span>
+<span class="fc" id="L227">      asta.getOpera().getArtista().setnFollowers(</span>
+<span class="fc" id="L228">          getNumberOfFollowers(asta.getOpera().getArtista())</span>
+      );
+<span class="fc" id="L230">    }</span>
+<span class="fc" id="L231">    return aste;</span>
+  }
+
+  /**
+   * Permette di partecipare ad un asta facendo un offerta
+   * , crea una notifica per informare il vecchio migliore offerte, se esiste.
+   *
+   * @param utente  l'utente che vuole effettuare l'offerta
+   * @param asta    l'asta per cui si vuole effettuare l'offerta
+   * @param offerta l'offerta fatta dall'utente
+   * @return vero se l'offerta va a buon fine, falso altrimenti
+   * @pre asta.getStato() = IN_CORSO and utente.getSaldo() &gt;= offerta
+   *      and (bestOffer(asta) = null or offerta &gt;= bestOffer(asta).getOfferta() )
+   * @post bestOffer(asta).getOfferta() = offerta
+   *       and bestOffer(asta).getUtente() = utente
+   *       and (@pre.bestOffer(asta).getUtente() = null
+   *       or notifica.allIstances() -&gt; exists(n:notifica | notifica.getAsta(asta)
+   *       and notifica.getUtente() = @pre.bestOffer(asta).getUtente() ) )
+   */
+
+  // TODO: qui va messo &quot;participate&quot;
+  @Override
+  public boolean partecipateAuction(Utente utente, Asta asta, double offerta) {
+<span class="fc" id="L254">    astaLockingSingleton.lockAsta(asta);</span>
+    try {
+      //prendo la versione aggiornata di asta e utente
+<span class="fc" id="L257">      utente = utenteDao.doRetrieveById(utente.getId());</span>
+<span class="fc" id="L258">      asta = astaDao.doRetrieveById(asta.getId());</span>
+
+      //prendo la migliore offerta attuale
+<span class="fc" id="L261">      Partecipazione currentBestOffer = bestOffer(asta);</span>
+
+      //controllo le precondizioni
+<span class="fc bfc" id="L264" title="All 6 branches covered.">      if (!asta.getStato().equals(Asta.Stato.IN_CORSO) || utente.getSaldo() &lt; offerta</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">          || (currentBestOffer != null &amp;&amp; offerta &lt;= currentBestOffer.getOfferta())) {</span>
+<span class="fc" id="L266">        return false;</span>
+      }
+
+      //creo la nuova offerta
+<span class="fc" id="L270">      Partecipazione nuovaOfferta = new Partecipazione(asta, utente, offerta);</span>
+      //asta.getPartecipazioni().add(nuovaOfferta);
+
+      //ripristino il saldo disponibile del vecchio miglior offerente
+<span class="fc bfc" id="L274" title="All 2 branches covered.">      if (currentBestOffer != null) {</span>
+<span class="fc" id="L275">        Utente oldBestBidder = utenteDao.doRetrieveById(currentBestOffer.getUtente().getId());</span>
+<span class="fc" id="L276">        oldBestBidder.setSaldo(oldBestBidder.getSaldo() + currentBestOffer.getOfferta());</span>
+
+        // Caso in cui il miglior offerente vuole alzare
+        // la sua offerta
+<span class="fc bfc" id="L280" title="All 2 branches covered.">        if (oldBestBidder.getId() == utente.getId()) {</span>
+<span class="fc" id="L281">          utente = oldBestBidder;</span>
+        } else {
+<span class="fc" id="L283">          utenteDao.doUpdate(oldBestBidder);</span>
+        }
+
+<span class="fc" id="L286">        Notifica notifica = new Notifica(</span>
+            oldBestBidder,
+            asta,
+            new Rivendita(),
+            Notifica.Tipo.SUPERATO,
+            &quot;La tua offerta è stata superata.&quot;,
+            false
+        );
+
+<span class="fc" id="L295">        notificaDao.doCreate(notifica);</span>
+      }
+
+      //riduco il saldo dell'offerente
+<span class="fc" id="L299">      utente.setSaldo(utente.getSaldo() - offerta);</span>
+
+      //aggiorno i dati persistenti
+<span class="fc" id="L302">      partecipazioneDao.doCreate(nuovaOfferta);</span>
+<span class="fc" id="L303">      utenteDao.doUpdate(utente);</span>
+
+<span class="fc" id="L305">      return true;</span>
+    } finally {
+<span class="fc" id="L307">      astaLockingSingleton.unlockAsta(asta);</span>
+    }
+  }
+
+  /**
+   * Verifica la correttezza delle date inserite durante la fase di creazione dell'asta.
+   * Formato data dd/mm/yyyy --&gt; Si assumono le 24:00:00 come orario fisso per i giorni
+   *
+   * @param startDate data di inizio per l'asta
+   * @param endDate   data di fine per l'asta
+   * @return vero o falso
+   */
+
+  // TODO: Controllare se sono null (e aggiornare @pre di addAsta())
+  private boolean checkDate(Date startDate, Date endDate) {
+<span class="fc" id="L322">    long millis = System.currentTimeMillis();</span>
+<span class="fc" id="L323">    Date today = setMidnightTime(new Date(millis));</span>
+
+<span class="fc bfc" id="L325" title="All 6 branches covered.">    return (startDate.after(today) || startDate.equals(today)) &amp;&amp; endDate.after(startDate);</span>
+  }
+
+
+  /**
+   * Aggiunge una nuova asta.
+   *
+   * @param asta l'asta da aggiungere
+   * @return vero se l'aggiunta è andata a buon fine, falso altrimenti
+   * @pre day(asta.getDataInizio ()) &gt;= day(new Date())
+   *      and day(asta.getDataFine()) &gt; day(asta.getDataInizio())
+   *      and asta.getOpera().getStato() = PREVENDITA
+   * @post aste.allIstances() -&gt; includes(asta) and asta.getOpera().getStato() = ALL_ASTA
+   */
+  @Override
+  public boolean addAsta(Asta asta) {
+<span class="fc" id="L341">    asta.setDataInizio(setMidnightTime(asta.getDataInizio()));</span>
+<span class="fc" id="L342">    asta.setDataFine(setMidnightTime(asta.getDataFine()));</span>
+<span class="fc" id="L343">    Opera opera = operaDao.doRetrieveById(asta.getOpera().getId());</span>
+
+<span class="fc bfc" id="L345" title="All 2 branches covered.">    if (!checkDate(asta.getDataInizio(), asta.getDataFine())</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">        || !opera.getStato().equals(Opera.Stato.PREVENDITA)) {</span>
+<span class="fc" id="L347">      return false;</span>
+    }
+<span class="fc" id="L349">    opera.setStato(Opera.Stato.ALL_ASTA);</span>
+<span class="fc" id="L350">    asta.setStato(Asta.Stato.CREATA);</span>
+<span class="fc" id="L351">    astaDao.doCreate(asta);</span>
+<span class="fc" id="L352">    operaDao.doUpdate(opera);</span>
+<span class="fc" id="L353">    TimedObject timedObject = new TimedObject(asta.getId(), &quot;avviaAsta&quot;, asta.getDataInizio());</span>
+<span class="fc" id="L354">    timerScheduler.scheduleTimedService(timedObject);</span>
+<span class="fc" id="L355">    return true;</span>
+  }
+
+  /* La data viene restituita con il tempo impostato a mezzanotte */
+  private Date setMidnightTime(Date date) {
+<span class="fc" id="L360">    Calendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L361">    calendar.setTime(date);</span>
+
+<span class="fc" id="L363">    calendar.set(Calendar.HOUR_OF_DAY, 0);</span>
+<span class="fc" id="L364">    calendar.set(Calendar.MINUTE, 0);</span>
+<span class="fc" id="L365">    calendar.set(Calendar.SECOND, 0);</span>
+<span class="fc" id="L366">    calendar.set(Calendar.MILLISECOND, 0);</span>
+
+<span class="fc" id="L368">    return calendar.getTime();</span>
+  }
+
+  /**
+   * Rimuove un'asta.
+   *
+   * @param asta l'asta da rimuovere
+   * @return vero se la rimozione è andata a buon fine, falso altrimenti
+   * @pre asta.getStato() = IN_CORSO or asta.getStato() = CREATA
+   * @post asta.allInstances()  -&gt; not includes(asta)
+   *       and asta.getOpera().getStato() = PREVENDITA
+   *       and ( pre.bestOffer(asta) = null
+   *       or notifica.allInstances().doRetrieveAll() -&gt;
+   *       Exists(n:notifica | n.getAsta() = asta and n.getUtente = pre.bestOffer(asta).getUtente()
+   *       and n.tipo = ANNULLAMENTO))
+   */
+  @Override
+  public boolean removeAsta(Asta asta) {
+<span class="fc bfc" id="L386" title="All 4 branches covered.">    if (asta.getStato().equals(Asta.Stato.IN_CORSO) || asta.getStato().equals(Asta.Stato.CREATA)) {</span>
+<span class="fc" id="L387">      astaAnnullata(asta);</span>
+<span class="fc" id="L388">      Opera opera = operaDao.doRetrieveById(asta.getOpera().getId());</span>
+<span class="fc" id="L389">      Utente artista = utenteDao.doRetrieveById(opera.getArtista().getId());</span>
+<span class="fc" id="L390">      Notifica notifica =</span>
+          new Notifica(artista, asta, new Rivendita(), Notifica.Tipo.ANNULLAMENTO, &quot;&quot;, false);
+<span class="fc" id="L392">      notificaDao.doCreate(notifica);</span>
+<span class="fc" id="L393">      asta.setStato(Asta.Stato.ELIMINATA);</span>
+<span class="fc" id="L394">      astaDao.doUpdate(asta);</span>
+<span class="fc" id="L395">      return true;</span>
+    } else {
+<span class="fc" id="L397">      return false;</span>
+    }
+  }
+
+  /**
+   * annulla un asta.
+   *
+   * @param asta l'asta da annullare
+   * @return vero se l'annullamento è andata a buon fine, falso altrimenti
+   * @pre asta.getStato() = IN_CORSO or asta.getStato() = CREATA
+   * @post asta.allIstances()  -&gt; not includes(asta)
+   *       and asta.getOpera().getStato() = PREVENDITA
+   */
+  @Override
+  public boolean annullaAsta(Asta asta) {
+<span class="fc" id="L412">    asta = astaDao.doRetrieveById(asta.getId());</span>
+
+<span class="fc bfc" id="L414" title="All 4 branches covered.">    if (asta.getStato().equals(Asta.Stato.IN_CORSO) || asta.getStato().equals(Asta.Stato.CREATA)) {</span>
+<span class="fc" id="L415">      astaAnnullata(asta);</span>
+<span class="fc" id="L416">      asta.setStato(Asta.Stato.ELIMINATA);</span>
+<span class="fc" id="L417">      astaDao.doUpdate(asta);</span>
+<span class="fc" id="L418">      return true;</span>
+    } else {
+<span class="fc" id="L420">      return false;</span>
+    }
+  }
+
+  /**
+   * Effettua tutte le modifiche causate dall'annullamento o dalla rimozione di un asta.
+   * Ripristina il saldo del miglior offerente.
+   * imposta lo stato dell'opera.
+   * avvisa il miglior offerente della cancellazione
+   *
+   * @param asta l'asta che è stata annullata
+   */
+  private void astaAnnullata(Asta asta) {
+
+<span class="fc" id="L434">    Partecipazione bestOffer = bestOffer(asta);</span>
+<span class="fc bfc" id="L435" title="All 2 branches covered.">    if (bestOffer != null) {</span>
+<span class="fc" id="L436">      Utente offerente = utenteDao.doRetrieveById(bestOffer.getUtente().getId());</span>
+<span class="fc" id="L437">      offerente.setSaldo(offerente.getSaldo() + bestOffer.getOfferta());</span>
+<span class="fc" id="L438">      utenteDao.doUpdate(offerente);</span>
+<span class="fc" id="L439">      Notifica notifica =</span>
+          new Notifica(offerente, asta, new Rivendita(), Notifica.Tipo.ANNULLAMENTO, &quot;&quot;, false);
+<span class="fc" id="L441">      notificaDao.doCreate(notifica);</span>
+    }
+<span class="fc" id="L443">    Opera opera = operaDao.doRetrieveById(asta.getOpera().getId());</span>
+<span class="fc" id="L444">    opera.setStato(Opera.Stato.PREVENDITA);</span>
+<span class="fc" id="L445">    operaDao.doUpdate(opera);</span>
+<span class="fc" id="L446">  }</span>
+
+
+  /**
+   * Restituisce la migliore offerta fatta all'asta.
+   *
+   * @param asta l'asta da verificare
+   * @return la migliore offerta per l'asta o null se non è presente alcuna offerta
+   */
+  @Override
+  public Partecipazione bestOffer(Asta asta) {
+<span class="fc" id="L457">    List&lt;Partecipazione&gt; partecipazioni = partecipazioneDao.doRetrieveAllByAuctionId(asta.getId());</span>
+<span class="fc bfc" id="L458" title="All 4 branches covered.">    if (partecipazioni == null || partecipazioni.isEmpty()) {</span>
+<span class="fc" id="L459">      return null;</span>
+    }
+<span class="fc" id="L461">    return partecipazioni.get(partecipazioni.size() - 1);</span>
+  }
+
+  private List&lt;Partecipazione&gt; bestAuctionOfferByUser(Utente utente) {
+<span class="fc" id="L465">    Map&lt;Integer, Partecipazione&gt; maxForAsta = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L466">    List&lt;Partecipazione&gt; miglioriPartecipazioni = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L467">    List&lt;Partecipazione&gt; partecipazioni = partecipazioneDao.doRetrieveAllByUserId(utente.getId());</span>
+<span class="fc bfc" id="L468" title="All 2 branches covered.">    for (Partecipazione partecipazione : partecipazioni) {</span>
+<span class="fc bfc" id="L469" title="All 2 branches covered.">      if (maxForAsta.containsKey(partecipazione.getAsta().getId())) {</span>
+<span class="fc" id="L470">        Partecipazione max = maxForAsta.get(partecipazione.getAsta().getId());</span>
+<span class="pc bpc" id="L471" title="1 of 2 branches missed.">        if (max.getOfferta() &lt; partecipazione.getOfferta()) {</span>
+<span class="fc" id="L472">          maxForAsta.put(partecipazione.getAsta().getId(), partecipazione);</span>
+        }
+<span class="fc" id="L474">      } else {</span>
+<span class="fc" id="L475">        maxForAsta.put(partecipazione.getAsta().getId(), partecipazione);</span>
+      }
+<span class="fc" id="L477">    }</span>
+<span class="fc bfc" id="L478" title="All 2 branches covered.">    for (Partecipazione partecipazione : maxForAsta.values()) {</span>
+<span class="fc" id="L479">      miglioriPartecipazioni.add(partecipazione);</span>
+<span class="fc" id="L480">    }</span>
+<span class="fc" id="L481">    return miglioriPartecipazioni;</span>
+  }
+
+  /**
+   * Restituisce tutte le aste vinte da un utente.
+   *
+   * @param utente l'utente per cui bisogna cercare le aste vinte
+   * @return le aste vinte dall'utente
+   */
+  @Override
+  public List&lt;Asta&gt; getWonAuctions(Utente utente) {
+<span class="fc" id="L492">    List&lt;Partecipazione&gt; partecipazioni = bestAuctionOfferByUser(utente);</span>
+<span class="fc" id="L493">    List&lt;Asta&gt; aste = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L494" title="All 2 branches covered.">    for (Partecipazione partecipazione : partecipazioni) {</span>
+<span class="fc" id="L495">      Asta asta = astaDao.doRetrieveById(partecipazione.getAsta().getId());</span>
+<span class="fc bfc" id="L496" title="All 2 branches covered.">      if (asta.getStato().equals(Asta.Stato.TERMINATA)</span>
+<span class="pc bpc" id="L497" title="1 of 2 branches missed.">          &amp;&amp; bestOffer(asta).getId().equals(partecipazione.getId())) {</span>
+<span class="fc" id="L498">        aste.add(asta);</span>
+<span class="fc" id="L499">        asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));</span>
+<span class="fc" id="L500">        asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));</span>
+<span class="fc" id="L501">        asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));</span>
+<span class="fc" id="L502">        asta.getOpera().getArtista().setnFollowers(</span>
+<span class="fc" id="L503">            getNumberOfFollowers(asta.getOpera().getArtista())</span>
+        );
+      }
+<span class="fc" id="L506">    }</span>
+
+<span class="fc" id="L508">    return aste;</span>
+  }
+
+  /**
+   * Restituisce tutte le aste perse da un utente.
+   *
+   * @param utente l'utente per cui bisogna cercare le aste perse
+   * @return le aste perse dall'utente
+   */
+  @Override
+  public List&lt;Asta&gt; getLostAuctions(Utente utente) {
+<span class="fc" id="L519">    List&lt;Partecipazione&gt; partecipazioni = bestAuctionOfferByUser(utente);</span>
+<span class="fc" id="L520">    List&lt;Asta&gt; aste = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L521" title="All 2 branches covered.">    for (Partecipazione partecipazione : partecipazioni) {</span>
+<span class="fc" id="L522">      Asta asta = astaDao.doRetrieveById(partecipazione.getAsta().getId());</span>
+<span class="fc bfc" id="L523" title="All 2 branches covered.">      if (asta.getStato().equals(Asta.Stato.TERMINATA)</span>
+<span class="fc bfc" id="L524" title="All 2 branches covered.">          &amp;&amp; !bestOffer(asta).getId().equals(partecipazione.getId())) {</span>
+<span class="fc" id="L525">        aste.add(asta);</span>
+<span class="fc" id="L526">        asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));</span>
+<span class="fc" id="L527">        asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));</span>
+<span class="fc" id="L528">        asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));</span>
+<span class="fc" id="L529">        asta.getOpera().getArtista().setnFollowers(</span>
+<span class="fc" id="L530">            getNumberOfFollowers(asta.getOpera().getArtista())</span>
+        );
+      }
+<span class="fc" id="L533">    }</span>
+
+<span class="fc" id="L535">    return aste;</span>
+  }
+
+  /**
+   * Restituisce tutte le aste in corso di un utente.
+   *
+   * @param utente l'utente per cui bisogna cercare le aste in corso
+   * @return le aste in corso dell'utente
+   */
+  @Override
+  public List&lt;Asta&gt; getCurrentAuctions(Utente utente) {
+<span class="fc" id="L546">    List&lt;Partecipazione&gt; partecipazioni = bestAuctionOfferByUser(utente);</span>
+<span class="fc" id="L547">    List&lt;Asta&gt; aste = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L548" title="All 2 branches covered.">    for (Partecipazione partecipazione : partecipazioni) {</span>
+<span class="fc" id="L549">      Asta asta = astaDao.doRetrieveById(partecipazione.getAsta().getId());</span>
+<span class="fc bfc" id="L550" title="All 2 branches covered.">      if (asta.getStato().equals(Asta.Stato.IN_CORSO)</span>
+<span class="pc bpc" id="L551" title="1 of 2 branches missed.">          &amp;&amp; bestOffer(asta).getId().equals(partecipazione.getId())) {</span>
+<span class="fc" id="L552">        aste.add(asta);</span>
+<span class="fc" id="L553">        asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));</span>
+<span class="fc" id="L554">        asta.setPartecipazioni(partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()));</span>
+<span class="fc" id="L555">        asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));</span>
+<span class="fc" id="L556">        asta.getOpera().getArtista().setnFollowers(</span>
+<span class="fc" id="L557">            getNumberOfFollowers(asta.getOpera().getArtista())</span>
+        );
+      }
+<span class="fc" id="L560">    }</span>
+
+<span class="fc" id="L562">    return aste;</span>
+  }
+
+  /**
+   * Restituisce lo storico di tutte le offerte.
+   *
+   * @return lo storico di tutte le offerte
+   */
+  @Override
+  public List&lt;Partecipazione&gt; getAllOffers() {
+<span class="fc" id="L572">    return partecipazioneDao.doRetrieveAll(null);</span>
+  }
+
+  private void avviaAsta(Asta asta) {
+<span class="fc bfc" id="L576" title="All 2 branches covered.">    if (asta.getStato().equals(Asta.Stato.CREATA)) {</span>
+<span class="fc" id="L577">      asta.setStato(Asta.Stato.IN_CORSO);</span>
+<span class="fc" id="L578">      astaDao.doUpdate(asta);</span>
+<span class="fc" id="L579">      TimedObject timedObject = new TimedObject(asta.getId(), &quot;terminaAsta&quot;, asta.getDataFine());</span>
+<span class="fc" id="L580">      timerScheduler.scheduleTimedService(timedObject);</span>
+    }
+
+<span class="fc" id="L583">  }</span>
+
+
+  private void terminaAsta(Asta asta) {
+
+<span class="fc" id="L588">    astaLockingSingleton.lockAsta(asta);</span>
+    try {
+<span class="fc" id="L590">      asta = astaDao.doRetrieveById(asta.getId());</span>
+<span class="fc" id="L591">      asta.setStato(Asta.Stato.TERMINATA);</span>
+
+<span class="fc" id="L593">      Opera opera = operaDao.doRetrieveById(asta.getOpera().getId());</span>
+
+<span class="fc" id="L595">      Partecipazione miglioreOfferta = bestOffer(asta);</span>
+<span class="fc" id="L596">      Utente artista = utenteDao.doRetrieveById(opera.getArtista().getId());</span>
+<span class="fc bfc" id="L597" title="All 2 branches covered.">      if (miglioreOfferta == null) {</span>
+<span class="fc" id="L598">        opera.setStato(Opera.Stato.PREVENDITA);</span>
+
+      } else {
+<span class="fc" id="L601">        Utente vincitore = utenteDao.doRetrieveById(miglioreOfferta.getUtente().getId());</span>
+<span class="fc" id="L602">        opera.setStato(Opera.Stato.IN_POSSESSO);</span>
+<span class="fc" id="L603">        opera.setPossessore(vincitore);</span>
+<span class="fc" id="L604">        artista.setSaldo(artista.getSaldo() + miglioreOfferta.getOfferta());</span>
+<span class="fc" id="L605">        Notifica notifica =</span>
+            new Notifica(vincitore, asta, new Rivendita(), Notifica.Tipo.VITTORIA, &quot;&quot;, false);
+<span class="fc" id="L607">        notificaDao.doCreate(notifica);</span>
+<span class="fc" id="L608">        utenteDao.doUpdate(vincitore);</span>
+<span class="fc" id="L609">        utenteDao.doUpdate(artista);</span>
+
+      }
+
+<span class="fc" id="L613">      astaDao.doUpdate(asta);</span>
+<span class="fc" id="L614">      operaDao.doUpdate(opera);</span>
+
+
+    } finally {
+<span class="fc" id="L618">      astaLockingSingleton.unlockAsta(asta);</span>
+    }
+
+<span class="fc" id="L621">  }</span>
+
+  /**
+   * attiva un evento allo scadere del timer,
+   * l'evento può attivare un asta o concluderla.
+   *
+   * @param item dati riguardanti il timer che si è attivato
+   * @pre (item.getTaskType = &quot; avviaAsta &quot;
+   *      and (asta.allIstances () -&gt; any(a:asta | asta.getId() = item.attribute())).stato = CREATO)
+   *      or
+   *      (item.getTaskType = &quot;terminaAsta&quot;
+   *      and (bestOffer(asta) = null || asta.Stato = Prevendita)
+   *      )
+   */
+  @Override
+  public void executeTimedTask(TimedObject item) {
+<span class="fc" id="L637">    Asta asta = astaDao.doRetrieveById((Integer) item.getAttribute());</span>
+<span class="fc bfc" id="L638" title="All 2 branches covered.">    if (asta.getStato().equals(Asta.Stato.ELIMINATA)) {</span>
+<span class="fc" id="L639">      return;</span>
+    }
+<span class="fc bfc" id="L641" title="All 2 branches covered.">    if (item.getTaskType().equals(&quot;avviaAsta&quot;)) {</span>
+<span class="fc" id="L642">      avviaAsta(asta);</span>
+<span class="pc bpc" id="L643" title="1 of 2 branches missed.">    } else if (item.getTaskType().equals(&quot;terminaAsta&quot;)) {</span>
+<span class="fc" id="L644">      terminaAsta(asta);</span>
+    }
+
+<span class="fc" id="L647">  }</span>
+
+  /**
+   * Restituisce il numero di followers di un determinato utente.
+   *
+   * @param utente l'utente interessato a conoscere il numero dei propri followers
+   * @return il numero di followers dell'utente
+   */
+
+  private int getNumberOfFollowers(Utente utente) {
+<span class="fc" id="L657">    List&lt;Utente&gt; followers = utenteDao.doRetrieveFollowersByUserId(utente.getId());</span>
+<span class="pc bpc" id="L658" title="1 of 2 branches missed.">    return followers != null ? followers.size() : 0;</span>
+  }
+
+
+  @Inject
+  private AstaDao astaDao;
+  @Inject
+  private OperaDao operaDao;
+  @Inject
+  private UtenteDao utenteDao;
+  @Inject
+  private PartecipazioneDao partecipazioneDao;
+  @Inject
+  private NotificaDao notificaDao;
+
+  @Inject
+  @Sing
+  private TimerScheduler timerScheduler;
+  @Inject
+  @Sing
+  private AstaLockingSingleton astaLockingSingleton;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

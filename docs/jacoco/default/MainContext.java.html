@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">MainContext.java</span></div><h1>MainContext.java</h1><pre class="source lang-java linenums">import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
+import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Partecipazione;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.beans.Segnalazione;
+import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.blockchain.MoneyArtNft;
+import it.unisa.c02.moneyart.model.dao.AstaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.NotificaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.OperaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.PartecipazioneDaoImpl;
+import it.unisa.c02.moneyart.model.dao.RivenditaDaoImpl;
+import it.unisa.c02.moneyart.model.dao.SegnalazioneDaoImpl;
+import it.unisa.c02.moneyart.model.dao.UtenteDaoImpl;
+import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.SegnalazioneDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import it.unisa.c02.moneyart.utils.timers.TimerScheduler;
+import it.unisa.c02.moneyart.utils.timers.TimerService;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.logging.Logger;
+import javax.inject.Inject;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+import javax.sql.DataSource;
+import javax.sql.rowset.serial.SerialBlob;
+import org.apache.commons.io.FileUtils;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.StaticGasProvider;
+
+/**
+ * permette di inizializzare il sistema all'avvio.
+ */
+@WebListener
+<span class="nc" id="L57">public class MainContext implements ServletContextListener {</span>
+
+  /**
+   * Inizializza il sistema settando le implementazioni delle interfacce,
+   * inizializza i servizi attivabili tramite un timer,
+   * riattiva i timer presenti nella memoria persistente.
+   *
+   * @param sce l'evento di attivazione del sistema
+   */
+  public void contextInitialized(ServletContextEvent sce) {
+<span class="nc" id="L67">    System.out.println(&quot;Startup web application&quot;);</span>
+<span class="nc" id="L68">    DataSource ds = null;</span>
+
+    try {
+<span class="nc" id="L71">      Context initCtx = new InitialContext();</span>
+<span class="nc" id="L72">      Context envCtx = (Context) initCtx.lookup(&quot;java:comp/env&quot;);</span>
+
+<span class="nc" id="L74">      ds = (DataSource) envCtx.lookup(&quot;jdbc/storage&quot;);</span>
+
+<span class="nc" id="L76">    } catch (NamingException e) {</span>
+<span class="nc" id="L77">      e.printStackTrace();</span>
+<span class="nc" id="L78">    }</span>
+
+<span class="nc" id="L80">    System.out.println(&quot;-- Ripristino dei timer persistenti --&quot;);</span>
+<span class="nc" id="L81">    int timerRipristinati = initializeTimerService(ds);</span>
+<span class="nc" id="L82">    System.out.println(&quot;-- &quot; + timerRipristinati + &quot; timer sono stati ripristinati --&quot;);</span>
+
+<span class="nc" id="L84">    ServletContext context = sce.getServletContext();</span>
+<span class="nc" id="L85">    context.setAttribute(&quot;DataSource&quot;, ds);</span>
+
+<span class="nc" id="L87">    System.out.println(&quot;DataSource creation: &quot; + ds.toString());</span>
+
+
+
+<span class="nc" id="L91">  }</span>
+
+  /**
+   * Effettua operazioni di deallocazione di risorse prima della terminazione del sistema
+   * dealloca il datasource e disattiva i timer attualmente attivi.
+   *
+   * @param sce l'evento di attivazione del sistema
+   */
+  public void contextDestroyed(ServletContextEvent sce) {
+<span class="nc" id="L100">    ServletContext context = sce.getServletContext();</span>
+
+<span class="nc" id="L102">    DataSource ds = (DataSource) context.getAttribute(&quot;DataSource&quot;);</span>
+<span class="nc" id="L103">    context.removeAttribute(&quot;DataSource&quot;);</span>
+<span class="nc" id="L104">    TimerScheduler.getInstance().shutdownTimers();</span>
+
+<span class="nc" id="L106">    System.out.println(&quot;DataSource deletion: &quot; + ds.toString());</span>
+<span class="nc" id="L107">  }</span>
+
+
+  private int initializeTimerService(DataSource dataSource) {
+<span class="nc" id="L111">    TimerScheduler timerService = TimerScheduler.getInstance();</span>
+<span class="nc" id="L112">    TimerService avviaAsta = astaService;</span>
+<span class="nc" id="L113">    timerService.registerTimedService(&quot;avviaAsta&quot;, avviaAsta);</span>
+<span class="nc" id="L114">    TimerService terminaAsta = astaService;</span>
+<span class="nc" id="L115">    timerService.registerTimedService(&quot;terminaAsta&quot;, terminaAsta);</span>
+
+<span class="nc" id="L117">    return timerService.retrivePersistentTimers();</span>
+  }
+
+  /*
+  private void populateDatabase(String filePath, DataSource dataSource)
+      throws NoSuchAlgorithmException, IOException, SQLException {
+    // Necessario per salvare le password crittografate
+    MessageDigest md = MessageDigest.getInstance(&quot;SHA-256&quot;);
+
+
+
+    logger.info(&quot;-- Inizio popolamento database --&quot;);
+    logger.info(&quot;-- Path immagini profilo utente: &quot;
+        + filePath.concat(&quot;static\\demo\\profilePics\\&quot;) + &quot; --&quot;);
+    logger.info(&quot;-- Path immagini opere: &quot;
+        + filePath.concat(&quot;static\\demo\\&quot;) + &quot; --&quot;);
+
+    // POPOLAMENTO TABELLA UTENTE ------------------------
+
+    Utente retrieved = null;
+    // Attualmente nessun utente segue un altro utente (&quot;followed&quot; ha id = null)
+    // TODO: Impostare dei &quot;follow&quot; di esempio
+    Utente followed = new Utente();
+
+    // Le password non rispettano le regex dei documenti
+    // TODO: Scrivere delle password valide
+    Utente admin = new Utente(
+        &quot;Money&quot;,
+        &quot;Art&quot;,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\profilePics\\gattoProfilePic.jpg&quot;)))),
+        &quot;admin@moneyart.it&quot;,
+        &quot;admin&quot;,
+        followed,
+        md.digest(&quot;admin&quot;.getBytes()),
+        0d
+    );
+
+    Utente utente0 = new Utente(
+        &quot;Alfonso&quot;,
+        &quot;Cannavale&quot;,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\profilePics\\gattoProfilePic.jpg&quot;)))),
+        &quot;alfonso.cannavale@gmail.com&quot;,
+        &quot;alfcan&quot;,
+        followed,
+        md.digest(&quot;pippo123&quot;.getBytes()),
+        1000d
+    );
+
+    Utente utente1 = new Utente(
+        &quot;Nicolò&quot;,
+        &quot;Delogu&quot;,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\profilePics\\gattoProfilePic.jpg&quot;)))),
+        &quot;nicolò.delogu@gmail.com&quot;,
+        &quot;XJustUnluckyX&quot;,
+        followed,
+        md.digest(&quot;pippo123&quot;.getBytes()),
+        1500d
+    );
+
+    Utente utente2 = new Utente(
+        &quot;Michael&quot;,
+        &quot;De Santis&quot;,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\profilePics\\gattoProfilePic.jpg&quot;)))),
+        &quot;michael.desantis@gmail.com&quot;,
+        &quot;shoyll&quot;,
+        followed,
+        md.digest(&quot;pippo123&quot;.getBytes()),
+        2000d
+    );
+
+    Utente utente3 = new Utente(
+        &quot;Daniele&quot;,
+        &quot;Galloppo&quot;,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\profilePics\\gattoProfilePic.jpg&quot;)))),
+        &quot;daniele.galloppo@gmail.com&quot;,
+        &quot;DG266&quot;,
+        followed,
+        md.digest(&quot;pippo123&quot;.getBytes()),
+        2500d
+    );
+
+
+    Utente utente4 = new Utente(
+        &quot;Dario&quot;,
+        &quot;Mazza&quot;,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\profilePics\\gattoProfilePic.jpg&quot;)))),
+        &quot;dario.mazza@gmail.com&quot;,
+        &quot;xDaryamo&quot;,
+        followed,
+        md.digest(&quot;pippo123&quot;.getBytes()),
+        3000d
+    );
+
+
+    Utente utente5 = new Utente(
+        &quot;Mario&quot;,
+        &quot;Peluso&quot;,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\profilePics\\gattoProfilePic.jpg&quot;)))),
+        &quot;mario.peluso@gmail.com&quot;,
+        &quot;MarioPeluso&quot;,
+        followed,
+        md.digest(&quot;pippo123&quot;.getBytes()),
+        956d
+    );
+
+
+    Utente utente6 = new Utente(
+        &quot;Aurelio&quot;,
+        &quot;Sepe&quot;,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\profilePics\\gattoProfilePic.jpg&quot;)))),
+        &quot;aurelio.sepe@gmail.com&quot;,
+        &quot;AurySepe&quot;,
+        followed,
+        md.digest(&quot;pippo123&quot;.getBytes()),
+        200d
+    );
+
+    Utente utente7 = new Utente(
+        &quot;Stefano&quot;,
+        &quot;Zarro&quot;,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\profilePics\\gattoProfilePic.jpg&quot;)))),
+        &quot;stefano.zarro@gmail.com&quot;,
+        &quot;stepzar&quot;,
+        followed,
+        md.digest(&quot;pippo123&quot;.getBytes()),
+        10d
+    );
+
+    UtenteDao utenteDao = new UtenteDaoImpl(dataSource);
+
+    if (utenteDao.doRetrieveByUsername(&quot;admin&quot;) == null) {
+      utenteDao.doCreate(admin);
+    }
+    admin.setId(1);
+
+    if (utenteDao.doRetrieveByUsername(&quot;alfcan&quot;) == null) {
+      utenteDao.doCreate(utente0);
+    }
+    utente0.setId(2);
+
+    if (utenteDao.doRetrieveByUsername(&quot;XJustUnluckyX&quot;) == null) {
+      utenteDao.doCreate(utente1);
+    }
+    utente1.setId(3);
+
+    if (utenteDao.doRetrieveByUsername(&quot;shoyll&quot;) == null) {
+      utenteDao.doCreate(utente2);
+    }
+    utente2.setId(4);
+
+    if (utenteDao.doRetrieveByUsername(&quot;DG266&quot;) == null) {
+      utenteDao.doCreate(utente3);
+    }
+    utente3.setId(5);
+
+    if (utenteDao.doRetrieveByUsername(&quot;xDaryamo&quot;) == null) {
+      utenteDao.doCreate(utente4);
+    }
+    utente4.setId(6);
+
+    if (utenteDao.doRetrieveByUsername(&quot;MarioPeluso&quot;) == null) {
+      utenteDao.doCreate(utente5);
+    }
+    utente5.setId(7);
+
+    if (utenteDao.doRetrieveByUsername(&quot;AurySepe&quot;) == null) {
+      utenteDao.doCreate(utente6);
+    }
+    utente6.setId(8);
+
+    if (utenteDao.doRetrieveByUsername(&quot;stepzar&quot;) == null) {
+      utenteDao.doCreate(utente7);
+    }
+    utente7.setId(9);
+
+    logger.info(&quot;-- Popolamento della tabella \&quot;utente\&quot; terminato (1/7) --&quot;);
+
+    // POPOLAMENTO TABELLA OPERA ------------------------
+
+    Opera opera0 = new Opera(
+        &quot;Bears Deluxe #3742&quot;,
+        &quot;Descrizione&quot;,
+        Opera.Stato.ALL_ASTA,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\bears-deluxe-3742.png&quot;)))),
+        utente0,
+        utente0,
+        null
+    );
+
+    Opera opera1 = new Opera(
+        &quot;The Shibosis&quot;,
+        &quot;Descrizione&quot;,
+        Opera.Stato.IN_VENDITA,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\shibosis.jpg&quot;)))),
+        utente1,
+        utente0,
+        null
+    );
+
+    Opera opera2 = new Opera(
+        &quot;CupCat&quot;,
+        &quot;Descrizione&quot;,
+        Opera.Stato.PREVENDITA,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\cupcat.jpg&quot;)))),
+        utente3,
+        utente3,
+        null
+    );
+
+    Opera opera3 = new Opera(
+        &quot;TIGXR&quot;,
+        &quot;Descrizione&quot;,
+        Opera.Stato.PREVENDITA,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\tiger.jpg&quot;)))),
+        utente4,
+        utente4,
+        null
+    );
+
+    Opera opera4 = new Opera(
+        &quot;Bears Deluxe #3742&quot;,
+        &quot;Descrizione&quot;,
+        Opera.Stato.ALL_ASTA,
+        new SerialBlob(FileUtils.readFileToByteArray(
+            new File(filePath.concat(&quot;static\\demo\\bears-deluxe-3742.png&quot;)))),
+        utente5,
+        utente5,
+        null
+    );
+
+    OperaDao operaDao = new OperaDaoImpl(dataSource);
+
+    if (operaDao.doRetrieveById(1) == null) {
+      operaDao.doCreate(opera0);
+    }
+    opera0.setId(1);
+
+    if (operaDao.doRetrieveById(2) == null) {
+      operaDao.doCreate(opera1);
+    }
+    opera1.setId(2);
+
+    if (operaDao.doRetrieveById(3) == null) {
+      operaDao.doCreate(opera2);
+    }
+    opera2.setId(3);
+
+    if (operaDao.doRetrieveById(4) == null) {
+      operaDao.doCreate(opera3);
+    }
+    opera3.setId(4);
+
+    if (operaDao.doRetrieveById(5) == null) {
+      operaDao.doCreate(opera4);
+    }
+    opera4.setId(5);
+
+    logger.info(&quot;-- Popolamento della tabella \&quot;opera\&quot; terminato (2/7) --&quot;);
+
+    // POPOLAMENTO TABELLA ASTA ------------------------
+
+    long giornoMillis = 1 * 1000 * 60 * 60 * 24;
+
+    Asta asta0 = new Asta(
+        opera0,
+        new Date(System.currentTimeMillis() - giornoMillis * 1),
+        new Date(System.currentTimeMillis() + giornoMillis * 6),
+        Asta.Stato.IN_CORSO
+    );
+
+    Asta asta1 = new Asta(
+        opera4,
+        new Date(System.currentTimeMillis()),
+        new Date(System.currentTimeMillis() + giornoMillis * 7),
+        Asta.Stato.IN_CORSO
+    );
+
+    AstaDao astaDao = new AstaDaoImpl(dataSource);
+
+    if (astaDao.doRetrieveById(1) == null) {
+      astaDao.doCreate(asta0);
+    }
+    asta0.setId(1);
+
+    if (astaDao.doRetrieveById(2) == null) {
+      astaDao.doCreate(asta1);
+    }
+    asta1.setId(2);
+
+    logger.info(&quot;-- Popolamento della tabella \&quot;asta\&quot; terminato (3/7) --&quot;);
+
+    // POPOLAMENTO TABELLA RIVENDITA ------------------------
+
+    Rivendita rivendita0 = new Rivendita(
+        opera1,
+        Rivendita.Stato.IN_CORSO,
+        999.99d
+    );
+
+    RivenditaDao rivenditaDao = new RivenditaDaoImpl(dataSource);
+
+    if (rivenditaDao.doRetrieveById(1) == null) {
+      rivenditaDao.doCreate(rivendita0);
+    }
+    rivendita0.setId(1);
+
+    logger.info(&quot;-- Popolamento della tabella \&quot;rivendita\&quot; terminato (4/7) --&quot;);
+
+    // POPOLAMENTO TABELLA PARTECIPAZIONE ------------------------
+
+    Partecipazione partecipazione0 = new Partecipazione(
+        asta0,
+        utente3,
+        485.99d
+    );
+
+    Partecipazione partecipazione1 = new Partecipazione(
+        asta0,
+        utente4,
+        486d
+    );
+
+    Partecipazione partecipazione2 = new Partecipazione(
+        asta0,
+        utente5,
+        499.99d
+    );
+
+    PartecipazioneDao partecipazioneDao = new PartecipazioneDaoImpl(dataSource);
+
+    if (partecipazioneDao.doRetrieveById(1) == null) {
+      partecipazioneDao.doCreate(partecipazione0);
+    }
+    partecipazione0.setId(1);
+
+    if (partecipazioneDao.doRetrieveById(2) == null) {
+      partecipazioneDao.doCreate(partecipazione1);
+    }
+    partecipazione1.setId(2);
+
+    if (partecipazioneDao.doRetrieveById(3) == null) {
+      partecipazioneDao.doCreate(partecipazione2);
+    }
+    partecipazione2.setId(3);
+
+    logger.info(&quot;-- Popolamento della tabella \&quot;partecipazione\&quot; terminato (5/7) --&quot;);
+
+    // POPOLAMENTO TABELLA NOTIFICA ------------------------
+
+    Rivendita noRivendita = new Rivendita();
+
+    Notifica notifica0 = new Notifica(
+        utente3,
+        asta0,
+        noRivendita,
+        Notifica.Tipo.SUPERATO,
+        &quot;Contenuto della notifica.&quot;,
+        false
+    );
+
+    Notifica notifica1 = new Notifica(
+        utente4,
+        asta0,
+        noRivendita,
+        Notifica.Tipo.SUPERATO,
+        &quot;Contenuto della notifica.&quot;,
+        true
+    );
+
+    NotificaDao notificaDao = new NotificaDaoImpl(dataSource);
+
+    if (notificaDao.doRetrieveById(1) == null) {
+      notificaDao.doCreate(notifica0);
+    }
+    notifica0.setId(1);
+
+    if (notificaDao.doRetrieveById(2) == null) {
+      notificaDao.doCreate(notifica1);
+    }
+    notifica1.setId(2);
+
+    logger.info(&quot;-- Popolamento della tabella \&quot;notifica\&quot; terminato (6/7) --&quot;);
+
+    // POPOLAMENTO TABELLA SEGNALAZIONE ------------------------
+
+    Segnalazione segnalazione0 = new Segnalazione(
+        asta1,
+        utente5.getUsername() + &quot; ha copiato l'opera di &quot;
+            + utente0.getUsername() + &quot;attualmente all'asta.&quot;,
+        false
+    );
+
+    SegnalazioneDao segnalazioneDao = new SegnalazioneDaoImpl(dataSource);
+
+    if (segnalazioneDao.doRetrieveById(1) == null) {
+      segnalazioneDao.doCreate(segnalazione0);
+    }
+    segnalazione0.setId(1);
+
+    logger.info(&quot;-- Popolamento della tabella \&quot;segnalazione\&quot; terminato (7/7) --&quot;);
+  }
+   */
+
+
+  @Inject
+  private AstaServiceImpl astaService;
+
+<span class="nc" id="L537">  private static final Logger logger = Logger.getLogger(&quot;MainContext.class&quot;);</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletFollow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.utente.control</a> &gt; <span class="el_source">ServletFollow.java</span></div><h1>ServletFollow.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.utente.control;
+
+import com.google.gson.Gson;
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
+import it.unisa.c02.moneyart.model.beans.Utente;
+import java.io.IOException;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Questa servlet gestisce il meccanismo di following.
+ *
+ */
+
+@WebServlet(name = &quot;ServletFollow&quot;, value = &quot;/follow&quot;)
+<span class="fc" id="L22">public class ServletFollow extends HttpServlet {</span>
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+<span class="fc" id="L27">    HttpSession session = request.getSession();</span>
+
+<span class="fc" id="L29">    Utente utente = (Utente) session.getAttribute(&quot;utente&quot;);</span>
+<span class="fc" id="L30">    String action = request.getParameter(&quot;action&quot;);</span>
+
+<span class="fc" id="L32">    boolean ajax = &quot;XMLHttpRequest&quot;.equals(request.getHeader(&quot;X-Requested-With&quot;));</span>
+    boolean flag;
+
+<span class="fc bfc" id="L35" title="All 3 branches covered.">    switch (action) {</span>
+      case &quot;follow&quot;:
+<span class="fc" id="L37">        int idFollowed = Integer.parseInt(request.getParameter(&quot;followed&quot;));</span>
+<span class="fc" id="L38">        Utente followed = utenteService.getUserInformation(idFollowed);</span>
+
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (!utenteService.follow(utente, followed)) {</span>
+<span class="nc" id="L41">          utenteService.unfollow(utente);</span>
+<span class="nc" id="L42">          utenteService.follow(utente, followed);</span>
+        }
+<span class="fc" id="L44">        session.removeAttribute(&quot;utente&quot;);</span>
+<span class="fc" id="L45">        session.setAttribute(&quot;utente&quot;, utente);</span>
+<span class="fc" id="L46">        flag = true;</span>
+<span class="fc" id="L47">        break;</span>
+      case &quot;unfollow&quot;:
+<span class="fc" id="L49">        utenteService.unfollow(utente);</span>
+<span class="fc" id="L50">        session.removeAttribute(&quot;utente&quot;);</span>
+<span class="fc" id="L51">        session.setAttribute(&quot;utente&quot;, utente);</span>
+<span class="fc" id="L52">        flag = true;</span>
+<span class="fc" id="L53">        break;</span>
+      default:
+<span class="fc" id="L55">        flag = false;</span>
+<span class="fc" id="L56">        throw new IllegalStateException(&quot;Unexpected value: &quot; + action);</span>
+    }
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">    if (ajax) {</span>
+<span class="fc" id="L60">      String json = new Gson().toJson(flag);</span>
+<span class="fc" id="L61">      response.setContentType(&quot;application/json&quot;);</span>
+<span class="fc" id="L62">      response.setCharacterEncoding(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L63">      response.getWriter().write(json);</span>
+<span class="fc" id="L64">    } else {</span>
+<span class="fc" id="L65">      RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/pages/profiloUtente.jsp&quot;);</span>
+<span class="fc" id="L66">      dispatcher.forward(request, response);</span>
+    }
+
+<span class="fc" id="L69">  }</span>
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+<span class="nc" id="L75">    doGet(request, response);</span>
+<span class="nc" id="L76">  }</span>
+
+  @Inject
+  private UtenteService utenteService;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RivenditaServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.vendite.rivendite.service</a> &gt; <span class="el_source">RivenditaServiceImpl.java</span></div><h1>RivenditaServiceImpl.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.vendite.rivendite.service;
+
+
+import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Notifica;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Partecipazione;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.dao.interfaces.AstaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.NotificaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.PartecipazioneDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.RivenditaDao;
+import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import javax.inject.Inject;
+
+/**
+ * Classe che implementa i metodi dell'interfaccia RivenditaService.
+ */
+
+public class RivenditaServiceImpl implements RivenditaService {
+
+
+  /**
+   * Costruttore senza paramentri.
+   */
+<span class="nc" id="L31">  public RivenditaServiceImpl() {</span>
+
+<span class="nc" id="L33">  }</span>
+
+  /**
+   * Costruttore della classe.
+   *
+   * @param operaDao     dao di un'opera
+   * @param utenteDao    dao di un utente
+   * @param rivenditaDao dao di un utente
+   */
+  public RivenditaServiceImpl(UtenteDao utenteDao, OperaDao operaDao, RivenditaDao rivenditaDao,
+                              NotificaDao notificaDao, AstaDao astaDao,
+<span class="fc" id="L44">                              PartecipazioneDao partecipazioneDao) {</span>
+<span class="fc" id="L45">    this.operaDao = operaDao;</span>
+<span class="fc" id="L46">    this.utenteDao = utenteDao;</span>
+<span class="fc" id="L47">    this.rivenditaDao = rivenditaDao;</span>
+<span class="fc" id="L48">    this.notificaDao = notificaDao;</span>
+<span class="fc" id="L49">    this.astaDao = astaDao;</span>
+<span class="fc" id="L50">    this.partecipazioneDao = partecipazioneDao;</span>
+
+<span class="fc" id="L52">  }</span>
+
+  /**
+   * Restituisce tutte le informazioni relative ad una rivendita.
+   *
+   * @param id l'identificativo della rivendita
+   * @return la rivendita identificata dall'id
+   */
+  @Override
+  public Rivendita getResell(Integer id) {
+<span class="fc" id="L62">    Rivendita rivendita = rivenditaDao.doRetrieveById(id);</span>
+
+<span class="fc" id="L64">    Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());</span>
+<span class="fc" id="L65">    opera.setArtista(utenteDao.doRetrieveById((opera.getArtista().getId())));</span>
+<span class="fc" id="L66">    opera.getArtista().setnFollowers(getNumberOfFollowers(opera.getArtista()));</span>
+
+<span class="fc" id="L68">    opera.setPossessore(utenteDao.doRetrieveById(opera.getPossessore().getId()));</span>
+
+<span class="fc" id="L70">    rivendita.setOpera(opera);</span>
+
+<span class="fc" id="L72">    return rivendita;</span>
+  }
+
+  /**
+   * Calcola il valore di un'opera in base al numero di followers dell'artista dell'opera.
+   *
+   * @param opera bean dell'opera da valutare
+   * @return valore attuale dell'opera
+   */
+  /*Bisogna decidere come impostare il calcolo del prezzo in base ai followers*/
+  @Override
+  public double getResellPrice(Opera opera) {
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">    if (opera == null) {</span>
+<span class="nc" id="L85">      return 0;</span>
+    }
+
+<span class="fc" id="L88">    opera = operaDao.doRetrieveById(opera.getId());</span>
+<span class="fc" id="L89">    Asta asta = new Asta();</span>
+<span class="fc" id="L90">    asta.setId(-1);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">    for (Asta asta1 : astaDao.doRetrieveByOperaId(opera.getId())) {</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">      if (asta1.getStato().equals(Asta.Stato.TERMINATA)) {</span>
+<span class="fc" id="L93">        asta = asta1;</span>
+<span class="fc" id="L94">        break;</span>
+      }
+<span class="nc" id="L96">    }</span>
+
+<span class="fc" id="L98">    List&lt;Partecipazione&gt; partecipazioni = partecipazioneDao.doRetrieveAllByAuctionId(asta.getId());</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">    if (partecipazioni.size() == 0) {</span>
+<span class="fc" id="L100">      return 0;</span>
+    }
+<span class="nc" id="L102">    Partecipazione partecipazione =</span>
+<span class="nc" id="L103">        partecipazioneDao.doRetrieveAllByAuctionId(asta.getId()).get(partecipazioni.size() - 1);</span>
+<span class="nc" id="L104">    double prezzo = partecipazione.getOfferta();</span>
+<span class="nc" id="L105">    Utente artista = utenteDao.doRetrieveById(opera.getArtista().getId());</span>
+<span class="nc" id="L106">    int followers = getNumberOfFollowers(artista);</span>
+<span class="nc" id="L107">    prezzo += prezzo * (followers / 10000.0);</span>
+<span class="nc" id="L108">    return prezzo;</span>
+  }
+
+
+  /**
+   * Pone un'opera posseduta dall'utente in rivendita.
+   *
+   * @param idOpera identificativo dell'opera da mettere in vendita
+   * @return true se l'operazione va a buon fine, false altrimenti
+   * @pre opera.stato = IN_POSSESSO
+   * @post Rivendita.allIStances() -&gt; size() = @pre Rivendita.allIStances() -&gt; size() + 1
+   */
+  @Override
+  public boolean resell(Integer idOpera) {
+<span class="fc" id="L122">    Opera opera = operaDao.doRetrieveById(idOpera);</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">    if (opera == null) {</span>
+<span class="nc" id="L124">      return false;</span>
+    }
+
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">    if (opera.getStato().equals(Opera.Stato.IN_POSSESSO)) {</span>
+<span class="fc" id="L128">      Rivendita rivendita = new Rivendita();</span>
+<span class="fc" id="L129">      rivendita.setOpera(opera);</span>
+<span class="fc" id="L130">      rivendita.setStato(Rivendita.Stato.IN_CORSO);</span>
+<span class="fc" id="L131">      rivendita.setPrezzo(getResellPrice(opera));</span>
+<span class="fc" id="L132">      rivenditaDao.doCreate(rivendita);</span>
+
+<span class="fc" id="L134">      opera.setStato(Opera.Stato.IN_VENDITA);</span>
+<span class="fc" id="L135">      operaDao.doUpdate(opera);</span>
+
+<span class="fc" id="L137">      return true;</span>
+    }
+
+<span class="nc" id="L140">    return false;</span>
+  }
+
+  /**
+   * Realizza la funzionalità di acquisto diretto di un'opera.
+   *
+   * @param idRivendita identificativo della rivendita
+   * @param idUtente    identificativo dell'utente che vuole acquistare l'opera in vendita
+   * @return true se l'operazione va a buon fine, false altrimenti
+   * @pre utente.saldo &gt; rivendita.saldo
+   * @post opera.getProprietario() = utente
+   */
+  @Override
+  public boolean buy(Integer idRivendita, Integer idUtente) {
+<span class="fc" id="L154">    Rivendita rivendita = rivenditaDao.doRetrieveById(idRivendita);</span>
+<span class="fc" id="L155">    Utente utente = utenteDao.doRetrieveById(idUtente);</span>
+
+<span class="pc bpc" id="L157" title="2 of 4 branches missed.">    if (rivendita == null || utente == null</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        || !rivendita.getStato().equals(Rivendita.Stato.IN_CORSO)</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        || utente.getSaldo() &lt; rivendita.getPrezzo()) {</span>
+<span class="nc" id="L160">      return false;</span>
+    }
+<span class="fc" id="L162">    Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());</span>
+<span class="fc" id="L163">    Utente owner = utenteDao.doRetrieveById(opera.getPossessore().getId());</span>
+<span class="fc" id="L164">    utente.setSaldo(utente.getSaldo() - rivendita.getPrezzo());</span>
+<span class="fc" id="L165">    owner.setSaldo(owner.getSaldo() + rivendita.getPrezzo());</span>
+<span class="fc" id="L166">    opera.setPossessore(utente);</span>
+<span class="fc" id="L167">    opera.setStato(Opera.Stato.IN_POSSESSO);</span>
+
+<span class="fc" id="L169">    rivendita.setStato(Rivendita.Stato.TERMINATA);</span>
+<span class="fc" id="L170">    Notifica notifica =</span>
+        new Notifica(owner, new Asta(), rivendita, Notifica.Tipo.TERMINATA, &quot;&quot;, false);
+
+<span class="fc" id="L173">    notificaDao.doCreate(notifica);</span>
+<span class="fc" id="L174">    utenteDao.doUpdate(utente);</span>
+<span class="fc" id="L175">    utenteDao.doUpdate(owner);</span>
+<span class="fc" id="L176">    operaDao.doUpdate(opera);</span>
+<span class="fc" id="L177">    rivenditaDao.doUpdate(rivendita);</span>
+
+<span class="fc" id="L179">    return true;</span>
+  }
+
+  /**
+   * Restituisce tutte le rivendite.
+   *
+   * @return tutte le rivendite
+   */
+  @Override
+  public List&lt;Rivendita&gt; getResells() {
+<span class="fc" id="L189">    List&lt;Rivendita&gt; rivendite = rivenditaDao.doRetrieveAll(&quot;&quot;);</span>
+
+<span class="fc bfc" id="L191" title="All 2 branches covered.">    for (Rivendita rivendita : rivendite) {</span>
+<span class="fc" id="L192">      Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());</span>
+<span class="fc" id="L193">      opera.setArtista(utenteDao.doRetrieveById((opera.getArtista().getId())));</span>
+<span class="fc" id="L194">      opera.getArtista().setnFollowers(getNumberOfFollowers(opera.getArtista()));</span>
+<span class="fc" id="L195">      opera.setPossessore(utenteDao.doRetrieveById(opera.getPossessore().getId()));</span>
+
+<span class="fc" id="L197">      rivendita.setOpera(opera);</span>
+<span class="fc" id="L198">    }</span>
+
+<span class="fc" id="L200">    return rivendite;</span>
+  }
+
+  /**
+   * Restituisce tutte le rivendite in un determinato stato.
+   *
+   * @param stato stato ricercato dall'utente
+   * @return rivendite con stato uguale a quello ricercato
+   */
+  @Override
+  public List&lt;Rivendita&gt; getResellsByState(Rivendita.Stato stato) {
+
+<span class="fc" id="L212">    List&lt;Rivendita&gt; rivendite = rivenditaDao.doRetrieveByStato(stato);</span>
+
+<span class="fc bfc" id="L214" title="All 2 branches covered.">    for (Rivendita rivendita : rivendite) {</span>
+<span class="fc" id="L215">      Opera opera = operaDao.doRetrieveById(rivendita.getOpera().getId());</span>
+<span class="fc" id="L216">      opera.setArtista(utenteDao.doRetrieveById((opera.getArtista().getId())));</span>
+<span class="fc" id="L217">      opera.getArtista().setnFollowers(getNumberOfFollowers(opera.getArtista()));</span>
+<span class="fc" id="L218">      rivendita.setOpera(opera);</span>
+<span class="fc" id="L219">    }</span>
+
+<span class="fc" id="L221">    return rivendite;</span>
+  }
+
+  /**
+   * Restituisce tutte le rivendite con un determinato stato ordinate in base al prezzo.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s     lo stato della rivendita
+   * @return la lista ordinata
+   */
+  @Override
+  public List&lt;Rivendita&gt; getResellsSortedByPrice(String order, Rivendita.Stato s) {
+<span class="fc" id="L233">    List&lt;Rivendita&gt; rivendite = getResellsByState(s);</span>
+
+<span class="fc" id="L235">    Collections.sort(rivendite, new Comparator&lt;Rivendita&gt;() {</span>
+      @Override
+      public int compare(Rivendita r1, Rivendita r2) {
+<span class="fc" id="L238">        Double price1 = r1.getPrezzo();</span>
+<span class="fc" id="L239">        Double price2 = r2.getPrezzo();</span>
+<span class="fc" id="L240">        return Double.compare(price1, price2);</span>
+      }
+    });
+
+<span class="fc bfc" id="L244" title="All 2 branches covered.">    if (order.equalsIgnoreCase(&quot;DESC&quot;)) {</span>
+<span class="fc" id="L245">      Collections.reverse(rivendite);</span>
+    }
+
+<span class="fc" id="L248">    return rivendite;</span>
+  }
+
+  /**
+   * Restituisce tutte le rivendite con un determinato stato ordinate in base
+   * alla popolarità dell'artista.
+   *
+   * @param order ASC = ordinato in senso crescente, DESC in senso decrescente
+   * @param s     lo stato della rivendita
+   * @return la lista ordinata
+   */
+  @Override
+  public List&lt;Rivendita&gt; getResellsSortedByArtistFollowers(String order, Rivendita.Stato s) {
+<span class="fc" id="L261">    List&lt;Rivendita&gt; rivendite = getResellsByState(s);</span>
+
+
+<span class="fc" id="L264">    Collections.sort(rivendite, new Comparator&lt;Rivendita&gt;() {</span>
+      @Override
+      public int compare(Rivendita r1, Rivendita r2) {
+<span class="fc" id="L267">        int f1 = r1.getOpera().getArtista().getnFollowers();</span>
+<span class="fc" id="L268">        int f2 = r1.getOpera().getArtista().getnFollowers();</span>
+<span class="fc" id="L269">        return Integer.compare(f1, f2);</span>
+      }
+    });
+
+<span class="fc bfc" id="L273" title="All 2 branches covered.">    if (order.equalsIgnoreCase(&quot;DESC&quot;)) {</span>
+<span class="fc" id="L274">      Collections.reverse(rivendite);</span>
+    }
+
+<span class="fc" id="L277">    return rivendite;</span>
+  }
+
+  /**
+   * Restituisce il numero di followers di un determinato utente.
+   *
+   * @param utente l'utente interessato a conoscere il numero dei propri followers
+   * @return il numero di followers dell'utente
+   */
+
+  private int getNumberOfFollowers(Utente utente) {
+<span class="fc" id="L288">    List&lt;Utente&gt; followers = utenteDao.doRetrieveFollowersByUserId(utente.getId());</span>
+
+<span class="fc" id="L290">    return followers.size();</span>
+  }
+
+  @Inject
+  private UtenteDao utenteDao;
+  @Inject
+  private RivenditaDao rivenditaDao;
+  @Inject
+  private OperaDao operaDao;
+  @Inject
+  private NotificaDao notificaDao;
+  @Inject
+  private AstaDao astaDao;
+  @Inject
+  private PartecipazioneDao partecipazioneDao;
+
+  private static final double VALORE_PER_FOLLOWER = 0.10d;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

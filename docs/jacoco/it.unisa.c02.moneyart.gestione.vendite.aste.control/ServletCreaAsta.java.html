@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletCreaAsta.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.vendite.aste.control</a> &gt; <span class="el_source">ServletCreaAsta.java</span></div><h1>ServletCreaAsta.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.vendite.aste.control;
+
+import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
+import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
+import it.unisa.c02.moneyart.model.beans.Asta;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Utente;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+/**
+ * Servlet per la creazione e aggiunta di un'asta.
+ *
+ */
+@WebServlet(name = &quot;ServletCreaAsta&quot;, value = &quot;/newAuction&quot;)
+<span class="fc" id="L25">public class ServletCreaAsta extends HttpServlet {</span>
+
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+<span class="fc" id="L32">    String idOpera = request.getParameter(&quot;id&quot;);</span>
+<span class="fc" id="L33">    Opera opera = operaService.getArtwork(Integer.parseInt(idOpera));</span>
+<span class="fc" id="L34">    Utente utente = (Utente) request.getSession().getAttribute(&quot;utente&quot;);</span>
+
+<span class="pc bpc" id="L36" title="1 of 4 branches missed.">    if (opera == null || !utente.getId().equals(opera.getArtista().getId())) {</span>
+<span class="fc" id="L37">      request.setAttribute(&quot;error&quot;,</span>
+          &quot;Non sei il creatore di quest'opera!&quot;);
+<span class="fc" id="L39">      RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/pages/opereUtente.jsp&quot;);</span>
+<span class="fc" id="L40">      dispatcher.forward(request, response);</span>
+<span class="fc" id="L41">    } else {</span>
+<span class="fc" id="L42">      request.setAttribute(&quot;opera&quot;, opera);</span>
+<span class="fc" id="L43">      RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/pages/creaAsta.jsp&quot;);</span>
+<span class="fc" id="L44">      dispatcher.forward(request, response);</span>
+    }
+<span class="fc" id="L46">  }</span>
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+<span class="fc" id="L52">    String idOperaS = request.getParameter(&quot;id&quot;);</span>
+<span class="fc" id="L53">    String dataInizioS = request.getParameter(&quot;inizio&quot;);</span>
+<span class="fc" id="L54">    String dataFineS = request.getParameter(&quot;fine&quot;);</span>
+    int idOpera;
+    Date dataInizio;
+    Date dataFine;
+<span class="fc" id="L58">    idOpera = Integer.parseInt(idOperaS);</span>
+<span class="fc" id="L59">    Opera opera = operaService.getArtwork(idOpera);</span>
+
+    try {
+
+<span class="fc" id="L63">      dataInizio = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(dataInizioS);</span>
+<span class="fc" id="L64">      dataFine = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(dataFineS);</span>
+
+<span class="nc" id="L66">    } catch (Exception e) {</span>
+<span class="nc" id="L67">      request.setAttribute(&quot;error&quot;,</span>
+          &quot;Formato date non corrette!&quot;);
+<span class="nc" id="L69">      request.setAttribute(&quot;opera&quot;, opera);</span>
+<span class="nc" id="L70">      RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/pages/creaAsta.jsp&quot;);</span>
+<span class="nc" id="L71">      dispatcher.forward(request, response);</span>
+<span class="nc" id="L72">      e.printStackTrace();</span>
+<span class="nc" id="L73">      return;</span>
+
+<span class="fc" id="L75">    }</span>
+
+<span class="fc" id="L77">    Utente utente = (Utente) request.getSession().getAttribute(&quot;utente&quot;);</span>
+
+<span class="pc bpc" id="L79" title="1 of 4 branches missed.">    if (opera == null || !utente.getId().equals(opera.getArtista().getId())) {</span>
+<span class="fc" id="L80">      request.setAttribute(&quot;error&quot;,</span>
+          &quot;Non sei il creatore di quest'opera!&quot;);
+<span class="fc" id="L82">      request.setAttribute(&quot;opera&quot;, opera);</span>
+<span class="fc" id="L83">      RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/pages/creaAsta.jsp&quot;);</span>
+<span class="fc" id="L84">      dispatcher.forward(request, response);</span>
+<span class="fc" id="L85">      return;</span>
+    }
+<span class="fc" id="L87">    Asta asta = new Asta(opera, dataInizio, dataFine, Asta.Stato.CREATA);</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">    if (!astaService.addAsta(asta)) {</span>
+<span class="fc" id="L89">      request.setAttribute(&quot;error&quot;,</span>
+          &quot;Errore creazione asta!&quot;);
+<span class="fc" id="L91">      request.setAttribute(&quot;opera&quot;, opera);</span>
+<span class="fc" id="L92">      RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/pages/creaAsta.jsp&quot;);</span>
+<span class="fc" id="L93">      dispatcher.forward(request, response);</span>
+<span class="fc" id="L94">      return;</span>
+    }
+
+
+<span class="fc" id="L98">    Date currentDate = new Date();</span>
+
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">    if (currentDate.equals(dataInizio)) {</span>
+<span class="nc" id="L101">      response.sendRedirect(request.getContextPath() + &quot;/pages/asteCreateUtente.jsp#aste-in-corso&quot;);</span>
+    } else {
+<span class="fc" id="L103">      response.sendRedirect(request.getContextPath() + &quot;/pages/asteCreateUtente.jsp&quot;);</span>
+    }
+
+
+
+<span class="fc" id="L108">  }</span>
+
+  @Inject
+  private OperaService operaService;
+  @Inject
+  private AstaService astaService;
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

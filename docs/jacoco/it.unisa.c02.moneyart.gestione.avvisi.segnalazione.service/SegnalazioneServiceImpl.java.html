@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SegnalazioneServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service</a> &gt; <span class="el_source">SegnalazioneServiceImpl.java</span></div><h1>SegnalazioneServiceImpl.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.avvisi.segnalazione.service;
+
+import it.unisa.c02.moneyart.model.beans.Segnalazione;
+import it.unisa.c02.moneyart.model.dao.interfaces.SegnalazioneDao;
+import java.util.List;
+import javax.inject.Inject;
+
+/**
+ * Questa classe implementa i metodi dell'interfaccia SegnalazioneService.
+ *
+ */
+public class SegnalazioneServiceImpl implements SegnalazioneService {
+
+  /**
+   * Costruttore che istanzia tramite il Retriver i dao.
+   */
+<span class="nc" id="L17">  public SegnalazioneServiceImpl() {</span>
+
+<span class="nc" id="L19">  }</span>
+
+  /**
+   * Costruttore con parametri.
+   *
+   * @param segnalazioneDao dao di segnalazione
+   */
+<span class="fc" id="L26">  public SegnalazioneServiceImpl(SegnalazioneDao segnalazioneDao) {</span>
+<span class="fc" id="L27">    this.segnalazioneDao = segnalazioneDao;</span>
+<span class="fc" id="L28">  }</span>
+
+  /**
+   * Restituisce tutte le segnalazioni ordinandole secondo un filtro.
+   *
+   * @param filter per ordinare la lista
+   * @return lista di tutte le segnalazioni
+   */
+  @Override
+  public List&lt;Segnalazione&gt; getReports(String filter) {
+<span class="fc" id="L38">    return segnalazioneDao.doRetrieveAll(filter);</span>
+  }
+
+  /**
+   * Restituisce una segnalazione attraverso il suo id.
+   *
+   * @param id della segnalazione
+   * @return segnalazione
+   */
+  @Override
+  public Segnalazione getReport(int id) {
+<span class="fc" id="L49">    return segnalazioneDao.doRetrieveById(id);</span>
+  }
+
+  /**
+   * Aggiunge una nuova segnalazione.
+   *
+   * @param segnalazione segnalazione da aggiungere
+   * @pre Segnalazione.allIstances() -&gt; not exists(s:Segnalazione | s = segnalazione)
+   * @post Segnalazione.allIstances() -&gt; exists(s:Segnalazione | s = segnalazione)
+   */
+  @Override
+  public boolean addReport(Segnalazione segnalazione) {
+<span class="fc" id="L61">    return segnalazioneDao.doCreate(segnalazione);</span>
+  }
+
+  /**
+   * Rimuove una segnalazione.
+   *
+   * @param segnalazione da rimuovere
+   * @pre Segnalazione.allIstances() -&gt; exists(s:Segnalazione | s = segnalazione)
+   * @post Segnalazione.allIstances() -&gt; not exists(s:Segnalazione | s = segnalazione)
+   */
+  @Override
+  public void removeReport(Segnalazione segnalazione) {
+<span class="fc" id="L73">    segnalazione = segnalazioneDao.doRetrieveById(segnalazione.getId());</span>
+<span class="fc" id="L74">    segnalazioneDao.doDelete(segnalazione);</span>
+<span class="fc" id="L75">  }</span>
+
+  /**
+   * Imposta il parametro &quot;letta&quot; a true.
+   *
+   * @param segnalazione da impostare come &quot;letta&quot;
+   * @pre Segnalazione.allIstances() -&gt; exists(s:Segnalazione | s = segnalazione)
+   * @post segnalazione.setLetta(true)
+   */
+  @Override
+  public void readReport(Segnalazione segnalazione) {
+<span class="fc" id="L86">    segnalazione = segnalazioneDao.doRetrieveById(segnalazione.getId());</span>
+<span class="fc" id="L87">    segnalazione.setLetta(true);</span>
+
+<span class="fc" id="L89">    segnalazioneDao.doUpdate(segnalazione);</span>
+<span class="fc" id="L90">  }</span>
+
+  /**
+   * Imposta il parametro &quot;letta&quot; a false.
+   *
+   * @param segnalazione da impostare come &quot;non letta&quot;
+   * @pre Segnalazione.allIstances() -&gt; exists(s:Segnalazione | s = segnalazione)
+   * @post segnalazione.setLetta(false)
+   */
+  @Override
+  public void unreadReport(Segnalazione segnalazione) {
+<span class="fc" id="L101">    segnalazione = segnalazioneDao.doRetrieveById(segnalazione.getId());</span>
+<span class="fc" id="L102">    segnalazione.setLetta(false);</span>
+
+<span class="fc" id="L104">    segnalazioneDao.doUpdate(segnalazione);</span>
+<span class="fc" id="L105">  }</span>
+
+  @Inject
+  private SegnalazioneDao segnalazioneDao;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

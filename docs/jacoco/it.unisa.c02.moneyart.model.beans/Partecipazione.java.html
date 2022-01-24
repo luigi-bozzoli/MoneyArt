@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Partecipazione.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.model.beans</a> &gt; <span class="el_source">Partecipazione.java</span></div><h1>Partecipazione.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.model.beans;
+
+
+import java.util.Objects;
+
+/**
+ * Questa classe rappresenta una Partecipazione.
+ * Una segnalazione è caratterizzata da: id (autogenerato dal DB),
+ * idAsta (identificativo dell'asta a cui l'utente ha partecipato),
+ * idUtente (identificativo dell'utente che ha partecipato all'asta) e offerta.
+ */
+public class Partecipazione {
+
+  /**
+   * Costruttore della classe Partecipazione.
+   *
+   * @param asta    identificativo dell'asta a cui l'utente ha partecipato
+   * @param utente  identificativo dell'utente che ha partecipato all'asta
+   * @param offerta offerta dell'utente
+   */
+<span class="fc" id="L21">  public Partecipazione(Asta asta, Utente utente, double offerta) {</span>
+<span class="fc" id="L22">    this.id = null;</span>
+<span class="fc" id="L23">    this.asta = asta;</span>
+<span class="fc" id="L24">    this.utente = utente;</span>
+<span class="fc" id="L25">    this.offerta = offerta;</span>
+<span class="fc" id="L26">  }</span>
+
+  /**
+   * Costruttore vuoto della classe Partecipazione.
+   **/
+<span class="fc" id="L31">  public Partecipazione() {</span>
+<span class="fc" id="L32">  }</span>
+
+  /**
+   * Restituisce l'identificativo della partecipazione.
+   *
+   * @return identificativo della partecipazione
+   */
+  public Integer getId() {
+<span class="fc" id="L40">    return id;</span>
+  }
+
+  /**
+   * Imposta l'identificativo della partecipazione.
+   *
+   * @param id identificativo della partecipazione
+   */
+  public void setId(Integer id) {
+<span class="fc" id="L49">    this.id = id;</span>
+<span class="fc" id="L50">  }</span>
+
+  /**
+   * Restituisce l'identificativo dell'asta a cui l'utente ha partecipato.
+   *
+   * @return identificativo dell'asta a cui l'utente ha partecipato
+   */
+  public Asta getAsta() {
+<span class="fc" id="L58">    return asta;</span>
+  }
+
+  /**
+   * Imposta l'identificativo dell'asta a cui l'utente ha partecipato.
+   *
+   * @param asta identificativo dell'asta a cui l'utente ha partecipato
+   */
+  public void setAsta(Asta asta) {
+<span class="fc" id="L67">    this.asta = asta;</span>
+<span class="fc" id="L68">  }</span>
+
+  /**
+   * Restituisce l'identificativo dell'utente che ha partecipato all'asta.
+   *
+   * @return identificativo dell'utente che ha partecipato all'asta
+   */
+  public Utente getUtente() {
+<span class="fc" id="L76">    return utente;</span>
+  }
+
+  /**
+   * Imposta l'identificativo dell'utente che ha partecipato all'asta.
+   *
+   * @param utente identificativo dell'utente che ha partecipato all'asta
+   */
+  public void setUtente(Utente utente) {
+<span class="fc" id="L85">    this.utente = utente;</span>
+<span class="fc" id="L86">  }</span>
+
+  /**
+   * Restituisce il valore dell'offerta dell'utente che partecipa all'asta.
+   *
+   * @return il valore dell'offerta dell'utente che partecipa all'asta
+   */
+  public double getOfferta() {
+<span class="fc" id="L94">    return offerta;</span>
+  }
+
+  /**
+   * Imposta l'offerta dell'utente che partecipa all'asta.
+   *
+   * @param offerta offerta dell'utente che partecipa all'asta
+   */
+  public void setOfferta(double offerta) {
+<span class="fc" id="L103">    this.offerta = offerta;</span>
+<span class="fc" id="L104">  }</span>
+
+  /**
+   * Restituisce la rappresentazione sotto forma di stringa di una partecipazione.
+   *
+   * @return la stringa che rappresenta partecipazione
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L113">    return &quot;Partecipazione{&quot;</span>
+        +
+        &quot;id=&quot; + id
+        +
+<span class="fc" id="L117">        &quot;, asta=&quot; + asta.getId()</span>
+        +
+<span class="fc" id="L119">        &quot;, utente=&quot; + utente.getId()</span>
+        +
+        &quot;, offerta=&quot; + offerta
+        +
+        '}';
+  }
+
+  /**
+   * Verifica l'uguaglianza tra due oggetti.
+   *
+   * @param o oggetto da confrontare con un'istanza della classe corrente
+   * @return true se l'uguaglianza tra i due oggetti è verificato,
+   *         false altrimenti
+   */
+  @Override
+  public boolean equals(Object o) {
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L136">      return true;</span>
+    }
+
+
+<span class="fc" id="L140">    Partecipazione that = (Partecipazione) o;</span>
+<span class="fc" id="L141">    BooleanComparator booleanComparator =</span>
+<span class="fc" id="L142">        new BooleanComparator(Objects.equals(getOfferta(), that.getOfferta()));</span>
+
+<span class="fc" id="L144">    return booleanComparator</span>
+<span class="fc" id="L145">        .and(Objects.equals(getId(), that.getId()))</span>
+<span class="fc" id="L146">        .and(Objects.equals(getAsta(), that.getAsta()))</span>
+<span class="fc" id="L147">        .and(Objects.equals(getUtente(), that.getUtente()))</span>
+<span class="fc" id="L148">        .getValue();</span>
+  }
+
+  /**
+   * Genera un hash.
+   *
+   * @return un intero che rappresenta l'hash della classe
+   */
+  @Override
+  public int hashCode() {
+<span class="nc" id="L158">    return Objects.hash(getId(), getAsta(), getUtente(), getOfferta());</span>
+  }
+
+  /**
+   * Variabili di istanza.
+   *
+   */
+  private Integer id;
+  private Asta asta;
+  private Utente utente;
+  private double offerta;
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

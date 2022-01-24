@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AstaLockingSingleton.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.utils.locking</a> &gt; <span class="el_source">AstaLockingSingleton.java</span></div><h1>AstaLockingSingleton.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.utils.locking;
+
+import it.unisa.c02.moneyart.model.beans.Asta;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+/**
+ * Classe Singleton utilizzata per evitare operazioni di
+ * aggiornamento concorrente delle offerte nelle Aste.
+ */
+public class AstaLockingSingleton {
+
+  /**
+   * Classe privata interna,
+   * permette di inizializzare l'istanza del singleton in maniera semplice e ThreadSafe.
+   */
+  private static class SingletonHelper {
+<span class="fc" id="L20">    private static final AstaLockingSingleton ISTANCE = new AstaLockingSingleton();</span>
+  }
+
+  /**
+   * Restituisce l'unica istanza del singleton.
+   *
+   * @return l'istanza del singleton
+   */
+  public static AstaLockingSingleton retrieveIstance() {
+<span class="fc" id="L29">    return SingletonHelper.ISTANCE;</span>
+  }
+
+  /**
+   * costruttore privato del Singleton.
+   */
+<span class="fc" id="L35">  private AstaLockingSingleton() {</span>
+
+<span class="fc" id="L37">    locks = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L38">    createAndDestroyLock = new ReentrantLock();</span>
+
+<span class="fc" id="L40">  }</span>
+
+  /**
+   * Ottiene il lock per l'asta passata come parametro.
+   *
+   * @param asta l'asta per cui ottenere il lock
+   */
+  public void lockAsta(Asta asta) {
+
+<span class="fc" id="L49">    createAndDestroyLock.lock();</span>
+<span class="fc" id="L50">    CountingLock countingLock = locks.get(asta.getId());</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">    if (countingLock == null) {</span>
+<span class="fc" id="L52">      countingLock = new CountingLock();</span>
+<span class="fc" id="L53">      locks.put(asta.getId(), countingLock);</span>
+    }
+<span class="fc" id="L55">    countingLock.setNumberOfLocks(countingLock.getNumberOfLocks() + 1);</span>
+<span class="fc" id="L56">    createAndDestroyLock.unlock();</span>
+<span class="fc" id="L57">    countingLock.getLock().lock();</span>
+
+
+<span class="fc" id="L60">  }</span>
+
+
+  /**
+   * Rilascia il lock per l'asta passata come parametro.
+   *
+   * @param asta l'asta per cui rilasciare il lock
+   */
+  public void unlockAsta(Asta asta) {
+<span class="fc" id="L69">    createAndDestroyLock.lock();</span>
+<span class="fc" id="L70">    CountingLock countingLock = locks.get(asta.getId());</span>
+<span class="fc" id="L71">    countingLock.setNumberOfLocks(countingLock.getNumberOfLocks() - 1);</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">    if (countingLock.getNumberOfLocks() == 0) {</span>
+<span class="fc" id="L73">      locks.remove(asta.getId());</span>
+    }
+<span class="fc" id="L75">    countingLock.getLock().unlock();</span>
+<span class="fc" id="L76">    createAndDestroyLock.unlock();</span>
+
+
+<span class="fc" id="L79">  }</span>
+
+  private Lock createAndDestroyLock;
+
+  private Map&lt;Integer, CountingLock&gt; locks;
+
+  /**
+   * classe interna che definisce un lock che conta
+   * il numero di elementi che sono interessati ad ottenere il lock.
+   */
+  private static class CountingLock {
+
+
+<span class="fc" id="L92">    public CountingLock() {</span>
+<span class="fc" id="L93">      lock = new ReentrantLock();</span>
+<span class="fc" id="L94">      numberOfLocks = 0;</span>
+<span class="fc" id="L95">    }</span>
+
+    public Lock getLock() {
+<span class="fc" id="L98">      return lock;</span>
+    }
+
+    public int getNumberOfLocks() {
+<span class="fc" id="L102">      return numberOfLocks;</span>
+    }
+
+    public void setNumberOfLocks(int numberOfLocks) {
+<span class="fc" id="L106">      this.numberOfLocks = numberOfLocks;</span>
+<span class="fc" id="L107">    }</span>
+
+    private Lock lock;
+    private int numberOfLocks;
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

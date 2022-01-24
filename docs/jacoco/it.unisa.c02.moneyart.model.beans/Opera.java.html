@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Opera.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.model.beans</a> &gt; <span class="el_source">Opera.java</span></div><h1>Opera.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.model.beans;
+
+import java.sql.Blob;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Questa classe rappresenta un'Opera.
+ * Un'opera è caratterizzata da: id, nome, descrizione, stato, immagine,
+ * prezzo, certificato, possessore.
+ */
+public class Opera {
+
+  /**
+   * Costruttore della classe Opera.
+   *
+   * @param nome        nome dell'opera
+   * @param descrizione descrizione dell'opera
+   * @param stato       stato dell'opera (all'asta, in vendita, in possesso)
+   * @param immagine    immagine dell'opera
+   * @param possessore  l'utente che possiede l'opera
+   * @param artista     l'artista (utente creatore dell'opera)
+   * @param certificato identificativo del certificato dell'opera
+   */
+  public Opera(String nome, String descrizione, Stato stato,
+               Blob immagine, Utente possessore, Utente artista,
+<span class="fc" id="L27">               String certificato) {</span>
+
+<span class="fc" id="L29">    this.nome = nome;</span>
+<span class="fc" id="L30">    this.descrizione = descrizione;</span>
+<span class="fc" id="L31">    this.stato = stato;</span>
+<span class="fc" id="L32">    this.immagine = immagine;</span>
+<span class="fc" id="L33">    this.possessore = possessore;</span>
+<span class="fc" id="L34">    this.artista = artista;</span>
+<span class="fc" id="L35">    this.certificato = certificato;</span>
+<span class="fc" id="L36">  }</span>
+
+  /**
+   * Costruttore vuoto della classe Notifica.
+   */
+<span class="fc" id="L41">  public Opera() {</span>
+<span class="fc" id="L42">  }</span>
+
+  /**
+   * Restituisce l'id dell'opera.
+   *
+   * @return identificativo dell'opera
+   */
+  public Integer getId() {
+<span class="fc" id="L50">    return id;</span>
+  }
+
+  /**
+   * Imposta l'id dell'opera.
+   *
+   * @param id identificativo dell'opera
+   */
+  public void setId(Integer id) {
+<span class="fc" id="L59">    this.id = id;</span>
+<span class="fc" id="L60">  }</span>
+
+  /**
+   * Restituisce nome dell'opera.
+   *
+   * @return nome dell'opera
+   */
+  public String getNome() {
+<span class="fc" id="L68">    return nome;</span>
+  }
+
+  /**
+   * Imposta nome dell'opera.
+   *
+   * @param nome nome dell'opera
+   */
+  public void setNome(String nome) {
+<span class="fc" id="L77">    this.nome = nome;</span>
+<span class="fc" id="L78">  }</span>
+
+  /**
+   * Restituisce la descrizione dell'opera.
+   *
+   * @return descrizione dell'opera
+   */
+  public String getDescrizione() {
+<span class="fc" id="L86">    return descrizione;</span>
+  }
+
+  /**
+   * Imposta la descrizione dell'opera.
+   *
+   * @param descrizione descrizione dell'opera
+   */
+  public void setDescrizione(String descrizione) {
+<span class="fc" id="L95">    this.descrizione = descrizione;</span>
+<span class="fc" id="L96">  }</span>
+
+  /**
+   * Restituisce lo stato dell'opera (all'asta, in vendita, in possesso).
+   *
+   * @return stato dell'opera
+   */
+  public Stato getStato() {
+<span class="fc" id="L104">    return stato;</span>
+  }
+
+  /**
+   * Imposta lo stato dell'opera.
+   *
+   * @param stato stato dell'opera
+   */
+  public void setStato(Stato stato) {
+<span class="fc" id="L113">    this.stato = stato;</span>
+<span class="fc" id="L114">  }</span>
+
+  /**
+   * Restituisce l'immagine dell'opera.
+   *
+   * @return immagine dell'opera
+   */
+  public Blob getImmagine() {
+<span class="fc" id="L122">    return immagine;</span>
+  }
+
+  /**
+   * Imposta l'immagine dell'opera.
+   *
+   * @param immagine immagine dell'opera
+   */
+  public void setImmagine(Blob immagine) {
+<span class="fc" id="L131">    this.immagine = immagine;</span>
+<span class="fc" id="L132">  }</span>
+
+  /**
+   * Restituisce l'utente possessore dell'opera.
+   *
+   * @return l'utente possessore dell'opera
+   */
+  public Utente getPossessore() {
+<span class="fc" id="L140">    return possessore;</span>
+  }
+
+  /**
+   * Imposta l'utente possessore dell'opera.
+   *
+   * @param possessore l'utente possessore dell'opera
+   */
+  public void setPossessore(Utente possessore) {
+<span class="fc" id="L149">    this.possessore = possessore;</span>
+<span class="fc" id="L150">  }</span>
+
+  /**
+   * Restituisce l'utente creatore dell'opera.
+   *
+   * @return l'utente creatore dell'opera
+   */
+  public Utente getArtista() {
+<span class="fc" id="L158">    return artista;</span>
+  }
+
+  /**
+   * Imposta l'utente creatore dell'opera.
+   *
+   * @param artista l'utente creatore dell'opera.
+   */
+  public void setArtista(Utente artista) {
+<span class="fc" id="L167">    this.artista = artista;</span>
+<span class="fc" id="L168">  }</span>
+
+  /**
+   * Restituisce l'identificativo del certificato dell'opera.
+   *
+   * @return identificativo del certificato dell'opera
+   */
+  public String getCertificato() {
+<span class="fc" id="L176">    return certificato;</span>
+  }
+
+  /**
+   * Imposta l'identificativo del certificato dell'opera.
+   *
+   * @param certificato identificativo del certificato dell'opera
+   */
+  public void setCertificato(String certificato) {
+<span class="fc" id="L185">    this.certificato = certificato;</span>
+<span class="fc" id="L186">  }</span>
+
+  /**
+   * Restituisce una lista di tutte le aste relative all'opera.
+   *
+   * @return una lista di aste relativa all'opera
+   */
+  public List&lt;Asta&gt; getAste() {
+<span class="nc" id="L194">    return aste;</span>
+  }
+
+  /**
+   * setta la lista di tutte le aste relative all'opera.
+   *
+   * @param aste la lista di tutte le aste relative all'opera
+   */
+  public void setAste(List&lt;Asta&gt; aste) {
+<span class="nc" id="L203">    this.aste = aste;</span>
+<span class="nc" id="L204">  }</span>
+
+  /**
+   * Restituisce una lista di tutte le rivendite relative all'opera.
+   *
+   * @return una lista di rivendite relativa all'opera
+   */
+  public List&lt;Rivendita&gt; getRivendite() {
+<span class="nc" id="L212">    return rivendite;</span>
+  }
+
+  /**
+   * setta la lista di tutte le rivendite relative all'opera.
+   *
+   * @param rivendite la lista di tutte le rivendite relative all'opera
+   */
+  public void setRivendite(List&lt;Rivendita&gt; rivendite) {
+<span class="nc" id="L221">    this.rivendite = rivendite;</span>
+<span class="nc" id="L222">  }</span>
+
+  /**
+   * Restituisce la rappresentazione sotto forma di stringa di un'opera.
+   *
+   * @return la stringa che rappresenta l'opera
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L231">    return &quot; id: &quot; + this.id + &quot; id utente: &quot; + possessore.getId() + &quot; Artista: &quot; + artista.getId()</span>
+        + &quot; Nome: &quot; + this.nome + &quot; Descrizione: &quot; + this.descrizione + &quot; Stato: &quot; + this.stato;
+  }
+
+
+  /**
+   * Verifica l'uguaglianza tra due oggetti.
+   *
+   * @param o oggetto da confrontare con un'istanza della classe corrente
+   * @return true se l'uguaglianza tra i due oggetti è verificato,
+   *         false altrimenti
+   */
+  @Override
+  public boolean equals(Object o) {
+<span class="fc bfc" id="L245" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L246">      return true;</span>
+    }
+
+
+<span class="fc" id="L250">    Opera opera = (Opera) o;</span>
+<span class="fc" id="L251">    BooleanComparator booleanComparator =</span>
+<span class="fc" id="L252">        new BooleanComparator(Objects.equals(getId(), opera.getId()));</span>
+<span class="fc" id="L253">    return booleanComparator</span>
+<span class="fc" id="L254">        .and(Objects.equals(getNome(), opera.getNome()))</span>
+<span class="fc" id="L255">        .and(Objects.equals(getDescrizione(), opera.getDescrizione()))</span>
+<span class="fc" id="L256">        .and(Objects.equals(getStato(), opera.getStato()))</span>
+<span class="fc" id="L257">        .and(Objects.equals(getPossessore(), opera.getPossessore()))</span>
+<span class="fc" id="L258">        .and(Objects.equals(getArtista(), opera.getArtista()))</span>
+<span class="fc" id="L259">        .and(Objects.equals(getCertificato(), opera.getCertificato())).getValue();</span>
+  }
+
+
+  /**
+   * Genera un hash.
+   *
+   * @return un intero che rappresenta l'hash della classe
+   */
+  @Override
+  public int hashCode() {
+<span class="nc" id="L270">    return Objects.hash(getId(), getNome(), getDescrizione(), getStato(),</span>
+<span class="nc" id="L271">        getPossessore(), getArtista(), getCertificato(), getAste(), getRivendite());</span>
+  }
+
+
+  /**
+   * Variabili di istanza.
+   *
+   */
+  private Integer id;
+  private String nome; //
+  private String descrizione;
+  private Stato stato;
+  private Blob immagine; //
+  private Utente possessore;
+  private Utente artista;
+  private String certificato; //
+
+  private List&lt;Asta&gt; aste;
+  private List&lt;Rivendita&gt; rivendite;
+
+  /**
+   * ENUM che rappresenta i possibili stati dell'opera.
+   * ALL_ASTA: l'opera è all'asta
+   * IN_VENDITA: l'opera, precedentemente vinta all'asta, è messa in vendita
+   * IN_POSSESSO: l'opera è in possesso di un utente (non si trova né all'asta né in vendita)
+   * PREVENDITA: l'opera non è in vendita o all'asta e non è ancora mai stata venduta
+   */
+<span class="fc" id="L298">  public enum Stato {</span>
+<span class="fc" id="L299">    ALL_ASTA, IN_VENDITA, IN_POSSESSO, PREVENDITA</span>
+  }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

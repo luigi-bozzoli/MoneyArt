@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StripePayment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.utils.payment</a> &gt; <span class="el_source">StripePayment.java</span></div><h1>StripePayment.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.utils.payment;
+
+import com.stripe.Stripe;
+import com.stripe.model.Price;
+import com.stripe.model.checkout.Session;
+import com.stripe.param.checkout.SessionCreateParams;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Classe che implementa i metodi dell'interfaccia di PaymentAdapter
+ * per interfacciarsi con il servizio Stripe.
+ */
+
+<span class="fc" id="L15">public class StripePayment implements PaymentAdapter {</span>
+  /**
+   * Richiede un pagamento e restituisce l'url
+   * dover reindirizzare l'utente per completare il pagamento.
+   *
+   * @param amount l'ammontare da pagare
+   * @return l'url dover reindirizzare l'utente per completare il pagamento
+   * @throws Exception in caso Stripe da un errore
+   */
+  @Override
+  public String makePayment(double amount) throws Exception {
+<span class="fc" id="L26">    Map&lt;String, Object&gt; paramsPrice = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L27">    paramsPrice.put(&quot;unit_amount&quot;, (int) (amount * 100));</span>
+<span class="fc" id="L28">    paramsPrice.put(&quot;currency&quot;, &quot;eur&quot;);</span>
+<span class="fc" id="L29">    paramsPrice.put(&quot;product&quot;, PRODUCT_ID);</span>
+<span class="fc" id="L30">    Price price = Price.create(paramsPrice);</span>
+    SessionCreateParams params =
+<span class="fc" id="L32">        SessionCreateParams.builder().setMode(SessionCreateParams.Mode.PAYMENT)</span>
+<span class="fc" id="L33">            .setSuccessUrl(YOUR_DOMAIN + SUCCESS_URL).setCancelUrl(YOUR_DOMAIN + CANCEL_URL)</span>
+<span class="fc" id="L34">            .addLineItem(</span>
+<span class="fc" id="L35">                SessionCreateParams.LineItem.builder().setQuantity(1L).setPrice(price.getId())</span>
+<span class="fc" id="L36">                    .build()).build();</span>
+<span class="fc" id="L37">    Session session = Session.create(params);</span>
+<span class="fc" id="L38">    return session.getUrl();</span>
+
+  }
+
+  /**
+   * Restituisce l'ammontare pagato dato l'id di un pagamento.
+   *
+   * @param paymentId l'id del pagamento
+   * @return l'ammontare speso nel pagamento
+   * @throws Exception nel caso Stripe da errore
+   */
+  @Override
+  public double recievePayment(String paymentId) throws Exception {
+<span class="fc" id="L51">    return Session.retrieve(paymentId).getAmountTotal() / 100.0;</span>
+  }
+
+  private static final String YOUR_DOMAIN = &quot;http://localhost:8080/MoneyArt_war&quot;;
+  private static final String SUCCESS_URL = &quot;/recivePayment?session_id={CHECKOUT_SESSION_ID}&quot;;
+  private static final String CANCEL_URL = &quot;/walletInfo&quot;;
+  private static final String PRODUCT_ID = &quot;prod_KytYHpYu4DKRYm&quot;;
+
+  static {
+<span class="fc" id="L60">    Stripe.apiKey = &quot;sk_test_51KIvhUCoLwbVSLTbCtzTitzSKsdaV1jYWFfae&quot;</span>
+        +
+        &quot;ErOok1bIDuFAhxMWRwGq6dOu6IjoqWxVkutsXdIA8LU0KHPXkE800GBM7FiJD&quot;;
+<span class="fc" id="L63">  }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletCreaOpera.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.opere.control</a> &gt; <span class="el_source">ServletCreaOpera.java</span></div><h1>ServletCreaOpera.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.opere.control;
+
+import it.unisa.c02.moneyart.gestione.opere.service.OperaService;
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Utente;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Base64;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.rowset.serial.SerialBlob;
+
+/**
+ * Servlet per la creazione di un opera.
+ */
+@WebServlet(name = &quot;ServletCreaOpera&quot;, value = &quot;/newArtwork&quot;)
+@MultipartConfig
+<span class="nc" id="L25">public class ServletCreaOpera extends HttpServlet {</span>
+
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+<span class="nc" id="L31">    doPost(request, response);</span>
+
+<span class="nc" id="L33">  }</span>
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+<span class="nc" id="L39">    String immagine = request.getParameter(&quot;picture&quot;);</span>
+<span class="nc" id="L40">    String nome = request.getParameter(&quot;name&quot;);</span>
+<span class="nc" id="L41">    String descrizione = request.getParameter(&quot;description&quot;);</span>
+
+<span class="nc" id="L43">    Utente artista = (Utente) request.getSession().getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L44">    immagine = immagine.replace(&quot;data:image/png;base64,&quot;, &quot;&quot;);</span>
+    Blob blob;
+    try {
+<span class="nc" id="L47">      byte[] encodedByte = Base64.getDecoder().decode(immagine);</span>
+<span class="nc" id="L48">      blob = new SerialBlob(encodedByte);</span>
+<span class="nc" id="L49">    } catch (SQLException e) {</span>
+<span class="nc" id="L50">      request.setAttribute(&quot;error&quot;,</span>
+          &quot;errore nel caricamento dell'immagine&quot;);
+<span class="nc" id="L52">      RequestDispatcher dispatcher = request</span>
+<span class="nc" id="L53">          .getRequestDispatcher(</span>
+              &quot;/pages/creaOpera.jsp&quot;);
+<span class="nc" id="L55">      dispatcher.forward(request, response);</span>
+<span class="nc" id="L56">      return;</span>
+<span class="nc" id="L57">    }</span>
+<span class="nc" id="L58">    Opera nuovaOpera =</span>
+        new Opera(nome, descrizione, Opera.Stato.PREVENDITA, blob, artista, artista, null);
+<span class="nc" id="L60">    nuovaOpera.setImmagine(blob);</span>
+    try {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">      if (!operaService.addArtwork(nuovaOpera)) {</span>
+<span class="nc" id="L63">        request.setAttribute(&quot;error&quot;,</span>
+            &quot;L'opera è già presente nella piattaforma!&quot;);
+<span class="nc" id="L65">        RequestDispatcher dispatcher = request</span>
+<span class="nc" id="L66">            .getRequestDispatcher(</span>
+                &quot;/pages/creaOpera.jsp&quot;); // TODO: aggiungere il link alla pagina di creazione opera
+<span class="nc" id="L68">        dispatcher.forward(request, response);</span>
+<span class="nc" id="L69">      } else {</span>
+<span class="nc" id="L70">        response.sendRedirect(getServletContext().getContextPath()</span>
+            +
+            &quot;/pages/opereUtente.jsp#opere-possedute-asta&quot;);
+      }
+<span class="nc" id="L74">    } catch (Exception e) {</span>
+<span class="nc" id="L75">      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, &quot;Errore certificato&quot;);</span>
+<span class="nc" id="L76">    }</span>
+
+
+<span class="nc" id="L79">  }</span>
+
+
+  @Inject
+  private OperaService operaService;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

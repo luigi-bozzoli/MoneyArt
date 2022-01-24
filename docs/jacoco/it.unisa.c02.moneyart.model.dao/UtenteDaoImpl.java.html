@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UtenteDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.model.dao</a> &gt; <span class="el_source">UtenteDaoImpl.java</span></div><h1>UtenteDaoImpl.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.model.dao;
+
+
+import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.dao.interfaces.UtenteDao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
+import javax.sql.DataSource;
+
+/**
+ * Implementa la classe che esplicita i metodi
+ * definiti nell'interfaccia UtenteDao.
+ */
+public class UtenteDaoImpl implements UtenteDao {
+
+
+<span class="nc" id="L23">  public UtenteDaoImpl() {</span>
+
+<span class="nc" id="L25">  }</span>
+
+<span class="fc" id="L27">  public UtenteDaoImpl(DataSource ds) {</span>
+<span class="fc" id="L28">    this.ds = ds;</span>
+<span class="fc" id="L29">  }</span>
+
+  /**
+   * Inserisce un item nel database.
+   *
+   * @param item l'oggetto da inserire nel database
+   */
+  @Override
+  public boolean doCreate(Utente item) {
+<span class="fc" id="L38">    String sql =</span>
+        &quot;INSERT INTO &quot; + TABLE_NAME
+            +
+            &quot;(id_seguito, email, pwd, username, nome, cognome, foto, saldo) &quot;
+            + &quot; VALUES(?, ? , ?, ?, ?, ?, ?, ?) &quot;;
+
+
+<span class="fc" id="L45">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L46">         PreparedStatement preparedStatement = connection.prepareStatement(sql,</span>
+             PreparedStatement.RETURN_GENERATED_KEYS)) {
+<span class="fc" id="L48">      preparedStatement.setObject(1, item.getSeguito().getId(), Types.INTEGER);</span>
+<span class="fc" id="L49">      preparedStatement.setObject(2, item.getEmail().toLowerCase(), Types.VARCHAR);</span>
+<span class="fc" id="L50">      preparedStatement.setObject(3, item.getPassword(), Types.BINARY);</span>
+<span class="fc" id="L51">      preparedStatement.setObject(4, item.getUsername(), Types.VARCHAR);</span>
+<span class="fc" id="L52">      preparedStatement.setObject(5, item.getNome(), Types.VARCHAR);</span>
+<span class="fc" id="L53">      preparedStatement.setObject(6, item.getCognome(), Types.VARCHAR);</span>
+<span class="fc" id="L54">      preparedStatement.setObject(7, item.getFotoProfilo(), Types.BLOB);</span>
+<span class="fc" id="L55">      preparedStatement.setObject(8, item.getSaldo(), Types.DOUBLE);</span>
+<span class="fc" id="L56">      preparedStatement.executeUpdate();</span>
+<span class="fc" id="L57">      ResultSet resultSet = preparedStatement.getGeneratedKeys();</span>
+<span class="fc" id="L58">      resultSet.next();</span>
+<span class="fc" id="L59">      item.setId(resultSet.getInt(1));</span>
+<span class="fc" id="L60">      return true;</span>
+<span class="fc" id="L61">    } catch (SQLException e) {</span>
+<span class="fc" id="L62">      e.printStackTrace();</span>
+    }
+<span class="fc" id="L64">    return false;</span>
+  }
+
+  /**
+   * Ricerca nel database un item tramite un identificativo unico.
+   *
+   * @param id l'identificativo dell'item
+   * @return l'item trovato nel database
+   */
+  @Override
+  public Utente doRetrieveById(int id) {
+<span class="fc" id="L75">    String sql =</span>
+        &quot;select * from &quot; + TABLE_NAME
+            +
+            &quot; where id = ? &quot;;
+<span class="fc" id="L79">    Utente utente = null;</span>
+
+
+<span class="fc" id="L82">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L83">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+
+<span class="fc" id="L85">      preparedStatement.setInt(1, id);</span>
+
+<span class="fc" id="L87">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L88">      utente = getSingleResultFromResultSet(rs);</span>
+
+<span class="fc" id="L90">    } catch (SQLException e) {</span>
+<span class="fc" id="L91">      e.printStackTrace();</span>
+<span class="fc" id="L92">    }</span>
+<span class="fc" id="L93">    return utente;</span>
+  }
+
+  /**
+   * Ricerca nel database tutti gli item, eventualmente ordinati
+   * tramite un filtro.
+   *
+   * @param filter filtro di ordinamento delle tuple
+   * @return la collezione di item trovata nel database
+   */
+  @Override
+  public List&lt;Utente&gt; doRetrieveAll(String filter) {
+<span class="fc" id="L105">    String sql =</span>
+        &quot;select * from &quot; + TABLE_NAME;
+<span class="fc" id="L107">    List&lt;Utente&gt; utenti = null;</span>
+<span class="fc bfc" id="L108" title="All 4 branches covered.">    if (filter != null &amp;&amp; !filter.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L109">      sql += &quot; ORDER BY &quot; + filter;</span>
+    }
+
+<span class="fc" id="L112">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L113">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+
+<span class="fc" id="L115">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L116">      utenti = getMultipleResultFromResultSet(rs);</span>
+
+<span class="fc" id="L118">    } catch (SQLException e) {</span>
+<span class="fc" id="L119">      e.printStackTrace();</span>
+<span class="fc" id="L120">    }</span>
+<span class="fc" id="L121">    return utenti;</span>
+  }
+
+  /**
+   * Aggiorna l'item nel database.
+   *
+   * @param item l'item da aggiornare
+   */
+  @Override
+  public void doUpdate(Utente item) {
+<span class="fc" id="L131">    String sql =</span>
+        &quot;UPDATE &quot; + TABLE_NAME
+            +
+            &quot; set id_seguito = ?, email = ?, pwd = ?, username = ?, nome = ?, cognome = ?, &quot;
+            + &quot; foto = ?, saldo = ? &quot;
+            + &quot; where id = ?&quot;;
+
+
+<span class="fc" id="L139">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L140">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+<span class="fc" id="L141">      preparedStatement.setObject(1, item.getSeguito().getId(), Types.INTEGER);</span>
+<span class="fc" id="L142">      preparedStatement.setObject(2, item.getEmail().toLowerCase(), Types.VARCHAR);</span>
+<span class="fc" id="L143">      preparedStatement.setObject(3, item.getPassword(), Types.BINARY);</span>
+<span class="fc" id="L144">      preparedStatement.setObject(4, item.getUsername(), Types.VARCHAR);</span>
+<span class="fc" id="L145">      preparedStatement.setObject(5, item.getNome(), Types.VARCHAR);</span>
+<span class="fc" id="L146">      preparedStatement.setObject(6, item.getCognome(), Types.VARCHAR);</span>
+<span class="fc" id="L147">      preparedStatement.setObject(7, item.getFotoProfilo(), Types.BLOB);</span>
+<span class="fc" id="L148">      preparedStatement.setObject(8, item.getSaldo(), Types.DOUBLE);</span>
+<span class="fc" id="L149">      preparedStatement.setObject(9, item.getId(), Types.INTEGER);</span>
+<span class="fc" id="L150">      preparedStatement.executeUpdate();</span>
+
+<span class="nc" id="L152">    } catch (SQLException e) {</span>
+<span class="nc" id="L153">      e.printStackTrace();</span>
+<span class="fc" id="L154">    }</span>
+<span class="fc" id="L155">  }</span>
+
+  /**
+   * Elimina l'item dal database.
+   *
+   * @param item l'item da eliminare
+   */
+  @Override
+  public void doDelete(Utente item) {
+<span class="fc" id="L164">    String sql =</span>
+        &quot;delete from &quot; + TABLE_NAME
+            +
+            &quot; where id = ? &quot;;
+
+
+<span class="fc" id="L170">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L171">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+<span class="fc" id="L172">      preparedStatement.setObject(1, item.getId(), Types.INTEGER);</span>
+
+<span class="fc" id="L174">      preparedStatement.executeUpdate();</span>
+
+
+<span class="nc" id="L177">    } catch (SQLException e) {</span>
+<span class="nc" id="L178">      e.printStackTrace();</span>
+<span class="fc" id="L179">    }</span>
+<span class="fc" id="L180">  }</span>
+
+  /**
+   * Restituisce l'utente in base all'username.
+   *
+   * @param username l'username dell'utente
+   * @return l'utente con quell'username
+   */
+  @Override
+  public Utente doRetrieveByUsername(String username) {
+<span class="fc" id="L190">    String sql =</span>
+        &quot;select * from &quot; + TABLE_NAME
+            +
+            &quot; where username = ? &quot;;
+<span class="fc" id="L194">    Utente utente = null;</span>
+
+
+<span class="fc" id="L197">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L198">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+
+<span class="fc" id="L200">      preparedStatement.setString(1, username);</span>
+
+<span class="fc" id="L202">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L203">      utente = getSingleResultFromResultSet(rs);</span>
+
+<span class="fc" id="L205">    } catch (SQLException e) {</span>
+<span class="fc" id="L206">      e.printStackTrace();</span>
+<span class="fc" id="L207">    }</span>
+<span class="fc" id="L208">    return utente;</span>
+  }
+
+  /**
+   * Restituisce tutti gli utenti che seguono uno specifico utente.
+   *
+   * @param id l'identificativo dell'utente di cui vogliamo conoscere i follower
+   * @return i follower di quell'utente
+   */
+  @Override
+  public List&lt;Utente&gt; doRetrieveFollowersByUserId(int id) {
+
+<span class="fc" id="L220">    String sql = &quot;SELECT * from &quot; + TABLE_NAME + &quot; where id_seguito = ? &quot;;</span>
+
+<span class="fc" id="L222">    List&lt;Utente&gt; utenti = null;</span>
+
+<span class="fc" id="L224">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L225">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+<span class="fc" id="L226">      preparedStatement.setInt(1, id);</span>
+
+<span class="fc" id="L228">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L229">      utenti = getMultipleResultFromResultSet(rs);</span>
+
+<span class="fc" id="L231">    } catch (SQLException e) {</span>
+<span class="fc" id="L232">      e.printStackTrace();</span>
+<span class="fc" id="L233">    }</span>
+<span class="fc" id="L234">    return utenti;</span>
+  }
+
+  @Override
+  public List&lt;Utente&gt; researchUser(String text) {
+
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">    if (text != null) {</span>
+<span class="fc" id="L241">      text = text</span>
+<span class="fc" id="L242">          .replace(&quot;!&quot;, &quot;!!&quot;)</span>
+<span class="fc" id="L243">          .replace(&quot;%&quot;, &quot;!%&quot;)</span>
+<span class="fc" id="L244">          .replace(&quot;_&quot;, &quot;!_&quot;)</span>
+<span class="fc" id="L245">          .replace(&quot;[&quot;, &quot;![&quot;);</span>
+<span class="fc" id="L246">      String retrieveSql = &quot;SELECT * FROM &quot; + TABLE_NAME</span>
+          + &quot; WHERE nome LIKE ? OR cognome LIKE ? OR username LIKE ?&quot;;
+
+<span class="fc" id="L249">      List&lt;Utente&gt; opere = null;</span>
+
+<span class="fc" id="L251">      try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L252">           PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {</span>
+<span class="fc" id="L253">        preparedStatement.setString(1, text + &quot;%&quot;);</span>
+<span class="fc" id="L254">        preparedStatement.setString(2, text + &quot;%&quot;);</span>
+<span class="fc" id="L255">        preparedStatement.setString(3, text + &quot;%&quot;);</span>
+
+<span class="fc" id="L257">        ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L258">        opere = getMultipleResultFromResultSet(rs);</span>
+<span class="nc" id="L259">      } catch (SQLException e) {</span>
+
+<span class="nc" id="L261">        e.printStackTrace();</span>
+<span class="fc" id="L262">      }</span>
+
+<span class="fc" id="L264">      return opere;</span>
+    }
+
+<span class="nc" id="L267">    return null;</span>
+  }
+
+  /**
+   * Restituisce l'utente in base all'email.
+   *
+   * @param email l'email dell'utente
+   * @return l'utente con quell'email
+   */
+  @Override
+  public Utente doRetrieveByEmail(String email) {
+<span class="fc" id="L278">    String sql =</span>
+        &quot;select * from &quot; + TABLE_NAME
+            + &quot; where email = ? &quot;;
+<span class="fc" id="L281">    Utente utente = null;</span>
+
+
+<span class="fc" id="L284">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L285">         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {</span>
+
+<span class="fc" id="L287">      preparedStatement.setString(1, email);</span>
+
+<span class="fc" id="L289">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L290">      utente = getSingleResultFromResultSet(rs);</span>
+
+<span class="fc" id="L292">    } catch (SQLException e) {</span>
+<span class="fc" id="L293">      e.printStackTrace();</span>
+<span class="fc" id="L294">    }</span>
+<span class="fc" id="L295">    return utente;</span>
+  }
+
+  /**
+   * Metodo privato per restituire un singolo oggetto Notifica dopo aver
+   * effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return l'oggetto Notifica
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
+  private Utente getSingleResultFromResultSet(ResultSet rs) throws SQLException {
+<span class="fc" id="L307">    Utente utente = null;</span>
+<span class="fc bfc" id="L308" title="All 2 branches covered.">    if (rs.next()) {</span>
+<span class="fc" id="L309">      utente = new Utente();</span>
+<span class="fc" id="L310">      utente.setId(rs.getObject(&quot;id&quot;, Integer.class));</span>
+
+<span class="fc" id="L312">      Utente seguito = new Utente();</span>
+<span class="fc" id="L313">      seguito.setId(rs.getObject(&quot;id_seguito&quot;, Integer.class));</span>
+<span class="fc" id="L314">      utente.setSeguito(seguito);</span>
+
+<span class="fc" id="L316">      utente.setEmail(rs.getObject(&quot;email&quot;, String.class));</span>
+<span class="fc" id="L317">      utente.setPassword(rs.getObject(&quot;pwd&quot;, byte[].class));</span>
+<span class="fc" id="L318">      utente.setUsername(rs.getObject(&quot;username&quot;, String.class));</span>
+<span class="fc" id="L319">      utente.setNome(rs.getObject(&quot;nome&quot;, String.class));</span>
+<span class="fc" id="L320">      utente.setCognome(rs.getObject(&quot;cognome&quot;, String.class));</span>
+      //utente.setFotoProfilo(rs.getObject(&quot;foto&quot;, Blob.class));
+<span class="fc" id="L322">      utente.setFotoProfilo(rs.getBlob(&quot;foto&quot;));</span>
+<span class="fc" id="L323">      utente.setSaldo(rs.getObject(&quot;saldo&quot;, Double.class));</span>
+
+    }
+<span class="fc" id="L326">    return utente;</span>
+  }
+
+  /**
+   * Metodo privato per restituire una collezione di oggetti Utente
+   * dopo aver effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return la collezione di oggetti Utente
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
+  private List&lt;Utente&gt; getMultipleResultFromResultSet(ResultSet rs) throws SQLException {
+<span class="fc" id="L338">    List&lt;Utente&gt; utenti = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L339" title="All 2 branches covered.">    while (rs.next()) {</span>
+<span class="fc" id="L340">      Utente utente = new Utente();</span>
+<span class="fc" id="L341">      utente.setId(rs.getObject(&quot;id&quot;, Integer.class));</span>
+
+<span class="fc" id="L343">      Utente seguito = new Utente();</span>
+<span class="fc" id="L344">      seguito.setId(rs.getObject(&quot;id_seguito&quot;, Integer.class));</span>
+<span class="fc" id="L345">      utente.setSeguito(seguito);</span>
+
+<span class="fc" id="L347">      utente.setEmail(rs.getObject(&quot;email&quot;, String.class));</span>
+<span class="fc" id="L348">      utente.setPassword(rs.getObject(&quot;pwd&quot;, byte[].class));</span>
+<span class="fc" id="L349">      utente.setUsername(rs.getObject(&quot;username&quot;, String.class));</span>
+<span class="fc" id="L350">      utente.setNome(rs.getObject(&quot;nome&quot;, String.class));</span>
+<span class="fc" id="L351">      utente.setCognome(rs.getObject(&quot;cognome&quot;, String.class));</span>
+<span class="fc" id="L352">      utente.setFotoProfilo(rs.getBlob(&quot;foto&quot;));</span>
+<span class="fc" id="L353">      utente.setSaldo(rs.getObject(&quot;saldo&quot;, Double.class));</span>
+<span class="fc" id="L354">      utenti.add(utente);</span>
+<span class="fc" id="L355">    }</span>
+<span class="fc" id="L356">    return utenti;</span>
+  }
+
+  @Inject
+  private DataSource ds;
+
+
+  private static final String TABLE_NAME = &quot;utente&quot;;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

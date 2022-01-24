@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletGetRivendita.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.vendite.rivendite.control</a> &gt; <span class="el_source">ServletGetRivendita.java</span></div><h1>ServletGetRivendita.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.vendite.rivendite.control;
+
+import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import java.io.IOException;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa servlet gestisce il recupero di una rivendita.
+ *
+ */
+
+@WebServlet(name = &quot;ServletGetRivendita&quot;, value = &quot;/getResell&quot;)
+<span class="fc" id="L20">public class ServletGetRivendita extends HttpServlet {</span>
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+<span class="fc" id="L25">    String id = request.getParameter(&quot;id&quot;);</span>
+
+<span class="fc" id="L27">    Rivendita rivendita = rivenditaService.getResell(Integer.parseInt(id));</span>
+
+<span class="fc" id="L29">    request.setAttribute(&quot;message&quot;, request.getAttribute(&quot;message&quot;));</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">    if (rivendita.getStato().equals(Rivendita.Stato.IN_CORSO)) {</span>
+<span class="fc" id="L31">      request.setAttribute(&quot;rivendita&quot;, rivendita);</span>
+
+<span class="fc" id="L33">      RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/pages/rivendita.jsp&quot;);</span>
+<span class="fc" id="L34">      dispatcher.forward(request, response);</span>
+<span class="fc" id="L35">    } else {</span>
+<span class="fc" id="L36">      RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;/pages/marketplace.jsp&quot;);</span>
+<span class="fc" id="L37">      dispatcher.forward(request, response);</span>
+    }
+<span class="fc" id="L39">  }</span>
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+<span class="nc" id="L44">    doGet(request, response);</span>
+<span class="nc" id="L45">  }</span>
+
+  @Inject
+  private RivenditaService rivenditaService;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

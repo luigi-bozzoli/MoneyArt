@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OperaDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.model.dao</a> &gt; <span class="el_source">OperaDaoImpl.java</span></div><h1>OperaDaoImpl.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.model.dao;
+
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.beans.Utente;
+import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
+import javax.sql.DataSource;
+
+/**
+ * Implementa la classe che esplicita i metodi
+ * definiti nell'intefaccia OperaDao.
+ */
+public class OperaDaoImpl implements OperaDao {
+
+
+<span class="nc" id="L23">  public OperaDaoImpl() {</span>
+
+<span class="nc" id="L25">  }</span>
+
+  /**
+   * Costruttore di OperaDaoImpl, permette di specificare il datasource utilizzato.
+   *
+   * @param ds il datasource utilizzato
+   */
+<span class="fc" id="L32">  public OperaDaoImpl(DataSource ds) {</span>
+<span class="fc" id="L33">    this.ds = ds;</span>
+<span class="fc" id="L34">  }</span>
+
+
+  /**
+   * Inserisce un item del database.
+   *
+   * @param item l'oggetto da inserire nel database
+   */
+  @Override
+  public boolean doCreate(Opera item) {
+
+<span class="fc bfc" id="L45" title="All 2 branches covered.">    if (item == null) {</span>
+<span class="fc" id="L46">      return false;</span>
+    }
+
+<span class="fc" id="L49">    String insertSql = &quot;INSERT INTO &quot; + TABLE_NAME</span>
+        + &quot;(id_utente, id_artista, nome, descrizione, immagine, certificato, stato)&quot;
+        + &quot; VALUES(?, ?, ?, ?, ?, ?, ?) &quot;;
+
+
+<span class="fc" id="L54">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L55">         PreparedStatement preparedStatement = connection.prepareStatement(insertSql,</span>
+             PreparedStatement.RETURN_GENERATED_KEYS)) {
+<span class="fc" id="L57">      preparedStatement.setObject(1, item.getPossessore().getId(), Types.INTEGER);</span>
+<span class="fc" id="L58">      preparedStatement.setObject(2, item.getArtista().getId(), Types.INTEGER);</span>
+<span class="fc" id="L59">      preparedStatement.setObject(3, item.getNome(), Types.VARCHAR);</span>
+<span class="fc" id="L60">      preparedStatement.setObject(4, item.getDescrizione(), Types.VARCHAR);</span>
+<span class="fc" id="L61">      preparedStatement.setObject(5, item.getImmagine(), Types.BLOB);</span>
+<span class="fc" id="L62">      preparedStatement.setObject(6, item.getCertificato(), Types.VARCHAR);</span>
+<span class="fc" id="L63">      preparedStatement.setObject(7, item.getStato().toString(), Types.VARCHAR);</span>
+<span class="fc" id="L64">      preparedStatement.executeUpdate();</span>
+<span class="fc" id="L65">      ResultSet resultSet = preparedStatement.getGeneratedKeys();</span>
+<span class="fc" id="L66">      resultSet.next();</span>
+<span class="fc" id="L67">      item.setId(resultSet.getInt(1));</span>
+<span class="fc" id="L68">      return true;</span>
+<span class="fc" id="L69">    } catch (SQLException e) {</span>
+<span class="fc" id="L70">      e.printStackTrace();</span>
+    }
+<span class="fc" id="L72">    return false;</span>
+  }
+
+  /**
+   * Ricerca nel database un item tramite un identificativo univoco.
+   *
+   * @param id l'identificativo dell'item
+   * @return item trovato nel database
+   */
+  @Override
+  public Opera doRetrieveById(int id) {
+<span class="fc" id="L83">    String retrieveSql = &quot;SELECT * FROM &quot; + TABLE_NAME</span>
+        + &quot; WHERE id = ? &quot;;
+<span class="fc" id="L85">    Opera opera = null;</span>
+
+<span class="fc" id="L87">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L88">        PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {</span>
+<span class="fc" id="L89">      preparedStatement.setInt(1, id);</span>
+
+<span class="fc" id="L91">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L92">      opera = getSingleResultFromResultSet(rs);</span>
+
+<span class="fc" id="L94">    } catch (SQLException e) {</span>
+<span class="fc" id="L95">      e.printStackTrace();</span>
+<span class="fc" id="L96">    }</span>
+
+<span class="fc" id="L98">    return opera;</span>
+  }
+
+  /**
+   * Ricerca nel database tutti gli item,
+   * eventualmente ordinati tramite un filtro.
+   *
+   * @param filter filtro di ordinamento delle tuple
+   * @return lista di item trovata nel database
+   */
+  @Override
+  public List&lt;Opera&gt; doRetrieveAll(String filter) {
+<span class="fc" id="L110">    String retrieveSql = &quot;SELECT * FROM &quot; + TABLE_NAME;</span>
+<span class="fc" id="L111">    List&lt;Opera&gt; opere = null;</span>
+
+<span class="fc bfc" id="L113" title="All 4 branches covered.">    if (filter != null &amp;&amp; !filter.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L114">      retrieveSql += &quot; ORDER BY &quot; + filter;</span>
+    }
+
+<span class="fc" id="L117">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L118">         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {</span>
+
+<span class="fc" id="L120">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L121">      opere = getMultipleResultFromResultSet(rs);</span>
+
+
+<span class="fc" id="L124">    } catch (SQLException e) {</span>
+<span class="fc" id="L125">      e.printStackTrace();</span>
+<span class="fc" id="L126">    }</span>
+
+<span class="fc" id="L128">    return opere;</span>
+  }
+
+  /**
+   * Aggiorna l'item bel database.
+   *
+   * @param item l'item da aggiornare
+   */
+  @Override
+  public void doUpdate(Opera item) {
+<span class="fc" id="L138">    String updateSql = &quot;UPDATE &quot; + TABLE_NAME</span>
+        + &quot; SET id_utente = ?, id_artista = ?, nome = ?,&quot;
+        + &quot; descrizione = ?, immagine = ?, certificato = ?, stato = ?&quot;
+        + &quot; WHERE id = ?&quot;;
+
+<span class="fc" id="L143">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L144">         PreparedStatement preparedStatement = connection.prepareStatement(updateSql)) {</span>
+<span class="fc" id="L145">      preparedStatement.setObject(1, item.getPossessore().getId(), Types.INTEGER);</span>
+<span class="fc" id="L146">      preparedStatement.setObject(2, item.getArtista().getId(), Types.INTEGER);</span>
+<span class="fc" id="L147">      preparedStatement.setObject(3, item.getNome(), Types.VARCHAR);</span>
+<span class="fc" id="L148">      preparedStatement.setObject(4, item.getDescrizione(), Types.VARCHAR);</span>
+<span class="fc" id="L149">      preparedStatement.setObject(5, item.getImmagine(), Types.BLOB);</span>
+<span class="fc" id="L150">      preparedStatement.setObject(6, item.getCertificato(), Types.VARCHAR);</span>
+<span class="fc" id="L151">      preparedStatement.setObject(7, item.getStato().toString(), Types.VARCHAR);</span>
+<span class="fc" id="L152">      preparedStatement.setObject(8, item.getId(), Types.INTEGER);</span>
+<span class="fc" id="L153">      preparedStatement.executeUpdate();</span>
+
+<span class="nc" id="L155">    } catch (SQLException e) {</span>
+<span class="nc" id="L156">      e.printStackTrace();</span>
+<span class="fc" id="L157">    }</span>
+<span class="fc" id="L158">  }</span>
+
+  /**
+   * Elimina item dal database.
+   *
+   * @param item l'item da eliminare
+   */
+  @Override
+  public void doDelete(Opera item) {
+<span class="fc" id="L167">    String deleteSql = &quot;DELETE FROM &quot; + TABLE_NAME</span>
+        + &quot; WHERE id = ?&quot;;
+
+<span class="fc" id="L170">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L171">         PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {</span>
+
+<span class="fc" id="L173">      preparedStatement.setObject(1, item.getId(), Types.INTEGER);</span>
+<span class="fc" id="L174">      preparedStatement.executeUpdate();</span>
+
+<span class="nc" id="L176">    } catch (SQLException e) {</span>
+<span class="nc" id="L177">      e.printStackTrace();</span>
+<span class="fc" id="L178">    }</span>
+<span class="fc" id="L179">  }</span>
+
+
+  /**
+   * Restituisce tutte le opere che sono in possesso dell'utente.
+   *
+   * @param id l'id dell'utente possessore delle opere
+   * @return tutte le opere in possesso dell'utente
+   */
+  @Override
+  public List&lt;Opera&gt; doRetrieveAllByOwnerId(int id) {
+<span class="fc" id="L190">    String retrieveSql = &quot;SELECT * FROM &quot; + TABLE_NAME</span>
+        + &quot; WHERE id_utente = ?&quot;;
+<span class="fc" id="L192">    List&lt;Opera&gt; opere = null;</span>
+
+<span class="fc" id="L194">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L195">         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {</span>
+<span class="fc" id="L196">      preparedStatement.setInt(1, id);</span>
+
+<span class="fc" id="L198">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L199">      opere = getMultipleResultFromResultSet(rs);</span>
+
+<span class="fc" id="L201">    } catch (SQLException e) {</span>
+<span class="fc" id="L202">      e.printStackTrace();</span>
+<span class="fc" id="L203">    }</span>
+
+<span class="fc" id="L205">    return opere;</span>
+  }
+
+  /**
+   * Restituisce tutte le opere create dall'utente.
+   *
+   * @param id l'id dell'utente creatore delle opere
+   * @return tutte le opere create dall'utente
+   */
+  @Override
+  public List&lt;Opera&gt; doRetrieveAllByArtistId(int id) {
+<span class="fc" id="L216">    String retrieveSql = &quot;SELECT * FROM &quot; + TABLE_NAME</span>
+        + &quot; WHERE id_artista = ?&quot;;
+<span class="fc" id="L218">    List&lt;Opera&gt; opere = null;</span>
+
+<span class="fc" id="L220">    try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L221">         PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {</span>
+<span class="fc" id="L222">      preparedStatement.setInt(1, id);</span>
+
+<span class="fc" id="L224">      ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L225">      opere = getMultipleResultFromResultSet(rs);</span>
+<span class="fc" id="L226">    } catch (SQLException e) {</span>
+
+<span class="fc" id="L228">      e.printStackTrace();</span>
+<span class="fc" id="L229">    }</span>
+
+<span class="fc" id="L231">    return opere;</span>
+  }
+
+  /**
+   * Restituisce tutte le opere avente un dato nome.
+   *
+   * @param name il nome dell'opera da cercare delle
+   * @return tutte le opere con il nome dell'argomento
+   */
+  @Override
+  public List&lt;Opera&gt; doRetrieveAllByName(String name) {
+
+<span class="fc bfc" id="L243" title="All 2 branches covered.">    if (name != null) {</span>
+<span class="fc" id="L244">      String retrieveSql = &quot;SELECT * FROM &quot; + TABLE_NAME</span>
+          + &quot; WHERE nome LIKE ?&quot;;
+
+<span class="fc" id="L247">      List&lt;Opera&gt; opere = null;</span>
+
+<span class="fc" id="L249">      try (Connection connection = ds.getConnection();</span>
+<span class="fc" id="L250">           PreparedStatement preparedStatement = connection.prepareStatement(retrieveSql)) {</span>
+<span class="fc" id="L251">        preparedStatement.setString(1, name);</span>
+
+<span class="fc" id="L253">        ResultSet rs = preparedStatement.executeQuery();</span>
+<span class="fc" id="L254">        opere = getMultipleResultFromResultSet(rs);</span>
+<span class="fc" id="L255">      } catch (SQLException e) {</span>
+
+<span class="fc" id="L257">        e.printStackTrace();</span>
+<span class="fc" id="L258">      }</span>
+
+<span class="fc" id="L260">      return opere;</span>
+    }
+
+<span class="fc" id="L263">    return null;</span>
+  }
+
+  /**
+   * Metodo privato per restituire un singolo oggetto Opera dopo aver
+   * effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return l'oggetto Opera
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
+  private Opera getSingleResultFromResultSet(ResultSet rs) throws SQLException {
+<span class="fc" id="L275">    Opera opera = null;</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">    if (rs.next()) {</span>
+<span class="fc" id="L277">      opera = new Opera();</span>
+<span class="fc" id="L278">      opera.setId(rs.getObject(&quot;id&quot;, Integer.class));</span>
+
+<span class="fc" id="L280">      Utente possessore = new Utente();</span>
+<span class="fc" id="L281">      possessore.setId(rs.getObject(&quot;id_utente&quot;, Integer.class));</span>
+<span class="fc" id="L282">      opera.setPossessore(possessore);</span>
+
+<span class="fc" id="L284">      Utente artista = new Utente();</span>
+<span class="fc" id="L285">      artista.setId(rs.getObject(&quot;id_artista&quot;, Integer.class));</span>
+<span class="fc" id="L286">      opera.setArtista(artista);</span>
+
+<span class="fc" id="L288">      opera.setNome(rs.getObject(&quot;nome&quot;, String.class));</span>
+<span class="fc" id="L289">      opera.setDescrizione(rs.getObject(&quot;descrizione&quot;, String.class));</span>
+<span class="fc" id="L290">      opera.setImmagine(rs.getBlob(&quot;immagine&quot;));</span>
+<span class="fc" id="L291">      opera.setCertificato(rs.getObject(&quot;certificato&quot;, String.class));</span>
+<span class="fc" id="L292">      opera.setStato(Opera.Stato.valueOf(rs.getObject(&quot;stato&quot;, String.class)));</span>
+    }
+<span class="fc" id="L294">    return opera;</span>
+  }
+
+  /**
+   * Metodo privato per restituire una collezione di oggetti Opera
+   * dopo aver effettuato un'interrogazione al db.
+   *
+   * @param rs il ResultSet
+   * @return la collezione di oggetti Opera
+   * @throws SQLException l'eccezione sql lanciata in caso di errore
+   */
+  private List&lt;Opera&gt; getMultipleResultFromResultSet(ResultSet rs) throws SQLException {
+<span class="fc" id="L306">    List&lt;Opera&gt; opere = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">    while (rs.next()) {</span>
+<span class="fc" id="L308">      Opera opera = new Opera();</span>
+<span class="fc" id="L309">      opera.setId(rs.getObject(&quot;id&quot;, Integer.class));</span>
+
+<span class="fc" id="L311">      Utente possessore = new Utente();</span>
+<span class="fc" id="L312">      possessore.setId(rs.getObject(&quot;id_utente&quot;, Integer.class));</span>
+<span class="fc" id="L313">      opera.setPossessore(possessore);</span>
+
+<span class="fc" id="L315">      Utente artista = new Utente();</span>
+<span class="fc" id="L316">      artista.setId(rs.getObject(&quot;id_artista&quot;, Integer.class));</span>
+<span class="fc" id="L317">      opera.setArtista(artista);</span>
+
+<span class="fc" id="L319">      opera.setNome(rs.getObject(&quot;nome&quot;, String.class));</span>
+<span class="fc" id="L320">      opera.setDescrizione(rs.getObject(&quot;descrizione&quot;, String.class));</span>
+<span class="fc" id="L321">      opera.setImmagine(rs.getBlob(&quot;immagine&quot;));</span>
+<span class="fc" id="L322">      opera.setCertificato(rs.getObject(&quot;certificato&quot;, String.class));</span>
+<span class="fc" id="L323">      opera.setStato(Opera.Stato.valueOf(rs.getObject(&quot;stato&quot;, String.class)));</span>
+<span class="fc" id="L324">      opere.add(opera);</span>
+<span class="fc" id="L325">    }</span>
+<span class="fc" id="L326">    return opere;</span>
+  }
+
+
+  @Inject
+  private DataSource ds;
+
+  private static final String TABLE_NAME = &quot;opera&quot;;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

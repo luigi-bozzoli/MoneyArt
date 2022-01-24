@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletGetUtenti.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.utente.control</a> &gt; <span class="el_source">ServletGetUtenti.java</span></div><h1>ServletGetUtenti.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.utente.control;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
+import it.unisa.c02.moneyart.model.beans.Utente;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Set;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa servlet gestisce il recupero degli utenti.
+ *
+ */
+
+@WebServlet(name = &quot;ServletGetUtenti&quot;, value = &quot;/getUsers&quot;)
+<span class="fc" id="L27">public class ServletGetUtenti extends HttpServlet {</span>
+
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+<span class="fc" id="L34">    List&lt;Utente&gt; utenti = utenteService.getAllUsers();</span>
+
+<span class="fc" id="L36">    Set&lt;Integer&gt; adminIds = getAdminIds();</span>
+
+<span class="fc" id="L38">    utenti.removeIf((Utente utente) -&gt; adminIds.contains(utente.getId()));</span>
+
+
+
+<span class="fc" id="L42">    boolean ajax = &quot;XMLHttpRequest&quot;.equals(request.getHeader(&quot;X-Requested-With&quot;));</span>
+
+<span class="fc bfc" id="L44" title="All 2 branches covered.">    if (ajax) {</span>
+
+<span class="fc" id="L46">      String criteria = request.getParameter(&quot;criteria&quot;);</span>
+<span class="fc" id="L47">      String order = request.getParameter(&quot;order&quot;);</span>
+
+
+<span class="fc" id="L50">      List&lt;Utente&gt; utentiFiltrati = null;</span>
+<span class="pc bpc" id="L51" title="2 of 4 branches missed.">      if (criteria != null &amp;&amp; order != null) {</span>
+
+<span class="fc" id="L53">        utentiFiltrati = utenteService.getUsersSortedByFollowers(order);</span>
+
+<span class="fc" id="L55">        utentiFiltrati.removeIf((Utente utente) -&gt; adminIds.contains(utente.getId()));</span>
+
+      } else {
+<span class="nc" id="L58">        utentiFiltrati =  utenti;</span>
+      }
+
+<span class="fc" id="L61">      String json = new Gson().toJson(utentiFiltrati);</span>
+<span class="fc" id="L62">      response.setContentType(&quot;application/json&quot;);</span>
+<span class="fc" id="L63">      response.setCharacterEncoding(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L64">      response.getWriter().write(json);</span>
+<span class="fc" id="L65">    } else {</span>
+<span class="fc" id="L66">      request.setAttribute(&quot;utenti&quot;, utenti);</span>
+    }
+
+<span class="fc" id="L69">  }</span>
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+<span class="nc" id="L74">    doGet(request, response);</span>
+
+<span class="nc" id="L76">  }</span>
+
+  private Set&lt;Integer&gt; getAdminIds() {
+<span class="fc" id="L79">    Type tipo = new TypeToken&lt;Set&lt;Integer&gt;&gt;() {</span>
+<span class="fc" id="L80">    }.getType();</span>
+<span class="fc" id="L81">    Gson gson = new Gson();</span>
+<span class="fc" id="L82">    String filename = &quot;/amministratori.json&quot;;</span>
+<span class="fc" id="L83">    InputStream in = getServletContext().getResourceAsStream(filename);</span>
+<span class="fc" id="L84">    InputStreamReader inR = new InputStreamReader(in);</span>
+<span class="fc" id="L85">    JsonReader reader = new JsonReader(inR);</span>
+<span class="fc" id="L86">    return gson.fromJson(reader, tipo);</span>
+
+  }
+
+  @Inject
+  private UtenteService utenteService;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

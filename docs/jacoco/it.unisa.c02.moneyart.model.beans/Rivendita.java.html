@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Rivendita.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.model.beans</a> &gt; <span class="el_source">Rivendita.java</span></div><h1>Rivendita.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.model.beans;
+
+
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Questa classe rappresenta una Rivendita legata ad un'opera.
+ * Una segnalazione è caratterizzata da: id (autogenerato dal DB),
+ * idOpera (identificativo dell'opera a cui si riferisce),
+ * stato e prezzo.
+ */
+public class Rivendita {
+
+  /**
+   * Costruttore dell classe Rivendita.
+   *
+   * @param opera  opera a cui la rivendita fa riferimento
+   * @param stato  stato della rivendita
+   * @param prezzo prezzo dell'opera rivenduta
+   */
+<span class="fc" id="L22">  public Rivendita(Opera opera, Stato stato, double prezzo) {</span>
+<span class="fc" id="L23">    this.id = null;</span>
+<span class="fc" id="L24">    this.opera = opera;</span>
+<span class="fc" id="L25">    this.stato = stato;</span>
+<span class="fc" id="L26">    this.prezzo = prezzo;</span>
+<span class="fc" id="L27">  }</span>
+
+  /**
+   * Costruttore vuoto della classe Rivendita.
+   */
+<span class="fc" id="L32">  public Rivendita() {</span>
+<span class="fc" id="L33">  }</span>
+
+  /**
+   * Restituisce l'identificativo della rivendita.
+   *
+   * @return identificativo della rivendita
+   */
+  public Integer getId() {
+<span class="fc" id="L41">    return id;</span>
+  }
+
+  /**
+   * Imposta l'identificativo della rivendita.
+   *
+   * @param id identificativo della rivendita
+   */
+  public void setId(Integer id) {
+<span class="fc" id="L50">    this.id = id;</span>
+<span class="fc" id="L51">  }</span>
+
+  /**
+   * Restituisce l'opera rivenduta.
+   *
+   * @return opera rivenduta
+   */
+  public Opera getOpera() {
+<span class="fc" id="L59">    return opera;</span>
+  }
+
+  /**
+   * Imposta l'opera rivenduta.
+   *
+   * @param opera opera rivenduta
+   */
+  public void setOpera(Opera opera) {
+<span class="fc" id="L68">    this.opera = opera;</span>
+<span class="fc" id="L69">  }</span>
+
+  /**
+   * Restituisce lo stato della rivendita.
+   *
+   * @return stato della rivendita
+   */
+  public Stato getStato() {
+<span class="fc" id="L77">    return stato;</span>
+  }
+
+  /**
+   * Imposta lo stato della rivendita.
+   *
+   * @param stato stato della rivendita
+   */
+  public void setStato(Stato stato) {
+<span class="fc" id="L86">    this.stato = stato;</span>
+<span class="fc" id="L87">  }</span>
+
+  /**
+   * Restituisce il valore del prezzo a cui l'opera è stata rivenduta.
+   *
+   * @return il valore del prezzo a cui l'opera è stata rivenduta
+   */
+  public double getPrezzo() {
+<span class="fc" id="L95">    return prezzo;</span>
+  }
+
+  /**
+   * Imposta il prezzo della rivendita.
+   *
+   * @param prezzo prezzo a cui l'opera viene rivenduta
+   */
+  public void setPrezzo(double prezzo) {
+<span class="fc" id="L104">    this.prezzo = prezzo;</span>
+<span class="fc" id="L105">  }</span>
+
+  /**
+   * Restituisce la lista di notifiche relative alla Rivendita.
+   *
+   * @return la lista di notifiche relative alla Rivendita
+   */
+  public List&lt;Notifica&gt; getNotifiche() {
+<span class="nc" id="L113">    return notifiche;</span>
+  }
+
+  /**
+   * Imposta la lista di notifiche relative alla rivendita.
+   *
+   * @param notifiche la lista di notifiche relative alla rivendita
+   */
+  public void setNotifiche(List&lt;Notifica&gt; notifiche) {
+<span class="nc" id="L122">    this.notifiche = notifiche;</span>
+<span class="nc" id="L123">  }</span>
+
+  /**
+   * Restituisce la rappresentazione sotto forma di stringa di una rivendita.
+   *
+   * @return la stringa che rappresenta rivendita
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L132">    return &quot;Rivendita{&quot;</span>
+        +
+        &quot;id=&quot; + id
+        +
+        &quot;, opera=&quot; + opera
+        +
+        &quot;, stato=&quot; + stato
+        +
+        &quot;, prezzo=&quot; + prezzo
+        +
+        '}';
+  }
+
+  /**
+   * Verifica l'uguaglianza tra due oggetti.
+   *
+   * @param o oggetto da confrontare con un'istanza della classe corrente
+   * @return true se l'uguaglianza tra i due oggetti è verificato,
+   *         false altrimenti
+   */
+  @Override
+  public boolean equals(Object o) {
+<span class="fc bfc" id="L154" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L155">      return true;</span>
+    }
+
+<span class="fc" id="L158">    Rivendita rivendita = (Rivendita) o;</span>
+<span class="fc" id="L159">    BooleanComparator booleanComparator =</span>
+<span class="fc" id="L160">        new BooleanComparator(Objects.equals(getPrezzo(), rivendita.getPrezzo()));</span>
+<span class="fc" id="L161">    return booleanComparator</span>
+<span class="fc" id="L162">        .and(Objects.equals(getId(), rivendita.getId()))</span>
+<span class="fc" id="L163">        .and(Objects.equals(getOpera(), rivendita.getOpera()))</span>
+<span class="fc" id="L164">        .and(Objects.equals(getStato(), rivendita.getStato())).getValue();</span>
+
+  }
+
+  /**
+   * Genera un hash.
+   *
+   * @return un intero che rappresenta l'hash della classe
+   */
+  @Override
+  public int hashCode() {
+<span class="nc" id="L175">    return Objects.hash(getId(), getOpera(), getStato(), getPrezzo(), getNotifiche());</span>
+  }
+
+  /**
+   * Variabili di istanza.
+   *
+   */
+  private Integer id;
+  private Opera opera;
+  private Stato stato;
+  private double prezzo;
+  private List&lt;Notifica&gt; notifiche;
+
+
+  /**
+   * ENUM che rappresenta i possibili stati della rivendita.
+   * IN_CORSO: la rivendita è in corso
+   * TERMINATA: la rivendita è terminata
+   */
+<span class="fc" id="L194">  public enum Stato {</span>
+<span class="fc" id="L195">    IN_CORSO, TERMINATA</span>
+  }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

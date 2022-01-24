@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OperaServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.opere.service</a> &gt; <span class="el_source">OperaServiceImpl.java</span></div><h1>OperaServiceImpl.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.opere.service;
+
+import it.unisa.c02.moneyart.model.beans.Opera;
+import it.unisa.c02.moneyart.model.blockchain.MoneyArtNft;
+import it.unisa.c02.moneyart.model.dao.interfaces.OperaDao;
+import it.unisa.c02.moneyart.utils.production.Sing;
+import java.util.List;
+import javax.inject.Inject;
+
+/**
+ * Questa classe implementa i metodi dell'interfaccia OperaService.
+ */
+public class OperaServiceImpl implements OperaService {
+
+  /**
+   * Costruttore senza paramentri.
+   */
+<span class="nc" id="L18">  public OperaServiceImpl() {</span>
+<span class="nc" id="L19">  }</span>
+
+  /**
+   * Costruttore della classe.
+   *
+   * @param opera dao di un'opera
+   */
+<span class="fc" id="L26">  public OperaServiceImpl(OperaDao opera, MoneyArtNft moneyArtNft) {</span>
+<span class="fc" id="L27">    this.operaDao = opera;</span>
+<span class="fc" id="L28">    this.moneyArtNft = moneyArtNft;</span>
+<span class="fc" id="L29">  }</span>
+
+  /**
+   * Inserisce una nuova opera nel database.
+   *
+   * @param opera bean dell'opera da inserire
+   * @return true se l'inserimento va a buon fine,
+   *         false altrimenti
+   * @pre opera.getNome() &lt;&gt; null AND opera.getImmagine() &lt;&gt; null AND
+   *      utente.carica -&gt; forAll(o:Opera | o.getNome() &lt;&gt; opera.getNome())
+   * @post utente.carica -&gt; includes(opera)
+   */
+  @Override
+  public boolean addArtwork(Opera opera) throws Exception {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">    if (checkOpera(opera)</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        &amp;&amp; !checkArtwork(opera.getArtista().getId(), opera.getNome())) {</span>
+<span class="fc" id="L45">      moneyArtNft.create(opera.getId() + &quot;&quot;).send();</span>
+<span class="fc" id="L46">      operaDao.doCreate(opera);</span>
+
+<span class="fc" id="L48">      return true;</span>
+    } else {
+<span class="fc" id="L50">      return false;</span>
+    }
+
+  }
+
+  /**
+   * Controlla l'univocità del nome di un'opera, per un determinato artista, presente nel db.
+   *
+   * @param id   dell'utente artista
+   * @param name titolo dell'opera
+   * @return true se esiste un'opera con quel nome,
+   *         false altrimenti
+   * @pre Utente.allIstances() -&gt; exists(u:Utente | id = u.getId()) AND name &lt;&gt; null
+   */
+  @Override
+  public boolean checkArtwork(int id, String name) {
+<span class="fc bfc" id="L66" title="All 2 branches covered.">    if (name == null) {</span>
+<span class="fc" id="L67">      throw new IllegalArgumentException(&quot;Name is null&quot;);</span>
+    }
+<span class="fc" id="L69">    List&lt;Opera&gt; opere = operaDao.doRetrieveAllByArtistId(id);</span>
+
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">    if (opere != null) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">      for (Opera o : opere) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (o.getNome().equals(name)) {</span>
+<span class="fc" id="L74">          return true;</span>
+        }
+<span class="fc" id="L76">      }</span>
+    }
+
+<span class="fc" id="L79">    return false;</span>
+  }
+
+  /**
+   * Restituisce un bean opera.
+   *
+   * @param id dell'opera
+   * @return del bean opera se presente nel database, null altrimenti
+   */
+  @Override
+  public Opera getArtwork(int id) {
+<span class="fc" id="L90">    return operaDao.doRetrieveById(id);</span>
+  }
+
+  /**
+   * Restituisce l'opera cercata nel database.
+   *
+   * @param name dell'opera da cercare
+   * @return una lista di opere avente il nome dell'argomento, null altrimenti
+   */
+  @Override
+  public List&lt;Opera&gt; searchOpera(String name) {
+<span class="fc" id="L101">    return operaDao.doRetrieveAllByName(name);</span>
+  }
+
+  /**
+   * Restituisce tutte le opere di un artista.
+   *
+   * @param id dell'artista
+   * @return una lista di opere
+   */
+  @Override
+  public List&lt;Opera&gt; getArtworkByUser(int id) {
+<span class="fc" id="L112">    return operaDao.doRetrieveAllByArtistId(id);</span>
+  }
+
+  /**
+   * Restituisce tutte le opere possedute da un utente.
+   *
+   * @param id dell'utente
+   * @return una lista di opere
+   */
+  public List&lt;Opera&gt; getArtworkByOwner(int id) {
+
+<span class="fc" id="L123">    return operaDao.doRetrieveAllByOwnerId(id);</span>
+  }
+
+  private boolean checkOpera(Opera opera) {
+<span class="fc bfc" id="L127" title="All 4 branches covered.">    return opera.getNome() != null &amp;&amp; opera.getImmagine() != null;</span>
+  }
+
+  /**
+   * Variabili d'istanza.
+   */
+  @Inject
+  private OperaDao operaDao;
+  @Inject
+  @Sing
+  private MoneyArtNft moneyArtNft;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

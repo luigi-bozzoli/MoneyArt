@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Notifica.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.model.beans</a> &gt; <span class="el_source">Notifica.java</span></div><h1>Notifica.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.model.beans;
+
+
+import java.util.Objects;
+
+/**
+ * Questa classe rappresenta una notifica legata ad una vendita.
+ * è caratterizzata da:
+ * un id,
+ * l'id dell'utente che riceve la notifica,
+ * l'id dell'asta a cui si riferisce,
+ * l'id della vendita diretta a cui si riferisce,
+ * un tipo che descrive il motivo della notifica,
+ * e il contenuto della notifica
+ *
+ * @invariant (idAsta = = null and idRivendita ! = null) or (idAsta != null and idRivendita == null)
+ */
+public class Notifica {
+
+  /**
+   * Costruttore della classe Notifica.
+   *
+   * @param idUtente    il destinatario
+   * @param idAsta      l'asta a cui l'opera si riferisce
+   * @param idRivendita la rivendita a cui l'opera si riferisce
+   * @param tipo        descrive il tipo della notifica,
+   *                    ovvero la motivazione della sua creazione
+   * @param contenuto   il contenuto della notifica
+   *                    (questo dobbiamo toglierlo credo raga)
+   * @param letta       inidica se la notifica è stata letta
+   */
+  public Notifica(Utente idUtente, Asta idAsta, Rivendita idRivendita, Tipo tipo,
+<span class="fc" id="L33">                  String contenuto, boolean letta) {</span>
+<span class="fc" id="L34">    this.utente = idUtente;</span>
+<span class="fc" id="L35">    this.asta = idAsta;</span>
+<span class="fc" id="L36">    this.rivendita = idRivendita;</span>
+<span class="fc" id="L37">    this.tipo = tipo;</span>
+<span class="fc" id="L38">    this.contenuto = contenuto;</span>
+<span class="fc" id="L39">    this.letta = letta;</span>
+<span class="fc" id="L40">  }</span>
+
+  /**
+   * Costruttore vuoto della classe Notifica.
+   */
+<span class="fc" id="L45">  public Notifica() {</span>
+<span class="fc" id="L46">  }</span>
+
+  /**
+   * Restituisce l'id della notifica.
+   *
+   * @return l'id della notifica
+   */
+  public Integer getId() {
+<span class="fc" id="L54">    return id;</span>
+  }
+
+  /**
+   * Modifica l'id della notifica.
+   *
+   * @param id il nuovo id della notifica
+   */
+  public void setId(Integer id) {
+<span class="fc" id="L63">    this.id = id;</span>
+<span class="fc" id="L64">  }</span>
+
+  /**
+   * Restituisce il destinatario.
+   *
+   * @return il destinatario della notifica
+   */
+  public Utente getUtente() {
+<span class="fc" id="L72">    return utente;</span>
+  }
+
+  /**
+   * Modifica il destinatario.
+   *
+   * @param utente il destinatario a cui si deve riferire l'opera
+   */
+  public void setUtente(Utente utente) {
+<span class="fc" id="L81">    this.utente = utente;</span>
+<span class="fc" id="L82">  }</span>
+
+  /**
+   * Restituisce l'asta associata alla notifica.
+   *
+   * @return l'asta a cui si riferisce la notifica
+   */
+  public Asta getAsta() {
+<span class="fc" id="L90">    return asta;</span>
+  }
+
+  /**
+   * Modifica l'asta associata alla notifica.
+   *
+   * @param asta l'asta a cui si deve riferire la notifica
+   */
+  public void setAsta(Asta asta) {
+<span class="fc" id="L99">    this.asta = asta;</span>
+<span class="fc" id="L100">  }</span>
+
+  /**
+   * Restituisce la rivendita associata alla notifica.
+   *
+   * @return la rivendita a cui si riferisce l'opera
+   */
+  public Rivendita getRivendita() {
+<span class="fc" id="L108">    return rivendita;</span>
+  }
+
+  /**
+   * Modifica la rivendita associata alla notifica.
+   *
+   * @param rivendita la rivendita a cui si riferisce la notifica
+   */
+  public void setRivendita(Rivendita rivendita) {
+<span class="fc" id="L117">    this.rivendita = rivendita;</span>
+<span class="fc" id="L118">  }</span>
+
+  /**
+   * Restituisce il tipo della notifica.
+   *
+   * @return il tipo della notifica
+   */
+  public Tipo getTipo() {
+<span class="fc" id="L126">    return tipo;</span>
+  }
+
+  /**
+   * Modifica il tipo di notifica.
+   *
+   * @param tipo il tipo della notifica
+   */
+  public void setTipo(Tipo tipo) {
+<span class="fc" id="L135">    this.tipo = tipo;</span>
+<span class="fc" id="L136">  }</span>
+
+  /**
+   * Restituice il contenuto della notifica.
+   *
+   * @return il contenuto della notifica
+   */
+  public String getContenuto() {
+<span class="fc" id="L144">    return contenuto;</span>
+  }
+
+  /**
+   * Modifica il contenuto della notifica.
+   *
+   * @param contenuto il contenuto della notifica
+   */
+  public void setContenuto(String contenuto) {
+<span class="fc" id="L153">    this.contenuto = contenuto;</span>
+<span class="fc" id="L154">  }</span>
+
+  /**
+   * Verifica se la notifica è stata letta.
+   *
+   * @return un valore che identifica se la notifica sia stata letta o meno
+   */
+  public Boolean isLetta() {
+<span class="fc" id="L162">    return letta;</span>
+  }
+
+  /**
+   * Modifica lo stato di lettura della notifica.
+   *
+   * @param letta il nuovo stato della lettura
+   */
+  public void setLetta(Boolean letta) {
+<span class="fc" id="L171">    this.letta = letta;</span>
+<span class="fc" id="L172">  }</span>
+
+
+  /**
+   * Restituisce la rappresentazione sotto forma di stringa di una notifica.
+   *
+   * @return la stringa che rappresenta notifica
+   */
+  @Override
+  public String toString() {
+<span class="nc" id="L182">    return &quot;Notifica{&quot;</span>
+        +
+        &quot;id=&quot; + id
+        +
+        &quot;, utente=&quot; + utente
+        +
+        &quot;, asta=&quot; + asta
+        +
+        &quot;, rivendita=&quot; + rivendita
+        +
+        &quot;, tipo=&quot; + tipo
+        +
+        &quot;, contenuto='&quot; + contenuto + '\''
+        +
+        &quot;, letta=&quot; + letta
+        +
+        '}';
+  }
+
+  /**
+   * Verifica l'uguaglianza tra due oggetti.
+   *
+   * @param o oggetto da confrontare con un'istanza della classe corrente
+   * @return true se l'uguaglianza tra i due oggetti è verificato,
+   *         false altrimenti
+   */
+  @Override
+  public boolean equals(Object o) {
+<span class="fc bfc" id="L210" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L211">      return true;</span>
+    }
+
+<span class="fc" id="L214">    Notifica notifica = (Notifica) o;</span>
+<span class="fc" id="L215">    BooleanComparator booleanComparator =</span>
+<span class="fc" id="L216">        new BooleanComparator(Objects.equals(getId(), notifica.getId()));</span>
+<span class="fc" id="L217">    return booleanComparator</span>
+<span class="fc" id="L218">        .and(Objects.equals(getUtente(), notifica.getUtente()))</span>
+<span class="fc" id="L219">        .and(Objects.equals(getAsta(), notifica.getAsta()))</span>
+<span class="fc" id="L220">        .and(Objects.equals(getRivendita(), notifica.getRivendita()))</span>
+<span class="fc" id="L221">        .and(Objects.equals(getTipo(), notifica.getTipo()))</span>
+<span class="fc" id="L222">        .and(Objects.equals(getContenuto(), notifica.getContenuto()))</span>
+<span class="fc" id="L223">        .and(Objects.equals(letta, notifica.letta)).getValue();</span>
+  }
+
+  /**
+   * Genera un hash.
+   *
+   * @return un intero che rappresenta l'hash della classe
+   */
+  @Override
+  public int hashCode() {
+<span class="nc" id="L233">    return Objects.hash(getId(), getUtente(), getAsta(), getRivendita(), getTipo(), getContenuto(),</span>
+        letta);
+  }
+
+  /**
+   * Variabili di istanza.
+   *
+   */
+  private Integer id;
+  private Utente utente;
+  private Asta asta;
+  private Rivendita rivendita;
+  private Tipo tipo;
+  private String contenuto;
+  private Boolean letta;
+
+  /**
+   * ENUM che rappresenta i possibili tipi di una notifica.
+   * VITTORIA: la notifica avvisa il destinatario che ha vinto l'asta associata alla notifica
+   * ANNULLAMENTO: la notifica avvisa che l'asta o la rivendita associata è stata annullata
+   * SUPERATO: la notifica avvisa il destinatario che è stato superato nell'asta associata
+   * TERMINATA: la notifica avvisa al destinatario che la vendita da lui creata è terminata
+   */
+<span class="fc" id="L256">  public enum Tipo {</span>
+<span class="fc" id="L257">    VITTORIA, ANNULLAMENTO, SUPERATO, TERMINATA</span>
+  }
+
+
+  /**
+   * costante per segnalare la mancanza di identificatore.
+   */
+  public static final int NO_ID = -1;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

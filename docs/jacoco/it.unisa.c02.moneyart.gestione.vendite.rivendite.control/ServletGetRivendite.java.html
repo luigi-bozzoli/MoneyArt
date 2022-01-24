@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletGetRivendite.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.vendite.rivendite.control</a> &gt; <span class="el_source">ServletGetRivendite.java</span></div><h1>ServletGetRivendite.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.vendite.rivendite.control;
+
+import com.google.gson.Gson;
+import it.unisa.c02.moneyart.gestione.vendite.rivendite.service.RivenditaService;
+import it.unisa.c02.moneyart.model.beans.Rivendita;
+import java.io.IOException;
+import java.util.List;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa servlet gestisce il recupero delle rivendite.
+ *
+ */
+
+@WebServlet(name = &quot;ServletGetRivendite&quot;, value = &quot;/getResells&quot;)
+<span class="fc" id="L21">public class ServletGetRivendite extends HttpServlet {</span>
+
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+<span class="fc" id="L28">    String action = request.getParameter(&quot;action&quot;);</span>
+
+<span class="fc" id="L30">    List&lt;Rivendita&gt; rivendite = null;</span>
+
+<span class="fc" id="L32">    Rivendita.Stato stato = null;</span>
+
+<span class="fc bfc" id="L34" title="All 3 branches covered.">    switch (action) {</span>
+      case &quot;inCorso&quot;:
+<span class="fc" id="L36">        stato = Rivendita.Stato.IN_CORSO;</span>
+<span class="fc" id="L37">        rivendite = rivenditaService.getResellsByState(stato);</span>
+<span class="fc" id="L38">        break;</span>
+      case &quot;terminate&quot;:
+<span class="fc" id="L40">        stato = Rivendita.Stato.TERMINATA;</span>
+<span class="fc" id="L41">        rivendite = rivenditaService.getResellsByState(stato);</span>
+<span class="fc" id="L42">        break;</span>
+      default:
+<span class="fc" id="L44">        stato = Rivendita.Stato.IN_CORSO;</span>
+<span class="fc" id="L45">        rivendite = rivenditaService.getResells();</span>
+        break;
+    }
+
+<span class="fc" id="L49">    boolean ajax = &quot;XMLHttpRequest&quot;.equals(request.getHeader(&quot;X-Requested-With&quot;));</span>
+
+<span class="fc bfc" id="L51" title="All 2 branches covered.">    if (ajax) {</span>
+
+<span class="fc" id="L53">      String criteria = request.getParameter(&quot;criteria&quot;);</span>
+<span class="fc" id="L54">      String order = request.getParameter(&quot;order&quot;);</span>
+
+
+<span class="pc bpc" id="L57" title="2 of 4 branches missed.">      if (criteria != null &amp;&amp; order != null) {</span>
+
+<span class="fc" id="L59">        List&lt;Rivendita&gt; rivenditeFiltrate = null;</span>
+
+<span class="fc bfc" id="L61" title="All 3 branches covered.">        switch (criteria) {</span>
+          case &quot;Prezzo&quot;:
+<span class="fc" id="L63">            rivenditeFiltrate = rivenditaService.getResellsSortedByPrice(order, stato);</span>
+<span class="fc" id="L64">            break;</span>
+          case &quot;Followers&quot;:
+<span class="fc" id="L66">            rivenditeFiltrate = rivenditaService.getResellsSortedByArtistFollowers(order, stato);</span>
+<span class="fc" id="L67">            break;</span>
+          default:
+<span class="fc" id="L69">            rivenditeFiltrate = rivendite;</span>
+            break;
+        }
+
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        for (Rivendita r : rivenditeFiltrate) {</span>
+<span class="nc" id="L74">          r.setNotifiche(null);</span>
+<span class="nc" id="L75">        }</span>
+
+<span class="fc" id="L77">        String jsonFiltrato = new Gson().toJson(rivenditeFiltrate);</span>
+<span class="fc" id="L78">        response.setContentType(&quot;application/json&quot;);</span>
+<span class="fc" id="L79">        response.setCharacterEncoding(&quot;UTF-8&quot;);</span>
+<span class="fc" id="L80">        response.getWriter().write(jsonFiltrato);</span>
+<span class="fc" id="L81">      } else {</span>
+
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        for (Rivendita r : rivendite) {</span>
+<span class="nc" id="L85">          r.setNotifiche(null);</span>
+<span class="nc" id="L86">        }</span>
+
+<span class="nc" id="L88">        String json = new Gson().toJson(rivendite);</span>
+<span class="nc" id="L89">        response.setContentType(&quot;application/json&quot;);</span>
+<span class="nc" id="L90">        response.setCharacterEncoding(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L91">        response.getWriter().write(json);</span>
+      }
+<span class="fc" id="L93">    } else {</span>
+<span class="fc" id="L94">      request.setAttribute(&quot;rivendite&quot;, rivendite);</span>
+    }
+
+
+<span class="fc" id="L98">  }</span>
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+<span class="nc" id="L103">    doGet(request, response);</span>
+<span class="nc" id="L104">  }</span>
+
+  @Inject
+  private RivenditaService rivenditaService;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletFotoUtente.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.gestione.utente.control</a> &gt; <span class="el_source">ServletFotoUtente.java</span></div><h1>ServletFotoUtente.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.gestione.utente.control;
+
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
+import it.unisa.c02.moneyart.model.beans.Utente;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.io.IOUtils;
+
+/**
+ * Questa servlet gestisce il caricamento della foto utente.
+ *
+ */
+
+@WebServlet(name = &quot;ServletFotoUtente&quot;, value = &quot;/userPicture&quot;)
+<span class="fc" id="L22">public class ServletFotoUtente extends HttpServlet {</span>
+
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    int idUtente;
+<span class="fc" id="L29">    response.setContentType(&quot;image/*&quot;);</span>
+
+<span class="fc" id="L31">    idUtente = Integer.parseInt(request.getParameter(&quot;id&quot;));</span>
+
+<span class="fc" id="L33">    Utente utente = utenteService.getUserInformation(idUtente);</span>
+
+<span class="fc" id="L35">    Blob imgBlob = utente.getFotoProfilo();</span>
+    byte[] imageBytes;
+    try {
+<span class="fc bfc" id="L38" title="All 2 branches covered.">      if (imgBlob == null) {</span>
+<span class="fc" id="L39">        imageBytes = IOUtils.toByteArray(</span>
+<span class="fc" id="L40">            getServletContext().getResourceAsStream(&quot;/static/image/user-placeholder.png&quot;));</span>
+
+      } else {
+<span class="fc" id="L43">        imageBytes = imgBlob.getBytes(1, (int) imgBlob.length());</span>
+      }
+<span class="nc" id="L45">    } catch (SQLException e) {</span>
+<span class="nc" id="L46">      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,</span>
+          &quot;errore durante l'elaborazione dell'immagine&quot;);
+<span class="nc" id="L48">      return;</span>
+<span class="fc" id="L49">    }</span>
+<span class="fc" id="L50">    response.setContentLength(imageBytes.length);</span>
+<span class="fc" id="L51">    response.getOutputStream().write(imageBytes);</span>
+
+<span class="fc" id="L53">  }</span>
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+<span class="nc" id="L59">    doGet(request, response);</span>
+<span class="nc" id="L60">  }</span>
+
+  @Inject
+  private UtenteService utenteService;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

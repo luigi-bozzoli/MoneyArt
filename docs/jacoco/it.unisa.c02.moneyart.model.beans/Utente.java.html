@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Utente.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MoneyArt</a> &gt; <a href="index.source.html" class="el_package">it.unisa.c02.moneyart.model.beans</a> &gt; <span class="el_source">Utente.java</span></div><h1>Utente.java</h1><pre class="source lang-java linenums">package it.unisa.c02.moneyart.model.beans;
+
+import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Questa classe rappresenta un Utente.
+ * Un utente è caratterizzato da: id, nome, cognome, foto profilo, email, username,
+ * password, seguito (identificativo dell'utente seguito) e saldo.
+ */
+public class Utente {
+
+  /**
+   * Costruttore della classe Utente.
+   *
+   * @param nome        nome dell'utente
+   * @param cognome     cognome dell'utente
+   * @param fotoProfilo foto profilo dell'utente
+   * @param email       email dell'utente
+   * @param username    username dell'utente
+   * @param seguito     id dell'artista seguito
+   * @param password    password dell'utente
+   * @param saldo       saldo dell'utente
+   */
+  public Utente(String nome, String cognome, Blob fotoProfilo,
+<span class="fc" id="L29">                String email, String username, Utente seguito, byte[] password, Double saldo) {</span>
+<span class="fc" id="L30">    this.id = null;</span>
+<span class="fc" id="L31">    this.nome = nome;</span>
+<span class="fc" id="L32">    this.cognome = cognome;</span>
+<span class="fc" id="L33">    this.fotoProfilo = fotoProfilo;</span>
+<span class="fc" id="L34">    this.email = email;</span>
+<span class="fc" id="L35">    this.username = username;</span>
+<span class="fc" id="L36">    this.password = password;</span>
+<span class="fc" id="L37">    this.seguito = seguito;</span>
+<span class="fc" id="L38">    this.saldo = saldo;</span>
+<span class="fc" id="L39">    this.numFollowers = 0;</span>
+<span class="fc" id="L40">    this.opereInPossesso = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L41">    this.opereCreate = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L42">    this.notifiche = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L43">    this.partecipazioni = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L44">  }</span>
+
+  /**
+   * Costruttore vuoto della classe Utente.
+   **/
+<span class="fc" id="L49">  public Utente() {</span>
+<span class="fc" id="L50">  }</span>
+
+  /**
+   * Restituisce l'identificativo dell'utente.
+   *
+   * @return identificativo dell'utente
+   */
+  public Integer getId() {
+<span class="fc" id="L58">    return id;</span>
+  }
+
+  /**
+   * Imposta l'identificativo dell'utente.
+   *
+   * @param id identificativo dell'utente
+   */
+  public void setId(Integer id) {
+<span class="fc" id="L67">    this.id = id;</span>
+<span class="fc" id="L68">  }</span>
+
+  /**
+   * Restituisce nome dell'utente.
+   *
+   * @return nome dell'utente
+   */
+  public String getNome() {
+<span class="fc" id="L76">    return nome;</span>
+  }
+
+  /**
+   * Imposta il nome dell'utente.
+   *
+   * @param nome nome dell'utente
+   */
+  public void setNome(String nome) {
+<span class="fc" id="L85">    this.nome = nome;</span>
+<span class="fc" id="L86">  }</span>
+
+  /**
+   * Restituisce il cognome dell'utente.
+   *
+   * @return cognome dell'utente
+   */
+  public String getCognome() {
+<span class="fc" id="L94">    return cognome;</span>
+  }
+
+  /**
+   * Imposta il cognome dell'utente.
+   *
+   * @param cognome cognome dell'utente
+   */
+  public void setCognome(String cognome) {
+<span class="fc" id="L103">    this.cognome = cognome;</span>
+<span class="fc" id="L104">  }</span>
+
+  /**
+   * Restituisce la foto profilo dell'utente.
+   *
+   * @return foto profilo dell'utente
+   */
+  public Blob getFotoProfilo() {
+<span class="fc" id="L112">    return fotoProfilo;</span>
+  }
+
+  /**
+   * Imposta la foto profilo dell'utente.
+   *
+   * @param fotoProfilo foto profilo dell'utente
+   */
+  public void setFotoProfilo(Blob fotoProfilo) {
+<span class="fc" id="L121">    this.fotoProfilo = fotoProfilo;</span>
+<span class="fc" id="L122">  }</span>
+
+  /**
+   * Restituisce l'email dell'utente.
+   *
+   * @return email dell'utente
+   */
+  public String getEmail() {
+<span class="fc" id="L130">    return email;</span>
+  }
+
+  /**
+   * Imposta l'email dell'utente.
+   *
+   * @param email email dell'utente
+   */
+  public void setEmail(String email) {
+<span class="fc" id="L139">    this.email = email;</span>
+<span class="fc" id="L140">  }</span>
+
+  /**
+   * Restituisce l'username dell'utente.
+   *
+   * @return username dell'utente
+   */
+  public String getUsername() {
+<span class="fc" id="L148">    return username;</span>
+  }
+
+  /**
+   * Imposta l'username dell'utente.
+   *
+   * @param username username dell'utente
+   */
+  public void setUsername(String username) {
+<span class="fc" id="L157">    this.username = username;</span>
+<span class="fc" id="L158">  }</span>
+
+  /**
+   * Restituisce la password dell'utente cifrata in SHA256.
+   *
+   * @return password cifrata dell'utente
+   */
+  public byte[] getPassword() {
+<span class="fc" id="L166">    return password;</span>
+  }
+
+  /**
+   * Imposta la password dell'utente.
+   *
+   * @param password password cifrata in SHA256
+   */
+  public void setPassword(byte[] password) {
+<span class="fc" id="L175">    this.password = password;</span>
+<span class="fc" id="L176">  }</span>
+
+  /**
+   * Restituisce l'identificativo dell'utente seguito.
+   *
+   * @return identificativo dell'utente seguito
+   */
+  public Utente getSeguito() {
+<span class="fc" id="L184">    return seguito;</span>
+  }
+
+  /**
+   * Imposta l'identificativo dell'utente seguito.
+   *
+   * @param seguito identificativo dell'utente seguito
+   */
+  public void setSeguito(Utente seguito) {
+<span class="fc" id="L193">    this.seguito = seguito;</span>
+<span class="fc" id="L194">  }</span>
+
+  /**
+   * Restituisce saldo dell'utente.
+   *
+   * @return saldo dell'utente
+   */
+  public Double getSaldo() {
+<span class="fc" id="L202">    return saldo;</span>
+  }
+
+  /**
+   * Imposta saldo dell'utente.
+   *
+   * @param saldo wallet dell'utente
+   */
+  public void setSaldo(Double saldo) {
+<span class="fc" id="L211">    this.saldo = saldo;</span>
+<span class="fc" id="L212">  }</span>
+
+  /**
+   * Restituisce le opere create dall'utente (artista).
+   */
+  public List&lt;Opera&gt; getOpereCreate() {
+<span class="nc" id="L218">    return opereCreate;</span>
+  }
+
+  /**
+   * Restituisce le opere in possesso dell'utente (vinte/acquistate).
+   */
+  public List&lt;Opera&gt; getOpereInPossesso() {
+<span class="fc" id="L225">    return opereInPossesso;</span>
+  }
+
+  /**
+   * Restituisce le notifiche dell'utente.
+   */
+  public List&lt;Notifica&gt; getNotifiche() {
+<span class="fc" id="L232">    return notifiche;</span>
+  }
+
+  /**
+   * Restituisce le partecipazioni dell'utente.
+   */
+  public List&lt;Partecipazione&gt; getPartecipazioni() {
+<span class="fc" id="L239">    return partecipazioni;</span>
+  }
+
+  /**
+   * Imposta le opere create dall'utente (artista).
+   */
+  public void setOpereCreate(List&lt;Opera&gt; opereCreate) {
+<span class="fc" id="L246">    this.opereCreate = opereCreate;</span>
+<span class="fc" id="L247">  }</span>
+
+  /**
+   * Imposta le opere in possesso dell'utente (vinte/acquistate).
+   */
+  public void setOpereInPossesso(List&lt;Opera&gt; opereInPossesso) {
+<span class="fc" id="L253">    this.opereInPossesso = opereInPossesso;</span>
+<span class="fc" id="L254">  }</span>
+
+  /**
+   * Imposta le notifche dell'utente.
+   */
+  public void setNotifiche(List&lt;Notifica&gt; notifiche) {
+<span class="fc" id="L260">    this.notifiche = notifiche;</span>
+<span class="fc" id="L261">  }</span>
+
+  /**
+   * Imposta le partecipazioni dell'utente.
+   */
+  public void setPartecipazioni(List&lt;Partecipazione&gt; partecipazioni) {
+<span class="fc" id="L267">    this.partecipazioni = partecipazioni;</span>
+<span class="fc" id="L268">  }</span>
+
+  /**
+   * Restituisce il numero di followers dell'utente.
+   *
+   * @return il numero di followers dell'utente
+   */
+  public int getnFollowers() {
+<span class="fc" id="L276">    return numFollowers;</span>
+  }
+
+  /**
+   * Modifica il numero di followers dell'utente.
+   *
+   * @param numFollowers il numero di followers dell'utente
+   */
+  public void setnFollowers(int numFollowers) {
+<span class="fc" id="L285">    this.numFollowers = numFollowers;</span>
+<span class="fc" id="L286">  }</span>
+
+  /**
+   * Restituisce la rappresentazione sotto forma di stringa di un utente.
+   *
+   * @return la stringa che rappresenta utente
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L295">    return &quot;Utente{&quot;</span>
+        +
+        &quot;id=&quot; + id
+        +
+        &quot;, nome='&quot; + nome + '\''
+        +
+        &quot;, cognome='&quot; + cognome + '\''
+        +
+        &quot;, fotoProfilo=&quot; + fotoProfilo
+        +
+        &quot;, email='&quot; + email + '\''
+        +
+        &quot;, username='&quot; + username + '\''
+        +
+        &quot;, password='&quot; + password + '\''
+        +
+        &quot;, seguito=&quot; + seguito
+        +
+        &quot;, saldo=&quot; + saldo
+        +
+        '}';
+  }
+
+  /**
+   * Verifica l'uguaglianza tra due oggetti.
+   *
+   * @param o oggetto da confrontare con un'istanza della classe corrente
+   * @return true se l'uguaglianza tra i due oggetti è verificato,
+   *         false altrimenti
+   */
+  @Override
+  public boolean equals(Object o) {
+<span class="fc bfc" id="L327" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L328">      return true;</span>
+    }
+<span class="fc" id="L330">    Utente utente = (Utente) o;</span>
+<span class="fc" id="L331">    BooleanComparator booleanComparator =</span>
+<span class="fc" id="L332">        new BooleanComparator(Objects.equals(getnFollowers(), utente.getnFollowers()));</span>
+<span class="fc" id="L333">    return booleanComparator</span>
+<span class="fc" id="L334">        .and(Objects.equals(getId(), utente.getId()))</span>
+<span class="fc" id="L335">        .and(Objects.equals(getNome(), utente.getNome()))</span>
+<span class="fc" id="L336">        .and(Objects.equals(getCognome(), utente.getCognome()))</span>
+<span class="fc" id="L337">        .and(Objects.equals(getFotoProfilo(), utente.getFotoProfilo()))</span>
+<span class="fc" id="L338">        .and(Objects.equals(getEmail(), utente.getEmail()))</span>
+<span class="fc" id="L339">        .and(Objects.equals(getUsername(), utente.getUsername()))</span>
+<span class="fc" id="L340">        .and(Arrays.equals(getPassword(), utente.getPassword()))</span>
+<span class="fc" id="L341">        .and(Objects.equals(getSeguito(), utente.getSeguito()))</span>
+<span class="fc" id="L342">        .and(Objects.equals(getSaldo(), utente.getSaldo())).getValue();</span>
+  }
+
+  /**
+   * Genera un hash.
+   *
+   * @return un intero che rappresenta l'hash della classe
+   */
+  @Override
+  public int hashCode() {
+<span class="nc" id="L352">    int result =</span>
+<span class="nc" id="L353">        Objects.hash(getId(), getNome(), getCognome(), getFotoProfilo(), getEmail(), getUsername(),</span>
+<span class="nc" id="L354">            getSeguito(), getSaldo(), getnFollowers(), getOpereCreate(),</span>
+<span class="nc" id="L355">            getOpereInPossesso(), getNotifiche(), getPartecipazioni());</span>
+<span class="nc" id="L356">    result = 31 * result + Arrays.hashCode(getPassword());</span>
+<span class="nc" id="L357">    return result;</span>
+  }
+
+  /**
+   * Variabili di istanza.
+   *
+   */
+  private Integer id;
+  private String nome;
+  private String cognome;
+  private Blob fotoProfilo;
+  private String email;
+  private String username;
+  private byte[] password;
+  private Utente seguito;
+  private Double saldo;
+  private int numFollowers;
+  private List&lt;Opera&gt; opereCreate;
+  private List&lt;Opera&gt; opereInPossesso;
+  private List&lt;Notifica&gt; notifiche;
+  private List&lt;Partecipazione&gt; partecipazioni;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
