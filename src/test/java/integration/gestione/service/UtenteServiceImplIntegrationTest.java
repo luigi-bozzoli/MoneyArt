@@ -571,9 +571,7 @@ class UtenteServiceImplIntegrationTest {
     @ParameterizedTest
     @ArgumentsSource(UtenteDBProvider.class)
     void checkEmailExisting(Utente utente) {
-      System.out.println(utenteService.getUserInformation(utente.getUsername()));
       boolean result = utenteService.checkEmail(utente.getEmail());
-      System.out.println(result);
 
       assertTrue(result);
     }
