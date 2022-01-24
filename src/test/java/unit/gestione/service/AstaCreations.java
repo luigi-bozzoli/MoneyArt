@@ -27,6 +27,9 @@ abstract class AstaCreations {
 		Asta a1 = new Asta(o1, new Date(), new Date(System.currentTimeMillis() + 7 * DAY_MILLIS), Asta.Stato.IN_CORSO);
 		a1.setId(1);
 
+		List<Partecipazione> p1 = new ArrayList<>();
+		a1.setPartecipazioni(p1);
+
 		return a1;
 	}
 
@@ -42,6 +45,9 @@ abstract class AstaCreations {
 
 		Asta a1 = new Asta(o1, new Date(System.currentTimeMillis() - 14 * DAY_MILLIS), new Date(System.currentTimeMillis() - 7 * DAY_MILLIS), Asta.Stato.TERMINATA);
 		a1.setId(1);
+
+		List<Partecipazione> p1 = new ArrayList<>();
+		a1.setPartecipazioni(p1);
 
 		return a1;
 	}
@@ -59,6 +65,9 @@ abstract class AstaCreations {
 		Asta a1 = new Asta(o1, new Date(), new Date(System.currentTimeMillis() + 7 * DAY_MILLIS), Asta.Stato.ELIMINATA);
 		a1.setId(1);
 
+		List<Partecipazione> p1 = new ArrayList<>();
+		a1.setPartecipazioni(p1);
+
 		return a1;
 	}
 
@@ -74,6 +83,9 @@ abstract class AstaCreations {
 
 		Asta a1 = new Asta(o1, new Date(System.currentTimeMillis() + 7 * DAY_MILLIS), new Date(System.currentTimeMillis() + 14 * DAY_MILLIS), Asta.Stato.CREATA);
 		a1.setId(1);
+
+		List<Partecipazione> p1 = new ArrayList<>();
+		a1.setPartecipazioni(p1);
 
 		return a1;
 	}
