@@ -1,10 +1,11 @@
 # MoneyArt
 
-qualcosa qui
+L’obiettivo di MoneyArt è sviluppare un’applicazione web che permetta la creazione e la compravendita di opere digitali tramite aste online. Dando la possibilità anche ai meno avvezzi a questo settore di poter entrare in questa nuova frontiera dell’arte.
 
 ## Languages and Tools (da cambiare)
 + Java
 + HTML
++ JSP
 + CSS
 + [Bootstrap](https://getbootstrap.com/)
 + JavaScript
@@ -26,5 +27,5 @@ qualcosa qui
 [Stefano Zarro](https://github.com/stepzar)
 
 
-## License (forse anche qui)
+## License
 [MIT](https://choosealicense.com/licenses/mit/)
