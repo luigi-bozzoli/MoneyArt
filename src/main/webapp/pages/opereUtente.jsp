@@ -109,7 +109,6 @@
         </div>
         <!-- /Create TAB-->
 
-        <div class="modal"><!-- Place at bottom of page --></div>
     </div>
 
 </div>

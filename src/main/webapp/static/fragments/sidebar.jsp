@@ -8,6 +8,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -124,7 +125,7 @@
                 <script src="${pageContext.servletContext.contextPath}/static/js/creaAsta.js"></script>
             </c:when>
             <c:when test="${fn:contains(requestURI, '/opereUtente')}">
-                <script src="${pageContext.servletContext.contextPath}/static/js/opereUtente.js.js"></script>
+                <script src="${pageContext.servletContext.contextPath}/static/js/opereUtente.js"></script>
             </c:when>
             <c:when test="${fn:contains(requestURI, '/asteUtente')}">
                 <script src="${pageContext.servletContext.contextPath}/static/js/asteUtente.js"></script>

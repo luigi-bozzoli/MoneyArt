@@ -28,7 +28,7 @@ public class ServletAcquistoDiretto extends HttpServlet {
     Integer idUtente = utente.getId();
     rivenditaService.buy(idRivendita, idUtente);
     RequestDispatcher dispatcher =
-        request.getRequestDispatcher("/pages/profiloUtente.jsp");
+        request.getRequestDispatcher("/pages/opereUtente.jsp");
     dispatcher.forward(request, response);
   }
 

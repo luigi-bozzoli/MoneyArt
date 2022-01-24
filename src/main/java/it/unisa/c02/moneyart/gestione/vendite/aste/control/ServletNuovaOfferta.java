@@ -14,9 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet che gestisce la creazione di una nuova offerta.
+ * Questa servlet gestisce una nuova offerta.
  *
  */
+
 @WebServlet(name = "ServletNuovaOfferta", value = "/newOffer")
 public class ServletNuovaOfferta extends HttpServlet {
 
