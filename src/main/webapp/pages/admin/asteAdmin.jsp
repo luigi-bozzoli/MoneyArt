@@ -2,14 +2,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@include file="../../static/fragments/header.jsp" %>
+<%@include file="../../static/fragments/sidebar_admin.jsp" %>
 
     <script>let ctx = "${pageContext.servletContext.contextPath}"</script>
 
     <jsp:include page="/getAuctions?action=inCorso"/>
     <c:set var="aste" value="${requestScope.aste}"/>
 
-    <div class="container-fluid d-flex flex-wrap" id="container-aste">
+    <div class="page-heading">
+        <h1>Aste in corso</h1>
+        <span class="line-break"></span>
+    </div>
+    <div class="container d-flex flex-wrap" id="container-aste">
 
         <c:forEach var="asta" items="${aste}">
             <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">

@@ -28,6 +28,21 @@
     padding: 6px;
     outline: none;
 }
+#remove-auction{
+    border-radius: 20px;
+    padding: 6px 20px;
+    border: none;
+    background-color: #eba83a;
+    color: white;
+    outline: none;
+    transition: 0.6s;
+    cursor: pointer;
+    width: 30%;
+}
+#remove-auction:hover {
+    background-color: #BB371A;
+    transition: 0.6s;
+}
 
 .offer-input button {
     border-radius: 20px;

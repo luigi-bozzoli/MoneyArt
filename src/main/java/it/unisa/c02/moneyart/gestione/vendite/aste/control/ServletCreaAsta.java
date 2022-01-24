@@ -58,7 +58,6 @@ public class ServletCreaAsta extends HttpServlet {
     idOpera = Integer.parseInt(idOperaS);
     Opera opera = operaService.getArtwork(idOpera);
 
-    System.out.println(dataFineS);
     try {
 
       dataInizio = new SimpleDateFormat("yyyy-MM-dd").parse(dataInizioS);
@@ -95,7 +94,15 @@ public class ServletCreaAsta extends HttpServlet {
       return;
     }
 
-    response.sendRedirect(getServletContext().getContextPath() + "/pages/asteCreateUtente.jsp");
+
+    Date currentDate = new Date();
+
+    if(currentDate.after(dataInizio) || currentDate.equals(dataInizio)) {
+      response.sendRedirect(request.getContextPath() + "/pages/asteCreateUtente.jsp#aste-in-corso");
+    } else {
+      response.sendRedirect(request.getContextPath() + "/pages/asteCreateUtente.jsp");
+    }
+
 
 
   }

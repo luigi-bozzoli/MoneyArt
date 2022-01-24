@@ -13,12 +13,25 @@
 
     <!-- TITLE -->
     <title>Admin - MoneyArt</title>
+    <c:choose>
+        <c:when test="${fn:contains(requestURI, '/segnalazioni')}">
+            <title>Segnalazioni - MoneyArt</title>
+        </c:when>
+    </c:choose>
 
     <!-- STYLESHEETS -->
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/fragments_style.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/admin_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
+    <c:choose>
+        <c:when test="${fn:contains(requestURI, '/asteAdmin')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/segnalazioni')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/notifiche.css">
+        </c:when>
+    </c:choose>
 
     <!-- FAVICON -->
     <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/static/favicon.ico" type="image/x-icon">
@@ -39,6 +52,31 @@
     <!-- JS -->
     <script src="${pageContext.servletContext.contextPath}/static/js/sidebar.js"></script>
     <script src="${pageContext.servletContext.contextPath}/static/js/updateProfile.js"></script>
+    <c:choose>
+        <c:when test="${fn:contains(requestURI, '/asteAdmin')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/segnalazioni')}">
+            <script src="${pageContext.servletContext.contextPath}/static/js/segnalazione.js"></script>
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/asteCreateUtente')}">
+            <script src="${pageContext.servletContext.contextPath}/static/js/asteCreateUtente.js"></script>
+        </c:when>
+    </c:choose>
+
+    <style>
+        .sidebar .nav-icon {
+            color: #EBA83A !important;
+        }
+
+        a.nav-link:hover p, a.nav-link:hover i {
+            color: #BB371A !important;
+        }
+
+        .content-wrapper{
+            background: none !important;
+        }
+    </style>
 
 </head>
 

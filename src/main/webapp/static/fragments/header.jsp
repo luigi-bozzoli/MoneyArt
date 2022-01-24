@@ -36,9 +36,6 @@
                     <c:when test="${fn:contains(requestURI, '/esplora')}">
                         <title>Esplora - MoneyArt</title>
                     </c:when>
-                    <c:when test="${fn:contains(requestURI, '/asteUtente')}">
-                        <title>Aste - MoneyArt</title>
-                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/asta')}">
                         <title>Asta - MoneyArt</title>
                     </c:when>
@@ -82,31 +79,18 @@
                     <c:when test="${fn:contains(requestURI, '/checkout')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/checkout_style.css">
                     </c:when>
-                    <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
-                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/homepage_style.css">
-                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/profilo_utente_style.css">
-                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
-                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/esplora')}">
-                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
-                    </c:when>
-                    <c:when test="${fn:contains(requestURI, '/asteAdmin')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/explore_style.css">
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/asta')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/pagina_asta_style.css">
                     </c:when>
-                    <c:when test="${fn:contains(requestURI, '/asteUtente')}">
-                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/aste_utente_style.css">
-                    </c:when>
+
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/homepage_style.css">
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/marketplace')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/marketplace_style.css">
-                    </c:when>
-                    <c:when test="${fn:contains(requestURI, '/notifiche') or fn:contains(requestURI, '/segnalazioni')}">
-                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/notifiche.css">
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/rivendita')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/pagina_rivendita_style.css">
@@ -114,20 +98,11 @@
                     <c:when test="${fn:contains(requestURI, '/artista')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/artista.css">
                     </c:when>
-                    <c:when test="${fn:contains(requestURI, '/opereUtente')}">
-                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/opereUtente.css">
-                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/cercaOpere')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/cercaOpere.css">
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/cercaUtenti')}">
                         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/cercaUtenti.css">
-                    </c:when>
-                    <c:when test="${fn:contains(requestURI, '/asteCreateUtente')}">
-                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/asteCreateUtente.css">
-                    </c:when>
-                    <c:when test="${fn:contains(requestURI, '/rivenditeUtente')}">
-                        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/rivenditeUtente.css">
                     </c:when>
                     <c:otherwise>
                         <!-- Caso con path /MoneyArt_war/ (all'avvio del server) -->
@@ -165,9 +140,6 @@
                     <c:when test="${fn:contains(requestURI, '/signup.jsp')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/signup.js"></script>
                     </c:when>
-                    <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
-                        <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
-                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/asteAdmin')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/explore.js"></script>
                     </c:when>
@@ -177,20 +149,11 @@
                     <c:when test="${fn:contains(requestURI, '/asta')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/auction.js"></script>
                     </c:when>
-                    <c:when test="${fn:contains(requestURI, '/asteUtente')}">
-                        <script src="${pageContext.servletContext.contextPath}/static/js/asteUtente.js"></script>
-                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/marketplace')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/marketplace.js"></script>
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/rivendita')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/auction.js"></script>
-                    </c:when>
-                    <c:when test="${fn:contains(requestURI, '/notifiche')}">
-                        <script src="${pageContext.servletContext.contextPath}/static/js/notifiche.js"></script>
-                    </c:when>
-                    <c:when test="${fn:contains(requestURI, '/segnalazioni')}">
-                        <script src="${pageContext.servletContext.contextPath}/static/js/segnalazione.js"></script>
                     </c:when>
                     <c:when test="${fn:contains(requestURI, '/artista')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/artist.js"></script>
@@ -198,14 +161,8 @@
                     <c:when test="${fn:contains(requestURI, '/home')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/home.js"></script>
                     </c:when>
-                    <c:when test="${fn:contains(requestURI, '/opereUtente')}">
-                        <script src="${pageContext.servletContext.contextPath}/static/js/opereUtente.js"></script>
-                    </c:when>
                     <c:when test="${fn:contains(requestURI, '/cercaOpere')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/cercaOpere.js"></script>
-                    </c:when>
-                    <c:when test="${fn:contains(requestURI, '/asteCreateUtente')}">
-                        <script src="${pageContext.servletContext.contextPath}/static/js/asteCreateUtente.js"></script>
                     </c:when>
                 </c:choose>
                 <script src="${pageContext.servletContext.contextPath}/static/js/header.js"></script>
@@ -262,7 +219,6 @@
                                                 <a href="${pageContext.servletContext.contextPath}/pages/profiloUtente.jsp" title="Account">
                                                     <i class="fas fa-user-alt"></i>
                                                 </a>
-
                                                 <a href="${pageContext.servletContext.contextPath}/logout" title="Esci">
                                                     <i class="fas fa-sign-out-alt"></i>
                                                 </a>
@@ -272,6 +228,9 @@
                                             <div class="account-buttons">
                                                 <a href="${pageContext.servletContext.contextPath}/pages/admin/profiloAdmin.jsp" title="Admin">
                                                     <i class="fas fa-user-cog"></i>
+                                                </a>
+                                                <a href="${pageContext.servletContext.contextPath}/logout" title="Esci">
+                                                    <i class="fas fa-sign-out-alt"></i>
                                                 </a>
                                             </div>
                                         </c:when>

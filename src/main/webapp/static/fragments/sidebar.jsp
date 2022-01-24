@@ -12,7 +12,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- TITLE -->
-    <title>Profilo Utente - MoneyArt</title>
+    <c:choose>
+        <c:when test="${fn:contains(requestURI, '/profiloUtente')}">
+            <title>Profilo Utente - MoneyArt</title>
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/creaOpera')}">
+            <title>Crea Opera- MoneyArt</title>
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/creaAsta')}">
+            <title>Crea Asta - MoneyArt</title>
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/opereUtente')}">
+            <title>Opere - MoneyArt</title>
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/asteUtente')}">
+            <title>Aste - MoneyArt</title>
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/notifiche')}">
+            <title>Notifiche - MoneyArt</title>
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/segnalazioni')}">
+            <title>Segnalazioni - MoneyArt</title>
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/asteCreateUtente')}">
+            <title>Le tue Aste - MoneyArt</title>
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/rivenditeUtente')}">
+            <title>Le tue Rivendite - MoneyArt</title>
+        </c:when>
+
+
+    </c:choose>
+
 
     <!-- STYLESHEETS -->
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/fragments_style.css">
@@ -62,6 +93,22 @@
         <c:when test="${fn:contains(requestURI, '/creaAsta')}">
             <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/crea_asta.css">
         </c:when>
+        <c:when test="${fn:contains(requestURI, '/opereUtente')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/opereUtente.css">
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/asteUtente')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/aste_utente_style.css">
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/notifiche')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/notifiche.css">
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/asteCreateUtente')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/asteCreateUtente.css">
+        </c:when>
+        <c:when test="${fn:contains(requestURI, '/rivenditeUtente')}">
+            <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/static/style/rivenditeUtente.css">
+        </c:when>
+
     </c:choose>
 
     <!-- JS -->
@@ -76,7 +123,34 @@
             <c:when test="${fn:contains(requestURI, '/creaAsta')}">
                 <script src="${pageContext.servletContext.contextPath}/static/js/creaAsta.js"></script>
             </c:when>
+            <c:when test="${fn:contains(requestURI, '/opereUtente')}">
+                <script src="${pageContext.servletContext.contextPath}/static/js/opereUtente.js.js"></script>
+            </c:when>
+            <c:when test="${fn:contains(requestURI, '/asteUtente')}">
+                <script src="${pageContext.servletContext.contextPath}/static/js/asteUtente.js"></script>
+            </c:when>
+            <c:when test="${fn:contains(requestURI, '/notifiche')}">
+                <script src="${pageContext.servletContext.contextPath}/static/js/notifiche.js"></script>
+            </c:when>
+            <c:when test="${fn:contains(requestURI, '/asteCreateUtente')}">
+                <script src="${pageContext.servletContext.contextPath}/static/js/asteCreateUtente.js"></script>
+            </c:when>
+
+
         </c:choose>
+    <style>
+        .sidebar .nav-icon {
+            color: #EBA83A !important;
+        }
+
+        a.nav-link:hover p, a.nav-link:hover i {
+            color: #BB371A !important;
+        }
+
+        .content-wrapper{
+            background: none !important;
+        }
+    </style>
 
 </head>
 
@@ -124,8 +198,14 @@
                                     </li>
                                     <li class="nav-item">
                                         <a href="${pageContext.servletContext.contextPath}/pages/opereUtente.jsp" class="nav-link">
-                                            <i class="nav-icon fas fa-folder"></i>
-                                            <p>Le mie opere</p>
+                                            <i class="nav-icon fas fa-paint-brush"></i>
+                                            <p>Opere in attesa</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="${pageContext.servletContext.contextPath}/getUser?id=${sessionScope.utente.id}" class="nav-link">
+                                            <i class="nav-icon fas fa-palette"></i>
+                                            <p>Le tue opere</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -136,8 +216,20 @@
                                     </li>
                                     <li class="nav-item">
                                         <a href="${pageContext.servletContext.contextPath}/pages/asteUtente.jsp" class="nav-link">
-                                            <i class="nav-icon fas fa-th-list"></i>
+                                            <i class="nav-icon fas fa-hourglass-end"></i>
                                             <p>Aste</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/asteCreateUtente.jsp" class="nav-link">
+                                            <i class="nav-icon fas fa-gavel"></i>
+                                            <p>Le tue aste</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="${pageContext.servletContext.contextPath}/pages/rivenditeUtente.jsp" class="nav-link">
+                                            <i class="nav-icon fas fa-money-bill-wave"></i>
+                                            <p>Rivendite</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -147,9 +239,9 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="/logout" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/logout" class="nav-link">
                                             <i class="nav-icon fas fa-sign-out-alt"></i>
-                                            <p>LogOut</p>
+                                            <p>Logout</p>
                                         </a>
                                     </li>
                                 </ul>

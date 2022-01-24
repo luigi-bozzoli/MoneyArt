@@ -11,6 +11,10 @@
 
 <c:set var="utente" value="${requestScope.utente}"/>
 
+<div class="page-heading">
+    <h1>Wallet</h1>
+    <span class="line-break"></span>
+</div>
 
 <div class="content-wrapper">
     <ul class="nav nav-tabs d-flex justify-content-between" role="tablist">
