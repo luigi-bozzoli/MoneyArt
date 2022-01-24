@@ -28,6 +28,29 @@ function picClick() {
     $('#picCropped').click();
 }
 
+
+function onlyLettersName(input) {
+    let letters = /^[A-Za-z\s\u00C0-\u00FF]{1,255}$/;
+
+    if (input.val().match(letters) && !isEmpty(input.val())) {
+        return true;
+    } else {
+        input.focus();
+        return false;
+    }
+}
+
+function onlyLettersDescrpition(input) {
+    let letters = /^[A-Za-z\s\u00C0-\u00FF]{1,500}$/;
+
+    if (input.val().match(letters) && !isEmpty(input.val())) {
+        return true;
+    } else {
+        input.focus();
+        return false;
+    }
+}
+
 function stateChanged() {
     let reader = new FileReader();
     reader.onload = function (e) {
@@ -42,6 +65,35 @@ function stateChanged() {
     reader.readAsDataURL(pic.files[0]);
     $('.image-crop-wrap').removeClass('d-none');
     $('.pic').removeClass('d-flex').addClass('d-none');
+}
+
+function fileChecker(){
+    let pic = $('#picCropped');
+    return checkProfile(pic) && checkExtension(pic);
+}
+
+
+function checkProfile(foto){
+    if(foto[0].files[0] === undefined){
+        return true
+    }
+    console.log(foto[0].files[0].size)
+
+    return foto[0].files[0].size < 10000000;
+}
+
+function checkExtension(foto){
+    if(foto[0].files[0] === undefined){
+        return true
+    }
+    var filename = foto.val();
+
+    var pathParts = filename.split('/');   // Split the path on '/': ['path', 'to', 'file.ext']
+    var filename  = pathParts.pop();       // Take the last element. This is a file name: 'file.ext'
+    var filenameParts = filename.split('.'); // Split the file name on the '.': ['file', 'ext']
+    var extension = filenameParts[1];
+    console.log(extension);
+    return extension === "jpg" || extension === "png";
 }
 
 $(document).ready(function() {
@@ -78,6 +130,7 @@ $(document).ready(function() {
 
     $('#picCropped').on('change', function() {
         stateChanged();
+        console.log($("#picForm").val());
     });
 
     $('#crop-result').on('click', function (ev) {
@@ -121,6 +174,16 @@ $(document).ready(function() {
             return false;
         } else if (isEmpty($('.data input[name = name]').val()) || isEmpty($('.data textarea[name = description]').val())) {
             $(".error").html('<p class="text-center">Il titolo e la descrizione non possono essere vuoti!<i class="fas fa-exclamation-triangle ml-2"></i></p>');
+            $("html, body").animate({scrollTop: 0}, 500);
+            $(".error").delay(550).effect("shake");
+            return false;
+        }else if ( !(onlyLettersName($('.data input[name = name]')) || !(onlyLettersDescrpition($('.data textarea[name = description]'))))) {
+            $(".error").html('<p class="text-center">Il titolo o la descrizione non sono validi<i class="fas fa-exclamation-triangle ml-2"></i></p>');
+            $("html, body").animate({scrollTop: 0}, 500);
+            $(".error").delay(550).effect("shake");
+            return false;
+        } else if (!fileChecker()){
+            $(".error").html('<p class="text-center">l\' immagine non è valida<i class="fas fa-exclamation-triangle ml-2"></i></p>');
             $("html, body").animate({scrollTop: 0}, 500);
             $(".error").delay(550).effect("shake");
             return false;

@@ -2,7 +2,7 @@
   "id": "e3469196-30ea-421e-9d06-90c93c1c179f",
   "version": "2.0",
   "name": "MoneyArt",
-  "url": "http://localhost:8080/MoneyArt_war/newAuction?id=8",
+  "url": "http://localhost:8080/MoneyArt_war/pages/login.jsp",
   "tests": [{
     "id": "fd687b98-7b29-4703-bfe6-63fd02f6edd0",
     "name": "TC_1.1_1",
@@ -1604,10 +1604,10 @@
     "id": "7db33c3a-a406-40d6-9170-9cc4a3858625",
     "name": "TC_1.4_2",
     "commands": [{
-      "id": "4d3609e1-e87a-42c7-9717-cda441c0ab5c",
+      "id": "294e445e-1434-488b-bf33-610d5eeae076",
       "comment": "",
       "command": "open",
-      "target": "",
+      "target": "http://localhost:8080/MoneyArt_war/walletInfo",
       "targets": [],
       "value": ""
     }, {
@@ -1725,10 +1725,10 @@
     "id": "e4605bb6-7bac-4e67-8c6b-e5f74eab81a7",
     "name": "TC_1.4_1",
     "commands": [{
-      "id": "96b093e8-9055-4c4f-a887-28a52726a729",
+      "id": "434ff65c-6da6-4cce-9736-1660aa751da8",
       "comment": "",
       "command": "open",
-      "target": "",
+      "target": "http://localhost:8080/MoneyArt_war/walletInfo",
       "targets": [],
       "value": ""
     }, {
@@ -1839,7 +1839,7 @@
         ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:position"]
       ],
-      "value": "100"
+      "value": "-100"
     }, {
       "id": "0346273d-8aa0-44cb-b471-cdd38023f3d3",
       "comment": "",
@@ -1870,7 +1870,7 @@
       "id": "dfe6937c-9f69-4159-946e-ea130cf776b8",
       "comment": "",
       "command": "assertText",
-      "target": "css=#ricarica .h1",
+      "target": "css=#prelievo .h1",
       "targets": [
         ["css=#ricarica .h1", "css:finder"],
         ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
@@ -1928,7 +1928,7 @@
         ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:position"]
       ],
-      "value": "300"
+      "value": "1200"
     }, {
       "id": "86ed6e81-ba0c-4661-a59e-54422710ff60",
       "comment": "",
@@ -2017,7 +2017,7 @@
         ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:position"]
       ],
-      "value": "cento"
+      "value": "-100"
     }, {
       "id": "a06c25a3-52fa-4d92-8db9-c1f3c22f09ed",
       "comment": "",
@@ -2137,7 +2137,7 @@
       "id": "4f98274c-c274-46b2-ae16-0dd4dc86a516",
       "comment": "",
       "command": "assertText",
-      "target": "css=#ricarica .h1",
+      "target": "css=#prelievo .h1",
       "targets": [
         ["css=#ricarica .h1", "css:finder"],
         ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
@@ -2195,7 +2195,7 @@
         ["xpath=//div[@id='prelievo']/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/div/div[2]/div/div/form/div/div/div/div/input", "xpath:position"]
       ],
-      "value": "100"
+      "value": "10"
     }, {
       "id": "9ea91033-157c-433a-8463-708a2813f481",
       "comment": "",
@@ -2222,18 +2222,6 @@
         ["xpath=//button[contains(.,'Preleva Importo')]", "xpath:innerText"]
       ],
       "value": ""
-    }, {
-      "id": "4f48717e-a675-4337-8409-609698f300e0",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=#ricarica .h1",
-      "targets": [
-        ["css=#ricarica .h1", "css:finder"],
-        ["xpath=//div[@id='ricarica']/div/div/div/div/div/div/div/p[2]", "xpath:idRelative"],
-        ["xpath=//p[2]", "xpath:position"],
-        ["xpath=//p[contains(.,'0.0')]", "xpath:innerText"]
-      ],
-      "value": "${saldo}"
     }]
   }, {
     "id": "de61b38e-6605-4e2a-90f9-f879a76c054e",
@@ -3699,7 +3687,7 @@
         ["xpath=//input[@id='picCropped']", "xpath:attributes"],
         ["xpath=//div[4]/input", "xpath:position"]
       ],
-      "value": "C:\\fakepath\\success.jpg"
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\estensione sbagliata.jfif"
     }, {
       "id": "00cdd46b-1cb9-4a10-aa46-06afc57b062a",
       "comment": "",
@@ -3761,128 +3749,12 @@
       ],
       "value": ""
     }, {
-      "id": "f27d8af1-2f92-4722-80d9-ea7ae7d0aeb2",
+      "id": "2eb32106-a803-4681-9629-8be2d9edb8b4",
       "comment": "",
-      "command": "click",
-      "target": "css=.data-input:nth-child(1) > .input-icon",
-      "targets": [
-        ["css=.data-input:nth-child(1) > .input-icon", "css:finder"],
-        ["xpath=//form/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "b078c375-3c91-4faa-b53b-c124c94b35d8",
-      "comment": "",
-      "command": "click",
-      "target": "id=name",
-      "targets": [
-        ["id=name", "id"],
-        ["name=name", "name"],
-        ["css=#name", "css:finder"],
-        ["xpath=//input[@id='name']", "xpath:attributes"],
-        ["xpath=//form/div/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "651f4880-3677-4e02-99ba-5f5ca75bb0fd",
-      "comment": "",
-      "command": "click",
-      "target": "css=.data",
-      "targets": [
-        ["css=.data", "css:finder"],
-        ["xpath=//form[@name='informations']", "xpath:attributes"],
-        ["xpath=//form", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "cc278507-e3aa-46dd-9939-9840ac7f55d3",
-      "comment": "",
-      "command": "click",
-      "target": "id=create",
-      "targets": [
-        ["id=create", "id"],
-        ["css=#create", "css:finder"],
-        ["xpath=//button[@id='create']", "xpath:attributes"],
-        ["xpath=//button", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "e837c3a4-3955-4ce2-8d52-8ce44695190a",
-      "comment": "",
-      "command": "mouseOver",
-      "target": "id=create",
-      "targets": [
-        ["id=create", "id"],
-        ["css=#create", "css:finder"],
-        ["xpath=//button[@id='create']", "xpath:attributes"],
-        ["xpath=//button", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "ce073daa-29a4-4a15-bc47-376aff292fc6",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "id=create",
-      "targets": [
-        ["id=create", "id"],
-        ["css=#create", "css:finder"],
-        ["xpath=//button[@id='create']", "xpath:attributes"],
-        ["xpath=//button", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "14b26038-0a54-488b-82a7-a5caad9f6aa1",
-      "comment": "",
-      "command": "runScript",
-      "target": "window.scrollTo(0,0)",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
       "targets": [],
-      "value": ""
-    }, {
-      "id": "b5eb7278-84ab-47dd-a8f4-eaae7c1c06d6",
-      "comment": "",
-      "command": "click",
-      "target": "css=.overlay",
-      "targets": [
-        ["css=.overlay", "css:finder"],
-        ["xpath=//div[@onclick='picClick()']", "xpath:attributes"],
-        ["xpath=//div[4]/div/div[2]/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "bae74d7d-43de-4e41-87de-1e7b94832751",
-      "comment": "",
-      "command": "type",
-      "target": "id=picCropped",
-      "targets": [
-        ["id=picCropped", "id"],
-        ["name=pictureCr", "name"],
-        ["css=#picCropped", "css:finder"],
-        ["xpath=//input[@id='picCropped']", "xpath:attributes"],
-        ["xpath=//div[4]/input", "xpath:position"]
-      ],
-      "value": "C:\\fakepath\\success.jpg"
-    }, {
-      "id": "53a46fbf-2e57-460d-8390-438cb2d65257",
-      "comment": "",
-      "command": "click",
-      "target": "css=.image-crop-wrap",
-      "targets": [
-        ["css=.image-crop-wrap", "css:finder"],
-        ["xpath=//body/div[4]/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "2aaabb7b-188f-4109-9349-46146991bcca",
-      "comment": "",
-      "command": "click",
-      "target": "id=crop-result",
-      "targets": [
-        ["id=crop-result", "id"],
-        ["css=#crop-result", "css:finder"],
-        ["xpath=//i[@id='crop-result']", "xpath:attributes"],
-        ["xpath=//i[2]", "xpath:position"]
-      ],
-      "value": ""
+      "value": "l' immagine non è valida"
     }]
   }, {
     "id": "9c33ed65-c6b9-47aa-b010-68d2c80416f1",
@@ -3906,7 +3778,7 @@
         ["xpath=//input[@id='offerta']", "xpath:attributes"],
         ["xpath=//input[2]", "xpath:position"]
       ],
-      "value": "300"
+      "value": "499"
     }, {
       "id": "c39d78ee-257b-4ed9-bb08-090ff7f0c709",
       "comment": "",
@@ -3923,8 +3795,11 @@
       "id": "16e94a09-aa07-462d-9ea4-838fec718d2b",
       "comment": "",
       "command": "assertText",
-      "target": "css=.error > .mt-3",
-      "targets": [],
+      "target": "css=.error:nth-child(3) > .mt-3",
+      "targets": [
+        ["css=.error:nth-child(3) > .mt-3", "css:finder"],
+        ["xpath=//div[2]/p", "xpath:position"]
+      ],
       "value": "Il tuo saldo non é sufficiente oppure hai fatto un'offerta non valida!"
     }]
   }, {
@@ -3949,7 +3824,7 @@
         ["xpath=//input[@id='offerta']", "xpath:attributes"],
         ["xpath=//input[2]", "xpath:position"]
       ],
-      "value": "310"
+      "value": "500"
     }, {
       "id": "2dbbcbb0-e996-4bf9-993b-008a7e6a8fe8",
       "comment": "",
@@ -4304,6 +4179,966 @@
       "targets": [],
       "value": "Aste create da te"
     }]
+  }, {
+    "id": "89b0669b-6c7c-4a6e-9cb9-56f8b799064d",
+    "name": "TC_2.1_2",
+    "commands": [{
+      "id": "5839e59f-2022-4e0d-9fb9-48bbc51ed4e4",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/creaOpera.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "77edc893-ed09-4473-b27b-5a75a90a779f",
+      "comment": "",
+      "command": "type",
+      "target": "id=picCropped",
+      "targets": [
+        ["id=picCropped", "id"],
+        ["name=pictureCr", "name"],
+        ["css=#picCropped", "css:finder"],
+        ["xpath=//input[@id='picCropped']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\troppo grande.jpg"
+    }, {
+      "id": "7a5f9a34-b35c-4efc-80ed-272d68cee06b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.image-crop-wrap",
+      "targets": [
+        ["css=.image-crop-wrap", "css:finder"],
+        ["xpath=//body/div[4]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eeafeaf3-6c5f-4f3f-b722-b2da16155521",
+      "comment": "",
+      "command": "click",
+      "target": "id=crop-result",
+      "targets": [
+        ["id=crop-result", "id"],
+        ["css=#crop-result", "css:finder"],
+        ["xpath=//i[@id='crop-result']", "xpath:attributes"],
+        ["xpath=//i[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5e1c555d-3b54-496d-8eb2-7a3802634bba",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["name=name", "name"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//form/div/div/input", "xpath:position"]
+      ],
+      "value": "Francesco"
+    }, {
+      "id": "a03657ad-6a73-4d54-a216-ebf03a50a8d6",
+      "comment": "",
+      "command": "type",
+      "target": "id=description",
+      "targets": [
+        ["id=description", "id"],
+        ["name=description", "name"],
+        ["css=#description", "css:finder"],
+        ["xpath=//textarea[@id='description']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "aaaaa"
+    }, {
+      "id": "953ff728-533d-4501-9cbe-8530cc43da79",
+      "comment": "",
+      "command": "click",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "37f121e3-16f7-4465-9e37-a8b7167e9a79",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "l' immagine non è valida"
+    }]
+  }, {
+    "id": "378fa6e2-c9e0-4ed9-ab5f-d387aa102bef",
+    "name": "TC_2.1_3",
+    "commands": [{
+      "id": "c91d2ac9-4341-4208-8a3d-5734d969d41a",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/creaOpera.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e8a22c2f-cd8e-4668-8ff4-d2f72da98155",
+      "comment": "",
+      "command": "type",
+      "target": "id=picCropped",
+      "targets": [
+        ["id=picCropped", "id"],
+        ["name=pictureCr", "name"],
+        ["css=#picCropped", "css:finder"],
+        ["xpath=//input[@id='picCropped']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\success.jpg"
+    }, {
+      "id": "cf32cc28-2ab8-494a-9f51-37346845a39d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.image-crop-wrap",
+      "targets": [
+        ["css=.image-crop-wrap", "css:finder"],
+        ["xpath=//body/div[4]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6371b9d9-9632-48a5-a990-46ee0638b6dc",
+      "comment": "",
+      "command": "click",
+      "target": "id=crop-result",
+      "targets": [
+        ["id=crop-result", "id"],
+        ["css=#crop-result", "css:finder"],
+        ["xpath=//i[@id='crop-result']", "xpath:attributes"],
+        ["xpath=//i[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2b0a8bf8-64d5-4055-b5ad-831dad1e4af3",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["name=name", "name"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//form/div/div/input", "xpath:position"]
+      ],
+      "value": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\\n\\n"
+    }, {
+      "id": "3a8cca5f-5c4b-43f7-8b85-38a131171484",
+      "comment": "",
+      "command": "type",
+      "target": "id=description",
+      "targets": [
+        ["id=description", "id"],
+        ["name=description", "name"],
+        ["css=#description", "css:finder"],
+        ["xpath=//textarea[@id='description']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "aaaaa"
+    }, {
+      "id": "6619e132-c12f-4e64-9583-431f49d85039",
+      "comment": "",
+      "command": "click",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "53f092db-93a6-4333-9e4a-ec56e6ead310",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Il titolo o la descrizione non sono validi"
+    }]
+  }, {
+    "id": "82b59d0f-0e39-46f2-850c-fb43867face4",
+    "name": "TC_2.1_4",
+    "commands": [{
+      "id": "7802f225-3689-49f4-b525-76111a5c6fc9",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/creaOpera.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "fa6a2515-d6ba-4c81-b965-821e31286f1b",
+      "comment": "",
+      "command": "type",
+      "target": "id=picCropped",
+      "targets": [
+        ["id=picCropped", "id"],
+        ["name=pictureCr", "name"],
+        ["css=#picCropped", "css:finder"],
+        ["xpath=//input[@id='picCropped']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\success.jpg"
+    }, {
+      "id": "bac3aae7-181e-4592-bd63-6f3d7ab4b312",
+      "comment": "",
+      "command": "click",
+      "target": "css=.image-crop-wrap",
+      "targets": [
+        ["css=.image-crop-wrap", "css:finder"],
+        ["xpath=//body/div[4]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f267256f-83a3-465c-903c-41d7fff4c314",
+      "comment": "",
+      "command": "click",
+      "target": "id=crop-result",
+      "targets": [
+        ["id=crop-result", "id"],
+        ["css=#crop-result", "css:finder"],
+        ["xpath=//i[@id='crop-result']", "xpath:attributes"],
+        ["xpath=//i[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f8cf178e-f9a7-4781-bffa-6b7f518dad44",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["name=name", "name"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//form/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6768224a-cd5f-46dc-860b-0dfcaf8cb160",
+      "comment": "",
+      "command": "type",
+      "target": "id=description",
+      "targets": [
+        ["id=description", "id"],
+        ["name=description", "name"],
+        ["css=#description", "css:finder"],
+        ["xpath=//textarea[@id='description']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "aaaaa"
+    }, {
+      "id": "dc5a7629-e698-4433-ab26-6b7b164ac855",
+      "comment": "",
+      "command": "click",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2e6debc6-736c-4d62-bb84-be548c9aaea6",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Il titolo e la descrizione non possono essere vuoti!"
+    }]
+  }, {
+    "id": "be6379bf-4f6c-4dff-beec-8d56b9f7f8a6",
+    "name": "TC_2.1_5",
+    "commands": [{
+      "id": "4c4736dc-7c9c-4136-b6b5-97353deb00e9",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/creaOpera.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9c429dd3-ea59-40c2-8aee-bb1a4f683502",
+      "comment": "",
+      "command": "type",
+      "target": "id=picCropped",
+      "targets": [
+        ["id=picCropped", "id"],
+        ["name=pictureCr", "name"],
+        ["css=#picCropped", "css:finder"],
+        ["xpath=//input[@id='picCropped']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\success.jpg"
+    }, {
+      "id": "4277e3e3-6d66-43bf-9e87-f4466c348034",
+      "comment": "",
+      "command": "click",
+      "target": "css=.image-crop-wrap",
+      "targets": [
+        ["css=.image-crop-wrap", "css:finder"],
+        ["xpath=//body/div[4]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4c5dae03-3959-4922-8e31-d1c89867fdf0",
+      "comment": "",
+      "command": "click",
+      "target": "id=crop-result",
+      "targets": [
+        ["id=crop-result", "id"],
+        ["css=#crop-result", "css:finder"],
+        ["xpath=//i[@id='crop-result']", "xpath:attributes"],
+        ["xpath=//i[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7bb8bc54-8660-41ff-9633-46d5571586d5",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["name=name", "name"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//form/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "159344fa-7f86-4c7a-a206-c2748383d2fc",
+      "comment": "",
+      "command": "type",
+      "target": "id=description",
+      "targets": [
+        ["id=description", "id"],
+        ["name=description", "name"],
+        ["css=#description", "css:finder"],
+        ["xpath=//textarea[@id='description']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "aaaaa"
+    }, {
+      "id": "3e3536e0-1f3b-4c47-bf37-890b68103e79",
+      "comment": "",
+      "command": "click",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4d2cdde9-b02e-404a-b678-39c31f9a4807",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Il titolo e la descrizione non possono essere vuoti!"
+    }]
+  }, {
+    "id": "c7452bf4-4b99-4380-8816-dbc02fdfee4b",
+    "name": "TC_2.1_6",
+    "commands": [{
+      "id": "d518e114-eafd-42cb-bedf-e2cfc9f8d112",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/creaOpera.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "cda03e8d-6ff4-4261-856f-a5af34bdb369",
+      "comment": "",
+      "command": "type",
+      "target": "id=picCropped",
+      "targets": [
+        ["id=picCropped", "id"],
+        ["name=pictureCr", "name"],
+        ["css=#picCropped", "css:finder"],
+        ["xpath=//input[@id='picCropped']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\success.jpg"
+    }, {
+      "id": "4d93f4b3-9536-4099-8748-f1e746e623d0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.image-crop-wrap",
+      "targets": [
+        ["css=.image-crop-wrap", "css:finder"],
+        ["xpath=//body/div[4]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a6046f38-c51c-45f5-878a-5dd9e0363ec9",
+      "comment": "",
+      "command": "click",
+      "target": "id=crop-result",
+      "targets": [
+        ["id=crop-result", "id"],
+        ["css=#crop-result", "css:finder"],
+        ["xpath=//i[@id='crop-result']", "xpath:attributes"],
+        ["xpath=//i[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "be1215d9-6ca3-4f2c-b381-646c8ee815d8",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["name=name", "name"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//form/div/div/input", "xpath:position"]
+      ],
+      "value": "Francesco"
+    }, {
+      "id": "486e4874-4e9b-4c78-a94e-c91162e35ae4",
+      "comment": "",
+      "command": "type",
+      "target": "id=description",
+      "targets": [
+        ["id=description", "id"],
+        ["name=description", "name"],
+        ["css=#description", "css:finder"],
+        ["xpath=//textarea[@id='description']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b004870e-07a0-4bae-a6a0-e92e0d175445",
+      "comment": "",
+      "command": "click",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "11ea49ee-1981-444b-bc21-ce48b6191c72",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Il titolo e la descrizione non possono essere vuoti!"
+    }]
+  }, {
+    "id": "b950df7b-df84-4f54-8beb-410a0247236c",
+    "name": "TC_2.1_7",
+    "commands": [{
+      "id": "2f59600a-8859-4f33-a1b4-23589e65faea",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/creaOpera.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "11d6b25f-b365-4ccd-ab07-64799fe0b7f5",
+      "comment": "",
+      "command": "type",
+      "target": "id=picCropped",
+      "targets": [
+        ["id=picCropped", "id"],
+        ["name=pictureCr", "name"],
+        ["css=#picCropped", "css:finder"],
+        ["xpath=//input[@id='picCropped']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\success.jpg"
+    }, {
+      "id": "6999e55a-9fe3-40c4-8c2e-13fb47e25ddd",
+      "comment": "",
+      "command": "click",
+      "target": "css=.image-crop-wrap",
+      "targets": [
+        ["css=.image-crop-wrap", "css:finder"],
+        ["xpath=//body/div[4]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "adac2694-4984-48ff-ae1a-3959faef4470",
+      "comment": "",
+      "command": "click",
+      "target": "id=crop-result",
+      "targets": [
+        ["id=crop-result", "id"],
+        ["css=#crop-result", "css:finder"],
+        ["xpath=//i[@id='crop-result']", "xpath:attributes"],
+        ["xpath=//i[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b9311826-1b85-4aba-a602-5c135d9ecc24",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["name=name", "name"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//form/div/div/input", "xpath:position"]
+      ],
+      "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor eu risus et suscipit. Integer varius leo vitae justo porttitor aliquam. Sed lorem quam, tristique eget sollicitudin dictum, maximus eget dui. Maecenas fringilla dui ultrices justo consequat tempor vel ac orci. Nam sit amet consectetur mi. Donec a urna pellentesque nulla efficitur tincidunt eu a mauris. Nullam at dui velit. Integer in nunc odio. Curabitur fringilla mauris eros, non mollis libero laoreet ac. Praesent rutrum cursus tellus et gravida.\\n\\nMauris eget felis nulla. Maecenas ultrices at lacus quis euismod. Vestibulum odio libero, finibus ut placerat vel, lobortis at orci. Donec condimentum, libero vel vulputate cursus, metus lacus maximus eros, et pulvinar velit dui vestibulum sem. Nulla facilisi. Maecenas accumsan sed tellus ut interdum. Quisque ullamcorper elit pretium tincidunt aliquam. Sed hendrerit convallis mi, nec dictum orci.\\n\\nCurabitur sit amet purus lacinia massa convallis elementum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque id aliquet mi. Nunc ac velit non augue tempor tincidunt. Proin viverra dignissim elit id efficitur. Donec vel purus risus. Curabitur aliquet augue a dui consectetur molestie. Mauris aliquet lectus nulla, quis blandit lorem tempor molestie. Morbi et magna ut nibh efficitur posuere.\\n\\nAliquam vulputate, magna non commodo egestas, odio quam semper nisl, nec cursus quam ligula eu ipsum. Nunc vitae rhoncus urna, id lobortis ante. Nulla feugiat sed metus non auctor. Nunc ac lacus vitae ipsum porttitor ultricies. Etiam efficitur elit vitae dui euismod semper. Integer tortor lorem, posuere ac accumsan eu, vulputate eu elit. Pellentesque porta dolor sit amet tellus sodales suscipit. Cras ipsum urna, fringilla eu dictum in, semper ut risus. In erat odio, finibus sit amet lobortis eu, elementum at tellus. Aenean tempor pellentesque tortor vel laoreet. In sagittis consequat malesuada. Ut semper iaculis neque id tempus. Suspendisse vitae felis lectus. Fusce eleifend id nisi a blandit. Mauris lobortis tempor nisi hendrerit rhoncus. Nunc laoreet vestibulum ligula in eleifend.\\n\\nCurabitur quis venenatis elit, sed sodales magna. Praesent non nisi ipsum. Donec ac ipsum vel enim fringilla pellentesque ac sed dolor. Aliquam fringilla pellentesque nunc ac tincidunt. Vestibulum elementum mi arcu, id vestibulum eros facilisis sit amet. Donec vel magna sit amet est fringilla congue. Morbi velit tellus, lacinia et maximus in, lacinia at ex. Morbi fringilla mauris id mauris mattis, quis hendrerit eros fringilla. Etiam eget ultricies diam, id rhoncus turpis.\\n\\nSed nec massa rutrum, volutpat velit vel, tincidunt felis. Phasellus tempus, libero a laoreet luctus, purus arcu rhoncus ligula, a hendrerit eros purus vel justo. Morbi porttitor vel enim et commodo. Nulla nibh nunc, maximus elementum nibh eget, bibendum commodo massa. Etiam non venenatis dui. Nam semper dolor ac pretium lacinia. Cras vel molestie ex, et ornare risus.\\n\\nProin aliquet consequat augue a tincidunt. Pellentesque mattis consequat urna vitae fermentum. Aenean vel pellentesque tortor. Sed sollicitudin ut neque et imperdiet. Proin bibendum, dui quis egestas tempus, mi mauris ultrices nulla, eu cursus mauris neque ac lacus. Aenean quis dui convallis, efficitur justo a, bibendum ipsum. Morbi eu."
+    }, {
+      "id": "84213917-4b87-4ece-a810-4b626735947c",
+      "comment": "",
+      "command": "type",
+      "target": "id=description",
+      "targets": [
+        ["id=description", "id"],
+        ["name=description", "name"],
+        ["css=#description", "css:finder"],
+        ["xpath=//textarea[@id='description']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "aasdad"
+    }, {
+      "id": "a30fde07-8be7-4386-908d-120df6cd6b3d",
+      "comment": "",
+      "command": "click",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bf774193-a85a-4a50-837a-2d0ec70d8464",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Il titolo o la descrizione non sono validi"
+    }]
+  }, {
+    "id": "af182b00-693c-4d8a-90b8-b234f7d2e3e2",
+    "name": "TC_2.1_8",
+    "commands": [{
+      "id": "eb1dd83d-b4d7-4c50-955d-6728f7120208",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/creaOpera.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "19bb675f-62c8-4c82-9666-206df1bfbcc9",
+      "comment": "",
+      "command": "type",
+      "target": "id=picCropped",
+      "targets": [
+        ["id=picCropped", "id"],
+        ["name=pictureCr", "name"],
+        ["css=#picCropped", "css:finder"],
+        ["xpath=//input[@id='picCropped']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\success.jpg"
+    }, {
+      "id": "ec85670b-110b-4321-ad14-a830f5ba2d0d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.image-crop-wrap",
+      "targets": [
+        ["css=.image-crop-wrap", "css:finder"],
+        ["xpath=//body/div[4]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f104386c-a335-4fad-ba70-078159fdf93f",
+      "comment": "",
+      "command": "click",
+      "target": "id=crop-result",
+      "targets": [
+        ["id=crop-result", "id"],
+        ["css=#crop-result", "css:finder"],
+        ["xpath=//i[@id='crop-result']", "xpath:attributes"],
+        ["xpath=//i[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "38513882-7ad3-480e-9e02-412fefad9c1f",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["name=name", "name"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//form/div/div/input", "xpath:position"]
+      ],
+      "value": "Francesco"
+    }, {
+      "id": "85c5f494-0290-45aa-a77e-c1631c6e380b",
+      "comment": "",
+      "command": "type",
+      "target": "id=description",
+      "targets": [
+        ["id=description", "id"],
+        ["name=description", "name"],
+        ["css=#description", "css:finder"],
+        ["xpath=//textarea[@id='description']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "aaaaa"
+    }, {
+      "id": "bcdee335-528e-4f3b-b8c0-24b98edac075",
+      "comment": "",
+      "command": "click",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "294d335f-a05c-4879-82a7-1926d2cc1371",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h1",
+      "targets": [
+        ["css=h1", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'Opere in attesa')]", "xpath:innerText"]
+      ],
+      "value": "Opere in attesa"
+    }]
+  }, {
+    "id": "32a80bea-2e54-41ac-9654-e432f916fa60",
+    "name": "TC_4_1_1",
+    "commands": [{
+      "id": "1c1f04d5-fd14-49b1-8812-09ac43921d9f",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/getAuction?id=3",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e9c46801-1e5d-48dc-9fab-4ffec77dd50e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.fa-flag",
+      "targets": [
+        ["css=.fa-flag", "css:finder"],
+        ["xpath=//div[@id='report']/a/i", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7f99d9af-3231-4494-852e-19e16df76924",
+      "comment": "",
+      "command": "type",
+      "target": "id=commento",
+      "targets": [
+        ["id=commento", "id"],
+        ["name=commento", "name"],
+        ["css=#commento", "css:finder"],
+        ["xpath=//textarea[@id='commento']", "xpath:attributes"],
+        ["xpath=//div[@id='segnalazioneModal']/div/div/form/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "eqrf"
+    }, {
+      "id": "677034dc-a81a-409e-aabf-6a1dda2cdf6f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='segnalazioneModal']/div/div/form/div[3]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Invia Segnalazione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6ce3b5c3-213e-44e1-8530-b134b438ba2a",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Lunghezza commento non valida"
+    }]
+  }, {
+    "id": "f62573d5-44ae-4e95-a430-2b15bd5fd05f",
+    "name": "TC_4_1_2",
+    "commands": [{
+      "id": "f0160d9b-7135-41ee-b17a-0c4feb3bbe6d",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/getAuction?id=3",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0d098a93-1eb8-426a-bb9f-7dd097c6d162",
+      "comment": "",
+      "command": "click",
+      "target": "css=.fa-flag",
+      "targets": [
+        ["css=.fa-flag", "css:finder"],
+        ["xpath=//div[@id='report']/a/i", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ea0ae6f4-e9b9-45c5-a488-936ae53bf023",
+      "comment": "",
+      "command": "type",
+      "target": "id=commento",
+      "targets": [
+        ["id=commento", "id"],
+        ["name=commento", "name"],
+        ["css=#commento", "css:finder"],
+        ["xpath=//textarea[@id='commento']", "xpath:attributes"],
+        ["xpath=//div[@id='segnalazioneModal']/div/div/form/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b2f00c0f-9599-4055-a4bd-942cbf2e7c1e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='segnalazioneModal']/div/div/form/div[3]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Invia Segnalazione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5b5172c7-6bbc-4c7b-adfc-9143f8ce7ca2",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Lunghezza commento non valida"
+    }]
+  }, {
+    "id": "4bc5aa5e-a6d7-4447-b624-4fa220890e69",
+    "name": "TC_4_1_3",
+    "commands": [{
+      "id": "bad2c7ba-a564-4687-a760-08e46acb919b",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/getAuction?id=3",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "443af124-fa6d-4c84-9def-8e860572e9c5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.fa-flag",
+      "targets": [
+        ["css=.fa-flag", "css:finder"],
+        ["xpath=//div[@id='report']/a/i", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d6b1e7c-ce8f-4f53-a22d-3f6a7f0d7bac",
+      "comment": "",
+      "command": "type",
+      "target": "id=commento",
+      "targets": [
+        ["id=commento", "id"],
+        ["name=commento", "name"],
+        ["css=#commento", "css:finder"],
+        ["xpath=//textarea[@id='commento']", "xpath:attributes"],
+        ["xpath=//div[@id='segnalazioneModal']/div/div/form/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "eqrfwefwefppkpnknpknk"
+    }, {
+      "id": "1f0e7587-85d6-4aa1-af49-167538756ff8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='segnalazioneModal']/div/div/form/div[3]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Invia Segnalazione')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "18c01d41-3147-4138-b50c-47be412156fc",
+    "name": "TC_1.2_1",
+    "commands": [{
+      "id": "55781f7a-5fab-439e-afe4-a13651bcd964",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/login.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2a9fb2fc-30f1-4400-b9c4-12d603d51da4",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "wqdqwd"
+    }, {
+      "id": "4428eed5-de61-4d17-b916-68967882a2fc",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "lqmw dèqw d"
+    }, {
+      "id": "6f4abfa6-3c57-4055-8a16-a8d35b86f69e",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(3)",
+      "targets": [
+        ["css=button:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[4]/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ec3e131a-0d3d-4f79-8a23-7418c5ccc1bb",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Autenticazione fallita, riprova!"
+    }]
+  }, {
+    "id": "864578b4-d9f3-44d2-a5ed-44f75afd0e62",
+    "name": "TC_1.2_3",
+    "commands": [{
+      "id": "c44fee9f-1698-4637-a76d-1dbb73658bbd",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/login.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9601e9a5-bdb7-4caf-b8fa-f2fadf13a131",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "aurySepe"
+    }, {
+      "id": "f8788d3c-3325-47c3-901e-9c5f7b828369",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "pippo123"
+    }, {
+      "id": "48157c03-fe3d-4b31-a17e-cf2cbff50f10",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(3)",
+      "targets": [
+        ["css=button:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[4]/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "6e8b6196-8e6b-44e2-b918-d48031834914",
+    "name": "TC_1.2_2",
+    "commands": [{
+      "id": "cb336806-214a-4bf0-a27c-320ee89b17cf",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/login.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d0eec3e1-6341-45f1-a825-c700a485b7f9",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "aurySepe"
+    }, {
+      "id": "7da43f58-3944-4f03-97a9-3ddfdcae2eaa",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "lqmw dèqw d"
+    }, {
+      "id": "c5634d12-3a54-4dda-8e06-148a20fe7684",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(3)",
+      "targets": [
+        ["css=button:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[4]/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d5ad124c-2191-4ee9-8a88-ac899a6beab7",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Autenticazione fallita, riprova!"
+    }]
   }],
   "suites": [{
     "id": "cf8c9b8e-3130-42a5-bb7e-b34208329b47",
@@ -4353,7 +5188,7 @@
     "persistSession": false,
     "parallel": false,
     "timeout": 300,
-    "tests": ["26218fe1-a867-4f57-bb34-ee9937d05ec1"]
+    "tests": ["26218fe1-a867-4f57-bb34-ee9937d05ec1", "89b0669b-6c7c-4a6e-9cb9-56f8b799064d", "378fa6e2-c9e0-4ed9-ab5f-d387aa102bef", "82b59d0f-0e39-46f2-850c-fb43867face4", "be6379bf-4f6c-4dff-beec-8d56b9f7f8a6", "c7452bf4-4b99-4380-8816-dbc02fdfee4b", "b950df7b-df84-4f54-8beb-410a0247236c", "af182b00-693c-4d8a-90b8-b234f7d2e3e2"]
   }, {
     "id": "eeda9ee3-003d-48db-99e7-89e1b905fc3f",
     "name": "Partecipazione Asta",
@@ -4368,7 +5203,21 @@
     "parallel": false,
     "timeout": 300,
     "tests": ["49aa4130-8a8b-45f4-9eb1-086dd72db47a", "6313d438-9b2d-4695-b2ed-a6d9f9d6c319", "9be02662-438c-4de0-864b-44da0baf949a", "b18fbebd-d5c9-4248-8858-0bcdc2ccd6f1", "68cb2851-9aa9-464e-8970-f7d314703130", "37b378df-78d2-4db4-bde4-59e726d64648"]
+  }, {
+    "id": "1e4860d2-10f6-4381-b241-7b13f05929f4",
+    "name": "Segnalazioni",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["32a80bea-2e54-41ac-9654-e432f916fa60", "f62573d5-44ae-4e95-a430-2b15bd5fd05f", "4bc5aa5e-a6d7-4447-b624-4fa220890e69"]
+  }, {
+    "id": "1063ba5f-87c1-4e92-99ef-fbdc2f582d14",
+    "name": "Login",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["18c01d41-3147-4138-b50c-47be412156fc", "6e8b6196-8e6b-44e2-b918-d48031834914", "864578b4-d9f3-44d2-a5ed-44f75afd0e62"]
   }],
-  "urls": ["http://localhost:8080/", "http://localhost:8080/MoneyArt_war", "http://localhost:8080/MoneyArt_war/walletInfo", "http://localhost:8080/MoneyArt_war/userPage", "http://localhost:8080/MoneyArt_war/", "http://localhost:8080/MoneyArt_war/getAuction?id=2", "http://localhost:8080/MoneyArt_war/newAuction?id=8"],
+  "urls": ["http://localhost:8080/", "http://localhost:8080/MoneyArt_war", "http://localhost:8080/MoneyArt_war/walletInfo", "http://localhost:8080/MoneyArt_war/userPage", "http://localhost:8080/MoneyArt_war/", "http://localhost:8080/MoneyArt_war/getAuction?id=2", "http://localhost:8080/MoneyArt_war/newAuction?id=8", "http://localhost:8080/MoneyArt_war/getAuction?id=3", "http://localhost:8080/MoneyArt_war/pages/login.jsp"],
   "plugins": []
 }

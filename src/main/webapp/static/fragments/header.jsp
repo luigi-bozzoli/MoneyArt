@@ -165,6 +165,9 @@
                     <c:when test="${fn:contains(requestURI, '/cercaOpere')}">
                         <script src="${pageContext.servletContext.contextPath}/static/js/cercaOpere.js"></script>
                     </c:when>
+                    <c:when test="${fn:contains(requestURI, '/walletInfo')}">
+                        <script src="${pageContext.servletContext.contextPath}/static/js/wallet.js"></script>
+                    </c:when>
                 </c:choose>
                 <script src="${pageContext.servletContext.contextPath}/static/js/header.js"></script>
             </head>

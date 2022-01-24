@@ -159,15 +159,15 @@
                                         <input type="hidden" name="action" value="withdraw">
                                         <div class="row">
                                             <div class="col-12">
-                                                <div> <input class="form-control" type="number" name="amount" required="true" placeholder="€100.00"></div>
+                                                <div> <input id = "prelievo-amount" class="form-control" type="number" name="amount" required="true" placeholder="€100.00" min="1"></div>
                                             </div>
                                             <p class="p-blue h8 fw-bold mb-3">commissione di 1€</p>
                                             <div class="col-12">
-                                                <div> <input class="form-control" type="text" name="iban" required="true" placeholder="ITSCDJFEGIUFEOJIOEC"></div>
+                                                <div> <input id="iban" class="form-control" type="text" name="iban" required="true" placeholder="ITSCDJFEGIUFEOJIOEC"></div>
                                             </div>
                                         </div>
                                         <br>
-                                        <button type="submit" class="btn btn-primary btn-carta d-block h8">Preleva Importo<span class="ms-3 fas fa-arrow-right"></span></button>
+                                        <button id = "prelievo-button" type="submit" class="btn btn-primary btn-carta d-block h8">Preleva Importo<span class="ms-3 fas fa-arrow-right"></span></button>
                                     </div>
                                 </form>
                             </div>
