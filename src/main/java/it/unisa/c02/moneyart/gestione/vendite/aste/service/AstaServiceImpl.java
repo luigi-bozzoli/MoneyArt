@@ -83,14 +83,16 @@ public class AstaServiceImpl implements AstaService, TimerService {
     Asta asta = astaDao.doRetrieveById(id);
     if (asta != null) {
       asta.setOpera(operaDao.doRetrieveById(asta.getOpera().getId()));
-      List <Partecipazione> partecipazioni = partecipazioneDao.doRetrieveAllByAuctionId(asta.getId());
+      List<Partecipazione> partecipazioni = partecipazioneDao.doRetrieveAllByAuctionId(
+          asta.getId()
+      );
       asta.setPartecipazioni(partecipazioni);
       asta.getOpera().setArtista(utenteDao.doRetrieveById(asta.getOpera().getArtista().getId()));
       asta.getOpera().getArtista().setnFollowers(
           getNumberOfFollowers(asta.getOpera().getArtista())
       );
 
-      for(Partecipazione p : partecipazioni) {
+      for (Partecipazione p : partecipazioni) {
         p.setUtente(utenteDao.doRetrieveById(p.getUtente().getId()));
       }
     }

@@ -86,7 +86,7 @@ public class UtenteServiceImpl implements UtenteService {
     if (utente == null) {
       return null;
     }
-    if (utente.getSeguito()!=null) {
+    if (utente.getSeguito() != null) {
       if (utente.getSeguito().getId() != null) {
 
         utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
@@ -94,8 +94,8 @@ public class UtenteServiceImpl implements UtenteService {
     }
     List<Opera> inPossesso = operaDao.doRetrieveAllByOwnerId(utente.getId());
 
-    if(inPossesso != null) {
-      for(Opera o : inPossesso) {
+    if (inPossesso != null) {
+      for (Opera o : inPossesso) {
         o.setArtista(utenteDao.doRetrieveById(o.getArtista().getId()));
         o.setPossessore(utente);
       }
@@ -104,8 +104,8 @@ public class UtenteServiceImpl implements UtenteService {
 
     List<Opera> create = operaDao.doRetrieveAllByArtistId(utente.getId());
 
-    if(create != null) {
-      for(Opera o : create) {
+    if (create != null) {
+      for (Opera o : create) {
         o.setArtista(utente);
         o.setPossessore(utenteDao.doRetrieveById(o.getPossessore().getId()));
       }
@@ -137,7 +137,7 @@ public class UtenteServiceImpl implements UtenteService {
     if (utente == null) {
       return null;
     }
-    if (utente.getSeguito()!=null) {
+    if (utente.getSeguito() != null) {
       if (utente.getSeguito().getId() != null) {
 
         utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
@@ -145,8 +145,8 @@ public class UtenteServiceImpl implements UtenteService {
     }
     List<Opera>  inPossesso = operaDao.doRetrieveAllByOwnerId(utente.getId());
 
-    if(inPossesso != null) {
-      for(Opera o : inPossesso) {
+    if (inPossesso != null) {
+      for (Opera o : inPossesso) {
         o.setArtista(utenteDao.doRetrieveById(o.getArtista().getId()));
         o.setPossessore(utente);
       }
@@ -155,8 +155,8 @@ public class UtenteServiceImpl implements UtenteService {
 
     List<Opera>  create = operaDao.doRetrieveAllByOwnerId(utente.getId());
 
-    if(create != null) {
-      for(Opera o : create) {
+    if (create != null) {
+      for (Opera o : create) {
         o.setArtista(utente);
         o.setPossessore(utenteDao.doRetrieveById(o.getPossessore().getId()));
       }
@@ -210,18 +210,20 @@ public class UtenteServiceImpl implements UtenteService {
   @Override
   public List<Utente> getAllUsers() {
     List<Utente> utenti = utenteDao.doRetrieveAll("");
-    if (utenti==null) return null;
+    if (utenti == null) {
+      return null;
+    }
 
     for (Utente utente : utenti) {
-      if (utente.getSeguito()!=null) {
+      if (utente.getSeguito() != null) {
         if (utente.getSeguito().getId() != null) {
           utente.setSeguito(utenteDao.doRetrieveById(utente.getSeguito().getId()));
         }
       }
       List<Opera>  inPossesso = operaDao.doRetrieveAllByOwnerId(utente.getId());
 
-      if(inPossesso != null) {
-        for(Opera o : inPossesso) {
+      if (inPossesso != null) {
+        for (Opera o : inPossesso) {
           o.setArtista(utenteDao.doRetrieveById(o.getArtista().getId()));
           o.setPossessore(utenteDao.doRetrieveById(utente.getId()));
         }
@@ -230,8 +232,8 @@ public class UtenteServiceImpl implements UtenteService {
 
       List<Opera>  create = operaDao.doRetrieveAllByOwnerId(utente.getId());
 
-      if(create != null) {
-        for(Opera o : create) {
+      if (create != null) {
+        for (Opera o : create) {
           o.setArtista(utenteDao.doRetrieveById(utente.getId()));
           o.setPossessore(utenteDao.doRetrieveById(o.getPossessore().getId()));
         }
@@ -326,10 +328,10 @@ public class UtenteServiceImpl implements UtenteService {
    * @param follower l'utente che intende seguire un artista
    * @param followed l'artista da seguire
    * @return true se l'utente segue con successo l'artista
-   * false se l'utente segue già un altro artista
+   *         false se l'utente segue già un altro artista
    * @pre followed <> null AND follower <> null AND
-   * Utente.allInstance() -> exists(u:Utente | u = followed) AND
-   * Utente.allInstance() -> exists(u:Utente | u = follower)
+   *      Utente.allInstance() -> exists(u:Utente | u = followed) AND
+   *      Utente.allInstance() -> exists(u:Utente | u = follower)
    * @post Utente.allInstance() -> exists(u:Utente | u = follower AND u.getSeguito() = followed)
    */
   @Override
@@ -358,9 +360,9 @@ public class UtenteServiceImpl implements UtenteService {
    *
    * @param follower l'utente che vuole smettere di seguire un artista.
    * @return true se l'utente smette di seguire con successo un artista
-   * false se l'utente già non seguiva nessuno
+   *         false se l'utente già non seguiva nessuno
    * @pre follower <> null AND
-   * Utente.allInstance() -> exists(u:Utente | u = follower)
+   *      Utente.allInstance() -> exists(u:Utente | u = follower)
    * @post Utente.allInstance() -> exists(u:Utente | u = follower AND u.getSeguito() = new Utente())
    */
   @Override
@@ -401,9 +403,9 @@ public class UtenteServiceImpl implements UtenteService {
    * @param utente l'utente interessato a depositare
    * @param amount l'importo da depositare (da aggiungere al saldo)
    * @return true se il deposito è avvenuto con successo e
-   * false se l'amount è inferiore o uguale a zero
+   *         false se l'amount è inferiore o uguale a zero
    * @pre utente <> null AND amount > 0 AND
-   * Utente.allInstance() -> exists(u:Utente | u = utente)
+   *      Utente.allInstance() -> exists(u:Utente | u = utente)
    * @post utente.getSaldo() = @pre.utente.getSaldo() + amount
    */
   @Override
@@ -428,11 +430,11 @@ public class UtenteServiceImpl implements UtenteService {
    * @param utente l'utente interessato a prelevare
    * @param amount l'importo da prelevare (da sottrarre al saldo)
    * @return true se il prelievo è avvenuto con successo e
-   * false se l'amount è inferiore o uguale a zero e
-   * se il saldo dell'utente è minore dell'amount
+   *         false se l'amount è inferiore o uguale a zero e
+   *         se il saldo dell'utente è minore dell'amount
    * @pre utente <> null AND
-   * Utente.allInstance() -> exists(u:Utente | u = utente) AND
-   * amount > 0 AND amount <= utente.getSaldo()
+   *      Utente.allInstance() -> exists(u:Utente | u = utente) AND
+   *      amount > 0 AND amount <= utente.getSaldo()
    * @post utente.getSaldo() = @pre.utente.getSaldo() - amount
    */
   @Override
