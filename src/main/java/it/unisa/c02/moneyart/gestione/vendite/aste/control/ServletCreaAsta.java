@@ -97,7 +97,7 @@ public class ServletCreaAsta extends HttpServlet {
 
     Date currentDate = new Date();
 
-    if (currentDate.after(dataInizio) || currentDate.equals(dataInizio)) {
+    if (currentDate.equals(dataInizio)) {
       response.sendRedirect(request.getContextPath() + "/pages/asteCreateUtente.jsp#aste-in-corso");
     } else {
       response.sendRedirect(request.getContextPath() + "/pages/asteCreateUtente.jsp");
