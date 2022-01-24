@@ -1737,11 +1737,10 @@ public class AstaServiceImplUnitTest {
 	class removeAstaTest {
 		@DisplayName("Remove an ongoing auction with no bids")
 		@Test
-		void removeAnOngoingAuctionWithNoBidsTest() {
+		void removeOngoingAuctionWithNoBidsTest() {
 			Asta toRemove = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
 			Opera operaToRemove = toRemove.getOpera();
 
-			// metodo privato bestOffer
 			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(toRemove.getPartecipazioni());
 
 			when(operaDao.doRetrieveById(anyInt())).thenReturn(operaToRemove);
@@ -1767,12 +1766,11 @@ public class AstaServiceImplUnitTest {
 
 		@DisplayName("Remove an ongoing auction with one bid")
 		@Test
-		void removeAnOngoingAuctionWithOneBidTest() {
+		void removeOngoingAuctionWithOneBidTest() {
 			Asta toRemove = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndOneBid();
 			Opera operaToRemove = toRemove.getOpera();
 			Utente bestBidder = toRemove.getPartecipazioni().get(0).getUtente();
 
-			// metodo privato bestOffer
 			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(toRemove.getPartecipazioni());
 
 			// metodo asta annullata (utenteDao prima cerca il miglior offerente e poi l'artista che ha creato
@@ -1813,25 +1811,217 @@ public class AstaServiceImplUnitTest {
 			Assertions.assertEquals(Asta.Stato.ELIMINATA, toRemove.getStato());
 			Assertions.assertEquals(Opera.Stato.PREVENDITA, toRemove.getOpera().getStato());
 		}
+
+		@DisplayName("Remove a created auction with no bids")
+		@Test
+		void removeCreatedAuctionWithNoBidsTest() {
+			Asta toRemove = AstaCreations.createdAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+			Opera operaToRemove = toRemove.getOpera();
+
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(toRemove.getPartecipazioni());
+
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(operaToRemove);
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(operaToRemove.getArtista());
+
+			Notifica notificaPerArtista = new Notifica(
+							operaToRemove.getArtista(),
+							toRemove,
+							new Rivendita(),
+							Notifica.Tipo.ANNULLAMENTO,
+							"",
+							false
+			);
+
+			when(notificaDao.doCreate(notificaPerArtista)).thenReturn(true);
+			doNothing().when(astaDao).doUpdate(toRemove);
+
+			boolean result = astaService.removeAsta(toRemove);
+
+			Assertions.assertEquals(true, result);
+			Assertions.assertEquals(Asta.Stato.ELIMINATA, toRemove.getStato());
+		}
+
+		@DisplayName("Remove an ended auction with no bids")
+		@Test
+		void removeEndedAuctionWithNoBidsTest() {
+			Asta toRemove = AstaCreations.endedAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+			Opera operaToRemove = toRemove.getOpera();
+
+			boolean result = astaService.removeAsta(toRemove);
+
+			Assertions.assertEquals(false, result);
+		}
+
+		@DisplayName("Remove a deleted auction with no bids")
+		@Test
+		void removeDeletedAuctionWithNoBidsTest() {
+			Asta toRemove = AstaCreations.deletedAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+			Opera operaToRemove = toRemove.getOpera();
+
+			boolean result = astaService.removeAsta(toRemove);
+
+			Assertions.assertEquals(false, result);
+		}
 	}
 
 	@Nested
 	@DisplayName("Annulla asta")
 	class annullaAstaTest {
+		@DisplayName("Cancel an ongoing auction with no bids")
+		@Test
+		void cancelOngoingAuctionWithNoBidsTest() {
+			Asta toCancel = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+			Opera opera = toCancel.getOpera();
 
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(toCancel);
+
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(toCancel.getPartecipazioni());
+
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(opera);
+			doNothing().when(operaDao).doUpdate(opera);
+
+			doNothing().when(astaDao).doUpdate(toCancel);
+
+			boolean result = astaService.annullaAsta(toCancel);
+
+			Assertions.assertEquals(true, result);
+			Assertions.assertEquals(Asta.Stato.ELIMINATA, toCancel.getStato());
+			Assertions.assertEquals(Opera.Stato.PREVENDITA, opera.getStato());
+		}
+
+		@DisplayName("Cancel an ongoing auction with one bid")
+		@Test
+		void cancelOngoingAuctionWithOneBidTest() {
+			Asta toCancel = AstaCreations.ongoingAstaLastingSevenDaysWithNoArtistFollowersAndOneBid();
+			Opera opera = toCancel.getOpera();
+			Utente bestBidder = toCancel.getPartecipazioni().get(0).getUtente();
+
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(toCancel);
+
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(toCancel.getPartecipazioni());
+
+			// metodo asta annullata (utenteDao prima cerca il miglior offerente e poi l'artista che ha creato
+			// l'asta per generare le notifiche)
+			when(utenteDao.doRetrieveById(anyInt())).thenReturn(bestBidder, opera.getArtista());
+			doNothing().when(utenteDao).doUpdate(bestBidder);
+
+			Notifica notificaPerMigliorOfferente = new Notifica(
+							bestBidder,
+							toCancel,
+							new Rivendita(),
+							Notifica.Tipo.ANNULLAMENTO,
+							"",
+							false
+			);
+
+			when(notificaDao.doCreate(notificaPerMigliorOfferente)).thenReturn(true);
+
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(opera);
+			doNothing().when(operaDao).doUpdate(opera);
+
+			doNothing().when(astaDao).doUpdate(toCancel);
+
+			boolean result = astaService.annullaAsta(toCancel);
+
+			Assertions.assertEquals(true, result);
+			Assertions.assertEquals(Asta.Stato.ELIMINATA, toCancel.getStato());
+			Assertions.assertEquals(Opera.Stato.PREVENDITA, opera.getStato());
+		}
+
+		@DisplayName("Cancel a created auction with no bids")
+		@Test
+		void cancelCreatedAuctionWithNoBidsTest() {
+			Asta toCancel = AstaCreations.createdAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+			Opera opera = toCancel.getOpera();
+
+			when(astaDao.doRetrieveById(anyInt())).thenReturn(toCancel);
+
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(toCancel.getPartecipazioni());
+
+			when(operaDao.doRetrieveById(anyInt())).thenReturn(opera);
+			doNothing().when(operaDao).doUpdate(opera);
+
+			doNothing().when(astaDao).doUpdate(toCancel);
+
+			boolean result = astaService.annullaAsta(toCancel);
+
+			Assertions.assertEquals(true, result);
+			Assertions.assertEquals(Asta.Stato.ELIMINATA, toCancel.getStato());
+			Assertions.assertEquals(Opera.Stato.PREVENDITA, opera.getStato());
+		}
+
+		@DisplayName("Cancel an ended auction with no bids")
+		@Test
+		void cancelEndedAuctionWithNoBidsTest() {
+			Asta toCancel = AstaCreations.endedAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+
+			boolean result = astaService.removeAsta(toCancel);
+
+			Assertions.assertEquals(false, result);
+		}
+
+		@DisplayName("Cancel a deleted auction with no bids")
+		@Test
+		void cancelDeletedAuctionWithNoBidsTest() {
+			Asta toCancel = AstaCreations.deletedAstaLastingSevenDaysWithNoArtistFollowersAndNoBids();
+
+			boolean result = astaService.removeAsta(toCancel);
+
+			Assertions.assertEquals(false, result);
+		}
 	}
 
 	@Nested
 	@DisplayName("Best offer")
 	class bestOfferTest {
+		@DisplayName("Get best offer")
+		@Test
+		void getBestOfferTest() {
+			Asta asta = AstaCreations.ongoingAstaLastingSevenDaysWith3ArtistFollowersAnd3Bids();
+			Partecipazione bestOffer = asta.getPartecipazioni().get(2);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(asta.getPartecipazioni());
 
+			Partecipazione requested = astaService.bestOffer(asta);
+
+			Assertions.assertEquals(bestOffer.getId(), requested.getId());
+			Assertions.assertEquals(bestOffer.getAsta().getId(), requested.getAsta().getId());
+			Assertions.assertEquals(bestOffer.getUtente().getId(), requested.getUtente().getId());
+		}
+
+		@DisplayName("Get no best offer")
+		@Test
+		void getNoBestOfferTest() {
+			Asta a = new Asta();
+			a.setId(1);
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(a.getPartecipazioni());
+
+			Partecipazione requested = astaService.bestOffer(a);
+
+			Assertions.assertNull(requested);
+		}
+
+		@DisplayName("Get no best offer")
+		@Test
+		void getNoBestOfferWithEmptyListTest() {
+			Asta a = new Asta();
+			a.setId(1);
+			a.setPartecipazioni(new ArrayList<>());
+
+			when(partecipazioneDao.doRetrieveAllByAuctionId(anyInt())).thenReturn(a.getPartecipazioni());
+
+			Partecipazione requested = astaService.bestOffer(a);
+
+			Assertions.assertNull(requested);
+		}
 	}
+
 
 	@Nested
 	@DisplayName("Get won auctions")
 	class getWonAuctionsTest {
 
 	}
+
 
 	@Nested
 	@DisplayName("Get lost auctions")
@@ -1856,9 +2046,11 @@ public class AstaServiceImplUnitTest {
 	}
 	*/
 
+	/*
 	@Nested
 	@DisplayName("Execute timed tasks")
 	class executeTimedTasksTest {
 
 	}
+	*/
 }
