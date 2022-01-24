@@ -95,9 +95,14 @@ public class ServletCreaAsta extends HttpServlet {
     }
 
 
+    Date currentDate = new Date();
 
-    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asteCreateUtente.jsp");
-    dispatcher.forward(request, response);
+    if(currentDate.after(dataInizio) || currentDate.equals(dataInizio)) {
+      response.sendRedirect(request.getContextPath() + "/pages/asteCreateUtente.jsp#aste-in-corso");
+    } else {
+      response.sendRedirect(request.getContextPath() + "/pages/asteCreateUtente.jsp");
+    }
+
 
 
   }
