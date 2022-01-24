@@ -72,6 +72,13 @@ class UtenteServiceImplIntegrationTest {
         e.printStackTrace();
       }
     }
+
+    Connection connection = dataSource.getConnection();
+    ScriptRunner runner = new ScriptRunner(connection);
+    runner.setLogWriter(null);
+    Reader reader = new BufferedReader(new FileReader("./src/main/java/it/unisa/c02/moneyart/model/db/ddl_moneyart.sql"));
+    runner.runScript(reader);
+    connection.close();
   }
 
   @BeforeEach
@@ -96,7 +103,7 @@ class UtenteServiceImplIntegrationTest {
     Connection connection = dataSource.getConnection();
     ScriptRunner runner = new ScriptRunner(connection);
     runner.setLogWriter(null);
-    Reader reader = new BufferedReader(new FileReader("./src/test/database/clean_all.sql"));
+    Reader reader = new BufferedReader(new FileReader("./src/test/database/clean_database.sql"));
     runner.runScript(reader);
     connection.close();
   }
@@ -139,7 +146,7 @@ class UtenteServiceImplIntegrationTest {
     }
   }
 
-  //Provider che restiruisce gli utenti presenti nel db
+  //Provider che restituisce gli utenti presenti nel db
   static class UtenteDBProvider implements ArgumentsProvider {
 
     @Override
@@ -148,7 +155,7 @@ class UtenteServiceImplIntegrationTest {
 
       Utente u1 = new Utente("Alfonso", "Cannavale", null, "alfonso.cannavale@gmail.com", "alfcan", new Utente(), md.digest("pippo123".getBytes()), 1000d);
       u1.setId(1);
-      Utente u2 = new Utente("Nicolò", "Delogu", null, "nicolò.delogu@gmail.com", "XJustUnluckyX", new Utente(), md.digest("pippo123".getBytes()), 1500d);
+      Utente u2 = new Utente("Daniele", "Galloppo", null, "daniele.galloppo@gmail.com", "DG266", new Utente(), md.digest("pippo123".getBytes()), 2500d);
       u2.setId(2);
       Utente u3 = new Utente("Michael", "De Santis", null, "michael.desantis@gmail.com", "shoyll", new Utente(), md.digest("pippo123".getBytes()), 2000d);
       u3.setId(3);
@@ -195,7 +202,7 @@ class UtenteServiceImplIntegrationTest {
       MessageDigest md = MessageDigest.getInstance("SHA-256");
       Utente u1 = new Utente("Alfonso", "Cannavale", null, "alfonso.cannavale@gmail.com", "alfcan", new Utente(), md.digest("passja@1234".getBytes()), 1000d);
       u1.setId(1);
-      Utente u2 = new Utente("Nicolò", "Delogu", null, "nicolò.delogu@gmail.com", "XJustUnluckyX", new Utente(), md.digest("passja@1234".getBytes()), 1500d);
+      Utente u2 = new Utente("Daniele", "Galloppo", null, "daniele.galloppo@gmail.com", "DG266", new Utente(), md.digest("pippo123".getBytes()), 2500d);
       u2.setId(2);
       Utente u3 = new Utente("Michael", "De Santis", null, "michael.desantis@gmail.com", "shoyll", new Utente(), md.digest("passja@1234".getBytes()), 2000d);
       u3.setId(3);
@@ -239,7 +246,7 @@ class UtenteServiceImplIntegrationTest {
 
       Utente u1 = new Utente("Alfonso", "Cannavale", null, "alfonso.cannavale@gmail.com", "alfcan", new Utente(), md.digest("pippo123".getBytes()), 1000d);
       u1.setId(1);
-      Utente u2 = new Utente("Nicolò", "Delogu", null, "nicolò.delogu@gmail.com", "XJustUnluckyX", new Utente(), md.digest("pippo123".getBytes()), 1500d);
+      Utente u2 = new Utente("Daniele", "Galloppo", null, "daniele.galloppo@gmail.com", "DG266", new Utente(), md.digest("pippo123".getBytes()), 2500d);
       u2.setId(2);
       Utente u3 = new Utente("Michael", "De Santis", null, "michael.desantis@gmail.com", "shoyll", new Utente(), md.digest("pippo123".getBytes()), 2000d);
       u3.setId(3);
@@ -563,7 +570,7 @@ class UtenteServiceImplIntegrationTest {
     @DisplayName("Check Email Existing")
     @ParameterizedTest
     @ArgumentsSource(UtenteDBProvider.class)
-    void checkEmailExsisting(Utente utente) {
+    void checkEmailExisting(Utente utente) {
       boolean result = utenteService.checkEmail(utente.getEmail());
 
       assertTrue(result);
@@ -572,7 +579,7 @@ class UtenteServiceImplIntegrationTest {
     @DisplayName("Check Email Not Existing")
     @ParameterizedTest
     @ArgumentsSource(UtenteProvider.class)
-    void checkEmailNotExsisting(Utente utente) {
+    void checkEmailNotExisting(Utente utente) {
       boolean result = utenteService.checkEmail(utente.getEmail());
 
       assertFalse(result);

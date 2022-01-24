@@ -163,9 +163,9 @@ class ServletCreaAstaIntegrationTest {
   }
 
   @Test
-  @DisplayName("doPost Test")
-  void doPost() throws ServletException, IOException, NoSuchMethodException,
-    InvocationTargetException, IllegalAccessException {
+  @DisplayName("doGet Test")
+  void doGet() throws ServletException, IOException, NoSuchMethodException,
+      InvocationTargetException, IllegalAccessException {
 
     Utente utente = new Utente();
     utente.setId(5);
@@ -176,10 +176,10 @@ class ServletCreaAstaIntegrationTest {
     when(request.getSession()).thenReturn(session);
     when(session.getAttribute("utente")).thenReturn(utente);
     when(request.getParameter("id")).thenReturn(opera.getId().toString());
-    when(request.getParameter("inizio")).thenReturn("30/01/2022");
-    when(request.getParameter("fine")).thenReturn("10/02/2022");
+    when(request.getParameter("inizio")).thenReturn("2022-01-23");
+    when(request.getParameter("fine")).thenReturn("2022-01-31");
     when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-    doNothing().when(dispatcher).forward(any(), any());
+    doNothing().when(dispatcher).forward(any(),any());
 
     Method privateStringMethod = ServletCreaAsta.class
       .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
@@ -187,17 +187,52 @@ class ServletCreaAstaIntegrationTest {
     privateStringMethod.setAccessible(true);
     privateStringMethod.invoke(servletCreaAsta, request, response);
 
-    verify(request, times(1)).getRequestDispatcher(anyString());
     verify(request, times(1)).getParameter(anyString());
     verify(request, times(1)).getSession();
     verify(session, times(1)).getAttribute(anyString());
+    verify(request, times(1)).setAttribute(anyString(), any());
+    verify(request, times(1)).getRequestDispatcher(anyString());
     verify(dispatcher, times(1)).forward(any(), any());
 
   }
 
   @Test
-  @DisplayName("doPost Asta Fault Test")
-  void doPostAstaFault() throws ServletException, IOException, NoSuchMethodException,
+  @DisplayName("doGet Opera Fault Test")
+  void doGetOperaFault() throws ServletException, IOException, NoSuchMethodException,
+    InvocationTargetException, IllegalAccessException {
+
+    Utente utente = new Utente();
+    utente.setId(5);
+
+    Opera opera = new Opera();
+    opera.setId(0);
+
+    when(request.getSession()).thenReturn(session);
+    when(session.getAttribute("utente")).thenReturn(utente);
+    when(request.getParameter("id")).thenReturn(opera.getId().toString());
+    when(request.getParameter("inizio")).thenReturn("2022-01-23");
+    when(request.getParameter("fine")).thenReturn("2022-01-31");
+    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+    doNothing().when(dispatcher).forward(any(),any());
+
+    Method privateStringMethod = ServletCreaAsta.class
+      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
+
+    privateStringMethod.setAccessible(true);
+    privateStringMethod.invoke(servletCreaAsta, request, response);
+
+    verify(request, times(1)).getParameter(anyString());
+    verify(request, times(1)).getSession();
+    verify(session, times(1)).getAttribute(anyString());
+    verify(request, times(1)).setAttribute(anyString(), any());
+    verify(request, times(1)).getRequestDispatcher(anyString());
+    verify(dispatcher, times(1)).forward(any(), any());
+
+  }
+
+  @Test
+  @DisplayName("doPost CurrentDate Before AstaDate Test")
+  void doPostBefore() throws IOException, NoSuchMethodException,
     InvocationTargetException, IllegalAccessException {
 
     Utente utente = new Utente();
@@ -209,10 +244,8 @@ class ServletCreaAstaIntegrationTest {
     when(request.getSession()).thenReturn(session);
     when(session.getAttribute("utente")).thenReturn(utente);
     when(request.getParameter("id")).thenReturn(opera.getId().toString());
-    when(request.getParameter("inizio")).thenReturn("22-01-2022");
-    when(request.getParameter("fine")).thenReturn("10-02-2022");
-    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-    doNothing().when(dispatcher).forward(any(), any());
+    when(request.getParameter("inizio")).thenReturn("2022-01-30");
+    when(request.getParameter("fine")).thenReturn("2022-01-31");
     doNothing().when(response).sendRedirect(anyString());
 
     Method privateStringMethod = ServletCreaAsta.class
@@ -224,7 +257,77 @@ class ServletCreaAstaIntegrationTest {
     verify(request, times(3)).getParameter(anyString());
     verify(request, times(1)).getSession();
     verify(session, times(1)).getAttribute(anyString());
+    verify(response, times(1)).sendRedirect(anyString());
+
+  }
+
+  @Test
+  @DisplayName("doPost CurrentDate Equals AstaDate Test")
+  void doPostEquals() throws IOException, NoSuchMethodException,
+    InvocationTargetException, IllegalAccessException {
+
+    Utente utente = new Utente();
+    utente.setId(5);
+
+    Opera opera = new Opera();
+    opera.setId(3);
+
+    Date date = new Date(System.currentTimeMillis());
+    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+
+    String parameter = fmt.format(date);
+
+    when(request.getSession()).thenReturn(session);
+    when(session.getAttribute("utente")).thenReturn(utente);
+    when(request.getParameter("id")).thenReturn(opera.getId().toString());
+    when(request.getParameter("inizio")).thenReturn(parameter);
+    when(request.getParameter("fine")).thenReturn("2022-01-27");
+    doNothing().when(response).sendRedirect(anyString());
+
+    Method privateStringMethod = ServletCreaAsta.class
+      .getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
+
+    privateStringMethod.setAccessible(true);
+    privateStringMethod.invoke(servletCreaAsta, request, response);
+
+    verify(request, times(3)).getParameter(anyString());
+    verify(request, times(1)).getSession();
+    verify(session, times(1)).getAttribute(anyString());
+    verify(response, times(1)).sendRedirect(anyString());
+
+  }
+
+  @Test
+  @DisplayName("doPost Asta Fault Test")
+  void doPostAstaFault() throws IOException, NoSuchMethodException,
+    InvocationTargetException, IllegalAccessException, ServletException {
+
+    Utente utente = new Utente();
+    utente.setId(5);
+
+    Opera opera = new Opera();
+    opera.setId(3);
+
+    when(request.getSession()).thenReturn(session);
+    when(session.getAttribute("utente")).thenReturn(utente);
+    when(request.getParameter("id")).thenReturn(opera.getId().toString());
+    when(request.getParameter("inizio")).thenReturn("2022-01-23");
+    when(request.getParameter("fine")).thenReturn("2022-01-31");
+    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+    doNothing().when(dispatcher).forward(any(),any());
+
+    Method privateStringMethod = ServletCreaAsta.class
+      .getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
+
+    privateStringMethod.setAccessible(true);
+    privateStringMethod.invoke(servletCreaAsta, request, response);
+
+    verify(request, times(3)).getParameter(anyString());
+    verify(request, times(1)).getSession();
+    verify(session, times(1)).getAttribute(anyString());
     verify(request, times(2)).setAttribute(anyString(), any());
+    verify(request, times(1)).getRequestDispatcher(anyString());
+    verify(dispatcher, times(1)).forward(any(), any());
   }
 
   @Test
@@ -241,11 +344,10 @@ class ServletCreaAstaIntegrationTest {
     when(request.getSession()).thenReturn(session);
     when(session.getAttribute("utente")).thenReturn(utente);
     when(request.getParameter("id")).thenReturn(opera.getId().toString());
-    when(request.getParameter("inizio")).thenReturn("30-01-2022");
-    when(request.getParameter("fine")).thenReturn("10-02-2022");
+    when(request.getParameter("inizio")).thenReturn("2022-01-30");
+    when(request.getParameter("fine")).thenReturn("2022-01-31");
     when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-    doNothing().when(dispatcher).forward(any(), any());
-    doNothing().when(response).sendRedirect(anyString());
+    doNothing().when(dispatcher).forward(any(),any());
 
     Method privateStringMethod = ServletCreaAsta.class
       .getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
@@ -257,13 +359,15 @@ class ServletCreaAstaIntegrationTest {
     verify(request, times(1)).getSession();
     verify(session, times(1)).getAttribute(anyString());
     verify(request, times(2)).setAttribute(anyString(), any());
+    verify(request, times(1)).getRequestDispatcher(anyString());
+    verify(dispatcher, times(1)).forward(any(), any());
 
   }
 
   @Test
   @DisplayName("doPost Catch Exception Test")
-  void doPostCatchException() throws ServletException, IOException, NoSuchMethodException,
-    InvocationTargetException, IllegalAccessException {
+  void doPostCatchException() throws IOException, NoSuchMethodException,
+    InvocationTargetException, IllegalAccessException, ServletException {
 
     Utente utente = new Utente();
     utente.setId(5);
@@ -274,11 +378,10 @@ class ServletCreaAstaIntegrationTest {
     when(request.getSession()).thenReturn(session);
     when(session.getAttribute("utente")).thenReturn(utente);
     when(request.getParameter("id")).thenReturn(opera.getId().toString());
-    when(request.getParameter("inizio")).thenReturn("30/01-2022");
+    when(request.getParameter("inizio")).thenReturn("30-01-2022");
     when(request.getParameter("fine")).thenReturn("10-02-2022");
     when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-    doNothing().when(dispatcher).forward(any(), any());
-    doNothing().when(response).sendRedirect(anyString());
+    doNothing().when(dispatcher).forward(any(),any());
 
     Method privateStringMethod = ServletCreaAsta.class
       .getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
@@ -287,7 +390,10 @@ class ServletCreaAstaIntegrationTest {
     privateStringMethod.invoke(servletCreaAsta, request, response);
 
     verify(request, times(3)).getParameter(anyString());
+    verify(request, times(1)).getSession();
     verify(request, times(2)).setAttribute(anyString(), any());
+    verify(request, times(1)).getRequestDispatcher(anyString());
+    verify(dispatcher, times(1)).forward(any(), any());
 
   }
 }
