@@ -117,7 +117,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="${pageContext.servletContext.contextPath}/pages/admin/segnalazioni.jsp" class="nav-link">
+                                        <a href="${pageContext.servletContext.contextPath}/getReports" class="nav-link">
                                             <i class="nav-icon fas fa-flag"></i>
                                             <p>Segnalazioni</p>
                                         </a>

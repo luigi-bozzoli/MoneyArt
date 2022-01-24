@@ -58,9 +58,17 @@
                                 </button>
                             </div>
                             <form method="post">
+                                <div class="container">
+                                    <div class="col-12">
+                                        <div class="error">
+                                            <p class="text-center"></p>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input type="hidden" name="asta" value="${asta.id}">
                                 <div class="modal-body">
-                                    <textarea class="form-control" rows="3" name="commento"
+                                    <textarea class="form-control" rows="3" id="commento" name="commento"
+                                              maxlength="200" minlength="20"
                                               placeholder="Inserisci un commento"></textarea>
                                 </div>
                                 <div class="modal-footer">
@@ -137,7 +145,7 @@
                 <c:if test="${(asta.stato eq 'IN_CORSO') && ((empty sessionScope.utente) || (asta.opera.possessore.id != sessionScope.utente.id))}">
                     <c:choose>
                         <c:when test="${not empty requestScope.admin}">
-                            <button id="remove-auction" href="${pageContext.servletContext.contextPath}/removeAuction?idAsta=${asta.id}">Rimuovi Asta</button>
+                            <a class="text-center" id="remove-auction" href="${pageContext.servletContext.contextPath}/removeAuction?idAsta=${asta.id}">Rimuovi Asta</a>
                         </c:when>
                         <c:otherwise>
                             <div class="offer-wrapper">
@@ -184,6 +192,27 @@
                 </c:choose>
             </div>
         </div>
+        <c:if test="${not empty requestScope.admin}">
+            <div class="col-12">
+                <h2 class="artwork-title">Cronologia offerte</h2>
+                <c:choose>
+                    <c:when test="${asta.partecipazioni.size() != 0}">
+                        <c:set var="size" value="${asta.partecipazioni.size()}"/>
+                        <c:forEach var="i" begin="1" end="${size}" step="1">
+                            <c:set var="partecipazione" value="${asta.partecipazioni[size-i]}"/>
+                            <div class="d-flex w-100 justify-content-between" style="border-bottom: lightgray !important;">
+                                <p>${partecipazione.utente.username}</p>
+                                <p><fmt:formatNumber value="${partecipazione.offerta}" type="currency" currencySymbol="€"/></p>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <p>Nessuna offerta per quest'asta.</p>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </c:if>
+
     </div>
 
 <%@include file="../static/fragments/footer.jsp" %>

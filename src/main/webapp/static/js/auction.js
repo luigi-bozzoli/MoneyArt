@@ -39,8 +39,15 @@ $(document).ready(function() {
             commento : $('.modal-content textarea').val()
         }
 
+        if(params.commento.length < 20 || params.commento.length > 200) {
+            $(".modal-content .error p").html("Lunghezza commento non valida");
+            return false;
+        }
+
         $.post(ctx+'/addReport', $.param(params), function(response) {
             if(response) {
+                $('.modal-content .error p').html("");
+                $('.modal-content textarea').val('');
                 $('.modal-content button[type = button]').click();
                 $('#report i').attr("class", "fas fa-check");
                 $('#report p').html('Segnalato!');
@@ -103,17 +110,17 @@ $(document).ready(function() {
                         $('.timer-info').html('Asta scaduta');
                     }
                 }
-
-                let prezzo;
-                if (asta.partecipazioni.length == 0) {
-                    prezzo = 'Nessuna offerta';
-                } else {
-                    prezzo = asta.partecipazioni[(asta.partecipazioni.length - 1)].offerta.toFixed(2);
-                    prezzo = prezzo.toString().replace('.', ',');
-                    prezzo = '€ '.concat(prezzo);
-                }
             }, 1000);
+            let prezzo;
+            if (asta.partecipazioni.length == 0) {
+                prezzo = 'Nessuna offerta';
+            } else {
+                prezzo = asta.partecipazioni[(asta.partecipazioni.length - 1)].offerta.toFixed(2);
+                prezzo = prezzo.toString().replace('.', ',');
+                prezzo = '€ '.concat(prezzo);
+            }
             $('.best-offer h5').html(prezzo);
+
         });
 
         $('.offer-input input[name = offerta]').keyup(function () {
@@ -162,7 +169,7 @@ $(document).ready(function() {
                     let prezzo = Number(params.offerta).toFixed(2);
                     prezzo = prezzo.toString().replace('.', ',');
                     prezzo = '€ '.concat(prezzo);
-                    $('.best-offer h5').html(prezzo);
+                    $('.best-offer-wrapper h5').html(prezzo);
                 } else {
                     $('.message').html(`<p class="mt-3" style="color: #BB371A !important;">Problema con la registrazione dell'offerta</p>`);
                 }

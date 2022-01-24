@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
  * Questa servlet gestisce la ricerca dell'utente.
  *
  */
-
 @WebServlet(name = "ServletRicercaUtente", value = "/serchUsers")
 public class ServletRicercaUtente extends HttpServlet {
 

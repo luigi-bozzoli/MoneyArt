@@ -7,9 +7,6 @@
 
 <script>let ctx = "${pageContext.servletContext.contextPath}"</script>
 
-<c:if test="${empty requestScope.segnalazioni}" >
-    <c:redirect url="/getReports"/>
-</c:if>
 <c:set var="segnalazioni" value="${requestScope.segnalazioni}"/>
 
 <div class="page-heading">

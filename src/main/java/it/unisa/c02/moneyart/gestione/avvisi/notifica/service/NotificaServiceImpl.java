@@ -98,12 +98,12 @@ public class NotificaServiceImpl implements NotificaService {
    * @param notifica notifica da aggiungere
    * @pre Notifica.allIstances() -> not exists(n:Notifica | n = notifica)
    * @post Notifica.allIstances() -> exists(n:Notifica | n = notifica)
-   * @return
+   * @return true o false
    */
   @Override
   public boolean addNotification(Notifica notifica) {
 
-    if(notificaDao.doCreate(notifica)) {
+    if (notificaDao.doCreate(notifica)) {
       return true;
     } else {
       return false;

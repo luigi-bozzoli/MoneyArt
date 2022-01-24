@@ -33,9 +33,9 @@ public class OperaServiceImpl implements OperaService {
    *
    * @param opera bean dell'opera da inserire
    * @return true se l'inserimento va a buon fine,
-   * false altrimenti
+   *         false altrimenti
    * @pre opera.getNome() <> null AND opera.getImmagine() <> null AND
-   * utente.carica -> forAll(o:Opera | o.getNome() <> opera.getNome())
+   *      utente.carica -> forAll(o:Opera | o.getNome() <> opera.getNome())
    * @post utente.carica -> includes(opera)
    */
   @Override
@@ -58,7 +58,7 @@ public class OperaServiceImpl implements OperaService {
    * @param id   dell'utente artista
    * @param name titolo dell'opera
    * @return true se esiste un'opera con quel nome,
-   * false altrimenti
+   *         false altrimenti
    * @pre Utente.allIstances() -> exists(u:Utente | id = u.getId()) AND name <> null
    */
   @Override

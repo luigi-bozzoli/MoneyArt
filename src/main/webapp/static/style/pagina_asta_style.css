@@ -62,6 +62,9 @@
 .asta-container .img-wrapper img {
     max-width: 90%;
 }
+a:hover {
+    text-decoration: none !important;
+}
 
 #report a,
 #share a {
