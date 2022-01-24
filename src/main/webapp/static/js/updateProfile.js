@@ -9,7 +9,7 @@ function checkEmail(input) {
 }
 
 function onlyLetters(input) {
-    let letters = /^[A-Za-z\s]{1,100}$/;
+    let letters = /^[A-Za-z\s\u00C0-\u00FF]{1,100}$/;
 
     if (input.val().match(letters) && !isEmpty(input.val())) {
         return true;
