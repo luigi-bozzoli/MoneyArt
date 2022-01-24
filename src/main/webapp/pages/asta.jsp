@@ -58,9 +58,17 @@
                                 </button>
                             </div>
                             <form method="post">
+                                <div class="container">
+                                    <div class="col-12">
+                                        <div class="error">
+                                            <p class="text-center"></p>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input type="hidden" name="asta" value="${asta.id}">
                                 <div class="modal-body">
-                                    <textarea class="form-control" rows="3" name="commento"
+                                    <textarea class="form-control" rows="3" id="commento" name="commento"
+                                              maxlength="200" minlength="20"
                                               placeholder="Inserisci un commento"></textarea>
                                 </div>
                                 <div class="modal-footer">

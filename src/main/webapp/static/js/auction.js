@@ -39,8 +39,15 @@ $(document).ready(function() {
             commento : $('.modal-content textarea').val()
         }
 
+        if(params.commento.length < 20 || params.commento.length > 200) {
+            $(".modal-content .error p").html("Lunghezza commento non valida");
+            return false;
+        }
+
         $.post(ctx+'/addReport', $.param(params), function(response) {
             if(response) {
+                $('.modal-content .error p').html("");
+                $('.modal-content textarea').val('');
                 $('.modal-content button[type = button]').click();
                 $('#report i').attr("class", "fas fa-check");
                 $('#report p').html('Segnalato!');
