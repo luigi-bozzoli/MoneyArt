@@ -137,7 +137,7 @@
                 <c:if test="${(asta.stato eq 'IN_CORSO') && ((empty sessionScope.utente) || (asta.opera.possessore.id != sessionScope.utente.id))}">
                     <c:choose>
                         <c:when test="${not empty requestScope.admin}">
-                            <button id="remove-auction" href="${pageContext.servletContext.contextPath}/removeAuction?idAsta=${asta.id}">Rimuovi Asta</button>
+                            <a class="text-center" id="remove-auction" href="${pageContext.servletContext.contextPath}/removeAuction?idAsta=${asta.id}">Rimuovi Asta</a>
                         </c:when>
                         <c:otherwise>
                             <div class="offer-wrapper">

@@ -103,17 +103,17 @@ $(document).ready(function() {
                         $('.timer-info').html('Asta scaduta');
                     }
                 }
-
-                let prezzo;
-                if (asta.partecipazioni.length == 0) {
-                    prezzo = 'Nessuna offerta';
-                } else {
-                    prezzo = asta.partecipazioni[(asta.partecipazioni.length - 1)].offerta.toFixed(2);
-                    prezzo = prezzo.toString().replace('.', ',');
-                    prezzo = '€ '.concat(prezzo);
-                }
             }, 1000);
+            let prezzo;
+            if (asta.partecipazioni.length == 0) {
+                prezzo = 'Nessuna offerta';
+            } else {
+                prezzo = asta.partecipazioni[(asta.partecipazioni.length - 1)].offerta.toFixed(2);
+                prezzo = prezzo.toString().replace('.', ',');
+                prezzo = '€ '.concat(prezzo);
+            }
             $('.best-offer h5').html(prezzo);
+
         });
 
         $('.offer-input input[name = offerta]').keyup(function () {
@@ -162,7 +162,7 @@ $(document).ready(function() {
                     let prezzo = Number(params.offerta).toFixed(2);
                     prezzo = prezzo.toString().replace('.', ',');
                     prezzo = '€ '.concat(prezzo);
-                    $('.best-offer h5').html(prezzo);
+                    $('.best-offer-wrapper h5').html(prezzo);
                 } else {
                     $('.message').html(`<p class="mt-3" style="color: #BB371A !important;">Problema con la registrazione dell'offerta</p>`);
                 }
