@@ -41,6 +41,7 @@ public class ServletModificaInformazioniUtente extends HttpServlet {
 
     HttpSession session = request.getSession();
     Utente utente = (Utente) session.getAttribute("utente");
+    utente = utenteService.getUserInformation(utente.getId());
 
     boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 

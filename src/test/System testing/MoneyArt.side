@@ -5139,6 +5139,184 @@
       "targets": [],
       "value": "Autenticazione fallita, riprova!"
     }]
+  }, {
+    "id": "f9c74d3e-b362-4d4c-a70e-afb7f8996753",
+    "name": "TC_2.2.1",
+    "commands": [{
+      "id": "188541c4-ddfd-45c7-9245-59bf001758d0",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "578759a6-d23f-4d95-a1f5-466343da0b96",
+      "comment": "",
+      "command": "click",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "67ba1882-0873-4c9a-b117-ddfc4c08009a",
+      "comment": "",
+      "command": "type",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9d5e39ce-a8a6-43df-946f-e247b39f318e",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "81096ca3-abac-41d9-8e3e-d3dab54e870a",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h1",
+      "targets": [],
+      "value": "L'arte che diventa\\nNon Fungible Token"
+    }]
+  }, {
+    "id": "3e3f3bb5-9142-4e8e-833c-e471937027f8",
+    "name": "TC_2.2.2",
+    "commands": [{
+      "id": "a6b6b78f-408e-4c97-8b3e-88a5bedbf467",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a5ad7177-687c-4706-ab0d-5db3ac6255a3",
+      "comment": "",
+      "command": "click",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6fa3545b-3177-4869-b0f6-551517878fdb",
+      "comment": "",
+      "command": "type",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    }, {
+      "id": "ddb1e2e7-ea99-49b3-8f92-2c649c5ced94",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "e21601f4-2499-441e-ad05-e62473e31428",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h1",
+      "targets": [],
+      "value": "L'arte che diventa\\nNon Fungible Token"
+    }]
+  }, {
+    "id": "839a8997-b258-4c62-a361-aa0e9b9f2922",
+    "name": "TC_2.2.3",
+    "commands": [{
+      "id": "317e5000-a75c-4929-9d6a-8e89f52cff2e",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b660a1e6-173d-4028-a796-2be9da55ffec",
+      "comment": "",
+      "command": "click",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5a4c390c-f41a-4020-873f-f60d916fc9b9",
+      "comment": "",
+      "command": "type",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "prova"
+    }, {
+      "id": "66b71a05-5b85-4da4-ae21-9d96fe46d7d3",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "ab18ea1d-3a7e-4483-a13d-b4d84af6e4a4",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=aste-tab",
+      "targets": [
+        ["id=aste-tab", "id"],
+        ["linkText=All'asta", "linkText"],
+        ["css=#aste-tab", "css:finder"],
+        ["xpath=//a[@id='aste-tab']", "xpath:attributes"],
+        ["xpath=(//a[contains(@href, '#auctions')])[2]", "xpath:href"],
+        ["xpath=//body/ul/li/a", "xpath:position"]
+      ],
+      "value": "All'asta"
+    }]
   }],
   "suites": [{
     "id": "cf8c9b8e-3130-42a5-bb7e-b34208329b47",
@@ -5217,6 +5395,13 @@
     "parallel": false,
     "timeout": 300,
     "tests": ["18c01d41-3147-4138-b50c-47be412156fc", "6e8b6196-8e6b-44e2-b918-d48031834914", "864578b4-d9f3-44d2-a5ed-44f75afd0e62"]
+  }, {
+    "id": "c9ac5f82-95ca-458c-8457-c0cf41c8de2c",
+    "name": "Ricerca Opera",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["f9c74d3e-b362-4d4c-a70e-afb7f8996753", "3e3f3bb5-9142-4e8e-833c-e471937027f8", "839a8997-b258-4c62-a361-aa0e9b9f2922"]
   }],
   "urls": ["http://localhost:8080/", "http://localhost:8080/MoneyArt_war", "http://localhost:8080/MoneyArt_war/walletInfo", "http://localhost:8080/MoneyArt_war/userPage", "http://localhost:8080/MoneyArt_war/", "http://localhost:8080/MoneyArt_war/getAuction?id=2", "http://localhost:8080/MoneyArt_war/newAuction?id=8", "http://localhost:8080/MoneyArt_war/getAuction?id=3", "http://localhost:8080/MoneyArt_war/pages/login.jsp"],
   "plugins": []

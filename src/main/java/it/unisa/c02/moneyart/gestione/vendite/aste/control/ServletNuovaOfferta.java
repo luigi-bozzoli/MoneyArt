@@ -1,6 +1,7 @@
 package it.unisa.c02.moneyart.gestione.vendite.aste.control;
 
 import com.google.gson.Gson;
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Utente;
@@ -27,7 +28,13 @@ public class ServletNuovaOfferta extends HttpServlet {
       throws ServletException, IOException {
 
 
-    Utente utente = (Utente) request.getSession().getAttribute("utente");
+    Utente utente1 = (Utente) request.getSession().getAttribute("utente");
+    Utente utente = utenteService.getUserInformation(utente1.getId());
+    utente.setFotoProfilo(null);
+    utente.setPartecipazioni(null);
+    utente.setNotifiche(null);
+    utente.setOpereInPossesso(null);
+    utente.setOpereCreate(null);
 
     String json = new Gson().toJson(utente);
     response.setContentType("application/json");
@@ -65,4 +72,7 @@ public class ServletNuovaOfferta extends HttpServlet {
 
   @Inject
   private AstaService astaService;
+
+  @Inject
+  private UtenteService utenteService;
 }

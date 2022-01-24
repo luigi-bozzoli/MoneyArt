@@ -1,6 +1,8 @@
 package integration.gestione.control.aste;
 
 import hthurow.tomcatjndi.TomcatJNDI;
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteService;
+import it.unisa.c02.moneyart.gestione.utente.service.UtenteServiceImpl;
 import it.unisa.c02.moneyart.gestione.vendite.aste.control.ServletNuovaOfferta;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaServiceImpl;
@@ -42,6 +44,7 @@ class ServletNuovaOffertaIntegrationTest {
   private static DataSource dataSource;
   private ServletNuovaOfferta servletNuovaOfferta;
   private AstaService service;
+  private UtenteService utenteService;
 
   private NotificaDao notificaDao;
   private UtenteDao utenteDao;
@@ -109,6 +112,8 @@ class ServletNuovaOffertaIntegrationTest {
     utenteDao = new UtenteDaoImpl(dataSource);
     notificaDao = new NotificaDaoImpl(dataSource);
 
+    utenteService = new UtenteServiceImpl(utenteDao,operaDao,notificaDao,partecipazioneDao);
+
     Method astaLockingS = AstaLockingSingleton.class.
       getDeclaredMethod("retrieveIstance");
     astaLockingS.setAccessible(true);
@@ -127,6 +132,10 @@ class ServletNuovaOffertaIntegrationTest {
     Field injectedObject = servletNuovaOfferta.getClass().getDeclaredField("astaService");
     injectedObject.setAccessible(true);
     injectedObject.set(servletNuovaOfferta, service);
+
+    Field injectedObject2 = servletNuovaOfferta.getClass().getDeclaredField("utenteService");
+    injectedObject2.setAccessible(true);
+    injectedObject2.set(servletNuovaOfferta, utenteService);
   }
 
   @AfterEach
