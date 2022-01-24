@@ -188,7 +188,7 @@ class ServletCreaAstaIntegrationTest {
     privateStringMethod.invoke(servletCreaAsta, request, response);
 
     verify(request, times(1)).getRequestDispatcher(anyString());
-    verify(request, times(3)).getParameter(anyString());
+    verify(request, times(1)).getParameter(anyString());
     verify(request, times(1)).getSession();
     verify(session, times(1)).getAttribute(anyString());
     verify(dispatcher, times(1)).forward(any(), any());
@@ -209,12 +209,14 @@ class ServletCreaAstaIntegrationTest {
     when(request.getSession()).thenReturn(session);
     when(session.getAttribute("utente")).thenReturn(utente);
     when(request.getParameter("id")).thenReturn(opera.getId().toString());
-    when(request.getParameter("inizio")).thenReturn("22/01/2022");
-    when(request.getParameter("fine")).thenReturn("10/02/2022");
+    when(request.getParameter("inizio")).thenReturn("22-01-2022");
+    when(request.getParameter("fine")).thenReturn("10-02-2022");
+    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+    doNothing().when(dispatcher).forward(any(), any());
     doNothing().when(response).sendRedirect(anyString());
 
     Method privateStringMethod = ServletCreaAsta.class
-      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
+      .getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
 
     privateStringMethod.setAccessible(true);
     privateStringMethod.invoke(servletCreaAsta, request, response);
@@ -222,8 +224,7 @@ class ServletCreaAstaIntegrationTest {
     verify(request, times(3)).getParameter(anyString());
     verify(request, times(1)).getSession();
     verify(session, times(1)).getAttribute(anyString());
-    verify(request, times(1)).setAttribute(anyString(), any());
-    verify(response, times(1)).sendRedirect(anyString());
+    verify(request, times(2)).setAttribute(anyString(), any());
   }
 
   @Test
@@ -240,12 +241,14 @@ class ServletCreaAstaIntegrationTest {
     when(request.getSession()).thenReturn(session);
     when(session.getAttribute("utente")).thenReturn(utente);
     when(request.getParameter("id")).thenReturn(opera.getId().toString());
-    when(request.getParameter("inizio")).thenReturn("30/01/2022");
-    when(request.getParameter("fine")).thenReturn("10/02/2022");
+    when(request.getParameter("inizio")).thenReturn("30-01-2022");
+    when(request.getParameter("fine")).thenReturn("10-02-2022");
+    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+    doNothing().when(dispatcher).forward(any(), any());
     doNothing().when(response).sendRedirect(anyString());
 
     Method privateStringMethod = ServletCreaAsta.class
-      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
+      .getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
 
     privateStringMethod.setAccessible(true);
     privateStringMethod.invoke(servletCreaAsta, request, response);
@@ -253,8 +256,7 @@ class ServletCreaAstaIntegrationTest {
     verify(request, times(3)).getParameter(anyString());
     verify(request, times(1)).getSession();
     verify(session, times(1)).getAttribute(anyString());
-    verify(request, times(1)).setAttribute(anyString(), any());
-    verify(response, times(1)).sendRedirect(anyString());
+    verify(request, times(2)).setAttribute(anyString(), any());
 
   }
 
@@ -272,20 +274,20 @@ class ServletCreaAstaIntegrationTest {
     when(request.getSession()).thenReturn(session);
     when(session.getAttribute("utente")).thenReturn(utente);
     when(request.getParameter("id")).thenReturn(opera.getId().toString());
-    when(request.getParameter("inizio")).thenReturn("30-01-2022");
+    when(request.getParameter("inizio")).thenReturn("30/01-2022");
     when(request.getParameter("fine")).thenReturn("10-02-2022");
+    when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+    doNothing().when(dispatcher).forward(any(), any());
     doNothing().when(response).sendRedirect(anyString());
 
     Method privateStringMethod = ServletCreaAsta.class
-      .getDeclaredMethod("doGet", HttpServletRequest.class, HttpServletResponse.class);
+      .getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
 
     privateStringMethod.setAccessible(true);
     privateStringMethod.invoke(servletCreaAsta, request, response);
 
     verify(request, times(3)).getParameter(anyString());
-    verify(request, times(1)).getSession();
-    verify(request, times(1)).setAttribute(anyString(), any());
-    verify(response, times(1)).sendRedirect(anyString());
+    verify(request, times(2)).setAttribute(anyString(), any());
 
   }
 }

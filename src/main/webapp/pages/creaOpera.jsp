@@ -46,7 +46,7 @@
                     <label for="name">Nome opera</label>
                     <div class="input-icon">
                         <i class="fas fa-paint-brush"></i>
-                        <input name="name" id="name" type="text" placeholder="Nome dell'opera" required>
+                        <input name="name" id="name" type="text" placeholder="Nome dell'opera">
                     </div>
                 </div>
 

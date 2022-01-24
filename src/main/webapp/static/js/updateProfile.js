@@ -9,7 +9,7 @@ function checkEmail(input) {
 }
 
 function onlyLetters(input) {
-    let letters = /^[A-Za-z\s]+$/;
+    let letters = /^[A-Za-z\s]{1,100}$/;
 
     if (input.val().match(letters) && !isEmpty(input.val())) {
         return true;
@@ -43,6 +43,28 @@ function checkUsername(usr) {
         usr.focus();
         return false;
     }
+}
+
+function checkProfile(foto){
+    if(foto[0].files[0] === undefined){
+        return true
+    }
+
+   return foto[0].files[0].size < 10000000;
+}
+
+function checkExtension(foto){
+    if(foto[0].files[0] === undefined){
+        return true
+    }
+    var filename = foto.val();
+
+    var pathParts = filename.split('/');   // Split the path on '/': ['path', 'to', 'file.ext']
+    var filename  = pathParts.pop();       // Take the last element. This is a file name: 'file.ext'
+    var filenameParts = filename.split('.'); // Split the file name on the '.': ['file', 'ext']
+    var extension = filenameParts[1];
+    console.log(extension);
+    return extension === "jpg" || extension === "png";
 }
 
 function preview( uploader ) {
@@ -169,12 +191,18 @@ $(document).ready(function () {
         let email = checkEmail($(".data input[name = email]"));
         let pw = checkPassword($(".data input[name = password]"));
         let usr = checkUsername($(".data input[name = username]"));
+        let foto = checkProfile($("#propicForm"));
+        let estensione = checkExtension($("#propicForm"));
 
         if ((!name || !surname || !email || !usr)) {
             $(".error").html('<p class="text-center">Dati inseriti non validi<i class="fas fa-exclamation-triangle ml-2"></i></p>');
             $("html, body").animate({scrollTop: 0}, 500);
             $(".error").delay(550).effect("shake");
             return false;
+        } else if (!foto || !estensione) {
+            $(".error").html('<p class="text-center">Foto non valida<i class="fas fa-exclamation-triangle ml-2"></i></p>');
+            $("html, body").animate({scrollTop: 0}, 500);
+            $(".error").delay(550).effect("shake");
         } else {
             $('.data').submit();
         }

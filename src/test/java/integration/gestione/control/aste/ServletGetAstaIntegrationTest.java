@@ -198,7 +198,7 @@ class ServletGetAstaIntegrationTest {
     verify(request, times(1)).getRequestDispatcher(anyString());
     verify(request, times(1)).getHeader(anyString());
     verify(request, times(1)).getParameter(anyString());
-    verify(request, times(1)).setAttribute(anyString(), any());
+    verify(request, times(2)).setAttribute(anyString(), any());
   }
 
   @Test

@@ -12,4 +12,23 @@ $(document).ready(function(){
         }
     });
 
+    $("#search-bar").submit(function (){
+        return onlyLetters($('.searchbar input[type = search]'));
+
+    })
+
+
+
 });
+
+
+function onlyLetters(input) {
+    let letters = /^[A-Za-z\s]{1,100}$/;
+
+    if (input.val().match(letters) && !isEmpty(input.val())) {
+        return true;
+    } else {
+        input.focus();
+        return false;
+    }
+}

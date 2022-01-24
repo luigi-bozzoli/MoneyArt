@@ -2,7 +2,7 @@
   "id": "e3469196-30ea-421e-9d06-90c93c1c179f",
   "version": "2.0",
   "name": "MoneyArt",
-  "url": "http://localhost:8080/MoneyArt_war/walletInfo",
+  "url": "http://localhost:8080/MoneyArt_war/newAuction?id=8",
   "tests": [{
     "id": "fd687b98-7b29-4703-bfe6-63fd02f6edd0",
     "name": "TC_1.1_1",
@@ -2235,6 +2235,2075 @@
       ],
       "value": "${saldo}"
     }]
+  }, {
+    "id": "de61b38e-6605-4e2a-90f9-f879a76c054e",
+    "name": "TC_1.3_1",
+    "commands": [{
+      "id": "4163a8b2-c237-4444-8a9f-930cebe23a8a",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "19da5468-9de7-477c-a151-416d4899e1de",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f00f9942-6fa0-41de-8867-d0881a25627a",
+      "comment": "",
+      "command": "type",
+      "target": "id=confirm-password",
+      "targets": [
+        ["id=confirm-password", "id"],
+        ["name=confirm-password", "name"],
+        ["css=#confirm-password", "css:finder"],
+        ["xpath=//input[@id='confirm-password']", "xpath:attributes"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": "pippo123"
+    }, {
+      "id": "e535b1eb-b707-4f40-9e85-43f3968559f5",
+      "comment": "",
+      "command": "type",
+      "target": "id=propicForm",
+      "targets": [
+        ["id=propicForm", "id"],
+        ["name=picture", "name"],
+        ["css=#propicForm", "css:finder"],
+        ["xpath=//input[@id='propicForm']", "xpath:attributes"],
+        ["xpath=//form/input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\estensione sbagliata.jfif"
+    }, {
+      "id": "9e80ea86-bc74-476a-b1db-54d4e03fa664",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-password",
+      "targets": [
+        ["id=confirm-password", "id"],
+        ["name=confirm-password", "name"],
+        ["css=#confirm-password", "css:finder"],
+        ["xpath=//input[@id='confirm-password']", "xpath:attributes"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1676f869-11a9-4f22-850a-522fcc558bcb",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-update",
+      "targets": [
+        ["id=confirm-update", "id"],
+        ["css=#confirm-update", "css:finder"],
+        ["xpath=//button[@id='confirm-update']", "xpath:attributes"],
+        ["xpath=//div[@id='update-choice']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Conferma Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3bd1b4d5-8701-4e45-8f4f-fd405e929c1d",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Foto non valida"
+    }]
+  }, {
+    "id": "8c6fffc1-2495-4e9d-bfa5-54d5101f5d12",
+    "name": "TC_1.3_2",
+    "commands": [{
+      "id": "28832758-25ba-4fad-87c1-6659695d0583",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0379bd5a-a438-4ab8-899f-0eba8a8281db",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a4c1fc5b-51fc-44cc-b8a1-c46beec5aa1e",
+      "comment": "",
+      "command": "type",
+      "target": "id=confirm-password",
+      "targets": [
+        ["id=confirm-password", "id"],
+        ["name=confirm-password", "name"],
+        ["css=#confirm-password", "css:finder"],
+        ["xpath=//input[@id='confirm-password']", "xpath:attributes"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": "pippo123"
+    }, {
+      "id": "93de035a-8be7-411b-a6b7-17d42af75288",
+      "comment": "",
+      "command": "type",
+      "target": "id=propicForm",
+      "targets": [
+        ["id=propicForm", "id"],
+        ["name=picture", "name"],
+        ["css=#propicForm", "css:finder"],
+        ["xpath=//input[@id='propicForm']", "xpath:attributes"],
+        ["xpath=//form/input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\troppo grande.jpg"
+    }, {
+      "id": "78bd7308-daf6-450f-852f-243000deedf7",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-password",
+      "targets": [
+        ["id=confirm-password", "id"],
+        ["name=confirm-password", "name"],
+        ["css=#confirm-password", "css:finder"],
+        ["xpath=//input[@id='confirm-password']", "xpath:attributes"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8db9817f-fde5-4064-86df-31d32bb170a1",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-update",
+      "targets": [
+        ["id=confirm-update", "id"],
+        ["css=#confirm-update", "css:finder"],
+        ["xpath=//button[@id='confirm-update']", "xpath:attributes"],
+        ["xpath=//div[@id='update-choice']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Conferma Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "653512c7-5010-4bf1-a9ea-35cb34de8a26",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Foto non valida"
+    }]
+  }, {
+    "id": "13b021a1-face-4e15-b1c4-e526a14d633a",
+    "name": "TC_1.3_3",
+    "commands": [{
+      "id": "64bb8eea-c7d7-41d7-808a-1ff1bf110f2e",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a54496dc-eed3-4bc1-bc99-ea55d6bc1c42",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0e7185c0-1bf0-4a18-a26d-c95d9ea54fde",
+      "comment": "",
+      "command": "type",
+      "target": "id=confirm-password",
+      "targets": [
+        ["id=confirm-password", "id"],
+        ["name=confirm-password", "name"],
+        ["css=#confirm-password", "css:finder"],
+        ["xpath=//input[@id='confirm-password']", "xpath:attributes"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": "pippo123"
+    }, {
+      "id": "835e23b4-f196-4346-9331-28247161827c",
+      "comment": "",
+      "command": "type",
+      "target": "id=propicForm",
+      "targets": [
+        ["id=propicForm", "id"],
+        ["name=picture", "name"],
+        ["css=#propicForm", "css:finder"],
+        ["xpath=//input[@id='propicForm']", "xpath:attributes"],
+        ["xpath=//form/input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\aurel\\IdeaProjects\\MoneyArt\\src\\test\\System testing\\foto modifica profilo\\success.jpeg"
+    }, {
+      "id": "c70a9b3b-a12a-4abb-ab40-719a7fe4e0f6",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-password",
+      "targets": [
+        ["id=confirm-password", "id"],
+        ["name=confirm-password", "name"],
+        ["css=#confirm-password", "css:finder"],
+        ["xpath=//input[@id='confirm-password']", "xpath:attributes"],
+        ["xpath=//div[5]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1bca5089-fa51-4b8a-93a6-4ce8dab848b6",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.profile-box",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "ade43883-e0f6-41ff-8d44-144dcf2f3859",
+    "name": "TC_1.6.1",
+    "commands": [{
+      "id": "bff12a7d-6e2a-4733-bdeb-a8eecfc7c28c",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "55586ac8-8997-4b8e-9c1f-2ec3aa2589f6",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d6a42dd-c389-4fe6-8fbc-e8cbfd266b47",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c00bb711-0481-41d8-9e3a-668d07ed689f",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [],
+      "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    }, {
+      "id": "1a358974-1d50-48b0-9fb3-601e79734b69",
+      "comment": "",
+      "command": "type",
+      "target": "id=surname",
+      "targets": [],
+      "value": "De Santis"
+    }, {
+      "id": "e406be9c-a044-4e22-92b1-b7fb0e98d011",
+      "comment": "",
+      "command": "type",
+      "target": "id=email",
+      "targets": [],
+      "value": "michael.desantis@gmail.com"
+    }, {
+      "id": "e8a6b838-1995-4643-b073-a69c15ed1a9b",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "shoyll"
+    }, {
+      "id": "725885c2-53be-4d35-8bb5-e512e643b7b0",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[6]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "676e81ba-54d9-455d-b0f6-10d296196f78",
+      "comment": "",
+      "command": "type",
+      "target": "id=new-password",
+      "targets": [
+        ["id=new-password", "id"],
+        ["name=new-password", "name"],
+        ["css=#new-password", "css:finder"],
+        ["xpath=//input[@id='new-password']", "xpath:attributes"],
+        ["xpath=//div[7]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "ce1ba99a-64dc-4bf5-acd9-4c0958876a04",
+      "comment": "",
+      "command": "click",
+      "target": "id=new-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c36658cf-7b35-44c2-9702-c43e3d15862c",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-update",
+      "targets": [
+        ["id=confirm-update", "id"],
+        ["css=#confirm-update", "css:finder"],
+        ["xpath=//button[@id='confirm-update']", "xpath:attributes"],
+        ["xpath=//div[@id='update-choice']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Conferma Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "450084a4-3bd6-452f-a31d-989ee5d14d2e",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Dati inseriti non validi"
+    }]
+  }, {
+    "id": "74a75b8b-e2ad-4c21-b311-eb2048e71c5b",
+    "name": "TC_1.6.2",
+    "commands": [{
+      "id": "0e35faca-a65b-4a5c-9f4e-f3fa80096c98",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "46ec96aa-e5b5-4807-b83b-c238c29ce22c",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5c555719-eea0-49d7-a264-d899836a32d9",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9217c670-b7a8-4534-b88c-22b43759746d",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7991c974-01f0-4ee8-a0fb-4cfc017de871",
+      "comment": "",
+      "command": "type",
+      "target": "id=surname",
+      "targets": [],
+      "value": "De Santis"
+    }, {
+      "id": "4f4c05ac-9175-4661-97ef-d2ebffd94bcb",
+      "comment": "",
+      "command": "type",
+      "target": "id=email",
+      "targets": [],
+      "value": "michael.desantis@gmail.com"
+    }, {
+      "id": "9408d7eb-bd19-4bb0-9cbd-4164ba5a3377",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "shoyll"
+    }, {
+      "id": "eeeb8d62-710f-4cfd-9f32-f92bc83efd1a",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[6]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "24bd19f8-f4cf-403f-8441-e30645c377ea",
+      "comment": "",
+      "command": "type",
+      "target": "id=new-password",
+      "targets": [
+        ["id=new-password", "id"],
+        ["name=new-password", "name"],
+        ["css=#new-password", "css:finder"],
+        ["xpath=//input[@id='new-password']", "xpath:attributes"],
+        ["xpath=//div[7]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "21dcd2b6-211b-4557-953d-35c0bcabfa22",
+      "comment": "",
+      "command": "click",
+      "target": "id=new-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "00e702dc-c255-4fdf-b357-a8e08d1ac0b2",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-update",
+      "targets": [
+        ["id=confirm-update", "id"],
+        ["css=#confirm-update", "css:finder"],
+        ["xpath=//button[@id='confirm-update']", "xpath:attributes"],
+        ["xpath=//div[@id='update-choice']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Conferma Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7e419233-698f-4ef2-b740-f54c8e178a6c",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Dati inseriti non validi"
+    }]
+  }, {
+    "id": "682b108a-c226-4a97-bcb0-cd911a679322",
+    "name": "TC_1.6.3",
+    "commands": [{
+      "id": "16a9ace7-d1aa-4c28-b917-7828bb6afdc1",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "07a323bd-e6b9-402e-b0af-85341cbe21d7",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ce7c5d41-1108-4ef0-a7aa-f2199802549e",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d8ba11d8-1c8b-467c-a788-8f52afa541c9",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [],
+      "value": "Michael"
+    }, {
+      "id": "bafc3837-e892-4160-b419-b150f51bdc8b",
+      "comment": "",
+      "command": "type",
+      "target": "id=surname",
+      "targets": [],
+      "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    }, {
+      "id": "9fb9d507-851e-4e33-a3db-b8bb225f953d",
+      "comment": "",
+      "command": "type",
+      "target": "id=email",
+      "targets": [],
+      "value": "michael.desantis@gmail.com"
+    }, {
+      "id": "568400cb-336b-463a-8fae-afc4e2090788",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "shoyll"
+    }, {
+      "id": "452e17d9-a0c6-4a36-9470-97ed83709e96",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[6]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "24ea1eb9-99ae-4fbf-853e-22db5964d1ed",
+      "comment": "",
+      "command": "type",
+      "target": "id=new-password",
+      "targets": [
+        ["id=new-password", "id"],
+        ["name=new-password", "name"],
+        ["css=#new-password", "css:finder"],
+        ["xpath=//input[@id='new-password']", "xpath:attributes"],
+        ["xpath=//div[7]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "c7db0659-3670-4dbc-a068-5c55a42368d5",
+      "comment": "",
+      "command": "click",
+      "target": "id=new-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4e851117-6a7b-4e98-b691-16a1b5f69b35",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-update",
+      "targets": [
+        ["id=confirm-update", "id"],
+        ["css=#confirm-update", "css:finder"],
+        ["xpath=//button[@id='confirm-update']", "xpath:attributes"],
+        ["xpath=//div[@id='update-choice']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Conferma Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "44aebfe1-1817-42e9-906a-2b33d4209fe3",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Dati inseriti non validi"
+    }]
+  }, {
+    "id": "1dc640e6-4e78-4250-8d38-94c8f0b57643",
+    "name": "TC_1.6.5",
+    "commands": [{
+      "id": "1bf9b14a-50f8-43f6-9682-9364cd604205",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a75c60bb-bafe-4498-8201-11de0bced14c",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "22ee1b8a-e3b3-492c-a8d0-be334d186717",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5690ecfe-65fd-48a0-8180-d72e0d07f334",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [],
+      "value": "Michael"
+    }, {
+      "id": "be1ba64a-2676-4a54-a877-200a49a82300",
+      "comment": "",
+      "command": "type",
+      "target": "id=surname",
+      "targets": [],
+      "value": "De Santis"
+    }, {
+      "id": "2cbca953-4ada-4e31-aae2-eea0b418d074",
+      "comment": "",
+      "command": "type",
+      "target": "id=email",
+      "targets": [],
+      "value": "michael.desantisgmail.com"
+    }, {
+      "id": "71c061a9-fc8b-4c65-b9ef-c9cd2ef6e713",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "shoyll"
+    }, {
+      "id": "c8a1a799-e628-43fc-9901-4552a59bcf46",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[6]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "b0d0aa88-fc1b-488a-b173-95a53e36f093",
+      "comment": "",
+      "command": "type",
+      "target": "id=new-password",
+      "targets": [
+        ["id=new-password", "id"],
+        ["name=new-password", "name"],
+        ["css=#new-password", "css:finder"],
+        ["xpath=//input[@id='new-password']", "xpath:attributes"],
+        ["xpath=//div[7]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "fdf79f75-5bb1-4d7c-a1aa-eeabb0f3d6d1",
+      "comment": "",
+      "command": "click",
+      "target": "id=new-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "79e44b7f-37ad-4d33-899a-0928d098a89d",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-update",
+      "targets": [
+        ["id=confirm-update", "id"],
+        ["css=#confirm-update", "css:finder"],
+        ["xpath=//button[@id='confirm-update']", "xpath:attributes"],
+        ["xpath=//div[@id='update-choice']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Conferma Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "94ad3048-3cf0-4bcd-8a72-fc2b90bb91b8",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Dati inseriti non validi"
+    }]
+  }, {
+    "id": "223060c6-5669-4a7e-8456-2565876f040e",
+    "name": "TC_1.6.6",
+    "commands": [{
+      "id": "942989c1-0947-4bce-9ce5-02c510c81364",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "86353daf-4a33-4920-9ec9-a8a87c2ecc68",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0b4c949f-f7c5-4624-91f4-9c994cfb2d50",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "29dff816-0b99-44c8-b610-5d2acc2ea800",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [],
+      "value": "Michael"
+    }, {
+      "id": "d10575f1-fbf0-43ee-8136-ae52730c88e6",
+      "comment": "",
+      "command": "type",
+      "target": "id=surname",
+      "targets": [],
+      "value": "De Santis"
+    }, {
+      "id": "0b2d79d4-e1c0-40a1-933f-3ad08816677f",
+      "comment": "",
+      "command": "type",
+      "target": "id=email",
+      "targets": [],
+      "value": "moneyart@gmail.com"
+    }, {
+      "id": "1055a505-6069-48e5-a0c4-48469b2a29b5",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "shoyll"
+    }, {
+      "id": "3174c9ba-a5e4-4ec5-8a52-567ec256422b",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[6]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "c8a66969-c0e2-4659-8d83-3bd7e8719076",
+      "comment": "",
+      "command": "type",
+      "target": "id=new-password",
+      "targets": [
+        ["id=new-password", "id"],
+        ["name=new-password", "name"],
+        ["css=#new-password", "css:finder"],
+        ["xpath=//input[@id='new-password']", "xpath:attributes"],
+        ["xpath=//div[7]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "c4c880e6-a936-48c4-9820-57ad4c5d7849",
+      "comment": "",
+      "command": "click",
+      "target": "id=new-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ac390252-9fbb-4413-8127-4c63a0183a78",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-update",
+      "targets": [
+        ["id=confirm-update", "id"],
+        ["css=#confirm-update", "css:finder"],
+        ["xpath=//button[@id='confirm-update']", "xpath:attributes"],
+        ["xpath=//div[@id='update-choice']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Conferma Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ec3cd451-fbba-4582-937f-799780443d1e",
+      "comment": "",
+      "command": "assertElementNotPresent",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Dati inseriti non validi"
+    }]
+  }, {
+    "id": "2f907432-3be0-4e53-8eed-6c6e3b772583",
+    "name": "TC_1.6.8",
+    "commands": [{
+      "id": "682d576b-39da-4d9e-b2e7-d3f96598918e",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0ec2bfaf-3086-4822-849a-ea3ce029a2be",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7d86e349-6ef3-4532-8d67-4e7781dad1bc",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9d777e69-b9cb-416a-a581-257a05aaca74",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [],
+      "value": "Michele"
+    }, {
+      "id": "02c4c72e-3949-4a57-bdc6-bf692aeca7d6",
+      "comment": "",
+      "command": "type",
+      "target": "id=surname",
+      "targets": [],
+      "value": "De Santis"
+    }, {
+      "id": "c31d51dd-10e7-4943-b099-a7c1f8d8a99e",
+      "comment": "",
+      "command": "type",
+      "target": "id=email",
+      "targets": [],
+      "value": "michael.desantis@gmail.com"
+    }, {
+      "id": "9f955861-3bf9-462f-a17b-776b04071512",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "shoyll"
+    }, {
+      "id": "eb9e0db5-86ea-4269-b627-5db83af00ed1",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[6]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "0f4a8a9f-457e-4bf6-add8-f26cee47a159",
+      "comment": "",
+      "command": "type",
+      "target": "id=new-password",
+      "targets": [
+        ["id=new-password", "id"],
+        ["name=new-password", "name"],
+        ["css=#new-password", "css:finder"],
+        ["xpath=//input[@id='new-password']", "xpath:attributes"],
+        ["xpath=//div[7]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "a8bbe533-0a46-4075-b7cf-d03648d1cf5f",
+      "comment": "",
+      "command": "click",
+      "target": "id=new-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "48c9cbe8-a406-4d13-ba02-0523455892b7",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-update",
+      "targets": [
+        ["id=confirm-update", "id"],
+        ["css=#confirm-update", "css:finder"],
+        ["xpath=//button[@id='confirm-update']", "xpath:attributes"],
+        ["xpath=//div[@id='update-choice']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Conferma Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f47b2753-dd49-4a52-a367-077ed3233e39",
+      "comment": "",
+      "command": "assertElementNotPresent",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Dati inseriti non validi"
+    }]
+  }, {
+    "id": "edcd529c-022d-43a6-9d14-006dc9de8187",
+    "name": "TC_1.6.7",
+    "commands": [{
+      "id": "bc762427-8fb3-4f8b-b7e4-0f283ecea880",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7bffa69c-4f32-42cb-89cd-4ca5b912b3c5",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7bfb58dd-44bc-45cf-95d6-58366f3bfe53",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "bdd3d22c-5dfe-43b5-999c-2378d06d4320",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [],
+      "value": "Michael"
+    }, {
+      "id": "72795f97-9088-4053-8a1e-b394eca3839b",
+      "comment": "",
+      "command": "type",
+      "target": "id=surname",
+      "targets": [],
+      "value": "De Santis"
+    }, {
+      "id": "63d174bc-3017-4b3a-8e17-d6c073b818e4",
+      "comment": "",
+      "command": "type",
+      "target": "id=email",
+      "targets": [],
+      "value": "michael.desantis@gmail.com"
+    }, {
+      "id": "70406f9e-30b2-48b5-85ab-0d92b9580d94",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "shoyll"
+    }, {
+      "id": "27fb47f4-8e17-44f6-b1af-620f72d417d0",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[6]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "4c14eaeb-3d43-45ba-b600-4bad1a4212b3",
+      "comment": "",
+      "command": "type",
+      "target": "id=new-password",
+      "targets": [
+        ["id=new-password", "id"],
+        ["name=new-password", "name"],
+        ["css=#new-password", "css:finder"],
+        ["xpath=//input[@id='new-password']", "xpath:attributes"],
+        ["xpath=//div[7]/div/input", "xpath:position"]
+      ],
+      "value": "Password@"
+    }, {
+      "id": "ad418c03-9cf4-4e00-933d-f4796558aaeb",
+      "comment": "",
+      "command": "click",
+      "target": "id=new-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "931465c5-5ce8-4556-a040-8da86938f113",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-update",
+      "targets": [
+        ["id=confirm-update", "id"],
+        ["css=#confirm-update", "css:finder"],
+        ["xpath=//button[@id='confirm-update']", "xpath:attributes"],
+        ["xpath=//div[@id='update-choice']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Conferma Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "42e9a2c3-78e8-4c19-b64a-7bfc9789f0d6",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "css=.disabled",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "7768c859-f8d2-410c-97e5-ec78a01dd476",
+    "name": "TC_1.6.4",
+    "commands": [{
+      "id": "459eecc6-69e5-4539-9079-2a5637dae7a4",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/userPage",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "04d3112c-7374-4d81-83ce-fbe4fca869d0",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-profile",
+      "targets": [
+        ["id=update-profile", "id"],
+        ["css=#update-profile", "css:finder"],
+        ["xpath=//button[@id='update-profile']", "xpath:attributes"],
+        ["xpath=//body/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "683e8301-70ab-4485-b66c-4ba7c4e8678a",
+      "comment": "",
+      "command": "click",
+      "target": "id=update-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6d0558b5-548f-4c3c-97e5-f31ebe7e43b3",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [],
+      "value": "Michael"
+    }, {
+      "id": "72062f1a-96f9-4ecc-b816-5513ef2ee788",
+      "comment": "",
+      "command": "type",
+      "target": "id=surname",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7d6dd264-ac1f-4fe4-8797-f45fe894119e",
+      "comment": "",
+      "command": "type",
+      "target": "id=email",
+      "targets": [],
+      "value": "michael.desantis@gmail.com"
+    }, {
+      "id": "7d181b27-92cd-4333-9267-e93abfd786a1",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [],
+      "value": "shoyll"
+    }, {
+      "id": "d36515c4-2bdf-41a8-8ea5-170bd531c2c9",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//div[6]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "be7adcf7-cd18-444e-85bb-43841d9de7cf",
+      "comment": "",
+      "command": "type",
+      "target": "id=new-password",
+      "targets": [
+        ["id=new-password", "id"],
+        ["name=new-password", "name"],
+        ["css=#new-password", "css:finder"],
+        ["xpath=//input[@id='new-password']", "xpath:attributes"],
+        ["xpath=//div[7]/div/input", "xpath:position"]
+      ],
+      "value": "Password1@"
+    }, {
+      "id": "9e7546d6-1b4d-452e-bf4d-e575dfc7d448",
+      "comment": "",
+      "command": "click",
+      "target": "id=new-password",
+      "targets": [
+        ["id=update-password", "id"],
+        ["css=#update-password", "css:finder"],
+        ["xpath=//button[@id='update-password']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Cambia password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a0e657a4-ec46-4901-a474-789eb3776bca",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm-update",
+      "targets": [
+        ["id=confirm-update", "id"],
+        ["css=#confirm-update", "css:finder"],
+        ["xpath=//button[@id='confirm-update']", "xpath:attributes"],
+        ["xpath=//div[@id='update-choice']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Conferma Modifica profilo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "af5b29f3-eb7b-4033-9f50-6bdc5db0f310",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Dati inseriti non validi"
+    }]
+  }, {
+    "id": "0bdbae4c-8cd9-477c-bd5c-c9edd0d25287",
+    "name": "TC_1.7_1",
+    "commands": [{
+      "id": "c4bb1e2e-f594-4ede-bb3d-bc10625feeac",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "98b941f5-04a4-4319-bec3-71a7f77ac613",
+      "comment": "",
+      "command": "click",
+      "target": "css=.slider",
+      "targets": [
+        ["css=.slider", "css:finder"],
+        ["xpath=//div[@id='navbarSupportedContent']/div/label/span", "xpath:idRelative"],
+        ["xpath=//label/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a6aab751-46d7-4ba2-b801-bc108c89f100",
+      "comment": "",
+      "command": "click",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "728224ae-9a74-4f23-b816-0d93f91af80c",
+      "comment": "",
+      "command": "type",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4b8c91f8-6d6f-4655-b003-f9fffd064fe9",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "05b2b8fc-57c8-4799-9743-7a45336b0de6",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h1",
+      "targets": [],
+      "value": "L'arte che diventa\\nNon Fungible Token"
+    }]
+  }, {
+    "id": "c4c62dbd-47e6-4654-a391-c5b069692c55",
+    "name": "TC_1.7_2",
+    "commands": [{
+      "id": "1843ac4f-4cbe-4db0-bbbc-90ae023e8e9f",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a3b7002b-9207-4318-b67a-8fd946a1a43e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.slider",
+      "targets": [
+        ["css=.slider", "css:finder"],
+        ["xpath=//div[@id='navbarSupportedContent']/div/label/span", "xpath:idRelative"],
+        ["xpath=//label/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4649cb02-60cc-4a75-83c1-f8e8450fcced",
+      "comment": "",
+      "command": "click",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "22b64a4a-efdb-4131-842b-0b6496e9c96c",
+      "comment": "",
+      "command": "type",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    }, {
+      "id": "963948ed-7e59-46d3-84e1-df0f0bff324c",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "a9f87caa-ae33-43eb-8477-17ef0935038b",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h1",
+      "targets": [],
+      "value": "L'arte che diventa\\nNon Fungible Token"
+    }]
+  }, {
+    "id": "007904c2-ccb0-40cd-ac61-151c27663bce",
+    "name": "TC_1.7_3",
+    "commands": [{
+      "id": "12573381-89f1-4646-84ae-6ee4864a7154",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6e13d1cd-a44d-4031-ba91-ccf50bbce600",
+      "comment": "",
+      "command": "click",
+      "target": "css=.slider",
+      "targets": [
+        ["css=.slider", "css:finder"],
+        ["xpath=//div[@id='navbarSupportedContent']/div/label/span", "xpath:idRelative"],
+        ["xpath=//label/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "25f019e9-1d76-484b-b877-93ba212db398",
+      "comment": "",
+      "command": "click",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "01aa1ba8-db06-417d-98cf-10361b044818",
+      "comment": "",
+      "command": "type",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "Aury"
+    }, {
+      "id": "79044846-c860-4191-bbc5-b79ed01784e6",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=action",
+      "targets": [
+        ["name=action", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='action']", "xpath:attributes"],
+        ["xpath=//form[@id='search-bar']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "ba08eecc-2a5d-4197-96c3-8f9a302a0119",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h1",
+      "targets": [],
+      "value": "Utenti"
+    }]
+  }, {
+    "id": "26218fe1-a867-4f57-bb34-ee9937d05ec1",
+    "name": "TC_2.1_1",
+    "commands": [{
+      "id": "b73709b9-3339-4dde-972c-b06b3a64bcf9",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/pages/creaOpera.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "356019be-fead-4e42-a808-b32ecade326c",
+      "comment": "",
+      "command": "type",
+      "target": "id=picCropped",
+      "targets": [
+        ["id=picCropped", "id"],
+        ["name=pictureCr", "name"],
+        ["css=#picCropped", "css:finder"],
+        ["xpath=//input[@id='picCropped']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "C:\\fakepath\\success.jpg"
+    }, {
+      "id": "00cdd46b-1cb9-4a10-aa46-06afc57b062a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.image-crop-wrap",
+      "targets": [
+        ["css=.image-crop-wrap", "css:finder"],
+        ["xpath=//body/div[4]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "94f391d3-0837-45ed-a7d6-a34e1a656c10",
+      "comment": "",
+      "command": "click",
+      "target": "id=crop-result",
+      "targets": [
+        ["id=crop-result", "id"],
+        ["css=#crop-result", "css:finder"],
+        ["xpath=//i[@id='crop-result']", "xpath:attributes"],
+        ["xpath=//i[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "55e57f7f-2e0b-4942-a00f-7c56febf7855",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["name=name", "name"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//form/div/div/input", "xpath:position"]
+      ],
+      "value": "Francesco"
+    }, {
+      "id": "02af9786-6d43-4c31-9dfa-a86170c55d49",
+      "comment": "",
+      "command": "type",
+      "target": "id=description",
+      "targets": [
+        ["id=description", "id"],
+        ["name=description", "name"],
+        ["css=#description", "css:finder"],
+        ["xpath=//textarea[@id='description']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "aaaaa"
+    }, {
+      "id": "715e74ef-f08d-4403-9c5f-4fa0ef8760ea",
+      "comment": "",
+      "command": "click",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f27d8af1-2f92-4722-80d9-ea7ae7d0aeb2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.data-input:nth-child(1) > .input-icon",
+      "targets": [
+        ["css=.data-input:nth-child(1) > .input-icon", "css:finder"],
+        ["xpath=//form/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b078c375-3c91-4faa-b53b-c124c94b35d8",
+      "comment": "",
+      "command": "click",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["name=name", "name"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//form/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "651f4880-3677-4e02-99ba-5f5ca75bb0fd",
+      "comment": "",
+      "command": "click",
+      "target": "css=.data",
+      "targets": [
+        ["css=.data", "css:finder"],
+        ["xpath=//form[@name='informations']", "xpath:attributes"],
+        ["xpath=//form", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cc278507-e3aa-46dd-9939-9840ac7f55d3",
+      "comment": "",
+      "command": "click",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e837c3a4-3955-4ce2-8d52-8ce44695190a",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ce073daa-29a4-4a15-bc47-376aff292fc6",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "id=create",
+      "targets": [
+        ["id=create", "id"],
+        ["css=#create", "css:finder"],
+        ["xpath=//button[@id='create']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "14b26038-0a54-488b-82a7-a5caad9f6aa1",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b5eb7278-84ab-47dd-a8f4-eaae7c1c06d6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.overlay",
+      "targets": [
+        ["css=.overlay", "css:finder"],
+        ["xpath=//div[@onclick='picClick()']", "xpath:attributes"],
+        ["xpath=//div[4]/div/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bae74d7d-43de-4e41-87de-1e7b94832751",
+      "comment": "",
+      "command": "type",
+      "target": "id=picCropped",
+      "targets": [
+        ["id=picCropped", "id"],
+        ["name=pictureCr", "name"],
+        ["css=#picCropped", "css:finder"],
+        ["xpath=//input[@id='picCropped']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": "C:\\fakepath\\success.jpg"
+    }, {
+      "id": "53a46fbf-2e57-460d-8390-438cb2d65257",
+      "comment": "",
+      "command": "click",
+      "target": "css=.image-crop-wrap",
+      "targets": [
+        ["css=.image-crop-wrap", "css:finder"],
+        ["xpath=//body/div[4]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2aaabb7b-188f-4109-9349-46146991bcca",
+      "comment": "",
+      "command": "click",
+      "target": "id=crop-result",
+      "targets": [
+        ["id=crop-result", "id"],
+        ["css=#crop-result", "css:finder"],
+        ["xpath=//i[@id='crop-result']", "xpath:attributes"],
+        ["xpath=//i[2]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "9c33ed65-c6b9-47aa-b010-68d2c80416f1",
+    "name": "TC_3.1_1",
+    "commands": [{
+      "id": "0cd46976-9afc-4a60-ad48-834b9b1584b9",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/getAuction?id=2",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e373b508-5944-4117-876b-098c97550dbd",
+      "comment": "",
+      "command": "type",
+      "target": "id=offerta",
+      "targets": [
+        ["id=offerta", "id"],
+        ["name=offerta", "name"],
+        ["css=#offerta", "css:finder"],
+        ["xpath=//input[@id='offerta']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "300"
+    }, {
+      "id": "c39d78ee-257b-4ed9-bb08-090ff7f0c709",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(3)",
+      "targets": [
+        ["css=button:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//div[4]/form/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Offri')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "16e94a09-aa07-462d-9ea4-838fec718d2b",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .mt-3",
+      "targets": [],
+      "value": "Il tuo saldo non é sufficiente oppure hai fatto un'offerta non valida!"
+    }]
+  }, {
+    "id": "9206db67-15ce-4720-841e-f684b3cff222",
+    "name": "TC_3.1_2",
+    "commands": [{
+      "id": "78359690-4da9-4380-b294-93a172105ac0",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/getAuction?id=2",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a8175545-46b2-49f0-81db-c032b46f45d6",
+      "comment": "",
+      "command": "type",
+      "target": "id=offerta",
+      "targets": [
+        ["id=offerta", "id"],
+        ["name=offerta", "name"],
+        ["css=#offerta", "css:finder"],
+        ["xpath=//input[@id='offerta']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "310"
+    }, {
+      "id": "2dbbcbb0-e996-4bf9-993b-008a7e6a8fe8",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(3)",
+      "targets": [
+        ["css=button:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//div[4]/form/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Offri')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0b2cefc1-ebbc-4af7-8740-49eace31449a",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.message > .mt-3",
+      "targets": [
+        ["css=.message > .mt-3", "css:finder"],
+        ["xpath=//div[3]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'Offerta registrata correttamente!')]", "xpath:innerText"]
+      ],
+      "value": "Offerta registrata correttamente!"
+    }]
+  }, {
+    "id": "49aa4130-8a8b-45f4-9eb1-086dd72db47a",
+    "name": "TC_3_2_1",
+    "commands": [{
+      "id": "01c938b3-9532-41f0-a1b7-9b6497a22a29",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/newAuction?id=8",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4aba7758-bde7-47f7-a7f2-fe3f980d20e4",
+      "comment": "",
+      "command": "type",
+      "target": "id=inizio",
+      "targets": [
+        ["id=inizio", "id"],
+        ["name=inizio", "name"],
+        ["css=#inizio", "css:finder"],
+        ["xpath=//input[@id='inizio']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "2021-07-12"
+    }, {
+      "id": "8aab3cd2-977e-43c7-b46a-7a7a9f2cbc47",
+      "comment": "",
+      "command": "type",
+      "target": "id=fine",
+      "targets": [
+        ["id=fine", "id"],
+        ["name=fine", "name"],
+        ["css=#fine", "css:finder"],
+        ["xpath=//input[@id='fine']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2022-01-13"
+    }, {
+      "id": "fc59c11f-49d5-412b-9346-1df7ec0600d9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.button",
+      "targets": [
+        ["css=.button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "146591da-2db7-4415-b007-038894b9ccbe",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Formato date errate!"
+    }]
+  }, {
+    "id": "6313d438-9b2d-4695-b2ed-a6d9f9d6c319",
+    "name": "TC_3_2_2",
+    "commands": [{
+      "id": "b28e5f29-f565-4950-90b3-1ed2fcd6db1f",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/newAuction?id=8",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "935e7288-ecad-4dc2-8280-22cda45caf94",
+      "comment": "",
+      "command": "type",
+      "target": "id=inizio",
+      "targets": [
+        ["id=inizio", "id"],
+        ["name=inizio", "name"],
+        ["css=#inizio", "css:finder"],
+        ["xpath=//input[@id='inizio']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "2022-05-10"
+    }, {
+      "id": "b5e4cb8d-dc2f-4368-8429-82dab8ee28e2",
+      "comment": "",
+      "command": "type",
+      "target": "id=fine",
+      "targets": [
+        ["id=fine", "id"],
+        ["name=fine", "name"],
+        ["css=#fine", "css:finder"],
+        ["xpath=//input[@id='fine']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2022-01-13"
+    }, {
+      "id": "dca4b331-dad7-41ba-bd73-4467b17dc151",
+      "comment": "",
+      "command": "click",
+      "target": "css=.button",
+      "targets": [
+        ["css=.button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "de4c6da9-4402-4cda-ae90-536f06594543",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Formato date errate!"
+    }]
+  }, {
+    "id": "9be02662-438c-4de0-864b-44da0baf949a",
+    "name": "TC_3_2_3",
+    "commands": [{
+      "id": "ab6d764c-b621-4389-a1bf-8b2078e60add",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/newAuction?id=8",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "aba3ab93-22dd-44ca-9c6f-e648396d38d0",
+      "comment": "",
+      "command": "type",
+      "target": "id=inizio",
+      "targets": [
+        ["id=inizio", "id"],
+        ["name=inizio", "name"],
+        ["css=#inizio", "css:finder"],
+        ["xpath=//input[@id='inizio']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "2022-05-10"
+    }, {
+      "id": "7388df89-4f88-46dd-ab44-35e8a723b1d4",
+      "comment": "",
+      "command": "type",
+      "target": "id=fine",
+      "targets": [
+        ["id=fine", "id"],
+        ["name=fine", "name"],
+        ["css=#fine", "css:finder"],
+        ["xpath=//input[@id='fine']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2022-05-10"
+    }, {
+      "id": "4a8116ee-6a3f-40ef-9466-e05f4b9e678a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.button",
+      "targets": [
+        ["css=.button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "647c8de4-bde9-4181-b2e6-196d51dee2df",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "L'asta deve durare almeno un giorno!"
+    }]
+  }, {
+    "id": "b18fbebd-d5c9-4248-8858-0bcdc2ccd6f1",
+    "name": "TC_3_2_4",
+    "commands": [{
+      "id": "4dee6d3e-a4de-4167-8fbf-b3e09c833e0d",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/newAuction?id=8",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4d7c374b-2af9-4702-b010-1004f66fc23d",
+      "comment": "",
+      "command": "type",
+      "target": "id=inizio",
+      "targets": [
+        ["id=inizio", "id"],
+        ["name=inizio", "name"],
+        ["css=#inizio", "css:finder"],
+        ["xpath=//input[@id='inizio']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "2022-05-10"
+    }, {
+      "id": "3b3ac0a1-a25b-44d6-8cee-156dce3c7464",
+      "comment": "",
+      "command": "type",
+      "target": "id=fine",
+      "targets": [
+        ["id=fine", "id"],
+        ["name=fine", "name"],
+        ["css=#fine", "css:finder"],
+        ["xpath=//input[@id='fine']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2022-05-09"
+    }, {
+      "id": "08965fbf-4039-4cb6-a77f-c7aff340ab54",
+      "comment": "",
+      "command": "click",
+      "target": "css=.button",
+      "targets": [
+        ["css=.button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "031ab8c2-0ef2-490f-a677-3da9ed63834f",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "Formato date errate!"
+    }]
+  }, {
+    "id": "68cb2851-9aa9-464e-8970-f7d314703130",
+    "name": "TC_3_2_5",
+    "commands": [{
+      "id": "5be0fce4-92a3-4e17-80ac-47ead8e87eea",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/newAuction?id=8",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ca9dda91-73e5-44b4-bcf5-78c3eb9863fe",
+      "comment": "",
+      "command": "type",
+      "target": "id=inizio",
+      "targets": [
+        ["id=inizio", "id"],
+        ["name=inizio", "name"],
+        ["css=#inizio", "css:finder"],
+        ["xpath=//input[@id='inizio']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "2022-05-10"
+    }, {
+      "id": "bb3a4e6d-a85b-4e34-b43c-88855052bf76",
+      "comment": "",
+      "command": "type",
+      "target": "id=fine",
+      "targets": [
+        ["id=fine", "id"],
+        ["name=fine", "name"],
+        ["css=#fine", "css:finder"],
+        ["xpath=//input[@id='fine']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2022-05-10"
+    }, {
+      "id": "7889a38d-8b61-4971-bf19-20b23e932952",
+      "comment": "",
+      "command": "click",
+      "target": "css=.button",
+      "targets": [
+        ["css=.button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0e4d8987-86b5-43fc-8158-2b686a591b2b",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.error > .text-center",
+      "targets": [],
+      "value": "L'asta deve durare almeno un giorno!"
+    }]
+  }, {
+    "id": "37b378df-78d2-4db4-bde4-59e726d64648",
+    "name": "TC_3_2_6",
+    "commands": [{
+      "id": "6840ee3a-fbd7-4c96-bf81-80db5536854a",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/MoneyArt_war/newAuction?id=8",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d6acdd77-86f2-48e9-863a-f26e8a66526f",
+      "comment": "",
+      "command": "type",
+      "target": "id=inizio",
+      "targets": [
+        ["id=inizio", "id"],
+        ["name=inizio", "name"],
+        ["css=#inizio", "css:finder"],
+        ["xpath=//input[@id='inizio']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "2022-05-10"
+    }, {
+      "id": "5a820980-0a8a-45b2-9539-b19ad3699cc6",
+      "comment": "",
+      "command": "type",
+      "target": "id=fine",
+      "targets": [
+        ["id=fine", "id"],
+        ["name=fine", "name"],
+        ["css=#fine", "css:finder"],
+        ["xpath=//input[@id='fine']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2022-05-13"
+    }, {
+      "id": "b50965a2-34da-495b-93e6-a889b7375e6a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.button",
+      "targets": [
+        ["css=.button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "62f7f68b-9450-4a70-8bae-7158a71ab855",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=h1",
+      "targets": [],
+      "value": "Aste create da te"
+    }]
   }],
   "suites": [{
     "id": "cf8c9b8e-3130-42a5-bb7e-b34208329b47",
@@ -2257,7 +4326,49 @@
     "parallel": false,
     "timeout": 300,
     "tests": ["59abbf7d-6f8d-4687-9791-bc4081491874", "bd6b536e-2901-4ebb-9843-f903a75c8076", "7e81efc8-d822-453f-a7d5-42b428fa1e6e", "d5f212ae-a04d-4416-8e44-49d18dc2e861", "9dff8631-5a62-4fdb-b42f-fbbbe965a41f"]
+  }, {
+    "id": "afb654f5-46b4-43e7-90de-6346c24728fb",
+    "name": "Modifica foto profilo",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["de61b38e-6605-4e2a-90f9-f879a76c054e", "8c6fffc1-2495-4e9d-bfa5-54d5101f5d12", "13b021a1-face-4e15-b1c4-e526a14d633a"]
+  }, {
+    "id": "49f2dbe0-b583-40b3-96b8-b957c694b388",
+    "name": "Modifica profilo",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["ade43883-e0f6-41ff-8d44-144dcf2f3859", "74a75b8b-e2ad-4c21-b311-eb2048e71c5b", "682b108a-c226-4a97-bcb0-cd911a679322", "7768c859-f8d2-410c-97e5-ec78a01dd476", "1dc640e6-4e78-4250-8d38-94c8f0b57643", "223060c6-5669-4a7e-8456-2565876f040e", "edcd529c-022d-43a6-9d14-006dc9de8187", "2f907432-3be0-4e53-8eed-6c6e3b772583"]
+  }, {
+    "id": "93577010-a92b-4bbb-a0cf-b67bcf343bba",
+    "name": "Ricerca Artisti",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["0bdbae4c-8cd9-477c-bd5c-c9edd0d25287", "c4c62dbd-47e6-4654-a391-c5b069692c55", "007904c2-ccb0-40cd-ac61-151c27663bce"]
+  }, {
+    "id": "a267d138-ce11-4e9f-8d41-cbd106e1ee8c",
+    "name": "Caricamento Opera",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["26218fe1-a867-4f57-bb34-ee9937d05ec1"]
+  }, {
+    "id": "eeda9ee3-003d-48db-99e7-89e1b905fc3f",
+    "name": "Partecipazione Asta",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["9c33ed65-c6b9-47aa-b010-68d2c80416f1", "9206db67-15ce-4720-841e-f684b3cff222"]
+  }, {
+    "id": "920b55a3-33d5-4e03-ac5d-9cdc7566f363",
+    "name": "Creazione Asta",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["49aa4130-8a8b-45f4-9eb1-086dd72db47a", "6313d438-9b2d-4695-b2ed-a6d9f9d6c319", "9be02662-438c-4de0-864b-44da0baf949a", "b18fbebd-d5c9-4248-8858-0bcdc2ccd6f1", "68cb2851-9aa9-464e-8970-f7d314703130", "37b378df-78d2-4db4-bde4-59e726d64648"]
   }],
-  "urls": ["http://localhost:8080/", "http://localhost:8080/MoneyArt_war", "http://localhost:8080/MoneyArt_war/walletInfo"],
+  "urls": ["http://localhost:8080/", "http://localhost:8080/MoneyArt_war", "http://localhost:8080/MoneyArt_war/walletInfo", "http://localhost:8080/MoneyArt_war/userPage", "http://localhost:8080/MoneyArt_war/", "http://localhost:8080/MoneyArt_war/getAuction?id=2", "http://localhost:8080/MoneyArt_war/newAuction?id=8"],
   "plugins": []
 }
