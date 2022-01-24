@@ -58,7 +58,6 @@ public class ServletCreaAsta extends HttpServlet {
     idOpera = Integer.parseInt(idOperaS);
     Opera opera = operaService.getArtwork(idOpera);
 
-    System.out.println(dataFineS);
     try {
 
       dataInizio = new SimpleDateFormat("yyyy-MM-dd").parse(dataInizioS);
@@ -95,7 +94,10 @@ public class ServletCreaAsta extends HttpServlet {
       return;
     }
 
-    response.sendRedirect(getServletContext().getContextPath() + "/pages/asteCreateUtente.jsp");
+
+
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/asteCreateUtente.jsp");
+    dispatcher.forward(request, response);
 
 
   }

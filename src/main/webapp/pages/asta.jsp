@@ -135,35 +135,34 @@
                 </c:if>
 
                 <c:if test="${(asta.stato eq 'IN_CORSO') && ((empty sessionScope.utente) || (asta.opera.possessore.id != sessionScope.utente.id))}">
-                    <div class="offer-wrapper">
-                        <form method="post">
-
-
-                            <label for="offerta"><h3>Fai un'offerta</h3></label>
-                            <div class="offer-input">
-                                <input type="hidden" name="asta" value="${asta.id}">
-                                <input type="text" name="offerta" id="offerta" placeholder="<fmt:formatNumber value="${bestOffer+0.01}" type="currency" currencySymbol="€"/>" class="mr-3">
-                                <button type="submit" class="disabled">Offri</button>
+                    <c:choose>
+                        <c:when test="${not empty requestScope.admin}">
+                            <button id="remove-auction" href="${pageContext.servletContext.contextPath}/removeAuction?idAsta=${asta.id}">Rimuovi Asta</button>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="offer-wrapper">
+                                <form method="post">
+                                    <label for="offerta"><h3>Fai un'offerta</h3></label>
+                                    <div class="offer-input">
+                                        <input type="hidden" name="asta" value="${asta.id}">
+                                        <input type="text" name="offerta" id="offerta" placeholder="<fmt:formatNumber value="${bestOffer+0.01}" type="currency" currencySymbol="€"/>" class="mr-3">
+                                        <button type="submit" class="disabled">Offri</button>
+                                    </div>
+                                    <div class="error">
+                                        <c:if test="${not empty requestScope.error}">
+                                            <p class="mt-3" style="color: #BB371A !important;">${requestScope.error}</p>
+                                        </c:if>
+                                    </div>
+                                    <div class="message">
+                                        <c:if test="${not empty requestScope.message}">
+                                            <p class="mt-3" style="color: #05cf48 !important;">${requestScope.message}</p>
+                                        </c:if>
+                                    </div>
+                                </form>
                             </div>
-                            <c:if test="${not empty requestScope.admin}">
-                                <br>
-                                <a href="${pageContext.servletContext.contextPath}/removeAuction?idAsta=${asta.id}">Rimuovi Asta</a>
-                            </c:if>
-                            <div class="error">
-                                <c:if test="${not empty requestScope.error}">
-                                    <p class="mt-3" style="color: #BB371A !important;">${requestScope.error}</p>
-                                </c:if>
-                            </div>
-                            <div class="message">
-                                <c:if test="${not empty requestScope.message}">
-                                    <p class="mt-3" style="color: #05cf48 !important;">${requestScope.message}</p>
-                                </c:if>
-                            </div>
-                        </form>
-                    </div>
+                        </c:otherwise>
+                    </c:choose>
                 </c:if>
-                </div>
-
             </div>
         </div>
     </div>

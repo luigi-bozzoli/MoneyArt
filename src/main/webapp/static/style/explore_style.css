@@ -89,6 +89,7 @@
     background: #BB371A;
     box-shadow: none;
     transition: .8s;
+    border: none;
 }
 
 .item-price {

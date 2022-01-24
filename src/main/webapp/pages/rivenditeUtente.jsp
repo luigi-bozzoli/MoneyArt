@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@include file="../static/fragments/header.jsp" %>
+<%@include file="../static/fragments/sidebar.jsp" %>
 <script>let ctx = "${pageContext.servletContext.contextPath}"</script>
 
 
@@ -17,7 +17,7 @@
 
 <!-- /Nav Tab -->
 
-        <div class="container-fluid d-flex flex-wrap" id="container-aste">
+        <div class="container d-flex flex-wrap" id="container-aste">
 
             <c:forEach var="rivendita" items="${rivendite}">
                 <c:if test="${(rivendita.opera.possessore.id == sessionScope.utente.id) && (rivendita.stato eq 'IN_CORSO')}">
