@@ -184,6 +184,27 @@
                 </c:choose>
             </div>
         </div>
+        <c:if test="${not empty requestScope.admin}">
+            <div class="col-12">
+                <h2 class="artwork-title">Cronologia offerte</h2>
+                <c:choose>
+                    <c:when test="${asta.partecipazioni.size() != 0}">
+                        <c:set var="size" value="${asta.partecipazioni.size()}"/>
+                        <c:forEach var="i" begin="1" end="${size}" step="1">
+                            <c:set var="partecipazione" value="${asta.partecipazioni[size-i]}"/>
+                            <div class="d-flex w-100 justify-content-between" style="border-bottom: lightgray !important;">
+                                <p>${partecipazione.utente.username}</p>
+                                <p><fmt:formatNumber value="${partecipazione.offerta}" type="currency" currencySymbol="€"/></p>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <p>Nessuna offerta per quest'asta.</p>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </c:if>
+
     </div>
 
 <%@include file="../static/fragments/footer.jsp" %>

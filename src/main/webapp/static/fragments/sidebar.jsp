@@ -124,7 +124,7 @@
                 <script src="${pageContext.servletContext.contextPath}/static/js/creaAsta.js"></script>
             </c:when>
             <c:when test="${fn:contains(requestURI, '/opereUtente')}">
-                <script src="${pageContext.servletContext.contextPath}/static/js/opereUtente.js.js"></script>
+                <script src="${pageContext.servletContext.contextPath}/static/js/opereUtente.js"></script>
             </c:when>
             <c:when test="${fn:contains(requestURI, '/asteUtente')}">
                 <script src="${pageContext.servletContext.contextPath}/static/js/asteUtente.js"></script>
