@@ -1,15 +1,22 @@
 package it.unisa.c02.moneyart.gestione.vendite.aste.control;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import it.unisa.c02.moneyart.gestione.vendite.aste.service.AstaService;
 import it.unisa.c02.moneyart.model.beans.Asta;
 import it.unisa.c02.moneyart.model.beans.Utente;
-import javax.inject.Inject;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
+import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Questa servlet gestisce una nuova offerta.
+ *
+ */
 
 @WebServlet(name = "ServletNuovaOfferta", value = "/newOffer")
 public class ServletNuovaOfferta extends HttpServlet {
