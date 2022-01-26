@@ -1,16 +1,18 @@
 # MoneyArt
 
-L’obiettivo di MoneyArt è sviluppare un’applicazione web che permetta la creazione e la compravendita di opere digitali tramite aste online. Dando la possibilità anche ai meno avvezzi a questo settore di poter entrare in questa nuova frontiera dell’arte.
+MoneyArt è un’applicazione web che permette la creazione e la compravendita di opere digitali tramite aste online, dando la possibilità anche ai meno avvezzi di poter entrare in questa nuova frontiera dell’arte.
 
-## Languages and Tools (da cambiare)
+## Languages and Tools
++ Ethereum
 + Java
 + HTML
-+ JSP
 + CSS
 + [Bootstrap](https://getbootstrap.com/)
 + JavaScript
 + [Apache Tomcat](http://tomcat.apache.org/)
 + IntelliJ IDEA
++ Ganache
++ MySQL
 
 ## Project Managers 
 [Antonio Martucci](https://github.com/AntonioMartucci)\
