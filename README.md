@@ -1,8 +1,9 @@
 # MoneyArt
 
-qualcosa qui
+MoneyArt è un’applicazione web che permette la creazione e la compravendita di opere digitali tramite aste online, dando la possibilità anche ai meno avvezzi di poter entrare in questa nuova frontiera dell’arte.
 
-## Languages and Tools (da cambiare)
+## Languages and Tools
++ Ethereum
 + Java
 + HTML
 + CSS
@@ -10,6 +11,8 @@ qualcosa qui
 + JavaScript
 + [Apache Tomcat](http://tomcat.apache.org/)
 + IntelliJ IDEA
++ Ganache
++ MySQL
 
 ## Project Managers 
 [Antonio Martucci](https://github.com/AntonioMartucci)\
@@ -26,5 +29,5 @@ qualcosa qui
 [Stefano Zarro](https://github.com/stepzar)
 
 
-## License (forse anche qui)
+## License
 [MIT](https://choosealicense.com/licenses/mit/)
